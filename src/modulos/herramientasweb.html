@@ -1,0 +1,71 @@
+<section class="herramientas-web-section">
+  <div class="container">
+    <h1 class="section-title glitch" data-text="HERRAMIENTAS WEB">
+      <span class="title-icon">🛠️</span>
+      HERRAMIENTAS WEB
+    </h1>
+    <div class="web-tools-grid">
+      <div class="web-tool-card">
+        <h2 class="tool-title">¿Cuál es mi IP?</h2>
+        <p class="tool-description">Consulta tu dirección IP pública actual.</p>
+        <div class="ip-result" id="ip-result">
+          <span class="ip-label">Tu IP:</span>
+          <span class="ip-value" id="ip-value">Detectando...</span>
+        </div>
+        <button class="btn-cyber" id="refresh-ip">
+          <span class="btn-icon">🔄</span>
+          Actualizar IP
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+// Módulo IP pública para SPA Ruichis Lab
+// Inicialización robusta, mensajes claros y botón de refresco
+
+function mostrarEstadoIP(mensaje, clase = '') {
+  const ipValue = document.getElementById('ip-value');
+  if (ipValue) {
+    ipValue.textContent = mensaje;
+    ipValue.className = 'ip-value ' + clase;
+  }
+}
+
+function fetchIP() {
+  mostrarEstadoIP('Detectando...', 'ip-loading');
+  fetch('/api/ip.php')
+    .then(res => res.json())
+    .then(data => {
+      if (data && data.ip) {
+        mostrarEstadoIP(data.ip, 'ip-ok');
+      } else {
+        mostrarEstadoIP('No disponible', 'ip-error');
+      }
+    })
+    .catch(() => {
+      mostrarEstadoIP('Error de red', 'ip-error');
+    });
+}
+
+function inicializarIPModulo() {
+  // Asigna el evento al botón de refresco
+  const btn = document.getElementById('refresh-ip');
+  if (btn) btn.onclick = fetchIP;
+  fetchIP();
+}
+
+// Observa el DOM para inicializar el módulo tras navegación SPA
+const observer = new MutationObserver(() => {
+  const ipValue = document.getElementById('ip-value');
+  const btn = document.getElementById('refresh-ip');
+  if (ipValue && btn) {
+    inicializarIPModulo();
+  }
+});
+observer.observe(document.body, { childList: true, subtree: true });
+
+// Inicializa al cargar el DOM
+document.addEventListener('DOMContentLoaded', inicializarIPModulo);
+</script>
+</script>
