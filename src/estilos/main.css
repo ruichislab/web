@@ -22,13 +22,13 @@
   position: absolute;
   left: 0;
   top: 100%;
-  background: var(--secondary-dark);
+  background: var(--bg-secondary);
   border-radius: var(--border-radius-lg);
   box-shadow: var(--shadow-xl);
   min-width: 200px;
   z-index: var(--z-dropdown);
   padding: var(--spacing-sm) 0;
-  border: 1px solid var(--secondary-light);
+  border: 1px solid var(--neon-cyan);
   opacity: 0;
   transform: translateY(-10px);
   transition: all var(--transition-base);
@@ -87,7 +87,7 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: 
+  background-image:
     linear-gradient(rgba(0, 255, 255, 0.1) 1px, transparent 1px),
     linear-gradient(90deg, rgba(0, 255, 255, 0.1) 1px, transparent 1px);
   background-size: 50px 50px;
@@ -224,6 +224,7 @@ body {
 .nav-cyber {
   display: flex;
   justify-content: center;
+  overflow: visible; /* PERMITE VER EL SUBMENU */
 }
 
 .nav-list {
@@ -232,6 +233,7 @@ body {
   list-style: none;
   flex-wrap: wrap;
   justify-content: center;
+  overflow: visible; /* PERMITE VER EL SUBMENU */
 }
 
 .nav-link {
@@ -302,101 +304,6 @@ body {
 .content-wrapper {
   position: relative;
   z-index: 3;
-}
-
-/* Asegurar que la navegación no se superponga */
-.nav-link {
-  position: relative;
-  z-index: auto;
-}
-
-/* Evitar estilos inline problemáticos */
-.nav-link[style*="position: relative"],
-.nav-link[style*="overflow: hidden"] {
-  z-index: auto !important;
-}
-
-/* Reset de posición para elementos duplicados */
-.nav-link + .nav-link {
-  display: none;
-}
-
-/* Prevenir problemas de duplicación y z-index */
-.nav-list li {
-  position: relative;
-}
-
-.nav-list li:has(.nav-link.active) .nav-link:not(.active) {
-  display: none;
-}
-
-/* Limpieza de elementos duplicados específicos */
-.nav-link[data-modulo="Contacto"].active + .nav-link[data-modulo="Contacto"] {
-  display: none !important;
-}
-
-.nav-link[data-modulo="Contacto"] + .nav-link[data-modulo="Contacto"] {
-  display: none !important;
-}
-
-/* Prevenir múltiples elementos activos */
-.nav-link.active:not(:first-child) {
-  display: none !important;
-}
-
-/* Asegurar que solo exista un elemento por módulo */
-.nav-link[data-modulo]:not(:first-child) {
-  display: none !important;
-}
-
-/* Regla específica para limpiar duplicados */
-.nav-list li:has(.nav-link:nth-child(2)) .nav-link:nth-child(n+2) {
-  display: none !important;
-}
-
-/* Cleanup de elementos duplicados */
-.nav-link:not(:first-child) {
-  display: none;
-}
-
-.nav-list li .nav-link:first-child {
-  display: inline-flex;
-}
-
-/* Asegurar que solo haya un elemento activo */
-.nav-link.active ~ .nav-link {
-  display: none;
-}
-
-/* Prevenir overflow en navegación */
-.nav-cyber {
-  overflow: visible;
-}
-
-.nav-list {
-  overflow: visible;
-}
-
-/* Regla específica para evitar superposición */
-.header-cyber {
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-}
-
-.main-cyber {
-  position: relative;
-  z-index: 1;
-}
-
-/* Elementos de navegación específicos */
-.nav-link[data-modulo="Contacto"] {
-  position: relative;
-  z-index: auto;
-}
-
-.nav-link[data-modulo="Contacto"]:not(:first-of-type) {
-  display: none !important;
 }
 
 /* Footer ciberpunk */
@@ -488,24 +395,24 @@ body {
     flex-direction: column;
     gap: var(--spacing-sm);
   }
-  
+
   .logo-icon {
     font-size: var(--text-4xl);
   }
-  
+
   .nav-list {
     flex-direction: column;
     gap: var(--spacing-sm);
   }
-  
+
   .nav-text {
     display: none;
   }
-  
+
   .content-wrapper {
     padding: var(--spacing-lg);
   }
-  
+
   .footer-content {
     grid-template-columns: 1fr;
     gap: var(--spacing-lg);
@@ -516,19 +423,19 @@ body {
   .container {
     padding: 0 var(--spacing-sm);
   }
-  
+
   .logo-text {
     font-size: var(--text-2xl);
   }
-  
+
   .logo-subtitle {
     font-size: var(--text-xs);
   }
-  
+
   .nav-link {
     padding: var(--spacing-sm);
   }
-  
+
   .content-wrapper {
     padding: var(--spacing-md);
   }
@@ -794,33 +701,33 @@ nav a:hover {
     flex-direction: column;
     gap: var(--spacing-sm);
   }
-  
+
   .nav-text {
     display: none;
   }
-  
+
   .hero-title {
     font-size: var(--text-2xl);
   }
-  
+
   .hero-subtitle {
     font-size: var(--text-lg);
   }
-  
+
   .hero-actions {
     flex-direction: column;
     align-items: center;
   }
-  
+
   .features-grid {
     grid-template-columns: 1fr;
     gap: var(--spacing-lg);
   }
-  
+
   .contenedor-modulos {
     padding: var(--spacing-lg);
   }
-  
+
   .logo-identidad h1 {
     font-size: var(--text-2xl);
   }
