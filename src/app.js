@@ -8,14 +8,25 @@ const agente = new window.AgenteModular({ contenedor: '#main .content-wrapper', 
 agente.registrarModulo('Herramientas Web', {
   templateUrl: 'src/modulos/herramientasweb.html',
   init: (contenedor) => {
-    // La lógica de la IP ahora está en src/js/herramientasweb.js
-    // El script se carga junto con el HTML.
-    // La función fetchIP() se puede llamar directamente.
-    if (typeof fetchIP === 'function') {
-      fetchIP();
-    } else {
-      console.error('La función fetchIP no está definida. Asegúrate de que src/js/herramientasweb.js se está cargando correctamente.');
+    actualizarSEO('Herramientas Web | Ruichis Lab', 'Descubre tu dirección IP pública y otras herramientas de red con las utilidades online de Ruichis Lab.');
+    const scriptId = 'ip-tool-logic';
+    // Evitar cargar el script si ya existe
+    if (document.getElementById(scriptId)) {
+      if (typeof fetchIP === 'function') fetchIP();
+      return;
     }
+
+    const script = document.createElement('script');
+    script.id = scriptId;
+    script.src = 'src/js/herramientasweb.js';
+    script.onload = () => {
+      console.log('Script de herramientas web cargado.');
+      if (typeof fetchIP === 'function') {
+        fetchIP();
+      }
+    };
+    script.onerror = () => console.error('Error al cargar el script de herramientas web.');
+    document.head.appendChild(script);
   }
 });
 agente.registrarModulo('Inicio', {
