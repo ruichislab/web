@@ -21,8 +21,8 @@ agente.registrarModulo('Herramientas Web', {
     script.src = 'src/js/herramientasweb.js';
     script.onload = () => {
       console.log('Script de herramientas web cargado.');
-      if (typeof fetchIP === 'function') {
-        fetchIP();
+      if (typeof initIPTool === 'function') {
+        initIPTool();
       }
     };
     script.onerror = () => console.error('Error al cargar el script de herramientas web.');

@@ -12,7 +12,8 @@
           <span class="ip-label">Tu IP:</span>
           <span class="ip-value" id="ip-result">Detectando...</span>
         </div>
-        <button class="btn-cyber" onclick="fetchIP()">
+        <!-- El evento onclick se asigna dinámicamente desde el script para mayor robustez -->
+        <button class="btn-cyber">
           <span class="btn-icon">🔄</span>
           Actualizar IP
         </button>
@@ -20,4 +21,4 @@
     </div>
   </div>
 </section>
-<!-- El script ahora se carga dinámicamente desde app.js para evitar condiciones de carrera -->
+<!-- El script se carga dinámicamente desde app.js para evitar condiciones de carrera -->
