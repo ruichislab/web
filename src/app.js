@@ -9,24 +9,46 @@ agente.registrarModulo('Herramientas Web', {
   templateUrl: 'src/modulos/herramientasweb.html',
   init: (contenedor) => {
     actualizarSEO('Herramientas Web | Ruichis Lab', 'Descubre tu dirección IP pública y otras herramientas de red con las utilidades online de Ruichis Lab.');
-    const scriptId = 'ip-tool-logic';
-    // Evitar cargar el script si ya existe
-    if (document.getElementById(scriptId)) {
-      if (typeof fetchIP === 'function') fetchIP();
-      return;
-    }
 
-    const script = document.createElement('script');
-    script.id = scriptId;
-    script.src = 'src/js/herramientasweb.js';
-    script.onload = () => {
-      console.log('Script de herramientas web cargado.');
-      if (typeof initIPTool === 'function') {
-        initIPTool();
+    const scriptId = 'ip-tool-logic';
+    const scriptSrc = 'src/js/herramientasweb.js';
+
+    // Función para cargar y ejecutar el script.
+    const cargarYEjecutarScript = () => {
+      // Si el script ya está en el DOM, simplemente llama a la función de inicialización.
+      if (document.getElementById(scriptId)) {
+        if (typeof initIPTool === 'function') {
+          initIPTool();
+        } else {
+          console.error('La función initIPTool no está definida, el script podría no haberse cargado correctamente antes.');
+        }
+        return;
       }
+
+      // Si el script no existe, lo crea y lo añade.
+      const script = document.createElement('script');
+      script.id = scriptId;
+      script.src = scriptSrc;
+
+      // La clave es usar el evento 'onload' para garantizar que el script se ha cargado
+      // antes de intentar llamar a cualquiera de sus funciones.
+      script.onload = () => {
+        console.log('Script de herramientas web cargado exitosamente.');
+        if (typeof initIPTool === 'function') {
+          initIPTool(); // Esta es la forma segura de llamar a la función.
+        } else {
+          console.error('Error crítico: initIPTool no se encontró en el script cargado.');
+        }
+      };
+
+      script.onerror = () => {
+        console.error('Error al cargar el script de herramientas web.');
+      };
+
+      document.head.appendChild(script);
     };
-    script.onerror = () => console.error('Error al cargar el script de herramientas web.');
-    document.head.appendChild(script);
+
+    cargarYEjecutarScript();
   }
 });
 agente.registrarModulo('Inicio', {
