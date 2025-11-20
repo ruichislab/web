@@ -1,0 +1,189 @@
+/* Estilos para la página del Plugin Godot */
+
+.plugin-hero {
+  text-align: center;
+  padding: 4rem 0;
+  border-bottom: 1px solid var(--primary-glow-color);
+  margin-bottom: 2rem;
+}
+
+.plugin-hero .section-title {
+  font-size: 2.8rem;
+  margin-bottom: 0.5rem;
+}
+
+.plugin-hero .section-subtitle {
+  font-size: 1.2rem;
+  color: var(--text-secondary-color);
+  max-width: 600px;
+  margin: 0 auto 1rem auto;
+}
+
+.plugin-hero .dev-notice {
+  color: var(--accent-color-2);
+  background-color: rgba(255, 0, 255, 0.05);
+  border: 1px solid var(--accent-color-2);
+  padding: 0.5rem;
+  margin: 1rem auto;
+  max-width: 500px;
+  border-radius: 4px;
+}
+
+.section-title-small {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.5rem;
+  color: var(--primary-glow-color);
+  border-bottom: 2px solid var(--primary-glow-color);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Grid de Características */
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.feature-card {
+  background: rgba(0, 255, 255, 0.05);
+  border: 1px solid var(--primary-glow-color);
+  padding: 1.5rem;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.feature-card:hover {
+  background: rgba(0, 255, 255, 0.1);
+  transform: translateY(-5px);
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+}
+
+.feature-card h4 {
+  margin: 0 0 0.5rem 0;
+  font-family: 'Orbitron', sans-serif;
+  color: var(--accent-color-1);
+}
+
+.feature-card p {
+  margin: 0;
+  color: var(--text-secondary-color);
+  font-size: 0.9rem;
+}
+
+/* Lista de Características Principales */
+.main-features-list {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.main-features-list li {
+  background: var(--background-dark-transparent);
+  border: 1px solid var(--border-color);
+  padding: 0.75rem 1.25rem;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  font-family: 'Roboto Mono', monospace;
+}
+
+/* Inicio Rápido */
+.quick-start-list {
+    list-style: none;
+    counter-reset: step-counter;
+    padding: 0;
+    margin-bottom: 2rem;
+}
+
+.quick-start-list li {
+    counter-increment: step-counter;
+    margin-bottom: 1rem;
+    background: var(--background-dark-transparent);
+    padding: 1rem 1rem 1rem 3rem;
+    position: relative;
+    border-left: 3px solid var(--accent-color-2);
+}
+
+.quick-start-list li::before {
+    content: counter(step-counter);
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--accent-color-2);
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.quick-start-list code {
+  background: #111;
+  color: var(--accent-color-1);
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+}
+
+/* Tarjetas de Tutoriales */
+.tutorial-cards {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.tutorial-card {
+  background: var(--background-dark-transparent);
+  border: 1px solid var(--border-color);
+  padding: 1.5rem;
+  flex: 1;
+  min-width: 280px;
+  max-width: 350px;
+  display: flex;
+  flex-direction: column;
+}
+
+.tutorial-card h4 {
+  font-family: 'Orbitron', sans-serif;
+  color: var(--accent-color-1);
+  margin-top: 0;
+}
+
+.tutorial-card p {
+  flex-grow: 1;
+  color: var(--text-secondary-color);
+}
+
+.cyber-button-small {
+  display: inline-block;
+  padding: 0.6rem 1.2rem;
+  border: 1px solid var(--primary-glow-color);
+  color: var(--primary-glow-color);
+  text-decoration: none;
+  font-family: 'Roboto Mono', monospace;
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.cyber-button-small:hover {
+  background: var(--primary-glow-color);
+  color: var(--background-color);
+  box-shadow: 0 0 10px var(--primary-glow-color);
+}
+
+/* Sección de Comunidad */
+.community-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 1.5rem;
+  margin-bottom: 2rem;
+}

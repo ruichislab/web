@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ruichis Lab | Framework de Godot Sin Código</title>
+  <meta name="description" content="Descubre el Framework de Desarrollo de Videojuegos Sin Código para Godot 4.x de Ruichis Lab. Crea juegos profesionales sin escribir una sola línea de código.">
+  <meta name="keywords" content="Godot, no-code, gamedev, Ruichis Lab, game development, visual scripting, Godot plugin">
+  <meta name="author" content="Ruichis Lab">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><linearGradient id='g' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' style='stop-color:%2300ffff;stop-opacity:1'/><stop offset='100%' style='stop-color:%23ff00ff;stop-opacity:1'/></linearGradient></defs><rect width='100' height='100' fill='%23000'/><circle cx='50' cy='50' r='40' fill='none' stroke='url(%23g)' stroke-width='4'/><polygon points='50,20 65,45 35,45' fill='url(%23g)'/><rect x='20' y='60' width='60' height='8' fill='url(%23g)' opacity='0.7'/><rect x='25' y='72' width='50' height='4' fill='url(%23g)' opacity='0.5'/></svg>">
+  <link rel="stylesheet" href="src/estilos/variables.css">
+  <link rel="stylesheet" href="src/estilos/components.css">
+  <link rel="stylesheet" href="src/estilos/modules.css">
+  <link rel="stylesheet" href="src/estilos/main.css">
+  <link rel="stylesheet" href="src/estilos/plugin.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto+Mono:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="cyber-grid"></div>
+  <div class="scan-lines"></div>
+  <header class="header-cyber">
+    <div class="container">
+      <div class="logo-cyber">
+        <h1 class="logo-text glitch" data-text="RUICHIS LAB">
+          <a href="index.html" class="logo-link"><span class="logo-icon">🔮</span> RUICHIS LAB</a>
+        </h1>
+        <p class="logo-subtitle">TECNOLOGÍA MODULAR • SOLUCIONES PROFESIONALES • MICROSOFT STORE</p>
+      </div>
+      <nav class="nav-cyber">
+        <ul class="nav-list">
+          <li><a href="index.html" class="nav-link">
+            <span class="nav-icon">⚡</span>
+            <span class="nav-text">INICIO</span>
+          </a></li>
+          <li><a href="index.html" class="nav-link">
+            <span class="nav-icon">🔒</span>
+            <span class="nav-text">RUICHIS LOCK</span>
+          </a></li>
+          <li><a href="index.html" class="nav-link">
+            <span class="nav-icon">🧠</span>
+            <span class="nav-text">FILOSOFÍA</span>
+          </a></li>
+          <li><a href="plugin.html" class="nav-link active">
+            <span class="nav-icon">🎮</span>
+            <span class="nav-text">FRAMEWORK GODOT</span>
+          </a></li>
+          <li><a href="index.html" class="nav-link">
+            <span class="nav-icon">📚</span>
+            <span class="nav-text">ENCICLOPEDIA IA</span>
+          </a></li>
+          <li><a href="index.html" class="nav-link">
+            <span class="nav-icon">📬</span>
+            <span class="nav-text">CONTACTO</span>
+          </a></li>
+          <li class="submenu-apps">
+            <a href="#" class="nav-link apps-trigger">
+              <span class="nav-icon">🛠️</span>
+              <span class="nav-text">HERRAMIENTAS WEB</span>
+              <span class="dropdown-arrow">▼</span>
+            </a>
+            <ul class="submenu-lista">
+              <li><a href="index.html" class="submenu-link">
+                <span class="nav-icon">🌐</span>
+                <span class="nav-text">¿Cuál es mi IP?</span>
+              </a></li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="main-cyber">
+    <div class="container">
+      <div class="content-wrapper">
+        <section class="plugin-hero">
+          <h2 class="section-title glitch" data-text="Crea Juegos Profesionales Sin Código">Crea Juegos Profesionales Sin Código</h2>
+          <p class="section-subtitle">Presentamos RuichisLab, el framework de desarrollo de videojuegos sin código para Godot 4.x.</p>
+          <p class="dev-notice">Actualmente en desarrollo activo. ¡Tu feedback y tus aportes son bienvenidos!</p>
+          <a href="https://github.com/ruichislab/no_code_godot_plugin" class="cyber-button" target="_blank" rel="noopener noreferrer">
+            Descargar en GitHub <span class="glitch-overlay"></span>
+          </a>
+        </section>
+
+        <section id="what-to-create">
+          <h3 class="section-title-small">¿Qué Puedes Crear?</h3>
+          <div class="features-grid">
+            <div class="feature-card"><h4>🏰 RPGs</h4><p>Misiones, Diálogos, Tiendas, Inventario, Niveles</p></div>
+            <div class="feature-card"><h4>🏃 Plataformas</h4><p>Físicas precisas, Coyote Time, Jump Buffer</p></div>
+            <div class="feature-card"><h4>⚔️ Acción</h4><p>Combate, Esquivas, Enemigos, Jefes</p></div>
+            <div class="feature-card"><h4>🏎️ Carreras</h4><p>Físicas arcade, Gestión de vueltas</p></div>
+            <div class="feature-card"><h4>🧩 Puzzles</h4><p>Movimiento en grid, Objetos empujables</p></div>
+            <div class="feature-card"><h4>🎴 Cartas</h4><p>Construcción de mazos, Gestión de mano</p></div>
+          </div>
+        </section>
+
+        <section id="main-features">
+          <h3 class="section-title-small">Características Principales</h3>
+          <ul class="main-features-list">
+            <li><span class="nav-icon">🎨</span> 79+ Componentes Listos</li>
+            <li><span class="nav-icon">📦</span> Cero Código Requerido</li>
+            <li><span class="nav-icon">🔧</span> Totalmente Extensible</li>
+            <li><span class="nav-icon">💾</span> Sistema de Guardado Completo</li>
+            <li><span class="nav-icon">🎮</span> Multi-Plataforma (PC, Móvil, Web)</li>
+            <li><span class="nav-icon">📱</span> Controles Móviles Incluidos</li>
+          </ul>
+        </section>
+
+        <section id="quick-start">
+          <h3 class="section-title-small">Inicio Rápido</h3>
+          <ol class="quick-start-list">
+            <li>Descarga la carpeta <code>addons/no_code_godot_plugin</code>.</li>
+            <li>Cópiala a <code>res://addons/</code> de tu proyecto.</li>
+            <li>Ve a <code>Proyecto > Configuración del Proyecto > Plugins</code>.</li>
+            <li>Activa "No-code-Godot-Plugin" y recarga el proyecto.</li>
+            <li>¡Listo! Busca los nuevos nodos en la categoría <code>RuichisLab/</code>.</li>
+          </ol>
+        </section>
+
+        <section id="tutorials">
+            <h3 class="section-title-small">Tutoriales Destacados</h3>
+            <div class="tutorial-cards">
+                <div class="tutorial-card">
+                    <h4>Crea tu Primer Personaje RPG</h4>
+                    <p>Aprende a configurar un personaje controlable con movimiento, estadísticas y animaciones en minutos.</p>
+                    <a href="https://github.com/ruichislab/no_code_godot_plugin#tutorial-r%C3%A1pido-tu-primer-personaje-topdown-rpg" class="cyber-button-small" target="_blank" rel="noopener noreferrer">Ver Tutorial</a>
+                </div>
+                <div class="tutorial-card">
+                    <h4>IA de Enemigos: Patrulla y Persecución</h4>
+                    <p>Diseña enemigos con comportamientos de IA básicos como patrullar un área y perseguir al jugador.</p>
+                    <a href="https://github.com/ruichislab/no_code_godot_plugin#tutorial-avanzado-crear-un-enemigo-con-patrulla-y-persecuci%C3%B3n" class="cyber-button-small" target="_blank" rel="noopener noreferrer">Ver Tutorial</a>
+                </div>
+                <div class="tutorial-card">
+                    <h4>Sistema de Inventario en 5 Minutos</h4>
+                    <p>Implementa un sistema de inventario funcional para que tu jugador pueda recoger y usar objetos.</p>
+                    <a href="https://github.com/ruichislab/no_code_godot_plugin#-tutorial-crear-un-inventario-en-5-minutos" class="cyber-button-small" target="_blank" rel="noopener noreferrer">Ver Tutorial</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="community">
+          <h3 class="section-title-small">Únete al Desarrollo</h3>
+          <p>Este es un proyecto de código abierto impulsado por la comunidad. Tu ayuda es valiosa para hacerlo crecer.</p>
+          <div class="community-buttons">
+            <a href="https://github.com/ruichislab/no_code_godot_plugin/issues" class="cyber-button" target="_blank" rel="noopener noreferrer">Reportar un Bug</a>
+            <a href="https://github.com/ruichislab/no_code_godot_plugin/issues" class="cyber-button" target="_blank" rel="noopener noreferrer">Sugerir una Característica</a>
+            <a href="https://github.com/ruichislab/no_code_godot_plugin#contribuir" class="cyber-button" target="_blank" rel="noopener noreferrer">Guía de Contribución</a>
+          </div>
+        </section>
+
+        <section class="plugin-hero">
+          <h2 class="section-title glitch" data-text="¿Listo para empezar a crear?">¿Listo para empezar a crear?</h2>
+          <a href="https://github.com/ruichislab/no_code_godot_plugin" class="cyber-button" target="_blank" rel="noopener noreferrer">
+            Descárgalo gratis en GitHub <span class="glitch-overlay"></span>
+          </a>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer-cyber">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>RUICHIS LAB</h3>
+          <p>Soluciones de tecnología modular para Windows</p>
+        </div>
+        <div class="footer-section">
+          <h3>CONTACTO</h3>
+          <p>ruichislab@gmail.com</p>
+          <p>Bogotá, Colombia</p>
+        </div>
+        <div class="footer-section">
+          <h3>REDES</h3>
+          <div class="social-links">
+            <a href="https://github.com/ruichislab/" class="social-link github-link" target="_blank" rel="noopener noreferrer">
+              <svg class="github-icon" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+              </svg>
+              GitHub
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 Ruichis Lab. Todos los derechos reservados.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="src/utils/cyber-effects.js"></script>
+  <script src="src/utils/ui-enhancer.js"></script>
+</body>
+</html>
