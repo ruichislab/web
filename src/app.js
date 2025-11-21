@@ -228,7 +228,12 @@ agente.registrarModulo('Enciclopedia IA', {
   }
 });
 
-
+agente.registrarModulo('godot-plugin', {
+  templateUrl: 'src/modulos/godot-plugin.html',
+  init: (contenedor) => {
+    actualizarSEO('Framework Godot Sin Código | Ruichis Lab', 'Crea juegos profesionales sin escribir una sola línea de código con nuestro framework para Godot 4.x.');
+  }
+});
 
 
 // Navegación desde enlaces con data-modulo

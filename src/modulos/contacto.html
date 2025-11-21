@@ -1,66 +1,71 @@
 <section class="contacto-cyber">
-  <div class="hero-contacto">
+  <header class="hero-contacto">
     <h1 class="titulo-glitch glitch" data-text="CONTACTO">
-      <span class="titulo-icon">📡</span>
+      <span class="titulo-icon" role="img" aria-label="Satellite Antenna">📡</span>
       CONTACTO
     </h1>
-    <p class="subtitulo-cyber">Establece conexión con el laboratorio</p>
-  </div>
+    <p class="subtitulo-cyber">Establece Conexión con Nosotros</p>
+  </header>
 
-  <div class="contacto-grid">
-    <div class="contacto-form-card">
-      <div class="card-header">
+  <main class="contacto-grid">
+    <article class="contacto-form-card">
+      <header class="card-header">
         <h2 class="section-title">
-          <span class="icon-neon">📬</span>
-          ENVIAR TRANSMISIÓN
+          <span class="icon-neon" role="img" aria-label="Mailbox">📬</span>
+          ENVÍANOS UN MENSAJE
         </h2>
-      </div>
-      <form class="form-cyber">
+      </header>
+      <!--
+        IMPORTANTE: Para que este formulario funcione, reemplaza # con tu URL de Formspree.
+        Puedes obtener una gratis en https://formspree.io/
+      -->
+      <form class="form-cyber" action="#" method="POST">
         <div class="form-group">
-          <label for="nombre" class="form-label">IDENTIFICACIÓN</label>
-          <input type="text" id="nombre" name="nombre" class="input-cyber" placeholder="Tu nombre..." required>
+          <label for="nombre" class="form-label">Tu Nombre</label>
+          <input type="text" id="nombre" name="nombre" class="input-cyber" placeholder="Nombre completo" required>
         </div>
         <div class="form-group">
-          <label for="email" class="form-label">CANAL DE COMUNICACIÓN</label>
+          <label for="email" class="form-label">Tu Email</label>
           <input type="email" id="email" name="email" class="input-cyber" placeholder="tu@email.com" required>
         </div>
         <div class="form-group">
-          <label for="tipo" class="form-label">TIPO DE CONSULTA</label>
+          <label for="tipo" class="form-label">Tipo de Consulta</label>
           <select id="tipo" name="tipo" class="input-cyber" required>
             <option value="">Selecciona una opción...</option>
+            <option value="desarrollo-software">Desarrollo de Software</option>
+            <option value="desarrollo-videojuegos">Desarrollo de Videojuegos</option>
             <option value="soporte">Soporte Técnico</option>
             <option value="colaboracion">Colaboración</option>
-            <option value="feedback">Feedback</option>
             <option value="otro">Otro</option>
           </select>
         </div>
         <div class="form-group">
-          <label for="mensaje" class="form-label">MENSAJE</label>
-          <textarea id="mensaje" name="mensaje" rows="6" class="input-cyber" placeholder="Describe tu consulta..." required></textarea>
+          <label for="mensaje" class="form-label">Tu Mensaje</label>
+          <textarea id="mensaje" name="mensaje" rows="6" class="input-cyber" placeholder="Cuéntanos sobre tu proyecto o consulta..." required></textarea>
         </div>
         <button type="submit" class="btn-cyber primary full-width">
-          <span class="btn-icon">🚀</span>
+          <span class="btn-icon" role="img" aria-label="Rocket">🚀</span>
           ENVIAR MENSAJE
         </button>
         <div class="form-note">
-          <p><small>📧 Se abrirá tu cliente de email predeterminado con el mensaje preparado</small></p>
+          <p><small>🔒 Tu información es confidencial y no será compartida.</small></p>
         </div>
       </form>
-    </div>
+    </article>
 
-    <div class="contacto-info-card">
-      <div class="card-header">
+    <aside class="contacto-info-card">
+      <header class="card-header">
         <h2 class="section-title">
-          <span class="icon-neon">📊</span>
-          INFORMACIÓN DE CONEXIÓN
+          <span class="icon-neon" role="img" aria-label="Chart Increasing">📊</span>
+          INFORMACIÓN DE CONTACTO
         </h2>
-      </div>
-      <div class="info-grid">
+      </header>
+      <address class="info-grid">
         <div class="info-item">
           <div class="info-icon">📧</div>
           <div class="info-content">
             <div class="info-label">EMAIL</div>
-            <div class="info-value">ruichislab@gmail.com</div>
+            <div class="info-value"><a href="mailto:ruichislab@gmail.com">ruichislab@gmail.com</a></div>
           </div>
         </div>
         <div class="info-item">
@@ -73,101 +78,72 @@
         <div class="info-item">
           <div class="info-icon">🕐</div>
           <div class="info-content">
-            <div class="info-label">DISPONIBILIDAD</div>
-            <div class="info-value">24/7 Sistema Activo</div>
+            <div class="info-label">HORARIO</div>
+            <div class="info-value">Lunes a Viernes, 9am - 6pm</div>
           </div>
         </div>
         <div class="info-item">
           <div class="info-icon">⚡</div>
           <div class="info-content">
-            <div class="info-label">RESPUESTA</div>
-            <div class="info-value">< 24 horas</div>
+            <div class="info-label">TIEMPO DE RESPUESTA</div>
+            <div class="info-value">Menos de 24 horas</div>
           </div>
         </div>
-      </div>
-    </div>
-  </div>
+      </address>
+    </aside>
+  </main>
 
-  <div class="social-section">
+  <section class="social-section">
     <h2 class="social-title">
-      <span class="icon-neon">🌐</span>
-      REDES NEURALES
+      <span class="icon-neon" role="img" aria-label="Globe">🌐</span>
+      CONÉCTATE CON NOSOTROS
     </h2>
     <div class="social-grid">
-      <a href="#" class="social-card">
+      <a href="https://github.com/ruichislab" class="social-card" target="_blank" rel="noopener noreferrer">
         <div class="social-icon">💻</div>
         <div class="social-name">GITHUB</div>
-        <div class="social-description">Colaboración y comunidad</div>
+        <div class="social-description">Explora nuestro código</div>
       </a>
-      <a href="#" class="social-card">
+      <a href="https://x.com/ruichislab" class="social-card" target="_blank" rel="noopener noreferrer">
         <div class="social-icon">🐦</div>
         <div class="social-name">TWITTER</div>
-        <div class="social-description">Actualizaciones en tiempo real</div>
+        <div class="social-description">Noticias y actualizaciones</div>
       </a>
-      <a href="#" class="social-card">
+      <a href="https://linkedin.com/company/ruichislab" class="social-card" target="_blank" rel="noopener noreferrer">
         <div class="social-icon">💼</div>
         <div class="social-name">LINKEDIN</div>
         <div class="social-description">Networking profesional</div>
       </a>
-      <a href="#" class="social-card">
+      <a href="https://t.me/ruichislab" class="social-card" target="_blank" rel="noopener noreferrer">
         <div class="social-icon">📱</div>
         <div class="social-name">TELEGRAM</div>
-        <div class="social-description">Comunicación directa</div>
+        <div class="social-description">Chat directo</div>
       </a>
     </div>
-  </div>
+  </section>
 
-  <div class="faq-section">
+  <section class="faq-section">
     <h2 class="faq-title">
-      <span class="icon-neon">❓</span>
+      <span class="icon-neon" role="img" aria-label="Question Mark">❓</span>
       PREGUNTAS FRECUENTES
     </h2>
     <div class="faq-grid">
-      <div class="faq-item">
-        <div class="faq-question">¿Cómo puedo colaborar con Ruichis Lab?</div>
-        <div class="faq-answer">Puedes reportar bugs o proponer nuevas funcionalidades a través de nuestros canales de comunicación.</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-question">¿Las aplicaciones son gratuitas?</div>
-        <div class="faq-answer">No, las aplicaciones son de pago único a un precio muy bajo (en algunos casos menos que el precio de una cerveza) y la licencia es para toda la vida.</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-question">¿Ofrecen soporte técnico?</div>
-        <div class="faq-answer">Sí, ofrecemos soporte técnico 24/7 para todas nuestras aplicaciones y servicios.</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-question">¿Cómo garantizan la seguridad?</div>
-        <div class="faq-answer">Utilizamos encriptación AES-256 y seguimos las mejores prácticas de seguridad en todas nuestras aplicaciones.</div>
-      </div>
+      <details class="faq-item">
+        <summary class="faq-question">¿Qué tipo de software desarrollan?</summary>
+        <p class="faq-answer">Nos especializamos en aplicaciones de escritorio para Windows y soluciones de software a la medida para empresas de diversos sectores.</p>
+      </details>
+      <details class="faq-item">
+        <summary class="faq-question">¿Tienen experiencia con videojuegos?</summary>
+        <p class="faq-answer">Sí, nos apasiona el desarrollo de videojuegos y utilizamos el motor Godot para crear experiencias interactivas únicas y atractivas.</p>
+      </details>
+      <details class="faq-item">
+        <summary class="faq-question">¿Cuál es su proceso de desarrollo?</summary>
+        <p class="faq-answer">Utilizamos metodologías ágiles, lo que nos permite ser flexibles, adaptarnos a los cambios y entregar resultados de alta calidad de manera iterativa.</p>
+      </details>
+      <details class="faq-item">
+        <summary class="faq-question">¿Cómo puedo solicitar una cotización?</summary>
+        <p class="faq-answer">Puedes enviarnos un mensaje a través de nuestro formulario de contacto con los detalles de tu proyecto y te responderemos a la brevedad.</p>
+      </details>
     </div>
-  </div>
-
-  <div class="status-section">
-    <h2 class="status-title">
-      <span class="icon-neon">📊</span>
-      ESTADO DEL SISTEMA
-    </h2>
-    <div class="status-grid">
-      <div class="status-item online">
-        <div class="status-indicator"></div>
-        <div class="status-service">Ruichis Lock</div>
-        <div class="status-value">OPERATIVO</div>
-      </div>
-      <div class="status-item online">
-        <div class="status-indicator"></div>
-        <div class="status-service">Ruichis Cleaner</div>
-        <div class="status-value">OPERATIVO</div>
-      </div>
-      <div class="status-item online">
-        <div class="status-indicator"></div>
-        <div class="status-service">Ruichis Converter</div>
-        <div class="status-value">OPERATIVO</div>
-      </div>
-      <div class="status-item maintenance">
-        <div class="status-indicator"></div>
-        <div class="status-service">Mi Luka</div>
-        <div class="status-value">DESARROLLO</div>
-      </div>
-    </div>
-  </div>
+  </section>
 </section>

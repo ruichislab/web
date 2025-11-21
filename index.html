@@ -1,11 +1,14 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es-CO">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ruichis Lab | Tecnología Modular Profesional</title>
-  <meta name="description" content="Ruichis Lab: Soluciones de tecnología modular para Windows. Aplicaciones especializadas incluyendo Ruichis Lock con cifrado AES-256, disponibles en Microsoft Store.">
-  <meta name="keywords" content="modular apps, Ruichis Lab, AES-256 encryption, Windows applications, Microsoft Store, security software, digital tools">
+  <title>Ruichis Lab | Desarrollo de Software a la Medida y Videojuegos</title>
+  <meta name="description" content="En Ruichis Lab, transformamos ideas en realidad digital. Ofrecemos desarrollo de software a la medida, aplicaciones de escritorio para Windows, y creamos videojuegos únicos con Godot. Innovación y calidad en cada proyecto.">
+  <meta name="keywords" content="desarrollo de software, empresa de software, desarrollo de videojuegos, Godot, aplicaciones Windows, software a la medida, Ruichis Lab, Colombia, tecnología, innovación">
+  <link rel="canonical" href="https://ruichislab.github.io/">
+  <link rel="alternate" hreflang="es-co" href="https://ruichislab.github.io/">
+  <link rel="alternate" hreflang="x-default" href="https://ruichislab.github.io/">
   <meta name="author" content="Ruichis Lab">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><linearGradient id='g' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' style='stop-color:%2300ffff;stop-opacity:1'/><stop offset='100%' style='stop-color:%23ff00ff;stop-opacity:1'/></linearGradient></defs><rect width='100' height='100' fill='%23000'/><circle cx='50' cy='50' r='40' fill='none' stroke='url(%23g)' stroke-width='4'/><polygon points='50,20 65,45 35,45' fill='url(%23g)'/><rect x='20' y='60' width='60' height='8' fill='url(%23g)' opacity='0.7'/><rect x='25' y='72' width='50' height='4' fill='url(%23g)' opacity='0.5'/></svg>">
   <link rel="stylesheet" href="src/estilos/variables.css">
@@ -17,9 +20,11 @@
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto+Mono:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
   <!-- Librería para convertir Markdown a HTML -->
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <!-- tsParticles for animated background -->
+  <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.bundle.min.js"></script>
 </head>
 <body>
-  <div class="cyber-grid"></div>
+  <div id="tsparticles"></div>
   <div class="scan-lines"></div>
   <header class="header-cyber">
     <div class="container">
@@ -45,7 +50,7 @@
             <span class="nav-icon">🧠</span>
             <span class="nav-text">FILOSOFÍA</span>
           </a></li>
-          <li><a href="plugin.html" class="nav-link">
+          <li><a href="#" data-modulo="godot-plugin" class="nav-link">
             <span class="nav-icon">🎮</span>
             <span class="nav-text">FRAMEWORK GODOT</span>
           </a></li>
@@ -116,5 +121,7 @@
   <script src="src/utils/ui-enhancer.js"></script>
   <script src="src/agenteModular.js"></script>
   <script src="src/app.js"></script>
+  <script src="src/js/particle-config.js"></script>
+  <script src="src/js/main.js"></script>
 </body>
 </html>
