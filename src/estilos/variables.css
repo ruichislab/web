@@ -1,26 +1,25 @@
 :root {
-  /* Paleta de Colores Profesional y Moderna */
-  --primary-color: #0D47A1; /* Azul oscuro */
-  --secondary-color: #1565C0; /* Azul medio */
-  --accent-color: #FFC107; /* Amarillo ámbar */
-  --accent-hover-color: #FFA000; /* Amarillo oscuro */
+  /* Paleta de Colores Dark Profesional */
+  --primary-color: #00A8FF; /* Azul Eléctrico */
+  --secondary-color: #BB33FF; /* Púrpura Neón */
+  --accent-color: #00FFD1; /* Turquesa */
 
-  /* Colores Neutros */
-  --background-primary: #FFFFFF; /* Blanco */
-  --background-secondary: #F5F5F5; /* Gris claro */
-  --text-primary: #212121; /* Negro */
-  --text-secondary: #757575; /* Gris oscuro */
-  --border-color: #E0E0E0; /* Gris muy claro */
+  /* Colores Neutros Oscuros */
+  --background-primary: #0A0F1E; /* Azul oscuro casi negro */
+  --background-secondary: #161B29; /* Azul oscuro */
+  --text-primary: #E6F1FF; /* Blanco azulado */
+  --text-secondary: #A8B2C7; /* Gris azulado */
+  --border-color: rgba(0, 168, 255, 0.3);
 
   /* Colores de Acento para Estados */
-  --success-color: #4CAF50; /* Verde */
-  --warning-color: #FF9800; /* Naranja */
-  --danger-color: #D32F2F; /* Rojo */
-  --info-color: #03A9F4; /* Azul claro */
+  --success-color: #00FF85; /* Verde Menta */
+  --warning-color: #FFD600; /* Amarillo */
+  --danger-color: #FF3366; /* Rosa Intenso */
+  --info-color: #00A8FF;
 
   /* Tipografía Profesional */
-  --font-primary: 'Roboto', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
-  --font-heading: 'Montserrat', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  --font-primary: 'Roboto Mono', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  --font-heading: 'Orbitron', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
   --font-mono: 'Fira Code', 'Roboto Mono', 'Courier New', monospace;
 
   /* Tamaños de Fuente */

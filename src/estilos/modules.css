@@ -1,4 +1,4 @@
-/* Estilos Específicos para Módulos */
+/* Estilos Específicos para Módulos - Tema Oscuro */
 
 /* --- LAYOUT GENERAL DE MÓDULOS --- */
 .section {
@@ -32,99 +32,38 @@
   margin-bottom: var(--spacing-2xl);
 }
 
-.titulo-principal {
-  margin-bottom: var(--spacing-md);
-}
-
 .subtitulo-hero {
-  font-size: var(--text-xl);
-  color: var(--text-secondary);
-  margin-bottom: var(--spacing-lg);
-  font-weight: 400;
-}
-
-.hero-description {
-  max-width: 600px;
-  margin: 0 auto var(--spacing-xl) auto;
-}
-
-.cta-buttons {
-  display: flex;
-  gap: var(--spacing-md);
-  justify-content: center;
-  flex-wrap: wrap;
-}
-
-.servicios-destacados,
-.features-highlight {
-  padding: var(--spacing-2xl) 0;
-}
-
-.actions-grid,
-.features-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: var(--spacing-xl);
+  color: var(--accent-color);
 }
 
 .action-card,
 .feature-card,
 .principio-card,
 .articulo-card {
-  background-color: var(--background-primary);
+  background-color: var(--background-secondary);
   border: var(--border-width) solid var(--border-color);
-  border-radius: var(--border-radius-lg);
-  padding: var(--spacing-xl);
-  text-align: center;
-  transition: var(--transition-base);
 }
 
 .action-card:hover,
 .feature-card:hover,
 .principio-card:hover,
 .articulo-card:hover {
-  transform: translateY(-5px);
-  box-shadow: var(--shadow-lg);
+  border-color: var(--primary-color);
 }
 
 .action-icon,
 .feature-icon,
 .principio-icon,
 .articulo-icon {
-  font-size: var(--text-4xl);
-  margin-bottom: var(--spacing-md);
   color: var(--primary-color);
 }
 
-.action-card h3,
-.feature-card h3,
-.principio-card h3,
-.articulo-card h3 {
-  font-size: var(--text-xl);
-  margin-bottom: var(--spacing-sm);
-}
-
-.action-card p,
-.feature-card p,
-.principio-card p,
-.articulo-card p {
-  color: var(--text-secondary);
-  font-size: var(--text-sm);
-}
-
 .action-status {
-  margin-top: var(--spacing-md);
-  font-weight: 600;
-  font-size: var(--text-xs);
   color: var(--success-color);
 }
 
 .call-to-action {
-  background-color: var(--secondary-color);
-  color: var(--background-primary);
-  border-radius: var(--border-radius-lg);
-  padding: var(--spacing-3xl);
-  text-align: center;
+  background-color: var(--primary-color);
 }
 
 .call-to-action h2,
@@ -133,72 +72,21 @@
 }
 
 /* --- MÓDULO FILOSOFÍA --- */
-.hero-filosofia {
-  text-align: center;
-  padding-bottom: var(--spacing-xl);
-}
-
-.manifesto-section {
-  max-width: 800px;
-  margin: 0 auto var(--spacing-2xl) auto;
-  text-align: center;
-}
-
 .cyber-quote {
-  font-style: italic;
-  font-size: var(--text-lg);
-  padding: var(--spacing-lg);
-  border-left: 4px solid var(--accent-color);
+  border-left-color: var(--accent-color);
   background-color: var(--background-secondary);
-  border-radius: var(--border-radius-md);
-  margin: var(--spacing-lg) 0;
 }
 
 .vision-card {
   background-color: var(--background-secondary);
-  border-radius: var(--border-radius-lg);
-  padding: var(--spacing-xl);
-}
-
-.vision-card ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-.vision-card li {
-  margin-bottom: var(--spacing-md);
-  padding-left: var(--spacing-lg);
-  position: relative;
 }
 
 .vision-card li::before {
-  content: '✓';
   color: var(--success-color);
-  position: absolute;
-  left: 0;
-  font-weight: 700;
 }
 
 /* --- MÓDULO CONTACTO --- */
-.contacto-grid {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: var(--spacing-2xl);
-}
-
-.social-section {
-  text-align: center;
-}
-
-.social-grid {
-  display: flex;
-  justify-content: center;
-  gap: var(--spacing-xl);
-  margin-top: var(--spacing-lg);
-}
-
 .social-card {
-  font-size: var(--text-3xl);
   color: var(--text-secondary);
 }
 
@@ -206,53 +94,11 @@
   color: var(--primary-color);
 }
 
-.faq-grid {
-  max-width: 800px;
-  margin: var(--spacing-xl) auto 0 auto;
-}
-
 .faq-item {
-  border-bottom: var(--border-width) solid var(--border-color);
-  padding: var(--spacing-md) 0;
-}
-
-.faq-question {
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.faq-answer {
-  padding-top: var(--spacing-md);
-  color: var(--text-secondary);
+  border-bottom-color: var(--border-color);
 }
 
 /* --- MÓDULO ENCICLOPEDIA IA --- */
-.search-bar-container {
-  text-align: center;
-  margin-bottom: var(--spacing-xl);
-}
-
-#ia-search {
-  width: 100%;
-  max-width: 500px;
-}
-
-.articulos-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: var(--spacing-lg);
-}
-
 .articulo-badge {
-  font-size: var(--text-xs);
   color: var(--accent-color);
-  font-weight: 600;
-  margin-top: var(--spacing-md);
-}
-
-/* --- RESPONSIVE --- */
-@media (max-width: 768px) {
-  .contacto-grid {
-    grid-template-columns: 1fr;
-  }
 }

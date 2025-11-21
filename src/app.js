@@ -8,53 +8,15 @@ const agente = new window.AgenteModular({ contenedor: '#main .content-wrapper', 
 agente.registrarModulo('Herramientas Web', {
   templateUrl: 'src/modulos/herramientasweb.html',
   init: (contenedor) => {
-    actualizarSEO('Herramientas Web | Ruichis Lab', 'Descubre tu dirección IP pública y otras herramientas de red con las utilidades online de Ruichis Lab.');
-
-    const scriptId = 'ip-tool-logic';
-    const scriptSrc = 'src/js/herramientasweb.js';
-
-    // Función para cargar y ejecutar el script.
-    const cargarYEjecutarScript = () => {
-      // Si el script ya está en el DOM, simplemente llama a la función de inicialización.
-      if (document.getElementById(scriptId)) {
-        if (typeof initIPTool === 'function') {
-          initIPTool();
-        } else {
-          console.error('La función initIPTool no está definida, el script podría no haberse cargado correctamente antes.');
-        }
-        return;
-      }
-
-      // Si el script no existe, lo crea y lo añade.
-      const script = document.createElement('script');
-      script.id = scriptId;
-      script.src = scriptSrc;
-
-      // La clave es usar el evento 'onload' para garantizar que el script se ha cargado
-      // antes de intentar llamar a cualquiera de sus funciones.
-      script.onload = () => {
-        console.log('Script de herramientas web cargado exitosamente.');
-        if (typeof initIPTool === 'function') {
-          initIPTool(); // Esta es la forma segura de llamar a la función.
-        } else {
-          console.error('Error crítico: initIPTool no se encontró en el script cargado.');
-        }
-      };
-
-      script.onerror = () => {
-        console.error('Error al cargar el script de herramientas web.');
-      };
-
-      document.head.appendChild(script);
-    };
-
-    cargarYEjecutarScript();
+    // Forzar ejecución del script IP tras renderizar el módulo
+    setTimeout(() => {
+      if (typeof fetchIP === 'function') fetchIP();
+    }, 150);
   }
 });
 agente.registrarModulo('Inicio', {
   templateUrl: 'src/modulos/inicio.html',
   init: (contenedor) => {
-    actualizarSEO('Ruichis Lab | Tecnología Modular Profesional', 'Ruichis Lab: Soluciones de tecnología modular para Windows. Aplicaciones especializadas incluyendo Ruichis Lock con cifrado AES-256, disponibles en Microsoft Store.');
     // Inicializar efectos interactivos para el módulo inicio
     const actionCards = contenedor.querySelectorAll('.action-card');
     actionCards.forEach(card => {
@@ -82,7 +44,6 @@ agente.registrarModulo('Inicio', {
 agente.registrarModulo('Filosofia', {
   templateUrl: 'src/modulos/filosofia.html',
   init: (contenedor) => {
-    actualizarSEO('Filosofía | Ruichis Lab', 'Descubre nuestro manifiesto de ingeniería: los principios de modularidad, seguridad y rendimiento que guían el desarrollo de nuestro software.');
     // Inicializar efectos glitch para el módulo filosofía
     const glitchElements = contenedor.querySelectorAll('.glitch');
     glitchElements.forEach(element => {
@@ -101,7 +62,6 @@ agente.registrarModulo('Filosofia', {
 agente.registrarModulo('Contacto', {
   templateUrl: 'src/modulos/contacto.html',
   init: (contenedor) => {
-    actualizarSEO('Contacto | Ruichis Lab', 'Contacta con nosotros para consultas técnicas, soporte o colaboraciones. Estamos listos para ayudarte a llevar tus proyectos al siguiente nivel.');
     // Cargar servicio de email
     const emailScript = document.createElement('script');
     emailScript.src = 'src/js/email-service.js';
@@ -173,7 +133,6 @@ agente.registrarModulo('Contacto', {
 agente.registrarModulo('Ruichis Lock', {
   templateUrl: 'src/modulos/ruichislock.html',
   init: (contenedor) => {
-    actualizarSEO('Ruichis Lock | Cifrado AES-256 para Windows', 'Protege tus archivos con Ruichis Lock, una aplicación de cifrado de grado militar con AES-256. Descárgala gratis desde la Microsoft Store.');
     // Cargar script específico de Ruichis Lock
     const script = document.createElement('script');
     script.src = 'src/js/ruichislock.js';
@@ -201,39 +160,7 @@ agente.registrarModulo('Ruichis Lock', {
   }
 });
 
-agente.registrarModulo('Enciclopedia IA', {
-  templateUrl: 'src/modulos/enciclopedia.html',
-  init: (contenedor) => {
-    actualizarSEO('Enciclopedia de IA | Ruichis Lab', 'Explora nuestra enciclopedia de Inteligencia Artificial. Aprende sobre Machine Learning, Deep Learning, redes neuronales y más.');
-    const scriptId = 'enciclopedia-logic';
-    // Evitar cargar el script si ya existe
-    if (document.getElementById(scriptId)) {
-      if (typeof inicializarEnciclopedia === 'function') {
-        inicializarEnciclopedia(contenedor);
-      }
-      return;
-    }
 
-    const script = document.createElement('script');
-    script.id = scriptId;
-    script.src = 'src/js/enciclopedia.js';
-    script.onload = () => {
-      console.log('Script de la enciclopedia cargado.');
-      if (typeof inicializarEnciclopedia === 'function') {
-        inicializarEnciclopedia(contenedor);
-      }
-    };
-    script.onerror = () => console.error('Error al cargar el script de la enciclopedia.');
-    document.head.appendChild(script);
-  }
-});
-
-agente.registrarModulo('godot-plugin', {
-  templateUrl: 'src/modulos/godot-plugin.html',
-  init: (contenedor) => {
-    actualizarSEO('Framework Godot Sin Código | Ruichis Lab', 'Crea juegos profesionales sin escribir una sola línea de código con nuestro framework para Godot 4.x.');
-  }
-});
 
 
 // Navegación desde enlaces con data-modulo
@@ -276,20 +203,6 @@ document.addEventListener('DOMContentLoaded', () => {
     inicioLink.classList.add('active');
   }
 });
-
-// Función de ayuda para actualizar el SEO de la página
-function actualizarSEO(titulo, descripcion) {
-  document.title = titulo;
-  const metaDescripcion = document.querySelector('meta[name="description"]');
-  if (metaDescripcion) {
-    metaDescripcion.setAttribute('content', descripcion);
-  } else {
-    const nuevaMeta = document.createElement('meta');
-    nuevaMeta.name = 'description';
-    nuevaMeta.content = descripcion;
-    document.head.appendChild(nuevaMeta);
-  }
-}
 
 // Exportar agente para uso global
 window.agenteModular = agente;

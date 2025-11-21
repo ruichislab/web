@@ -1,6 +1,6 @@
-# robots.txt for https://ruichislab.github.io/
+# robots.txt for https://ruichislab.com/
 
 User-agent: *
 Allow: /
 
-Sitemap: https://ruichislab.github.io/sitemap.xml
+Sitemap: https://ruichislab.com/sitemap.xml
