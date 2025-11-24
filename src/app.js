@@ -8,20 +8,15 @@ const agente = new window.AgenteModular({ contenedor: '#main .content-wrapper', 
 agente.registrarModulo('Herramientas Web', {
   templateUrl: 'src/modulos/herramientasweb.html',
   init: (contenedor) => {
-    // La lógica de la IP ahora está en src/js/herramientasweb.js
-    // El script se carga junto con el HTML.
-    // La función fetchIP() se puede llamar directamente.
-    if (typeof fetchIP === 'function') {
-      fetchIP();
-    } else {
-      console.error('La función fetchIP no está definida. Asegúrate de que src/js/herramientasweb.js se está cargando correctamente.');
-    }
+    // Forzar ejecución del script IP tras renderizar el módulo
+    setTimeout(() => {
+      if (typeof fetchIP === 'function') fetchIP();
+    }, 150);
   }
 });
 agente.registrarModulo('Inicio', {
   templateUrl: 'src/modulos/inicio.html',
   init: (contenedor) => {
-    actualizarSEO('Ruichis Lab | Tecnología Modular Profesional', 'Ruichis Lab: Soluciones de tecnología modular para Windows. Aplicaciones especializadas incluyendo Ruichis Lock con cifrado AES-256, disponibles en Microsoft Store.');
     // Inicializar efectos interactivos para el módulo inicio
     const actionCards = contenedor.querySelectorAll('.action-card');
     actionCards.forEach(card => {
@@ -49,7 +44,6 @@ agente.registrarModulo('Inicio', {
 agente.registrarModulo('Filosofia', {
   templateUrl: 'src/modulos/filosofia.html',
   init: (contenedor) => {
-    actualizarSEO('Filosofía | Ruichis Lab', 'Descubre nuestro manifiesto de ingeniería: los principios de modularidad, seguridad y rendimiento que guían el desarrollo de nuestro software.');
     // Inicializar efectos glitch para el módulo filosofía
     const glitchElements = contenedor.querySelectorAll('.glitch');
     glitchElements.forEach(element => {
@@ -68,7 +62,6 @@ agente.registrarModulo('Filosofia', {
 agente.registrarModulo('Contacto', {
   templateUrl: 'src/modulos/contacto.html',
   init: (contenedor) => {
-    actualizarSEO('Contacto | Ruichis Lab', 'Contacta con nosotros para consultas técnicas, soporte o colaboraciones. Estamos listos para ayudarte a llevar tus proyectos al siguiente nivel.');
     // Cargar servicio de email
     const emailScript = document.createElement('script');
     emailScript.src = 'src/js/email-service.js';
@@ -140,7 +133,6 @@ agente.registrarModulo('Contacto', {
 agente.registrarModulo('Ruichis Lock', {
   templateUrl: 'src/modulos/ruichislock.html',
   init: (contenedor) => {
-    actualizarSEO('Ruichis Lock | Cifrado AES-256 para Windows', 'Protege tus archivos con Ruichis Lock, una aplicación de cifrado de grado militar con AES-256. Descárgala gratis desde la Microsoft Store.');
     // Cargar script específico de Ruichis Lock
     const script = document.createElement('script');
     script.src = 'src/js/ruichislock.js';
@@ -165,33 +157,6 @@ agente.registrarModulo('Ruichis Lock', {
     }
 
     console.log('Ruichis Lock cleanup completado');
-  }
-});
-
-agente.registrarModulo('Enciclopedia IA', {
-  templateUrl: 'src/modulos/enciclopedia.html',
-  init: (contenedor) => {
-    actualizarSEO('Enciclopedia de IA | Ruichis Lab', 'Explora nuestra enciclopedia de Inteligencia Artificial. Aprende sobre Machine Learning, Deep Learning, redes neuronales y más.');
-    const scriptId = 'enciclopedia-logic';
-    // Evitar cargar el script si ya existe
-    if (document.getElementById(scriptId)) {
-      if (typeof inicializarEnciclopedia === 'function') {
-        inicializarEnciclopedia(contenedor);
-      }
-      return;
-    }
-
-    const script = document.createElement('script');
-    script.id = scriptId;
-    script.src = 'src/js/enciclopedia.js';
-    script.onload = () => {
-      console.log('Script de la enciclopedia cargado.');
-      if (typeof inicializarEnciclopedia === 'function') {
-        inicializarEnciclopedia(contenedor);
-      }
-    };
-    script.onerror = () => console.error('Error al cargar el script de la enciclopedia.');
-    document.head.appendChild(script);
   }
 });
 
@@ -238,20 +203,6 @@ document.addEventListener('DOMContentLoaded', () => {
     inicioLink.classList.add('active');
   }
 });
-
-// Función de ayuda para actualizar el SEO de la página
-function actualizarSEO(titulo, descripcion) {
-  document.title = titulo;
-  const metaDescripcion = document.querySelector('meta[name="description"]');
-  if (metaDescripcion) {
-    metaDescripcion.setAttribute('content', descripcion);
-  } else {
-    const nuevaMeta = document.createElement('meta');
-    nuevaMeta.name = 'description';
-    nuevaMeta.content = descripcion;
-    document.head.appendChild(nuevaMeta);
-  }
-}
 
 // Exportar agente para uso global
 window.agenteModular = agente;
