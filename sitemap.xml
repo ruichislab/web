@@ -4,33 +4,25 @@
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
             http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
-<!-- created with Free Online Sitemap Generator www.xml-sitemaps.com -->
-
-
 <url>
   <loc>https://ruichislab.com/</loc>
 </url>
 <url>
-  <loc>https://ruichislab.com/#Inicio</loc>
+  <loc>https://ruichislab.com/pages/ruichis-lock.html</loc>
 </url>
 <url>
-  <loc>https://ruichislab.com/#Ruichis%20Lock</loc>
+  <loc>https://ruichislab.com/pages/filosofia.html</loc>
 </url>
 <url>
-  <loc>https://ruichislab.com/#Filosofia</loc>
+  <loc>https://ruichislab.com/pages/godot-plugin.html</loc>
 </url>
 <url>
-  <loc>https://ruichislab.com/#godot-plugin</loc>
+  <loc>https://ruichislab.com/pages/enciclopedia.html</loc>
 </url>
 <url>
-  <loc>https://ruichislab.com/#Enciclopedia%20IA</loc>
+  <loc>https://ruichislab.com/pages/contacto.html</loc>
 </url>
 <url>
-  <loc>https://ruichislab.com/#Contacto</loc>
+  <loc>https://ruichislab.com/pages/herramientas.html</loc>
 </url>
-<url>
-  <loc>https://ruichislab.com/#Herramientas%20Web</loc>
-</url>
-
-
 </urlset>

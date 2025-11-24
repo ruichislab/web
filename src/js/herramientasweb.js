@@ -45,3 +45,5 @@ function initIPTool() {
   // Llama a la función para obtener la IP tan pronto como se inicializa el módulo.
   fetchIP();
 }
+
+document.addEventListener('DOMContentLoaded', initIPTool);

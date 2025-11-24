@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es-CO">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Enciclopedia IA - Ruichis Lab</title>
+  <meta name="description" content="Enciclopedia sobre Inteligencia Artificial.">
+  <link rel="stylesheet" href="../src/estilos/variables.css">
+  <link rel="stylesheet" href="../src/estilos/components.css">
+  <link rel="stylesheet" href="../src/estilos/modules.css">
+  <link rel="stylesheet" href="../src/estilos/main.css">
+</head>
+<body>
+  <header class="header-cyber"></header>
+  <main id="main" class="main-cyber">
+    <div class="container">
+      <div class="content-wrapper">
+        <h1>Enciclopedia IA</h1>
+        <p>Explora los conceptos clave de la Inteligencia Artificial en nuestra enciclopedia interactiva.</p>
+
+        <div class="articulos-grid">
+          <div class="articulo-card" data-articulo="que-es-ia">
+            <h3>¿Qué es IA?</h3>
+            <p>Una introducción a los conceptos fundamentales de la Inteligencia Artificial.</p>
+          </div>
+          <div class="articulo-card" data-articulo="machine-learning">
+            <h3>Machine Learning</h3>
+            <p>Descubre cómo las máquinas aprenden a partir de datos.</p>
+          </div>
+          <div class="articulo-card" data-articulo="deep-learning">
+            <h3>Deep Learning</h3>
+            <p>Sumérgete en el mundo de las redes neuronales profundas.</p>
+          </div>
+          <div class="articulo-card" data-articulo="redes-neuronales">
+            <h3>Redes Neuronales</h3>
+            <p>Conoce los bloques de construcción del Deep Learning.</p>
+          </div>
+        </div>
+
+        <div id="articulo-detalle-container" style="display:none;"></div>
+      </div>
+    </div>
+  </main>
+  <footer class="footer-cyber"></footer>
+  <script src="../src/js/layout.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="../src/js/enciclopedia.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const mainContainer = document.querySelector('#main');
+      if(mainContainer) {
+        inicializarEnciclopedia(mainContainer);
+      }
+    });
+  </script>
+</body>
+</html>
