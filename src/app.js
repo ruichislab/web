@@ -8,10 +8,12 @@ const agente = new window.AgenteModular({ contenedor: '#main .content-wrapper', 
 agente.registrarModulo('Herramientas Web', {
   templateUrl: 'src/modulos/herramientasweb.html',
   init: (contenedor) => {
+    /*
     // Forzar ejecución del script IP tras renderizar el módulo
     setTimeout(() => {
       if (typeof fetchIP === 'function') fetchIP();
     }, 150);
+    */
   }
 });
 agente.registrarModulo('Inicio', {
