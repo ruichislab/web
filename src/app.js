@@ -1,81 +1,482 @@
 // src/app.js
-// Inicialización de la SPA y registro de módulos
+// Orquestador Principal de Ruichis Lab Publishing & Gimnasio Mental SPA
 
-const agente = new window.AgenteModular({ contenedor: '#main .content-wrapper', logging: true });
+const agente = new window.AgenteModular({ contenedor: '#main .content-wrapper', logging: false });
 
-// Registrar módulos principales
+let activeModuloName = 'Inicio';
+let currentCatalogFilter = 'todos';
+let currentCatalogSearch = '';
+let featuredShowcaseIndex = 0;
 
-agente.registrarModulo('Herramientas Web', {
-  templateUrl: 'src/modulos/herramientasweb.html',
-  init: (contenedor) => {
-    /*
-    // Forzar ejecución del script IP tras renderizar el módulo
-    setTimeout(() => {
-      if (typeof fetchIP === 'function') fetchIP();
-    }, 150);
-    */
+// --- FUNCIÓN DE INICIALIZACIÓN DE LA PORTADA EDITORIAL ---
+function initEditorialHome(contenedor) {
+  const catalogData = window.RUICHIS_CATALOGO;
+  if (!catalogData) return;
+
+  // 1. Inicializar Vitrina Interactiva del Hero
+  initHeroShowcase(catalogData.libros);
+
+  // 2. Renderizar Catálogo de Libros y conectar filtros/búsqueda
+  renderCatalogBooks(catalogData.libros);
+  initCatalogFilters(catalogData.libros);
+
+  // 3. Inicializar Gimnasio Mental (Sopa de Letras + Sudoku Maestro)
+  if (window.GimnasioMental) {
+    window.gimnasioInstance = new window.GimnasioMental();
+    window.gimnasioInstance.init();
   }
-});
+
+  // 4. Renderizar Autores y Sellos
+  renderAuthorsGrid(catalogData.autores);
+
+  // 5. Renderizar Biblioteca Universal de Clásicos KDP
+  renderClassicsShelf(catalogData.clasicosKdp);
+
+  // 6. Botón Política de Privacidad RuichisLab Book Ranker
+  const btnPrivacy = contenedor.querySelector('#btn-open-privacy-modal');
+  if (btnPrivacy) {
+    btnPrivacy.addEventListener('click', () => openPrivacyPolicyModal());
+  }
+
+  // 7. Botones de scroll interno del Hero
+  contenedor.querySelectorAll('[data-scroll-to]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const targetId = btn.getAttribute('data-scroll-to');
+      const targetEl = document.getElementById(targetId);
+      if (targetEl) {
+        targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+}
+
+// --- 1. VITRINA INTERACTIVA DEL HERO ---
+function initHeroShowcase(libros) {
+  const destacados = libros.filter(b => b.destacado);
+  if (destacados.length === 0) return;
+
+  const thumbsContainer = document.getElementById('showcase-thumbs-container');
+  if (!thumbsContainer) return;
+
+  const updateShowcase = (idx) => {
+    featuredShowcaseIndex = idx;
+    const book = destacados[idx];
+    if (!book) return;
+
+    const badgeEl = document.getElementById('showcase-badge');
+    const langEl = document.getElementById('showcase-lang');
+    const imgEl = document.getElementById('showcase-cover-img');
+    const titleEl = document.getElementById('showcase-title');
+    const authorEl = document.getElementById('showcase-author');
+    const descEl = document.getElementById('showcase-desc');
+    const btnFicha = document.getElementById('showcase-btn-ficha');
+    const btnAmazon = document.getElementById('showcase-btn-amazon');
+    const coverTrigger = document.getElementById('showcase-cover-trigger');
+
+    if (badgeEl) badgeEl.textContent = `★ ${book.badgeEspecial || 'EN VITRINA EDITORIAL'}`;
+    if (langEl) langEl.textContent = `${book.idiomaBadge} • KDP`;
+    if (imgEl) {
+      imgEl.src = book.portada;
+      imgEl.alt = `Portada de ${book.titulo}`;
+    }
+    if (titleEl) titleEl.textContent = book.titulo;
+    if (authorEl) authorEl.textContent = `Por ${book.autor} • ${book.sello}`;
+    if (descEl) descEl.textContent = book.sinopsis;
+    if (btnAmazon) btnAmazon.href = book.amazonUrl;
+
+    if (btnFicha) {
+      btnFicha.onclick = () => openBookModal(book.id);
+    }
+    if (coverTrigger) {
+      coverTrigger.onclick = () => openBookModal(book.id);
+    }
+
+    thumbsContainer.querySelectorAll('.showcase-thumb').forEach((t, i) => {
+      t.classList.toggle('active', i === idx);
+    });
+  };
+
+  thumbsContainer.innerHTML = destacados
+    .map(
+      (b, idx) => `
+      <button type="button" class="showcase-thumb ${idx === 0 ? 'active' : ''}" data-showcase-idx="${idx}" title="${b.titulo}">
+        <img src="${b.portada}" alt="${b.titulo}" loading="lazy">
+      </button>
+    `
+    )
+    .join('');
+
+  thumbsContainer.querySelectorAll('.showcase-thumb').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.getAttribute('data-showcase-idx'), 10);
+      updateShowcase(idx);
+    });
+  });
+
+  updateShowcase(0);
+}
+
+// --- 2. CATÁLOGO EDITORIAL CON FILTROS Y BUSCADOR ---
+function initCatalogFilters(libros) {
+  const pillsContainer = document.getElementById('catalog-filter-pills');
+  const searchInput = document.getElementById('catalog-search-input');
+
+  if (pillsContainer) {
+    // Actualizar contadores exactos
+    const counts = {
+      todos: libros.length,
+      pasatiempos: libros.filter(b => b.categoria === 'pasatiempos').length,
+      productividad: libros.filter(b => b.categoria === 'productividad').length,
+      ficcion: libros.filter(b => b.categoria === 'ficcion').length,
+      bilingue: libros.filter(b => b.categoria === 'bilingue').length
+    };
+
+    pillsContainer.querySelectorAll('[data-filter]').forEach(btn => {
+      const cat = btn.getAttribute('data-filter');
+      if (cat === 'todos') btn.textContent = `Todos (${counts.todos})`;
+      if (cat === 'pasatiempos') btn.textContent = `🧩 Letras y Retos (${counts.pasatiempos})`;
+      if (cat === 'productividad') btn.textContent = `⚡ Productividad, IA & Cloud (${counts.productividad})`;
+      if (cat === 'ficcion') btn.textContent = `🕵️‍♂️ Ficción & Thrillers (${counts.ficcion})`;
+      if (cat === 'bilingue') btn.textContent = `🌐 Bilingües ES/EN (${counts.bilingue})`;
+
+      btn.addEventListener('click', () => {
+        currentCatalogFilter = cat;
+        pillsContainer.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+        renderCatalogBooks(libros);
+      });
+    });
+  }
+
+  if (searchInput) {
+    searchInput.addEventListener('input', (e) => {
+      currentCatalogSearch = e.target.value.trim().toLowerCase();
+      renderCatalogBooks(libros);
+    });
+  }
+}
+
+function renderCatalogBooks(libros) {
+  const grid = document.getElementById('catalog-books-grid');
+  if (!grid) return;
+
+  const filtrados = libros.filter(book => {
+    const matchCat = currentCatalogFilter === 'todos' || book.categoria === currentCatalogFilter;
+    if (!matchCat) return false;
+    if (!currentCatalogSearch) return true;
+
+    const haystack = [
+      book.titulo,
+      book.subtitulo,
+      book.autor,
+      book.sello,
+      book.categoriaLabel,
+      book.sinopsis,
+      book.asin
+    ]
+      .filter(Boolean)
+      .join(' ')
+      .toLowerCase();
+
+    return haystack.includes(currentCatalogSearch);
+  });
+
+  if (filtrados.length === 0) {
+    grid.innerHTML = `
+      <div style="grid-column:1/-1;text-align:center;padding:3rem;background:var(--surface-card);border-radius:16px;border:1px solid var(--border-subtle);">
+        <p style="margin:0 auto 1rem;font-size:1.05rem;color:var(--text-primary);">No se encontraron libros que coincidan con tu búsqueda.</p>
+        <button type="button" class="btn-editorial outline" id="btn-reset-catalog-filter">Ver Todo el Catálogo</button>
+      </div>
+    `;
+    const resetBtn = document.getElementById('btn-reset-catalog-filter');
+    if (resetBtn) {
+      resetBtn.addEventListener('click', () => {
+        currentCatalogFilter = 'todos';
+        currentCatalogSearch = '';
+        const input = document.getElementById('catalog-search-input');
+        if (input) input.value = '';
+        document.querySelectorAll('#catalog-filter-pills .filter-pill').forEach(p => {
+          p.classList.toggle('active', p.getAttribute('data-filter') === 'todos');
+        });
+        renderCatalogBooks(libros);
+      });
+    }
+    return;
+  }
+
+  grid.innerHTML = filtrados
+    .map(
+      book => `
+      <article class="book-card" data-book-id="${book.id}">
+        <div>
+          <div class="book-card-top">
+            <div class="book-cover-frame" data-open-book="${book.id}" title="Ver sinopsis completa y fragmento">
+              <span class="book-lang-pill">${book.idiomaBadge}</span>
+              <img src="${book.portada}" alt="Portada de ${book.titulo}" loading="lazy">
+            </div>
+            <div class="book-meta-col">
+              <span class="book-imprint-tag">${book.sello}</span>
+              <h3 class="book-title" data-open-book="${book.id}">${book.titulo}</h3>
+              <span class="book-author">Por ${book.autor}</span>
+              <span class="book-format-badge">${book.formato}</span>
+            </div>
+          </div>
+          <p class="book-synopsis">${book.sinopsis}</p>
+        </div>
+
+        <div class="book-card-footer">
+          <button type="button" class="btn-book-detail" data-open-book="${book.id}">
+            📖 Ficha &amp; Extracto
+          </button>
+          <a href="${book.amazonUrl}" target="_blank" rel="noopener noreferrer" class="btn-book-amazon">
+            🛒 Amazon KDP ↗
+          </a>
+        </div>
+      </article>
+    `
+    )
+    .join('');
+
+  grid.querySelectorAll('[data-open-book]').forEach(el => {
+    el.addEventListener('click', () => {
+      const id = el.getAttribute('data-open-book');
+      openBookModal(id);
+    });
+  });
+}
+
+// --- 3. MODAL DE FICHA EDITORIAL Y FRAGMENTO DE LECTURA ---
+function openBookModal(bookId) {
+  const catalogData = window.RUICHIS_CATALOGO;
+  if (!catalogData) return;
+  const book = catalogData.libros.find(b => b.id === bookId);
+  if (!book) return;
+
+  const modal = document.getElementById('book-detail-modal');
+  const body = document.getElementById('modal-book-body');
+  if (!modal || !body) return;
+
+  const featuresHtml = (book.caracteristicas || [])
+    .map(item => `<li>${item}</li>`)
+    .join('');
+
+  const wrapButtonHtml = book.portadaWrap
+    ? `<button type="button" class="btn-puzzle-tool" id="btn-toggle-wrap-cover" style="width:100%;justify-content:center;">
+         🖼️ Ver Cubierta Completa KDP
+       </button>`
+    : '';
+
+  const gameActionHtml = book.juegoRelacionado
+    ? `<button type="button" class="btn-editorial emerald" id="btn-modal-play-game" style="padding:0.6rem 1.1rem;font-size:0.84rem;">
+         🧩 Jugar Reto Relacionado Gratis
+       </button>`
+    : '';
+
+  const secondAmazonHtml = book.amazonUrlEn
+    ? `<a href="${book.amazonUrlEn}" target="_blank" rel="noopener noreferrer" class="btn-editorial outline" style="padding:0.6rem 1.1rem;font-size:0.84rem;">
+         🌐 English Edition (Amazon) ↗
+       </a>`
+    : '';
+
+  body.innerHTML = `
+    <div class="modal-book-layout">
+      <div class="modal-cover-col">
+        <img id="modal-book-cover-img" src="${book.portada}" alt="Portada de ${book.titulo}">
+        ${wrapButtonHtml}
+        <div style="background:var(--background-primary);padding:0.75rem;border-radius:8px;border:1px solid var(--border-subtle);font-size:0.76rem;color:var(--text-muted);font-family:var(--font-mono);">
+          <div><strong style="color:var(--primary-color);">SELLO:</strong> ${book.sello}</div>
+          <div style="margin-top:0.25rem;"><strong style="color:var(--primary-color);">IDIOMA:</strong> ${book.idioma}</div>
+          <div style="margin-top:0.25rem;"><strong style="color:var(--primary-color);">REF / ASIN:</strong> ${book.asin}</div>
+        </div>
+      </div>
+
+      <div class="modal-info-col">
+        <span class="section-kicker">${book.categoriaLabel} • ${book.badgeEspecial || 'EDICIÓN OFICIAL'}</span>
+        <h2 id="modal-book-title" style="font-family:var(--font-heading);font-size:1.75rem;color:var(--text-primary);margin-bottom:0.35rem;">
+          ${book.titulo}
+        </h2>
+        <p style="font-size:0.95rem;color:var(--primary-color);font-weight:600;margin-bottom:0.9rem;">
+          ${book.subtitulo}
+        </p>
+        <p style="font-size:0.92rem;color:var(--text-secondary);line-height:1.68;margin-bottom:1rem;">
+          ${book.sinopsis}
+        </p>
+
+        <ul class="modal-features-list">
+          ${featuresHtml}
+        </ul>
+
+        ${
+          book.extracto
+            ? `<div class="modal-excerpt-box">
+                 <h4>📖 ${book.extractoTitulo || 'Fragmento de Lectura'}</h4>
+                 <blockquote>${book.extracto}</blockquote>
+               </div>`
+            : ''
+        }
+
+        <div style="display:flex;gap:0.75rem;flex-wrap:wrap;margin-top:1.35rem;">
+          <a href="${book.amazonUrl}" target="_blank" rel="noopener noreferrer" class="btn-editorial primary" style="padding:0.65rem 1.25rem;font-size:0.86rem;">
+            🛒 Adquirir en Amazon KDP ↗
+          </a>
+          ${secondAmazonHtml}
+          ${gameActionHtml}
+        </div>
+      </div>
+    </div>
+  `;
+
+  // Toggle cubierta completa KDP
+  const btnWrap = document.getElementById('btn-toggle-wrap-cover');
+  if (btnWrap && book.portadaWrap) {
+    let showingWrap = false;
+    btnWrap.addEventListener('click', () => {
+      showingWrap = !showingWrap;
+      const img = document.getElementById('modal-book-cover-img');
+      if (img) {
+        img.src = showingWrap ? book.portadaWrap : book.portada;
+      }
+      btnWrap.textContent = showingWrap ? '📕 Ver Portada Frontal' : '🖼️ Ver Cubierta Completa KDP';
+    });
+  }
+
+  // Botón Jugar Reto Relacionado
+  const btnPlay = document.getElementById('btn-modal-play-game');
+  if (btnPlay && book.juegoRelacionado) {
+    btnPlay.addEventListener('click', () => {
+      closeBookModal();
+      const gimSection = document.getElementById('gimnasio-mental');
+      if (gimSection) {
+        gimSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+      if (window.gimnasioInstance) {
+        window.gimnasioInstance.switchGame(book.juegoRelacionado.tipo, book.juegoRelacionado);
+      }
+    });
+  }
+
+  modal.classList.add('open');
+}
+
+function openPrivacyPolicyModal() {
+  const modal = document.getElementById('book-detail-modal');
+  const body = document.getElementById('modal-book-body');
+  if (!modal || !body) return;
+
+  fetch('src/privacy.md')
+    .then(r => r.text())
+    .then(md => {
+      const rendered = typeof marked !== 'undefined' ? marked.parse(md) : `<pre>${md}</pre>`;
+      body.innerHTML = `
+        <div style="max-width:720px;margin:0 auto;">
+          <span class="section-kicker">DOCUMENTO OFICIAL DE TRANSPARENCIA</span>
+          <div style="line-height:1.75;color:var(--text-secondary);">
+            ${rendered}
+          </div>
+        </div>
+      `;
+      modal.classList.add('open');
+    })
+    .catch(() => {
+      window.open('src/privacy.md', '_blank');
+    });
+}
+
+function closeBookModal() {
+  const modal = document.getElementById('book-detail-modal');
+  if (modal) modal.classList.remove('open');
+}
+
+// --- 4. AUTORES Y SELLOS ---
+function renderAuthorsGrid(autores) {
+  const grid = document.getElementById('editorial-authors-grid');
+  if (!grid || !autores) return;
+
+  grid.innerHTML = autores
+    .map(
+      a => `
+      <article class="author-card">
+        <div class="author-header">
+          <div class="author-avatar">${a.avatar}</div>
+          <div>
+            <h3 class="author-name">${a.nombre}</h3>
+            <span class="author-role">${a.rol}</span>
+          </div>
+        </div>
+        <p class="author-bio">${a.bio}</p>
+        <ul class="author-works-list">
+          ${a.obrasDestacadas.map(w => `<li>${w}</li>`).join('')}
+        </ul>
+      </article>
+    `
+    )
+    .join('');
+}
+
+// --- 5. BIBLIOTECA UNIVERSAL DE GRANDES CLÁSICOS KDP ---
+function renderClassicsShelf(clasicos) {
+  const shelf = document.getElementById('editorial-classics-shelf');
+  if (!shelf || !clasicos) return;
+
+  shelf.innerHTML = clasicos
+    .map(
+      c => `
+      <a href="https://www.amazon.com/s?k=${encodeURIComponent(c.titulo + ' ' + c.autor + ' Ruichis Lab')}" target="_blank" rel="noopener noreferrer" class="classic-spine-card" title="Buscar edición de Ruichis Lab en Amazon">
+        <span class="classic-epoca">${c.epoca} • ${c.region}</span>
+        <h4 class="classic-title">${c.titulo}</h4>
+        <span class="classic-author">${c.autor}</span>
+      </a>
+    `
+    )
+    .join('');
+}
+
+// --- REGISTRO DE MÓDULOS SPA ---
 agente.registrarModulo('Inicio', {
   templateUrl: 'src/modulos/inicio.html',
   init: (contenedor) => {
-    // Inicializar efectos interactivos para el módulo inicio
-    const actionCards = contenedor.querySelectorAll('.action-card');
-    actionCards.forEach(card => {
-      card.addEventListener('click', (e) => {
-        const moduleName = card.getAttribute('data-modulo');
-        if (moduleName) {
-          agente.navegarA(moduleName);
-        }
-      });
-    });
+    activeModuloName = 'Inicio';
+    initEditorialHome(contenedor);
+  }
+});
 
-    // Inicializar botones CTA
-    const ctaButtons = contenedor.querySelectorAll('.btn-cyber[data-modulo]');
-    ctaButtons.forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        const moduleName = btn.getAttribute('data-modulo');
-        if (moduleName) {
-          agente.navegarA(moduleName);
-        }
-      });
-    });
+agente.registrarModulo('Herramientas Web', {
+  templateUrl: 'src/modulos/herramientasweb.html',
+  init: () => {
+    activeModuloName = 'Herramientas Web';
+  }
+});
+
+agente.registrarModulo('Enciclopedia IA', {
+  templateUrl: 'src/modulos/enciclopedia.html',
+  init: (contenedor) => {
+    activeModuloName = 'Enciclopedia IA';
+    if (typeof inicializarEnciclopedia === 'function') {
+      inicializarEnciclopedia(contenedor);
+    }
   }
 });
 
 agente.registrarModulo('Filosofia', {
   templateUrl: 'src/modulos/filosofia.html',
-  init: (contenedor) => {
-    // Inicializar efectos glitch para el módulo filosofía
-    const glitchElements = contenedor.querySelectorAll('.glitch');
-    glitchElements.forEach(element => {
-      setInterval(() => {
-        if (Math.random() > 0.95) {
-          element.classList.add('glitch-active');
-          setTimeout(() => {
-            element.classList.remove('glitch-active');
-          }, 200);
-        }
-      }, 100);
-    });
+  init: () => {
+    activeModuloName = 'Filosofia';
   }
 });
 
 agente.registrarModulo('Contacto', {
   templateUrl: 'src/modulos/contacto.html',
   init: (contenedor) => {
-    // Cargar servicio de email
+    activeModuloName = 'Contacto';
     const emailScript = document.createElement('script');
     emailScript.src = 'src/js/email-service.js';
     document.head.appendChild(emailScript);
 
-    // Inicializar formulario de contacto
     const contactForm = contenedor.querySelector('.form-cyber');
     if (contactForm) {
       contactForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-
-        // Deshabilitar botón mientras se procesa
         const submitBtn = contactForm.querySelector('button[type="submit"]');
         const originalText = submitBtn.innerHTML;
         submitBtn.disabled = true;
@@ -90,39 +491,20 @@ agente.registrarModulo('Contacto', {
         };
 
         try {
-          // Usar el servicio de email
           setTimeout(async () => {
             const emailService = new EmailService();
             const result = await emailService.sendEmail(templateParams);
-
             if (result.success) {
-              if (result.method === 'mailto') {
-                alert('✅ Se ha abierto tu cliente de email con el mensaje preparado.\n\nPor favor, envía el email para completar tu consulta.\n\nTe responderemos en menos de 24 horas.');
-              } else if (result.method === 'clipboard') {
-                alert('📋 ' + result.message);
-              } else {
-                alert('✅ ' + result.message + '\n\nTe responderemos en menos de 24 horas.');
-              }
+              alert('✅ ' + (result.message || 'Mensaje preparado correctamente.'));
               e.target.reset();
             } else {
-              if (result.method === 'manual') {
-                const userAction = prompt('⚠️ No se pudo enviar automáticamente.\n\nCopia este contenido y envíalo manualmente a ruichislab@gmail.com:\n\n', result.content);
-                alert('📧 Por favor, copia el contenido y envíalo manualmente a ruichislab@gmail.com');
-              } else {
-                alert('❌ Error al enviar el mensaje. Por favor, intenta de nuevo o contacta directamente a ruichislab@gmail.com');
-              }
+              alert('📧 Por favor, contacta directamente a info@ruichislab.com');
             }
-
-            // Restaurar botón
             submitBtn.disabled = false;
             submitBtn.innerHTML = originalText;
-          }, 500);
-
+          }, 400);
         } catch (error) {
-          console.error('Error en el formulario:', error);
-          alert('❌ Error inesperado. Por favor, contacta directamente a ruichislab@gmail.com');
-
-          // Restaurar botón
+          alert('📧 Por favor, contacta directamente a info@ruichislab.com');
           submitBtn.disabled = false;
           submitBtn.innerHTML = originalText;
         }
@@ -131,11 +513,10 @@ agente.registrarModulo('Contacto', {
   }
 });
 
-// Módulos de aplicaciones
 agente.registrarModulo('Ruichis Lock', {
   templateUrl: 'src/modulos/ruichislock.html',
-  init: (contenedor) => {
-    // Cargar script específico de Ruichis Lock
+  init: () => {
+    activeModuloName = 'Ruichis Lock';
     const script = document.createElement('script');
     script.src = 'src/js/ruichislock.js';
     script.onload = () => {
@@ -144,67 +525,114 @@ agente.registrarModulo('Ruichis Lock', {
       }
     };
     document.head.appendChild(script);
-
-    console.log('Ruichis Lock iniciado');
   },
   cleanup: () => {
-    // Limpiar SEO específico al salir del módulo
     if (typeof restoreOriginalSEO === 'function') {
       restoreOriginalSEO();
     }
-
-    // Limpiar instancia
     if (window.ruichisLockInstance) {
       window.ruichisLockInstance = null;
     }
-
-    console.log('Ruichis Lock cleanup completado');
   }
 });
 
-
-
-
-// Navegación desde enlaces con data-modulo
+// --- EVENTOS GLOBALES DE NAVEGACIÓN, MODAL Y TEMA ---
 document.addEventListener('click', (e) => {
-  const element = e.target.closest('[data-modulo]');
-  if (element) {
+  // 1. Enlaces a secciones dentro de la portada editorial (Catálogo, Juegos, Autores, Clásicos)
+  const navSectionLink = e.target.closest('[data-nav-section]');
+  if (navSectionLink) {
     e.preventDefault();
-    const moduleName = element.getAttribute('data-modulo');
+    const targetSectionId = navSectionLink.getAttribute('data-nav-section');
+
+    const scrollToTarget = () => {
+      const targetEl = document.getElementById(targetSectionId);
+      if (targetEl) {
+        targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    };
+
+    if (activeModuloName !== 'Inicio') {
+      const onLoaded = (ev) => {
+        if (ev.detail?.nombre === 'Inicio') {
+          document.removeEventListener('modulo:cargado', onLoaded);
+          setTimeout(scrollToTarget, 80);
+        }
+      };
+      document.addEventListener('modulo:cargado', onLoaded);
+      agente.navegarA('Inicio');
+    } else {
+      scrollToTarget();
+    }
+
+    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+    if (navSectionLink.classList.contains('nav-link')) {
+      navSectionLink.classList.add('active');
+    }
+    return;
+  }
+
+  // 2. Enlaces a módulos SPA completos (Inicio, Enciclopedia IA, Ruichis Lock, Contacto)
+  const moduleElement = e.target.closest('[data-modulo]');
+  if (moduleElement) {
+    e.preventDefault();
+    const moduleName = moduleElement.getAttribute('data-modulo');
     if (moduleName) {
       agente.navegarA(moduleName);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
 
-      // Actualizar navegación activa
-      document.querySelectorAll('.nav-link').forEach(link => {
-        link.classList.remove('active');
-      });
-
-      const activeLink = document.querySelector(`[data-modulo="${moduleName}"]`);
-      if (activeLink && activeLink.classList.contains('nav-link')) {
-        activeLink.classList.add('active');
-      }
+      document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+      const activeLink = document.querySelector(`.nav-link[data-modulo="${moduleName}"]`);
+      if (activeLink) activeLink.classList.add('active');
     }
   }
 });
 
-// Inicializar efectos especiales al cargar
 document.addEventListener('DOMContentLoaded', () => {
-  // Inicializar efectos glitch globales
-  const glitchElements = document.querySelectorAll('.glitch');
-  glitchElements.forEach(element => {
-    const text = element.textContent;
-    element.setAttribute('data-text', text);
+  // Cerrar modal con botón X o clic en el fondo
+  const closeBtn = document.getElementById('modal-close-btn');
+  const modalBackdrop = document.getElementById('book-detail-modal');
+  if (closeBtn) closeBtn.addEventListener('click', closeBookModal);
+  if (modalBackdrop) {
+    modalBackdrop.addEventListener('click', (e) => {
+      if (e.target === modalBackdrop) closeBookModal();
+    });
+  }
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeBookModal();
   });
 
-  // Cargar módulo por defecto
+  // Alternador de Tema Oscuro Editorial / Modo Papel de Lectura
+  const themeBtn = document.getElementById('theme-reader-toggle');
+  const themeIcon = document.getElementById('theme-toggle-icon');
+  const themeLabel = document.getElementById('theme-toggle-label');
+
+  const applyTheme = (isPaper) => {
+    document.body.classList.toggle('theme-paper', isPaper);
+    if (themeIcon) themeIcon.textContent = isPaper ? '🌙' : '📜';
+    if (themeLabel) themeLabel.textContent = isPaper ? 'Modo Oscuro' : 'Modo Papel';
+  };
+
+  const savedTheme = localStorage.getItem('ruichis_editorial_theme');
+  if (savedTheme === 'paper') {
+    applyTheme(true);
+  }
+
+  if (themeBtn) {
+    themeBtn.addEventListener('click', () => {
+      const nextIsPaper = !document.body.classList.contains('theme-paper');
+      applyTheme(nextIsPaper);
+      localStorage.setItem('ruichis_editorial_theme', nextIsPaper ? 'paper' : 'dark');
+    });
+  }
+
+  // Cargar módulo inicial Editorial
   agente.navegarA('Inicio');
 
-  // Marcar navegación inicial como activa
-  const inicioLink = document.querySelector('[data-modulo="Inicio"]');
-  if (inicioLink && inicioLink.classList.contains('nav-link')) {
-    inicioLink.classList.add('active');
+  // Si la URL incluye #privacy o ?privacy, abrir política de privacidad de Book Ranker
+  if (window.location.hash === '#privacy' || window.location.search.includes('privacy')) {
+    setTimeout(() => openPrivacyPolicyModal(), 300);
   }
 });
 
-// Exportar agente para uso global
 window.agenteModular = agente;
+window.openBookModal = openBookModal;

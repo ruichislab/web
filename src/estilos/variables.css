@@ -1,28 +1,37 @@
 :root {
-  /* Paleta de Colores Dark Profesional */
-  --primary-color: #00A8FF; /* Azul Eléctrico */
-  --secondary-color: #BB33FF; /* Púrpura Neón */
-  --accent-color: #00FFD1; /* Turquesa */
+  /* Paleta Editorial Literaria & Cognitiva (Dark Obsidian + Oro Editorial + Esmeralda) */
+  --primary-color: #D4AF37;       /* Oro Editorial Clásico */
+  --primary-hover: #E6C65A;       /* Oro Iluminado */
+  --secondary-color: #00A8FF;     /* Azul Cian Cognitivo */
+  --accent-color: #10B981;        /* Esmeralda Gimnasio Mental */
+  --accent-amber: #F59E0B;        /* Ámbar Amazon KDP */
 
-  /* Colores Neutros Oscuros */
-  --background-primary: #0A0F1E; /* Azul oscuro casi negro */
-  --background-secondary: #161B29; /* Azul oscuro */
-  --text-primary: #E6F1FF; /* Blanco azulado */
-  --text-secondary: #A8B2C7; /* Gris azulado */
-  --border-color: rgba(0, 168, 255, 0.3);
+  /* Superficies Oscuras de Alto Contraste */
+  --background-primary: #090D16;  /* Tinta Obsidiana Profunda */
+  --background-secondary: #111827;/* Pizarra Editorial */
+  --background-tertiary: #1A2333; /* Superficie Elevada */
+  --surface-card: rgba(17, 24, 39, 0.88);
+  --surface-glass: rgba(13, 19, 33, 0.85);
 
-  /* Colores de Acento para Estados */
-  --success-color: #00FF85; /* Verde Menta */
-  --warning-color: #FFD600; /* Amarillo */
-  --danger-color: #FF3366; /* Rosa Intenso */
-  --info-color: #00A8FF;
+  /* Textos */
+  --text-primary: #F8FAFC;        /* Marfil Puro */
+  --text-secondary: #CBD5E1;      /* Gris Plata Lectura */
+  --text-muted: #94A3B8;          /* Metadatos / Subtítulos */
+  --border-color: rgba(212, 175, 55, 0.22);
+  --border-subtle: rgba(255, 255, 255, 0.08);
 
-  /* Tipografía Profesional */
-  --font-primary: 'Roboto Mono', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
-  --font-heading: 'Orbitron', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
-  --font-mono: 'Fira Code', 'Roboto Mono', 'Courier New', monospace;
+  /* Estados */
+  --success-color: #10B981;
+  --warning-color: #F59E0B;
+  --danger-color: #F43F5E;
+  --info-color: #38BDF8;
 
-  /* Tamaños de Fuente */
+  /* Tipografía Editorial & Técnica */
+  --font-heading: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  --font-primary: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'Roboto Mono', monospace;
+
+  /* Escala Tipográfica */
   --text-xs: 0.75rem;
   --text-sm: 0.875rem;
   --text-base: 1rem;
@@ -30,35 +39,57 @@
   --text-xl: 1.25rem;
   --text-2xl: 1.5rem;
   --text-3xl: 2rem;
-  --text-4xl: 2.5rem;
-  --text-5xl: 3rem;
+  --text-4xl: 2.65rem;
+  --text-5xl: 3.4rem;
 
-  /* Espaciado Consistente */
+  /* Espaciado */
   --spacing-xs: 0.25rem;
   --spacing-sm: 0.5rem;
   --spacing-md: 1rem;
   --spacing-lg: 1.5rem;
   --spacing-xl: 2rem;
   --spacing-2xl: 3rem;
+  --spacing-3xl: 4rem;
+  --spacing-4xl: 5rem;
 
-  /* Sombras Sutiles */
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-  --shadow-md: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
-  --shadow-lg: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+  /* Sombras */
+  --shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.25);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.38);
+  --shadow-lg: 0 20px 45px rgba(0, 0, 0, 0.55);
+  --shadow-book: -8px 12px 28px rgba(0, 0, 0, 0.65), 0 2px 6px rgba(212, 175, 55, 0.12);
 
   /* Bordes y Radios */
-  --border-radius-sm: 4px;
-  --border-radius-md: 8px;
+  --border-radius-sm: 6px;
+  --border-radius-md: 10px;
   --border-radius-lg: 16px;
+  --border-radius-xl: 22px;
   --border-width: 1px;
 
-  /* Transiciones Suaves */
-  --transition-fast: 0.15s ease-in-out;
-  --transition-base: 0.3s ease-in-out;
+  /* Transiciones */
+  --transition-fast: 0.15s ease;
+  --transition-base: 0.28s cubic-bezier(0.22, 1, 0.36, 1);
 
   /* Z-index */
   --z-dropdown: 1000;
   --z-sticky: 1020;
-  --z-modal: 1050;
-  --z-tooltip: 1070;
+  --z-modal: 2000;
+  --z-tooltip: 2100;
+}
+
+/* Modo Papel Cálido (Lectura Diurna Opcional) */
+body.theme-paper {
+  --background-primary: #F7F3EA;
+  --background-secondary: #EFE9DA;
+  --background-tertiary: #E5DEC9;
+  --surface-card: #FCF9F2;
+  --surface-glass: rgba(247, 243, 234, 0.92);
+  --text-primary: #18181B;
+  --text-secondary: #3F3F46;
+  --text-muted: #64748B;
+  --primary-color: #9A6F0B;
+  --primary-hover: #7C5806;
+  --secondary-color: #0284C7;
+  --border-color: rgba(154, 111, 11, 0.28);
+  --border-subtle: rgba(24, 24, 27, 0.1);
+  --shadow-book: -6px 10px 22px rgba(24, 24, 27, 0.22);
 }

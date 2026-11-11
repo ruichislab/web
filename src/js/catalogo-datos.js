@@ -1,0 +1,473 @@
+// src/js/catalogo-datos.js
+// Catálogo Oficial de Publicaciones — Ruichis Lab Publishing (Amazon KDP)
+
+window.RUICHIS_CATALOGO = {
+  editorialInfo: {
+    nombre: "Ruichis Lab Publishing",
+    lema: "Casa Editorial Independiente • Ingeniería Cognitiva, Ficción Especulativa & Entretenimiento Mental",
+    ciudad: "Bogotá, Colombia",
+    distribucion: "Amazon Kindle Direct Publishing (Global: .com, .es, .com.mx, .co.uk, .de)",
+    amazonAuthorSearch: "https://www.amazon.com/s?k=Ruichis+Lab"
+  },
+
+  libros: [
+    // --- COLECCIÓN LETRAS Y RETOS (PASATIEMPOS) ---
+    {
+      id: "sopas-cultura-general",
+      titulo: "100 Grandes Sopas de Letras de Cultura General",
+      subtitulo: "Volumen I: Historia, Ciencia, Arte, Geografía y Filosofía — 1.200 Palabras para Entrenar la Mente",
+      autor: "Ruichis Lab",
+      sello: "Colección Letras y Retos",
+      categoria: "pasatiempos",
+      categoriaLabel: "Pasatiempos & Gimnasio Mental",
+      idioma: "Español",
+      idiomaBadge: "ES",
+      formato: "Tapa Blanda (Edición Bolsillo 5\" × 8\" • 132 págs.)",
+      portada: "src/assets/covers/100-sopas-cultura-general.jpg",
+      portadaWrap: "src/assets/covers/100-sopas-cultura-wrap.jpg",
+      destacado: true,
+      badgeEspecial: "ÉXITO EN PASATIEMPOS",
+      asin: "KDP-SOPAS-V1",
+      amazonUrl: "https://www.amazon.com/s?k=100+Grandes+Sopas+de+Letras+de+Cultura+General+Ruichis+Lab",
+      juegoRelacionado: { tipo: "sopa", tema: "cultura_historia" },
+      sinopsis: "Desafía tu mente y amplía tu vocabulario con 100 tableros temáticos cuidadosamente diseñados mediante un algoritmo de balanceo en 8 direcciones. Desde las civilizaciones antiguas, la mitología clásica y los grandes hitos de la ciencia hasta las corrientes filosóficas, la literatura universal y la geografía del mundo.",
+      caracteristicas: [
+        "100 desafíos temáticos únicos con 12 palabras por tablero (1.200 términos culturales).",
+        "Algoritmo de balanceo en 8 sentidos (horizontal, vertical, diagonal e invertidas).",
+        "Diseño limpio de alto contraste en formato bolsillo (5 × 8 pulgadas) ideal para llevar a todas partes.",
+        "Solucionario completo e ilustrado incluido en las páginas finales."
+      ],
+      extractoTitulo: "Presentación de la Colección Letras y Retos",
+      extracto: "«Entrenar la atención sostenida en una época dominada por la fragmentación digital es un acto de resistencia cognitiva. Cada uno de los 100 tableros de este primer volumen ha sido construido como una pequeña expedición por el saber humano: rastrear las sílabas de Alejandría, el Renacimiento, las partículas subatómicas o los ríos de América activa simultáneamente la memoria semántica y el reconocimiento visual de patrones.»"
+    },
+    {
+      id: "sopas-biologia",
+      titulo: "100 Grandes Sopas de Letras de Biología",
+      subtitulo: "Volumen II: Célula, Genética, Botánica, Zoología y Evolución — 1.200 Términos Científicos",
+      autor: "Ruichis Lab",
+      sello: "Colección Letras y Retos",
+      categoria: "pasatiempos",
+      categoriaLabel: "Pasatiempos & Gimnasio Mental",
+      idioma: "Español",
+      idiomaBadge: "ES",
+      formato: "Tapa Blanda (Edición Bolsillo 5\" × 8\" • 132 págs.)",
+      portada: "src/assets/covers/100-sopas-biologia.jpg",
+      portadaWrap: "src/assets/covers/100-sopas-biologia-wrap.jpg",
+      destacado: true,
+      badgeEspecial: "EDICIÓN CIENTÍFICA",
+      asin: "KDP-SOPAS-V2",
+      amazonUrl: "https://www.amazon.com/s?k=100+Grandes+Sopas+de+Letras+de+Biologia+Ruichis+Lab",
+      juegoRelacionado: { tipo: "sopa", tema: "biologia_celula" },
+      sinopsis: "Explora los secretos de la vida mientras ejercitas tu agilidad mental. Este segundo volumen de la Colección Letras y Retos reúne 1.200 conceptos fundamentales de las ciencias biológicas: desde la arquitectura molecular del ADN y los orgánulos celulares hasta la botánica, la fisiología humana, la ecología y la evolución de las especies.",
+      caracteristicas: [
+        "100 sopas de letras especializadas en ciencias de la vida y naturaleza.",
+        "1.200 términos científicos seleccionados para estudiantes, docentes y mentes curiosas.",
+        "Matrices de lectura cómoda sin fatiga visual y solucionario completo al final del libro.",
+        "Complemento ideal para el aprendizaje activo de vocabulario científico."
+      ],
+      extractoTitulo: "Introducción al Volumen II: El Lenguaje de la Vida",
+      extracto: "«La biología posee uno de los léxicos más ricos y fascinantes de la ciencia moderna. Al buscar términos como mitocondria, ribosoma, endosimbiosis, clorofila o filogenia entre las letras entrelazadas, el cerebro refuerza la ortografía técnica y consolida las conexiones conceptuales que explican cómo funciona el mundo vivo.»"
+    },
+    {
+      id: "little-wonder-beasts",
+      titulo: "Little Wonder Beasts",
+      subtitulo: "Bold & Easy Coloring & Creative Activity Book for Kids and Adults",
+      autor: "Ruichis Lab",
+      sello: "Ruichis Lab Creative",
+      categoria: "pasatiempos",
+      categoriaLabel: "Arte, Color & Actividad",
+      idioma: "Inglés / Universal",
+      idiomaBadge: "EN",
+      formato: "Tapa Blanda Gran Formato (8.5\" × 8.5\")",
+      portada: "src/assets/covers/little-wonder-beasts.jpg",
+      destacado: false,
+      badgeEspecial: "ARTE & RELAJACIÓN",
+      asin: "KDP-WONDER-BEASTS",
+      amazonUrl: "https://www.amazon.com/s?k=Little+Wonder+Beasts+Ruichis+Lab",
+      sinopsis: "Una colección encantadora de criaturas fantásticas y animales adorables diseñados con trazos gruesos y limpios ('Bold & Easy'), pensada para ofrecer sesiones de desconexión creativa, relajación consciente (mindfulness artístico) y diversión para niños y adultos.",
+      caracteristicas: [
+        "Ilustraciones originales de trazo definido y alta legibilidad.",
+        "Diseñado para marcadores de alcohol, lápices de colores y crayones.",
+        "Ideal para reducir el estrés frente a las pantallas y estimular la creatividad."
+      ],
+      extractoTitulo: "Nota Creativa del Estudio",
+      extracto: "«Cada criatura de Little Wonder Beasts nació con una premisa simple: devolverle al acto de colorear la alegría inmediata de las formas puras, sin micro-detalles agotadores, permitiendo experimentar con sombras, degradados y paletas vibrantes.»"
+    },
+
+    // --- PRODUCTIVIDAD, IA & INGENIERÍA COGNITIVA ---
+    {
+      id: "productividad-asimetrica-es",
+      titulo: "Productividad Asimétrica",
+      subtitulo: "El arte de hacer en dos horas lo que a otros les toma una semana",
+      autor: "Ruichis Lab",
+      sello: "Ruichis Lab Ensayo",
+      categoria: "productividad",
+      categoriaLabel: "Productividad & IA",
+      idioma: "Español",
+      idiomaBadge: "ES",
+      formato: "Kindle eBook & Tapa Blanda",
+      portada: "src/assets/covers/productividad-asimetrica-es.jpg",
+      destacado: true,
+      badgeEspecial: "BESTSELLER DEL SELLO",
+      asin: "B0HD2MY2HN",
+      amazonUrl: "https://www.amazon.com/dp/B0HD2MY2HN",
+      juegoRelacionado: { tipo: "sudoku", dificultad: "medio" },
+      sinopsis: "La mayoría de los sistemas de productividad tradicionales están diseñados para la era industrial: miden horas sentadas frente a una pantalla en lugar de impacto real. 'Productividad Asimétrica' expone cómo combinar aislamiento cognitivo profundo, apalancamiento algorítmico y sistemas modulares para comprimir semanas de trabajo burocrático en bloques de ejecución de dos horas.",
+      caracteristicas: [
+        "Arquitectura de bloques de foco profundo de 120 minutos sin residuo atencional.",
+        "Apalancamiento asimétrico mediante automatización y flujos de IA generativa.",
+        "Eliminación sistemática del 'teatro de la productividad' y las reuniones parasitarias.",
+        "Disponible en español (ASIN: B0HD2MY2HN) e inglés (ASIN: B0HJ42QFCV)."
+      ],
+      extractoTitulo: "Capítulo 1: La Mentira Lineal del Tiempo",
+      extracto: "«El trabajador promedio no está agotado por la complejidad de sus ideas, sino por la fricción de su entorno. Cada notificación, cada cambio de contexto y cada pestaña abierta cobra un impuesto neurobiológico que llamamos residuo de atención. La productividad asimétrica no consiste en correr más rápido dentro del laberinto; consiste en diseñar una catapulta fuera de él.»"
+    },
+    {
+      id: "asymmetric-productivity-en",
+      titulo: "Asymmetric Productivity",
+      subtitulo: "The Art of Doing in Two Hours What Takes Others a Week (English Edition)",
+      autor: "Ruichis Lab",
+      sello: "Ruichis Lab Press",
+      categoria: "productividad",
+      categoriaLabel: "Productividad & IA",
+      idioma: "Inglés",
+      idiomaBadge: "EN",
+      formato: "Kindle eBook & Paperback",
+      portada: "src/assets/covers/asymmetric-productivity-en.jpg",
+      destacado: false,
+      badgeEspecial: "ENGLISH EDITION",
+      asin: "B0HJ42QFCV",
+      amazonUrl: "https://www.amazon.com/dp/B0HJ42QFCV",
+      juegoRelacionado: { tipo: "sudoku", dificultad: "dificil" },
+      sinopsis: "The international English edition of Ruichis Lab's flagship manifesto on cognitive leverage. Discover how high-output engineers, writers, and solo founders replace linear grind with asymmetric execution systems, cognitive isolation protocols, and autonomous AI workflows.",
+      caracteristicas: [
+        "Full English adaptation optimized for global tech professionals and creators.",
+        "Includes the 2-Hour Deep Execution Protocol and Asymmetric Leverage Matrix.",
+        "Published globally on Amazon Kindle Direct Publishing (ASIN: B0HJ42QFCV)."
+      ],
+      extractoTitulo: "Excerpt — The Asymmetric Leverage Principle",
+      extracto: "«In knowledge work, output is never proportional to hours logged. One hour of uninterrupted architectural clarity—amplified by the right cognitive tools—routinely outperforms forty hours of fragmented, reactive busywork.»"
+    },
+    {
+      id: "herramientas-asimetricas-vol2",
+      titulo: "Herramientas Asimétricas (Vol. II)",
+      subtitulo: "Productividad Profunda en la Era de la IA: Flujos Cibernéticos y Aislamiento Cognitivo",
+      autor: "Ruichis Lab",
+      sello: "Ruichis Lab Ensayo",
+      categoria: "productividad",
+      categoriaLabel: "Productividad & IA",
+      idioma: "Español",
+      idiomaBadge: "ES",
+      formato: "Kindle eBook & Tapa Blanda",
+      portada: "src/assets/covers/herramientas-asimetricas.jpg",
+      destacado: true,
+      badgeEspecial: "VOLUMEN II • MANUAL TÁCTICO",
+      asin: "KDP-HERR-ASIM-V2",
+      amazonUrl: "https://www.amazon.com/s?k=Productividad+Asimetrica+Ruichis+Lab",
+      juegoRelacionado: { tipo: "sopa", tema: "ia_cibernetica" },
+      sinopsis: "La continuación práctica y táctica de 'Productividad Asimétrica'. Este segundo volumen se adentra en la neurobiología del residuo de atención, la construcción de búnkeres digitales contra la economía de la dopamina y un protocolo de 7 días para reconfigurar tu sistema operativo mental y tecnológico.",
+      caracteristicas: [
+        "Neurobiología del residuo de atención y recuperación del córtex prefrontal.",
+        "Diseño de flujos cibernéticos locales y atajos de automatización personal.",
+        "El Protocolo de 7 Días para erradicar la fragmentación mental."
+      ],
+      extractoTitulo: "Fragmento: El Búnker Cognitivo",
+      extracto: "«Una herramienta solo es asimétrica cuando multiplica tu capacidad de decisión sin secuestrar tu voluntad. Si tu software de trabajo está diseñado por ingenieros de retención publicitaria, no eres el usuario: eres el recurso minado. El primer paso del Volumen II es recuperar la soberanía sobre tu propia interfaz.»"
+    },
+    {
+      id: "ia-asimetrica-google",
+      titulo: "IA Asimétrica: El Ecosistema Agéntico de Google",
+      subtitulo: "De Gemini Spark y NotebookLM Blindado a la Orquestación de Agentes Autónomos y Google Flow",
+      autor: "Ruichis Lab",
+      sello: "Ruichis Lab Tech",
+      categoria: "productividad",
+      categoriaLabel: "Productividad & IA",
+      idioma: "Español",
+      idiomaBadge: "ES",
+      formato: "Kindle eBook & Tapa Blanda Técnica",
+      portada: "src/assets/covers/ia-asimetrica-google.jpg",
+      destacado: true,
+      badgeEspecial: "NUEVO LANZAMIENTO IA",
+      asin: "KDP-IA-ASIMETRICA",
+      amazonUrl: "https://www.amazon.com/s?k=Ruichis+Lab+IA+Asimetrica",
+      juegoRelacionado: { tipo: "sopa", tema: "ia_cibernetica" },
+      sinopsis: "Una guía exhaustiva para dejar de usar la inteligencia artificial como un simple chatbot y transformarla en una infraestructura agéntica completa. Aprende a construir cerebros secundarios verificados con NotebookLM sin alucinaciones, automatizar Workspace de extremo a extremo y desplegar agentes autónomos con memoria y herramientas.",
+      caracteristicas: [
+        "Arquitectura de contexto masivo y bóvedas documentales con NotebookLM.",
+        "Automatización agéntica en Google Workspace, Gems personalizados y flujos multimodales.",
+        "Casos de uso reales para investigadores, editoriales independientes y arquitectos de software."
+      ],
+      extractoTitulo: "Prólogo: Del Prompt Aislado al Sistema Agéntico",
+      extracto: "«Escribir un prompt brillante es útil; diseñar un ecosistema donde múltiples agentes leen tus fuentes primarias, verifican contradicciones, estructuran entregables y ejecutan tareas mientras descansas es una ventaja competitiva irreversible.»"
+    },
+    {
+      id: "aws-arquitectura-cognitiva",
+      titulo: "AWS: Arquitectura Moderna y Nube Cognitiva",
+      subtitulo: "De Graviton4 y Serverless a Amazon Bedrock, Agentes Autónomos y FinOps Radical",
+      autor: "Luis Ruiz",
+      sello: "Ruichis Lab Engineering",
+      categoria: "productividad",
+      categoriaLabel: "Ingeniería Cloud & IA",
+      idioma: "Español",
+      idiomaBadge: "ES",
+      formato: "Edición Técnica (20 Capítulos)",
+      portada: "src/assets/covers/aws-arquitectura-cognitiva.jpg",
+      destacado: false,
+      badgeEspecial: "INGENIERÍA CLOUD",
+      asin: "KDP-AWS-COGNITIVA",
+      amazonUrl: "https://www.amazon.com/s?k=Luis+Ruiz+AWS+Arquitectura",
+      sinopsis: "Un tratado de ingeniería moderna en la nube escrito desde la trinchera. A lo largo de 20 capítulos técnicos, Luis Ruiz desglosa el diseño de sistemas altamente resilientes en AWS combinando procesadores ARM Graviton4, arquitecturas dirigidas por eventos (EventBridge / Lambda), RAG empresarial en Amazon Bedrock y estrategias de FinOps radical para reducir costos de nube hasta en un 60%.",
+      caracteristicas: [
+        "20 capítulos de arquitectura de producción: Serverless, contenedores, seguridad Zero-Trust y observabilidad.",
+        "Implementación de sistemas RAG y agentes autónomos empresariales sobre Amazon Bedrock.",
+        "Metodología de FinOps Radical para optimizar cómputo, almacenamiento e inferencia de IA."
+      ],
+      extractoTitulo: "Capítulo 14: FinOps Radical y la Economía de la Inferencia",
+      extracto: "«La mejor arquitectura en la nube no es la que utiliza más servicios administrados, sino la que alinea cada milisegundo de cómputo y cada token de inferencia con el valor real de negocio. La complejidad innecesaria es un impuesto silencioso que se paga todos los meses en la factura de AWS.»"
+    },
+
+    // --- FICCIÓN, TECHNO-THRILLERS & NARRATIVA CONTEMPORÁNEA ---
+    {
+      id: "corporate-silence-1",
+      titulo: "Corporate Silence — Book 1: Push",
+      subtitulo: "The Silicon Fracture Series • Un Techno-Thriller de Espionaje Financiero y Algoritmos de Sombra",
+      autor: "Daemon Drew",
+      sello: "Ruichis Lab Fiction",
+      categoria: "ficcion",
+      categoriaLabel: "Ficción & Techno-Thriller",
+      idioma: "Español & Inglés",
+      idiomaBadge: "ES / EN",
+      formato: "Kindle eBook & Tapa Blanda",
+      portada: "src/assets/covers/corporate-silence-1.jpg",
+      destacado: true,
+      badgeEspecial: "THE SILICON FRACTURE • VOL. 1",
+      asin: "B0HDQ91SD1",
+      asinSecundario: "B0HDM455NT",
+      amazonUrl: "https://www.amazon.com/dp/B0HDQ91SD1",
+      amazonUrlEn: "https://www.amazon.com/dp/B0HDM455NT",
+      juegoRelacionado: { tipo: "sudoku", dificultad: "experto" },
+      sinopsis: "En los pisos más altos de Manhattan, el silencio corporativo nunca es casual: se compra, se cifra y se ejecuta en microsegundos. Cuando un ingeniero de sistemas descubre una anomalía oculta en los conductos de liquidación interbancaria de alta frecuencia, un simple 'git push' desencadena una cacería implacable entre consorcios financieros y contratistas de inteligencia privada.",
+      caracteristicas: [
+        "Libro 1 de la serie 'The Silicon Fracture' firmada por Daemon Drew.",
+        "Suspenso tecnológico con rigor real en ciberseguridad, mercados algorítmicos y espionaje corporativo.",
+        "Disponible en edición en Español (ASIN: B0HDQ91SD1) y edición en Inglés (ASIN: B0HDM455NT)."
+      ],
+      extractoTitulo: "Capítulo 1: El Commit de las 03:14 AM",
+      extracto: "«En Wall Street nadie dispara un arma cuando puede alterar tres líneas de un microservicio de conciliación. El dinero no desapareció; simplemente dejó de existir para quienes no tenían la llave criptográfica correcta. Y cuando miré el registro de auditoría, el autor del cambio tenía mi propia huella digital.»"
+    },
+    {
+      id: "corporate-silence-2",
+      titulo: "Corporate Silence — Libro 2: Noise",
+      subtitulo: "The Black Box Protocol (The Silicon Fracture Series Vol. 2)",
+      autor: "Daemon Drew",
+      sello: "Ruichis Lab Fiction",
+      categoria: "ficcion",
+      categoriaLabel: "Ficción & Techno-Thriller",
+      idioma: "Español & Inglés",
+      idiomaBadge: "ES / EN",
+      formato: "Kindle eBook & Tapa Blanda",
+      portada: "src/assets/covers/corporate-silence-2.jpg",
+      destacado: true,
+      badgeEspecial: "THE SILICON FRACTURE • VOL. 2",
+      asin: "B0HKTLLGMM",
+      amazonUrl: "https://www.amazon.com/dp/B0HKTLLGMM",
+      juegoRelacionado: { tipo: "sudoku", dificultad: "experto" },
+      sinopsis: "Tras el colapso encubierto de Manhattan, la guerra se traslada a las bóvedas de datos subalpinas de Zúrich y Singapur. En 'Noise (The Black Box Protocol)', el arma definitiva ya no es ocultar la información, sino inundar los sistemas de vigilancia global con ruido sintético indistinguible de la verdad mientras se ejecuta un ataque soberano contra las divisas digitales.",
+      caracteristicas: [
+        "Secuela directa de 'Corporate Silence: Push' en la saga The Silicon Fracture.",
+        "Explora la manipulación soberana de divisas, bóvedas cuánticas y desinformación algorítmica.",
+        "Publicado en Amazon KDP (ASIN: B0HKTLLGMM)."
+      ],
+      extractoTitulo: "Fragmento: El Protocolo de Caja Negra",
+      extracto: "«Si quieres esconder una transacción de cuarenta mil millones en la era de la vigilancia total, no apagas las cámaras. Generas diez millones de transacciones falsas con firmas matemáticas perfectas. No necesitas silencio cuando eres el dueño del ruido.»"
+    },
+    {
+      id: "salitre-y-silicio",
+      titulo: "Todos esperaban el apagón",
+      subtitulo: "Trilogía del Salitre y Silicio (Volumen I) • Ficción Especulativa Latinoamericana",
+      autor: "Daemon Drew",
+      sello: "Ruichis Lab Narrativa",
+      categoria: "ficcion",
+      categoriaLabel: "Ciencia Ficción & Narrativa",
+      idioma: "Español",
+      idiomaBadge: "ES",
+      formato: "Kindle eBook & Tapa Blanda",
+      portada: "src/assets/covers/salitre-y-silicio.jpg",
+      destacado: true,
+      badgeEspecial: "TRILOGÍA SALITRE Y SILICIO",
+      asin: "KDP-SALITRE-V1",
+      amazonUrl: "https://www.amazon.com/s?k=Daemon+Drew+Salitre+Silicio",
+      sinopsis: "En una ciudad costera del Caribe donde la brisa cargada de salitre corroe los servidores y las antenas repetidoras, todo el mundo se preparaba para el gran apagón eléctrico. Nadie imaginó que cuando la red cayó, las máquinas del viejo puerto seguirían hablando entre sí a través del cobre oxidado. Primer volumen de la Trilogía del Salitre y Silicio (seguido por 'La casa de silicio' y 'El rumor del agua salada').",
+      caracteristicas: [
+        "Cyberpunk tropical y realismo especulativo con atmósfera caribeña inconfundible.",
+        "Volumen I de la Trilogía del Salitre y Silicio escrita por Daemon Drew.",
+        "Una reflexión literaria sobre la memoria, la obsolescencia tecnológica y el territorio."
+      ],
+      extractoTitulo: "Capítulo 1: El Olor del Cobre Mojado",
+      extracto: "«Aquí las tarjetas madre mueren primero por la sal que por el voltaje. Por eso nadie entendió cómo, tres noches después de que los transformadores del muelle estallaran en una lluvia de chispas verdes, los terminales de aduana seguían imprimiendo manifiestos de barcos que habían naufragado cuarenta años atrás.»"
+    },
+    {
+      id: "plomo-y-cienaga",
+      titulo: "Plomo y Ciénaga",
+      subtitulo: "Edición Definitiva • Thriller Fluvial en el Bajo Atrato",
+      autor: "Daemon Drew",
+      sello: "Ruichis Lab Narrativa",
+      categoria: "ficcion",
+      categoriaLabel: "Thriller & Novela Negra",
+      idioma: "Español",
+      idiomaBadge: "ES",
+      formato: "Kindle eBook & Tapa Blanda",
+      portada: "src/assets/covers/plomo-y-cienaga.jpg",
+      destacado: false,
+      badgeEspecial: "NOVELA NEGRA FLUVIAL",
+      asin: "KDP-PLOMO-CIENAGA",
+      amazonUrl: "https://www.amazon.com/s?k=Plomo+y+Cienaga+Daemon+Drew",
+      sinopsis: "Escrita con una prosa seca, percusiva y cinematográfica, 'Plomo y Ciénaga' se interna en los laberintos de agua negra y manglar del Bajo Atrato. Una historia de lealtades rotas, motores fuera de borda en la niebla y cuentas pendientes donde la selva húmeda dicta sus propias leyes de supervivencia.",
+      caracteristicas: [
+        "Prosa tensa de ritmo implacable ambientada en las arterias fluviales del Pacífico y el Darién.",
+        "Edición definitiva revisada por el sello Ruichis Lab Narrativa.",
+        "Retrato crudo de la geografía oculta donde el río borra todas las huellas."
+      ],
+      extractoTitulo: "Fragmento: Agua Estancada",
+      extracto: "«En la ciénaga el eco no rebota: se hunde en el lodo igual que el plomo. Cuando el motor de dos tiempos se apagó a media legua del caño, supimos que el silencio de las garzas no era por la lluvia que venía del Baudó.»"
+    },
+    {
+      id: "despues-de-monserrate",
+      titulo: "Después de Monserrate",
+      subtitulo: "Novela Contemporánea en 32 Capítulos • Bogotá entre la Niebla y la Memoria",
+      autor: "María B. Matallana",
+      sello: "Ruichis Lab Literaria",
+      categoria: "ficcion",
+      categoriaLabel: "Narrativa Contemporánea",
+      idioma: "Español",
+      idiomaBadge: "ES",
+      formato: "Kindle eBook & Tapa Blanda (32 Capítulos)",
+      portada: "src/assets/covers/despues-de-monserrate.jpg",
+      destacado: true,
+      badgeEspecial: "NARRATIVA BOGOTANA",
+      asin: "KDP-MONSERRATE",
+      amazonUrl: "https://www.amazon.com/s?k=Despues+de+Monserrate+Maria+Matallana",
+      sinopsis: "Una novela íntima y envolvente que recorre los pliegues emocionales de Bogotá a la sombra de sus cerros orientales. A lo largo de 32 capítulos, María B. Matallana teje una historia sobre las promesas que se hacen mirando la ciudad desde las alturas, los silencios familiares y las segundas oportunidades que nacen cuando baja la niebla de los Andes.",
+      caracteristicas: [
+        "Obra literaria de 32 capítulos escrita por María B. Matallana bajo el sello Ruichis Lab.",
+        "Ambientación profunda y nostálgica en las calles, cafés y cerros de Bogotá.",
+        "Una exploración sensible sobre el paso del tiempo, el duelo y la reconstrucción personal."
+      ],
+      extractoTitulo: "Capítulo I: La Promesa del Cerro",
+      extracto: "«Dicen en Bogotá que nadie vuelve a bajar igual después de mirar la sabana cubierta de bruma desde el atrio de Monserrate. Aquella tarde de octubre, con el frío calándonos los abrigos y las luces del centro encendiéndose como brasas lejanas, aún no sabíamos que estábamos despidiéndonos.»"
+    },
+
+    // --- COLECCIÓN BILINGÜE (DUAL-LANGUAGE READERS) ---
+    {
+      id: "learn-spanish-samaniego",
+      titulo: "Learn Spanish / Aprende Inglés con Samaniego",
+      subtitulo: "Trilogía Completa Bilingüe (Vols. 1, 2 y 3): 75 Fábulas Clásicas en Texto Paralelo Español–Inglés",
+      autor: "Ruichis Lab",
+      sello: "Colección Bilingüe Ruichis Lab",
+      categoria: "bilingue",
+      categoriaLabel: "Bilingüe Español–Inglés",
+      idioma: "Bilingüe (ES / EN)",
+      idiomaBadge: "ES ⇄ EN",
+      formato: "Serie de 3 Volúmenes (Tapa Blanda & Kindle)",
+      portada: "src/assets/covers/learn-spanish-samaniego.jpg",
+      destacado: true,
+      badgeEspecial: "TRILOGÍA BILINGÜE (75 FÁBULAS)",
+      asin: "KDP-SAMANIEGO-TRILOGY",
+      amazonUrl: "https://www.amazon.com/s?k=Aprende+Ingles+con+Samaniego+Ruichis+Lab",
+      sinopsis: "Domina el español y el inglés simultáneamente a través de la sabiduría atemporal de Félix María de Samaniego. Esta trilogía editorial presenta 75 fábulas clásicas en formato espejo (Español–Inglés) acompañadas de vocabulario clave, notas gramaticales y moralejas duales.",
+      caracteristicas: [
+        "Volumen 1 (Fábulas 1–25): De la Previsión a la Astucia (La Cigarra y la Hormiga, La Lechera, El Cuervo y el Zorrito).",
+        "Volumen 2 (Fábulas 26–50): De la Verdad a la Justicia.",
+        "Volumen 3 (Fábulas 51–75): De la Libertad a la Autogestión.",
+        "Método de inmersión comparativa ideal para estudiantes autodidactas de ambos idiomas."
+      ],
+      extractoTitulo: "Muestra Bilingüe — La Cigarra y la Hormiga / The Cicada and the Ant",
+      extracto: "«Cantando la Cigarra pasó el verano entero, sin hacer provisiones allá para el invierno... / Singing the whole summer through, the Cicada spent her days, making no provisions at all for the coming winter days... — Vocabulario Clave: Provisiones (Provisions), Invierno (Winter), Previsión (Foresight).»"
+    },
+    {
+      id: "learn-spanish-iriarte",
+      titulo: "Learn Spanish / Aprende Inglés con Tomás de Iriarte",
+      subtitulo: "Volumen 1: Fábulas Literarias Bilingües de Música, Artes y Oficios (Dual-Language Edition)",
+      autor: "Ruichis Lab",
+      sello: "Colección Bilingüe Ruichis Lab",
+      categoria: "bilingue",
+      categoriaLabel: "Bilingüe Español–Inglés",
+      idioma: "Bilingüe (ES / EN)",
+      idiomaBadge: "ES ⇄ EN",
+      formato: "Kindle eBook & Tapa Blanda",
+      portada: "src/assets/covers/learn-spanish-iriarte.jpg",
+      destacado: false,
+      badgeEspecial: "LECTURA PARALELA ES/EN",
+      asin: "KDP-IRIARTE-V1",
+      amazonUrl: "https://www.amazon.com/s?k=Aprende+Ingles+con+Iriarte+Ruichis+Lab",
+      sinopsis: "El ingenio ilustrado de Tomás de Iriarte ('El Burro Flautista', 'El Oso, la Mona y el Cerdo', 'Los Dos Conejos') adaptado en una cuidada edición bilingüe español-inglés. Diseñado para enriquecer el vocabulario literario, artístico y conversacional mediante lectura comparada.",
+      caracteristicas: [
+        "Texto paralelo sincronizado párrafo a párrafo en español e inglés.",
+        "Glosario de giros idiomáticos y expresiones literarias del Siglo de las Luces.",
+        "Excelente recurso para clubes de lectura bilingües y profesores de ELE / ESL."
+      ],
+      extractoTitulo: "Muestra Bilingüe — El Burro Flautista / The Flute-Playing Donkey",
+      extracto: "«Esta fabulilla, salga bien o mal, me ha ocurrido ahora por casualidad... / This little fable, whether it turns out well or ill, has just occurred to me quite by chance...»"
+    }
+  ],
+
+  // --- COLECCIÓN GRANDES CLÁSICOS RESTAURADOS EN AMAZON KDP ---
+  clasicosKdp: [
+    { titulo: "Don Quijote de la Mancha (Edición Integral Restaurada)", autor: "Miguel de Cervantes", epoca: "Siglo de Oro", region: "España" },
+    { titulo: "Novelas Ejemplares", autor: "Miguel de Cervantes", epoca: "Siglo de Oro", region: "España" },
+    { titulo: "Rimas y Leyendas (Edición Completa)", autor: "Gustavo Adolfo Bécquer", epoca: "Romanticismo", region: "España" },
+    { titulo: "Cuentos de Amor de Locura y de Muerte", autor: "Horacio Quiroga", epoca: "Modernismo / Criollismo", region: "Uruguay / Argentina" },
+    { titulo: "Cuentos de la Selva", autor: "Horacio Quiroga", epoca: "Narrativa Hispanoamericana", region: "Uruguay / Misiones" },
+    { titulo: "Platero y Yo", autor: "Juan Ramón Jiménez", epoca: "Generación del 14", region: "España" },
+    { titulo: "El Gaucho Martín Fierro", autor: "José Hernández", epoca: "Poesía Gauchesca", region: "Argentina" },
+    { titulo: "El Hombre Mediocre", autor: "José Ingenieros", epoca: "Ensayo Filosófico", region: "Argentina" },
+    { titulo: "Las Fuerzas Morales", autor: "José Ingenieros", epoca: "Ensayo Filosófico", region: "Argentina" },
+    { titulo: "Romancero Gitano & Poeta en Nueva York", autor: "Federico García Lorca", epoca: "Generación del 27", region: "España" },
+    { titulo: "Bodas de Sangre & La Casa de Bernarda Alba", autor: "Federico García Lorca", epoca: "Teatro Clásico", region: "España" },
+    { titulo: "El Árbol de la Ciencia", autor: "Pío Baroja", epoca: "Generación del 98", region: "España" },
+    { titulo: "Marianela & Doña Perfecta", autor: "Benito Pérez Galdós", epoca: "Realismo", region: "España" },
+    { titulo: "María (Edición Conmemorativa Colombiana)", autor: "Jorge Isaacs", epoca: "Romanticismo Hispanoamericano", region: "Colombia" },
+    { titulo: "Azul... & Prosas Profanas", autor: "Rubén Darío", epoca: "Modernismo", region: "Nicaragua / América" },
+    { titulo: "Narraciones Extraordinarias (El Cuervo y Otros Relatos)", autor: "Edgar Allan Poe", epoca: "Gótico / Terror", region: "Universal" },
+    { titulo: "La Metamorfosis y Relatos Completos", autor: "Franz Kafka", epoca: "Vanguardia Europea", region: "Universal" },
+    { titulo: "Frankenstein o el Moderno Prometeo", autor: "Mary Shelley", epoca: "Gótico / Ciencia Ficción", region: "Universal" },
+    { titulo: "Las Aventuras de Sherlock Holmes", autor: "Arthur Conan Doyle", epoca: "Misterio Clásico", region: "Universal" },
+    { titulo: "La Divina Comedia", autor: "Dante Alighieri", epoca: "Renacimiento", region: "Universal" },
+    { titulo: "Hamlet, Macbeth & Romeo y Julieta", autor: "William Shakespeare", epoca: "Teatro Isabelino", region: "Universal" },
+    { titulo: "Lazarillo de Tormes", autor: "Anónimo", epoca: "Novela Picaresca", region: "España" },
+    { titulo: "La Celestina", autor: "Fernando de Rojas", epoca: "Prerrenacimiento", region: "España" },
+    { titulo: "Fuenteovejuna & El Perro del Hortelano", autor: "Lope de Vega", epoca: "Siglo de Oro", region: "España" },
+    { titulo: "La Vida es Sueño", autor: "Pedro Calderón de la Barca", epoca: "Barroco", region: "España" }
+  ],
+
+  autores: [
+    {
+      nombre: "Ruichis Lab",
+      rol: "Sello Editorial Principal • Ensayo, IA & Colección Letras y Retos",
+      avatar: "🏛️",
+      bio: "Laboratorio editorial e intelectual con sede en Bogotá. Creador de la serie 'Productividad Asimétrica', 'IA Asimétrica', la colección de aprendizaje bilingüe con clásicos hispánicos y los libros de entrenamiento mental 'Colección Letras y Retos'.",
+      obrasDestacadas: ["Productividad Asimétrica (ES/EN)", "100 Grandes Sopas de Letras (Vols. I y II)", "IA Asimétrica: Google Agéntico", "Trilogía Bilingüe Samaniego"]
+    },
+    {
+      nombre: "Daemon Drew",
+      rol: "Autor de Techno-Thrillers & Ficción Especulativa",
+      avatar: "🕵️‍♂️",
+      bio: "Voz insignia de la ficción de alto voltaje en Ruichis Lab. Sus novelas exploran la intersección entre las finanzas algorítmicas de sombra, la ciberguerra, el cyberpunk caribeño y el thriller fluvial latinoamericano.",
+      obrasDestacadas: ["Corporate Silence: Book 1 — Push", "Corporate Silence: Book 2 — Noise", "Todos esperaban el apagón (Salitre y Silicio)", "Plomo y Ciénaga"]
+    },
+    {
+      nombre: "María B. Matallana",
+      rol: "Autora de Narrativa Contemporánea",
+      avatar: "✒️",
+      bio: "Escritora bogotana cuya obra retrata con sensibilidad la memoria urbana, los vínculos familiares y la geografía íntima de los Andes colombianos.",
+      obrasDestacadas: ["Después de Monserrate (Novela en 32 capítulos)"]
+    },
+    {
+      nombre: "Luis Ruiz",
+      rol: "Fundador, Arquitecto Cloud & Director Editorial",
+      avatar: "⚡",
+      bio: "Ingeniero de software, arquitecto en la nube, creador de herramientas modulares (Ruichis Lock, RuichisLab Book Ranker) y autor técnico especializado en sistemas distribuidos e inteligencia artificial.",
+      obrasDestacadas: ["AWS: Arquitectura Moderna y Nube Cognitiva", "RuichisLab Book Ranker (KDP Tool)", "Ruichis Lock (AES-256)"]
+    }
+  ]
+};

@@ -3,99 +3,181 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ruichis Lab | Tecnología Modular Profesional</title>
-  <meta name="description" content="Ruichis Lab: Soluciones de tecnología modular para Windows. Aplicaciones especializadas incluyendo Ruichis Lock con cifrado AES-256, disponibles en Microsoft Store.">
-  <meta name="keywords" content="modular apps, Ruichis Lab, AES-256 encryption, Windows applications, Microsoft Store, security software, digital tools">
-  <meta name="author" content="Ruichis Lab">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><linearGradient id='g' x1='0%' y1='0%' x2='100%' y2='100%'><stop offset='0%' style='stop-color:%2300ffff;stop-opacity:1'/><stop offset='100%' style='stop-color:%23ff00ff;stop-opacity:1'/></linearGradient></defs><rect width='100' height='100' fill='%23000'/><circle cx='50' cy='50' r='40' fill='none' stroke='url(%23g)' stroke-width='4'/><polygon points='50,20 65,45 35,45' fill='url(%23g)'/><rect x='20' y='60' width='60' height='8' fill='url(%23g)' opacity='0.7'/><rect x='25' y='72' width='50' height='4' fill='url(%23g)' opacity='0.5'/></svg>">
+  <title>Ruichis Lab Publishing | Casa Editorial, Libros en Amazon KDP &amp; Juegos Mentales Gratis (Sudoku y Sopas de Letras)</title>
+  <meta name="description" content="Ruichis Lab Publishing: Sello editorial independiente en Amazon KDP. Libros de Productividad Asimétrica, IA Agéntica, Techno-Thrillers (Daemon Drew), Narrativa Contemporánea y la Colección Letras y Retos con Sopas de Letras y Sudokus interactivos gratis.">
+  <meta name="keywords" content="Ruichis Lab, editorial, libros Amazon KDP, Productividad Asimétrica, 100 Grandes Sopas de Letras, Daemon Drew, Corporate Silence, Después de Monserrate, María B. Matallana, Luis Ruiz, sopas de letras gratis, sudoku online gratis">
+  <meta name="author" content="Ruichis Lab Publishing">
+  <meta property="og:title" content="Ruichis Lab Publishing | Casa Editorial &amp; Gimnasio Mental">
+  <meta property="og:description" content="Descubre el catálogo completo de libros de Ruichis Lab en Amazon KDP y entrena tu mente gratis con nuestras Sopas de Letras y Sudokus interactivos.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://ruichislab.com/">
+  <meta property="og:image" content="https://ruichislab.com/src/assets/covers/productividad-asimetrica-es.jpg">
+
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='18' fill='%23090D16' stroke='%23D4AF37' stroke-width='5'/><text x='50' y='67' font-family='Georgia,serif' font-size='54' font-weight='bold' fill='%23D4AF37' text-anchor='middle'>R</text></svg>">
+
   <link rel="stylesheet" href="src/estilos/variables.css">
   <link rel="stylesheet" href="src/estilos/components.css">
   <link rel="stylesheet" href="src/estilos/modules.css">
   <link rel="stylesheet" href="src/estilos/main.css">
+  <link rel="stylesheet" href="src/estilos/editorial.css">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto+Mono:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
   <!-- Librería para convertir Markdown a HTML -->
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+  <!-- Datos Estructurados JSON-LD Editorial -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Publisher",
+    "name": "Ruichis Lab Publishing",
+    "url": "https://ruichislab.com/",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Bogotá",
+      "addressCountry": "CO"
+    },
+    "sameAs": [
+      "https://github.com/ruichislab/",
+      "https://www.amazon.com/s?k=Ruichis+Lab"
+    ]
+  }
+  </script>
 </head>
 <body>
-  <div class="cyber-grid"></div>
-  <div class="scan-lines"></div>
-  <header class="header-cyber">
+  <!-- TOPBAR DE ANUNCIO EDITORIAL Y MODO LECTURA -->
+  <div class="editorial-topbar">
     <div class="container">
-      <div class="logo-cyber">
-        <h1 class="logo-text glitch" data-text="RUICHIS LAB">
-          <span class="logo-icon">🔮</span>
-          RUICHIS LAB
-        </h1>
-        <p class="logo-subtitle">TECNOLOGÍA MODULAR • SOLUCIONES PROFESIONALES • MICROSOFT STORE</p>
+      <div class="topbar-left">
+        <span class="topbar-badge">📚 AMAZON KDP GLOBAL</span>
+        <span>Ediciones en Español e Inglés • Impresión Bajo Demanda &amp; Kindle eBook</span>
       </div>
-      
-      <nav class="nav-cyber">
+      <div class="topbar-right">
+        <a href="#gimnasio-mental" class="topbar-link" data-nav-section="gimnasio-mental">🧩 Juegos Mentales Gratis</a>
+        <a href="https://www.amazon.com/s?k=Ruichis+Lab" target="_blank" rel="noopener noreferrer" class="topbar-link">🛒 Catálogo en Amazon ↗</a>
+        <button type="button" id="theme-reader-toggle" class="theme-toggle-btn" title="Alternar entre Modo Oscuro Editorial y Modo Papel de Lectura">
+          <span id="theme-toggle-icon">📜</span>
+          <span id="theme-toggle-label">Modo Papel</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- HEADER EDITORIAL PRINCIPAL -->
+  <header class="header-cyber">
+    <div class="container header-editorial-inner">
+      <a href="#" class="brand-identity" data-modulo="Inicio" aria-label="Ruichis Lab Publishing Inicio">
+        <div class="brand-monogram">RL</div>
+        <div class="brand-titles">
+          <h1 class="logo-text">RUICHIS LAB</h1>
+          <p class="logo-subtitle">CASA EDITORIAL • LITERATURA, IA &amp; RETOS MENTALES</p>
+        </div>
+      </a>
+
+      <nav class="nav-cyber nav-editorial" aria-label="Navegación Principal">
         <ul class="nav-list">
-          <li><a href="#" data-modulo="Inicio" class="nav-link">
-            <span class="nav-icon">⚡</span>
-            <span class="nav-text">INICIO</span>
-          </a></li>
-          <li><a href="#" data-modulo="Ruichis Lock" class="nav-link">
-            <span class="nav-icon">🔒</span>
-            <span class="nav-text">RUICHIS LOCK</span>
-          </a></li>
-          <li><a href="#" data-modulo="Filosofia" class="nav-link">
-            <span class="nav-icon">🧠</span>
-            <span class="nav-text">FILOSOFÍA</span>
-          </a></li>
-          <li><a href="#" data-modulo="Enciclopedia IA" class="nav-link">
-            <span class="nav-icon">📚</span>
-            <span class="nav-text">ENCICLOPEDIA IA</span>
-          </a></li>
-          <li><a href="#" data-modulo="Contacto" class="nav-link">
-            <span class="nav-icon">📬</span>
-            <span class="nav-text">CONTACTO</span>
-          </a></li>
-          <li class="submenu-apps">
-            <a href="#" class="nav-link apps-trigger">
-              <span class="nav-icon">🛠️</span>
-              <span class="nav-text">HERRAMIENTAS WEB</span>
-              <span class="dropdown-arrow">▼</span>
+          <li>
+            <a href="#hero-editorial" data-modulo="Inicio" class="nav-link active">
+              <span>🏛️</span>
+              <span class="nav-text">EDITORIAL</span>
             </a>
-            <ul class="submenu-lista">
-              <!--
-              <li><a href="#" data-modulo="Herramientas Web" class="submenu-link">
-                <span class="nav-icon">🌐</span>
-                <span class="nav-text">¿Cuál es mi IP?</span>
-              </a></li>
-              -->
-            </ul>
+          </li>
+          <li>
+            <a href="#catalogo-libros" data-nav-section="catalogo-libros" class="nav-link">
+              <span>📚</span>
+              <span class="nav-text">CATÁLOGO</span>
+            </a>
+          </li>
+          <li>
+            <a href="#gimnasio-mental" data-nav-section="gimnasio-mental" class="nav-link nav-pill-games">
+              <span>🧩</span>
+              <span class="nav-text">SOPAS &amp; SUDOKU GRATIS</span>
+            </a>
+          </li>
+          <li>
+            <a href="#autores-sellos" data-nav-section="autores-sellos" class="nav-link">
+              <span>✒️</span>
+              <span class="nav-text">AUTORES</span>
+            </a>
+          </li>
+          <li>
+            <a href="#clasicos-universales" data-nav-section="clasicos-universales" class="nav-link">
+              <span>📜</span>
+              <span class="nav-text">CLÁSICOS KDP</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" data-modulo="Enciclopedia IA" class="nav-link">
+              <span>🧠</span>
+              <span class="nav-text">ENCICLOPEDIA IA</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" data-modulo="Ruichis Lock" class="nav-link">
+              <span>🔒</span>
+              <span class="nav-text">RUICHIS LOCK</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" data-modulo="Contacto" class="nav-link">
+              <span>📬</span>
+              <span class="nav-text">CONTACTO</span>
+            </a>
           </li>
         </ul>
       </nav>
     </div>
   </header>
 
-  <main id="main" class="main-cyber">
+  <!-- CONTENEDOR PRINCIPAL -->
+  <main id="main" class="main-cyber" style="padding-top:0;">
     <div class="container">
-      <div class="content-wrapper"></div>
+      <div class="content-wrapper">
+        <!-- Se hidrata inmediatamente desde src/modulos/inicio.html / src/app.js -->
+      </div>
     </div>
   </main>
 
+  <!-- MODAL DE FICHA EDITORIAL Y FRAGMENTO DE LECTURA -->
+  <div id="book-detail-modal" class="editorial-modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modal-book-title">
+    <div class="editorial-modal-dialog">
+      <button type="button" class="modal-close-btn" id="modal-close-btn" aria-label="Cerrar ventana">✕</button>
+      <div id="modal-book-body"></div>
+    </div>
+  </div>
+
+  <!-- FOOTER EDITORIAL -->
   <footer class="footer-cyber">
     <div class="container">
       <div class="footer-content">
         <div class="footer-section">
-          <h3>RUICHIS LAB</h3>
-          <p>Soluciones de tecnología modular para Windows</p>
+          <h3>RUICHIS LAB PUBLISHING</h3>
+          <p>Casa editorial independiente y laboratorio de ingeniería cognitiva. Publicamos obras de ensayo tecnológico, productividad asimétrica, ficción especulativa, ediciones bilingües y la <em>Colección Letras y Retos</em>.</p>
+          <p style="color:var(--primary-color);font-family:var(--font-mono);font-size:0.78rem;">Distribución Global vía Amazon Kindle Direct Publishing (KDP)</p>
         </div>
+
         <div class="footer-section">
-          <h3>CONTACTO</h3>
-          <p>info@ruichislab.com</p>
-          <p>Bogotá, Colombia</p>
+          <h3>COLECCIONES &amp; SECCIONES</h3>
+          <p><a href="#catalogo-libros" data-nav-section="catalogo-libros">📚 Catálogo General de Libros</a></p>
+          <p><a href="#gimnasio-mental" data-nav-section="gimnasio-mental">🔤 Sopa de Letras Interactiva Gratis</a></p>
+          <p><a href="#gimnasio-mental" data-nav-section="gimnasio-mental">🔢 Sudoku Maestro 9×9 Gratis</a></p>
+          <p><a href="#clasicos-universales" data-nav-section="clasicos-universales">📜 Biblioteca Universal de Clásicos KDP</a></p>
+          <p><a href="src/privacy.md" target="_blank" rel="noopener">🛡️ Política de Privacidad (RuichisLab Book Ranker)</a></p>
         </div>
+
         <div class="footer-section">
-          <h3>REDES</h3>
-          <div class="social-links">
-            <a href="https://github.com/ruichislab/" class="social-link github-link" target="_blank" rel="noopener noreferrer">
-              <svg class="github-icon" viewBox="0 0 24 24" fill="currentColor">
+          <h3>CONTACTO &amp; SEDE</h3>
+          <p>📧 info@ruichislab.com • contacto@ruichislab.com</p>
+          <p>📍 Bogotá, D.C., Colombia</p>
+          <div class="social-links" style="margin-top:0.85rem;">
+            <a href="https://www.amazon.com/s?k=Ruichis+Lab" class="btn-editorial outline" style="padding:0.45rem 0.9rem;font-size:0.78rem;" target="_blank" rel="noopener noreferrer">
+              🛒 Amazon KDP
+            </a>
+            <a href="https://github.com/ruichislab/" class="btn-editorial outline" style="padding:0.45rem 0.9rem;font-size:0.78rem;" target="_blank" rel="noopener noreferrer">
+              <svg class="github-icon" style="width:16px;height:16px;" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
               </svg>
               GitHub
@@ -103,17 +185,19 @@
           </div>
         </div>
       </div>
+
       <div class="footer-bottom">
-        <p>&copy; 2025 Ruichis Lab. Todos los derechos reservados.</p>
+        <p>&copy; 2026 Ruichis Lab Publishing. Todos los derechos reservados • Bogotá, Colombia.</p>
       </div>
     </div>
   </footer>
 
+  <!-- SCRIPTS DE LA APLICACIÓN EDITORIAL Y GIMNASIO MENTAL -->
   <script src="src/utils/cleanup.js"></script>
-  <script src="src/utils/cyber-effects.js"></script>
-  <script src="src/utils/ui-enhancer.js"></script>
+  <script src="src/js/catalogo-datos.js"></script>
+  <script src="src/js/juegos-mentales.js"></script>
+  <script src="src/js/enciclopedia.js"></script>
   <script src="src/agenteModular.js"></script>
   <script src="src/app.js"></script>
 </body>
 </html>
-
