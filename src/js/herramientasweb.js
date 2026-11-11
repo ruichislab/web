@@ -5,6 +5,7 @@
  * Configura el botón de refrescar y obtiene la IP inicial.
  * Toda la lógica está encapsulada para evitar conflictos globales.
  */
+/*
 function initIPTool() {
   const ipResultElement = document.getElementById('ip-result');
   const refreshButton = document.querySelector('.web-tool-card .btn-cyber');
@@ -19,9 +20,7 @@ function initIPTool() {
     // Aunque el botón no se encuentre, podemos intentar obtener la IP inicial.
   }
 
-  /**
-   * Función interna para obtener y mostrar la dirección IP del usuario.
-   */
+  // Función interna para obtener y mostrar la dirección IP del usuario.
   const fetchIP = async () => {
     ipResultElement.textContent = 'Obteniendo IP...';
     try {
@@ -47,3 +46,4 @@ function initIPTool() {
 }
 
 document.addEventListener('DOMContentLoaded', initIPTool);
+*/
