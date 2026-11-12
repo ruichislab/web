@@ -39,17 +39,30 @@
         osc.stop(this.ctx.currentTime + duration);
       } catch (e) {}
     },
+    vibrate(pattern) {
+      try {
+        if (navigator.vibrate) navigator.vibrate(pattern);
+      } catch (e) {}
+    },
     click() { this.playTone(480, "sine", 0.03, 0.025); },
-    cellSelect() { this.playTone(540, "sine", 0.04, 0.03); },
+    cellSelect() {
+      this.playTone(540, "sine", 0.04, 0.03);
+      this.vibrate(6);
+    },
     foundWord() {
       this.playTone(659.25, "triangle", 0.1, 0.07);
       setTimeout(() => this.playTone(880, "triangle", 0.18, 0.08), 85);
+      this.vibrate([15, 25, 15]);
     },
     victory() {
       const notes = [523.25, 659.25, 783.99, 1046.50];
       notes.forEach((n, i) => setTimeout(() => this.playTone(n, "triangle", 0.28, 0.09), i * 110));
+      this.vibrate([30, 40, 30, 40, 70]);
     },
-    error() { this.playTone(190, "sawtooth", 0.12, 0.04); }
+    error() {
+      this.playTone(190, "sawtooth", 0.12, 0.04);
+      this.vibrate([30, 25, 30]);
+    }
   };
 
   // =========================================================================
@@ -355,11 +368,43 @@
       if (!container) return;
 
       this.updateStatsDisplay();
+      this.bindInstallButton();
       this.bindAudioToggle();
       this.bindZenMode();
       this.bindHubSwitching();
       this.initSopaGame();
       this.initSudokuGame();
+    }
+
+    bindInstallButton() {
+      const btn = document.getElementById("btn-install-pwa");
+      if (!btn) return;
+      const isStandalone = window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true;
+      if (isStandalone) {
+        btn.hidden = true;
+        return;
+      }
+
+      const isIos = /iphone|ipad|ipod/i.test(navigator.userAgent);
+      if (window.__deferredPwaPrompt || isIos) {
+        btn.hidden = false;
+      }
+
+      btn.addEventListener("click", async () => {
+        GymAudio.click();
+        if (window.__deferredPwaPrompt) {
+          window.__deferredPwaPrompt.prompt();
+          try {
+            const choice = await window.__deferredPwaPrompt.userChoice;
+            if (choice && choice.outcome === "accepted") {
+              btn.hidden = true;
+            }
+          } catch (e) {}
+          window.__deferredPwaPrompt = null;
+        } else if (isIos) {
+          alert("📲 Para instalar Ruichis Lab como App Nativa en iOS:\n\n1. Toca el botón Compartir (cuadro con flecha ↑) en Safari.\n2. Selecciona «Agregar a pantalla de inicio».\n3. ¡Listo! Se abrirá en pantalla completa sin navegador.");
+        }
+      });
     }
 
     updateStatsDisplay() {
@@ -975,11 +1020,13 @@
         chip.style.color = color.dot;
       }
 
-      placement.cells.forEach(pt => {
+      placement.cells.forEach((pt, idx) => {
         const cell = document.querySelector(`.sopa-cell[data-r="${pt.r}"][data-c="${pt.c}"]`);
         if (cell) {
-          cell.classList.add("found");
+          cell.classList.add("found", "just-found");
           cell.setAttribute("data-color-idx", placement.colorIndex);
+          cell.style.animationDelay = `${idx * 25}ms`;
+          setTimeout(() => cell.classList.remove("just-found"), 650);
         }
       });
 

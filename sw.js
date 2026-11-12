@@ -1,5 +1,5 @@
 // sw.js — Service Worker ligero de Ruichis Lab (Offline-Ready para Gimnasio Mental y Catálogo)
-const CACHE_NAME = 'ruichis-lab-v1';
+const CACHE_NAME = 'ruichis-lab-v2';
 
 const CORE_ASSETS = [
   './',

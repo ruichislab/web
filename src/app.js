@@ -787,3 +787,24 @@ if ('serviceWorker' in navigator) {
   });
 }
 
+(function initPwaNativeExperience() {
+  const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+  if (isStandalone) {
+    document.body.classList.add('pwa-standalone');
+  }
+
+  window.__deferredPwaPrompt = null;
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    window.__deferredPwaPrompt = e;
+    const btn = document.getElementById('btn-install-pwa');
+    if (btn) btn.hidden = false;
+  });
+
+  window.addEventListener('appinstalled', () => {
+    window.__deferredPwaPrompt = null;
+    const btn = document.getElementById('btn-install-pwa');
+    if (btn) btn.hidden = true;
+  });
+})();
+
