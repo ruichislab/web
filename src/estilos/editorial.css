@@ -3588,6 +3588,56 @@ body.theme-paper .btn-back-to-top {
   border-top: 1px solid var(--border-subtle);
 }
 
+/* ==========================================================================
+   ACABADO EDITORIAL DE ALTA GAMA & ACCESIBILIDAD DE MOVIMIENTO
+   ========================================================================== */
+::selection {
+  background: rgba(212, 175, 55, 0.28);
+  color: #FFFFFF;
+}
+
+body.theme-paper ::selection {
+  background: rgba(154, 111, 11, 0.2);
+  color: #18181B;
+}
+
+.book-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 10%;
+  right: 10%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
+  opacity: 0;
+  transition: opacity 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+}
+
+.book-card:hover::before {
+  opacity: 0.9;
+}
+
+.book-card,
+.book-cover-frame,
+.discipline-card,
+.gym-hub-card,
+.btn-editorial {
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+
 
 
 
