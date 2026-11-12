@@ -1,0 +1,31 @@
+{
+  "name": "Ruichis Lab — Editorial & Gimnasio Mental",
+  "short_name": "Ruichis Lab",
+  "description": "Obras de productividad asimétrica y Gimnasio Mental gratuito sin anuncios (Sudoku Maestro, Sopas de Letras y Criptogramas) disponible sin conexión.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0B0F19",
+  "theme_color": "#D4AF37",
+  "lang": "es",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='108' fill='%230B0F19' stroke='%23D4AF37' stroke-width='24'/><text x='256' y='340' font-family='Georgia,serif' font-size='260' font-weight='bold' fill='%23D4AF37' text-anchor='middle'>RL</text></svg>",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Sudoku Maestro (Reto del Día)",
+      "short_name": "Sudoku",
+      "url": "./#sudoku"
+    },
+    {
+      "name": "Gimnasio Mental Completo",
+      "short_name": "Juegos",
+      "url": "./#gimnasio-mental"
+    }
+  ]
+}

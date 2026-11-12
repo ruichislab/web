@@ -780,3 +780,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
 window.agenteModular = agente;
 window.openBookModal = openBookModal;
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').catch(() => {});
+  });
+}
+

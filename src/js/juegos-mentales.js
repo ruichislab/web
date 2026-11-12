@@ -1201,14 +1201,74 @@
       if (!this.cargarPartidaSudoku()) {
         this.generarNuevoSudoku();
       }
+      this.renderCalendarioDiarioSudoku();
     }
 
-    obtenerFechaHoyKey() {
-      const now = new Date();
-      const y = now.getFullYear();
-      const m = String(now.getMonth() + 1).padStart(2, "0");
-      const d = String(now.getDate()).padStart(2, "0");
+    obtenerFechaHoyKey(dateObj = new Date()) {
+      const y = dateObj.getFullYear();
+      const m = String(dateObj.getMonth() + 1).padStart(2, "0");
+      const d = String(dateObj.getDate()).padStart(2, "0");
       return `${y}-${m}-${d}`;
+    }
+
+    obtenerHistorialDiarioSudoku() {
+      try {
+        const raw = localStorage.getItem("ruichis_sudoku_daily_history_v1");
+        const arr = raw ? JSON.parse(raw) : [];
+        return new Set(Array.isArray(arr) ? arr : []);
+      } catch (e) {
+        return new Set();
+      }
+    }
+
+    registrarRetoDiarioCompletado() {
+      const set = this.obtenerHistorialDiarioSudoku();
+      set.add(this.obtenerFechaHoyKey());
+      try {
+        localStorage.setItem("ruichis_sudoku_daily_history_v1", JSON.stringify(Array.from(set)));
+      } catch (e) {}
+      this.renderCalendarioDiarioSudoku();
+    }
+
+    calcularRachaDiariaSudoku(datesSet) {
+      let streak = 0;
+      const cursor = new Date();
+      const todayKey = this.obtenerFechaHoyKey(cursor);
+      if (!datesSet.has(todayKey)) {
+        cursor.setDate(cursor.getDate() - 1);
+      }
+      while (datesSet.has(this.obtenerFechaHoyKey(cursor))) {
+        streak++;
+        cursor.setDate(cursor.getDate() - 1);
+      }
+      return streak;
+    }
+
+    renderCalendarioDiarioSudoku() {
+      const strip = document.getElementById("sudoku-daily-calendar-7d");
+      const streakEl = document.getElementById("sudoku-daily-streak-val");
+      const datesSet = this.obtenerHistorialDiarioSudoku();
+      const streak = this.calcularRachaDiariaSudoku(datesSet);
+
+      if (streakEl) {
+        streakEl.textContent = `${streak} ${streak === 1 ? "día" : "días"}`;
+      }
+      if (!strip) return;
+
+      const dayLetters = ["D", "L", "M", "X", "J", "V", "S"];
+      const items = [];
+      for (let offset = 6; offset >= 0; offset--) {
+        const dt = new Date();
+        dt.setDate(dt.getDate() - offset);
+        const key = this.obtenerFechaHoyKey(dt);
+        const done = datesSet.has(key);
+        const isToday = offset === 0;
+        const letter = dayLetters[dt.getDay()];
+        items.push(
+          `<span class="daily-day-dot ${done ? "completed" : ""} ${isToday ? "today" : ""}" title="${key}${done ? " — Completado" : isToday ? " — Hoy" : ""}">${done ? "✓" : letter}</span>`
+        );
+      }
+      strip.innerHTML = items.join("");
     }
 
     crearRngSemilla(seedStr) {
@@ -1973,7 +2033,10 @@
         const st = rawStats ? JSON.parse(rawStats) : { won: 0, perfect: 0, dailyCompleted: 0 };
         st.won = (st.won || 0) + 1;
         if (this.sudokuMistakes === 0) st.perfect = (st.perfect || 0) + 1;
-        if (this.sudokuDifficulty === "diario") st.dailyCompleted = (st.dailyCompleted || 0) + 1;
+        if (this.sudokuDifficulty === "diario") {
+          st.dailyCompleted = (st.dailyCompleted || 0) + 1;
+          this.registrarRetoDiarioCompletado();
+        }
         localStorage.setItem("ruichis_sudoku_stats_v1", JSON.stringify(st));
       } catch (e) {}
 
