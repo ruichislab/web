@@ -3,15 +3,26 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ruichis Lab | Libros en Amazon, Productividad Asimétrica &amp; Gimnasio Mental</title>
-  <meta name="description" content="Ruichis Lab: Catálogo de publicaciones independientes en Amazon (Productividad Asimétrica, Asymmetric Productivity, 100 Grandes Sopas de Letras de Cultura General y Biología) y Gimnasio Mental interactivo gratuito.">
-  <meta name="keywords" content="Ruichis Lab, libros Amazon, Productividad Asimétrica, Asymmetric Productivity, 100 Grandes Sopas de Letras, Colección Letras y Retos, sopas de letras gratis, sudoku online gratis, criptogramas gratis, pasatiempos gratis">
+  <title>Ruichis Lab | Libros en Amazon, Productividad Asimétrica &amp; Sudoku Online Gratis</title>
+  <meta name="description" content="Ruichis Lab: Editorial independiente en Amazon (Productividad Asimétrica, Asymmetric Productivity, 100 Grandes Sopas de Letras) y Gimnasio Mental gratuito sin anuncios con Sudoku Maestro, Reto del Día, Sopas de Letras y Criptogramas.">
+  <meta name="keywords" content="Ruichis Lab, sudoku online gratis, sudoku sin anuncios, reto diario sudoku, libros Amazon, Productividad Asimétrica, Asymmetric Productivity, 100 Grandes Sopas de Letras, sopas de letras gratis, criptogramas gratis">
   <meta name="author" content="Ruichis Lab">
-  <meta property="og:title" content="Ruichis Lab | Libros &amp; Gimnasio Mental">
-  <meta property="og:description" content="Explora los libros de Ruichis Lab disponibles en Amazon y entrena tu mente gratis con nuestras Sopas de Letras, Sudokus y Criptogramas interactivos.">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <link rel="canonical" href="https://ruichislab.com/">
+
+  <meta property="og:site_name" content="Ruichis Lab">
+  <meta property="og:locale" content="es_ES">
+  <meta property="og:title" content="Ruichis Lab | Libros en Amazon &amp; Gimnasio Mental (Sudoku Gratis)">
+  <meta property="og:description" content="Explora los libros de Ruichis Lab disponibles en Amazon y entrena tu mente gratis sin anuncios con Sudoku Maestro, Reto del Día, Sopas de Letras y Criptogramas.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://ruichislab.com/">
   <meta property="og:image" content="https://ruichislab.com/src/assets/covers/productividad-asimetrica-es.jpg">
+  <meta property="og:image:alt" content="Productividad Asimétrica — Ruichis Lab">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Ruichis Lab | Libros en Amazon &amp; Sudoku Online Gratis">
+  <meta name="twitter:description" content="Publicaciones independientes de foco profundo y pasatiempos cognitivos gratuitos sin anuncios: Sudoku Maestro, Sopas de Letras y Criptogramas.">
+  <meta name="twitter:image" content="https://ruichislab.com/src/assets/covers/productividad-asimetrica-es.jpg">
 
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230B0F19' stroke='%23D4AF37' stroke-width='6'/><text x='50' y='68' font-family='Georgia,serif' font-size='52' font-weight='bold' fill='%23D4AF37' text-anchor='middle'>R</text></svg>">
 
@@ -28,21 +39,99 @@
   <!-- Librería para convertir Markdown a HTML -->
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
-  <!-- Datos Estructurados JSON-LD -->
+  <!-- Datos Estructurados JSON-LD (Schema.org @graph) -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "Ruichis Lab",
-    "url": "https://ruichislab.com/",
-    "address": {
-      "@type": "PostalAddress",
-      "addressLocality": "Bogotá",
-      "addressCountry": "CO"
-    },
-    "sameAs": [
-      "https://github.com/ruichislab/",
-      "https://www.amazon.com/s?k=Ruichis+Lab"
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://ruichislab.com/#organization",
+        "name": "Ruichis Lab",
+        "url": "https://ruichislab.com/",
+        "email": "contacto@ruichislab.com",
+        "logo": "https://ruichislab.com/src/assets/covers/productividad-asimetrica-es.jpg",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Bogotá",
+          "addressCountry": "CO"
+        },
+        "sameAs": [
+          "https://github.com/ruichislab/",
+          "https://www.amazon.com/s?k=Ruichis+Lab"
+        ]
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://ruichislab.com/#website",
+        "url": "https://ruichislab.com/",
+        "name": "Ruichis Lab",
+        "inLanguage": "es",
+        "publisher": { "@id": "https://ruichislab.com/#organization" }
+      },
+      {
+        "@type": "WebApplication",
+        "@id": "https://ruichislab.com/#gimnasio-mental",
+        "name": "Gimnasio Mental Ruichis Lab — Sudoku Maestro, Sopas de Letras y Criptogramas",
+        "url": "https://ruichislab.com/#gimnasio-mental",
+        "applicationCategory": "GameApplication",
+        "operatingSystem": "Web",
+        "inLanguage": "es",
+        "description": "Suite cognitiva gratuita y sin anuncios con Sudoku Maestro (Reto del Día, notas a lápiz, entrada rápida y pistas lógicas), Sopas de Letras en 8 direcciones y Criptogramas.",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        "publisher": { "@id": "https://ruichislab.com/#organization" }
+      },
+      {
+        "@type": "ItemList",
+        "@id": "https://ruichislab.com/#catalogo",
+        "name": "Catálogo de Libros de Ruichis Lab",
+        "itemListElement": [
+          {
+            "@type": "Book",
+            "position": 1,
+            "name": "Productividad Asimétrica",
+            "inLanguage": "es",
+            "author": { "@id": "https://ruichislab.com/#organization" },
+            "publisher": { "@id": "https://ruichislab.com/#organization" },
+            "url": "https://www.amazon.com/dp/B0HD2MY2HN",
+            "image": "https://ruichislab.com/src/assets/covers/productividad-asimetrica-es.jpg"
+          },
+          {
+            "@type": "Book",
+            "position": 2,
+            "name": "Asymmetric Productivity",
+            "inLanguage": "en",
+            "author": { "@id": "https://ruichislab.com/#organization" },
+            "publisher": { "@id": "https://ruichislab.com/#organization" },
+            "url": "https://www.amazon.com/dp/B0HJ42QFCV",
+            "image": "https://ruichislab.com/src/assets/covers/asymmetric-productivity-en.jpg"
+          },
+          {
+            "@type": "Book",
+            "position": 3,
+            "name": "100 Grandes Sopas de Letras de Cultura General (Vol. I)",
+            "inLanguage": "es",
+            "author": { "@id": "https://ruichislab.com/#organization" },
+            "publisher": { "@id": "https://ruichislab.com/#organization" },
+            "url": "https://www.amazon.com/s?k=100+Grandes+Sopas+de+Letras+de+Cultura+General+Ruichis+Lab",
+            "image": "https://ruichislab.com/src/assets/covers/sopa-cultura-general-vol1.jpg"
+          },
+          {
+            "@type": "Book",
+            "position": 4,
+            "name": "100 Grandes Sopas de Letras de Biología (Vol. II)",
+            "inLanguage": "es",
+            "author": { "@id": "https://ruichislab.com/#organization" },
+            "publisher": { "@id": "https://ruichislab.com/#organization" },
+            "url": "https://www.amazon.com/s?k=100+Grandes+Sopas+de+Letras+de+Biologia+Ruichis+Lab",
+            "image": "https://ruichislab.com/src/assets/covers/sopa-biologia-vol2.jpg"
+          }
+        ]
+      }
     ]
   }
   </script>
@@ -72,7 +161,7 @@
       <a href="#" class="brand-identity" data-modulo="Inicio" aria-label="Ruichis Lab Inicio">
         <div class="brand-monogram">RL</div>
         <div class="brand-titles">
-          <h1 class="logo-text">RUICHIS LAB</h1>
+          <span class="logo-text">RUICHIS LAB</span>
           <p class="logo-subtitle">PUBLICACIONES EDITORIALES • GIMNASIO MENTAL</p>
         </div>
       </a>

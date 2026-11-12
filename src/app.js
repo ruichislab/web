@@ -9,6 +9,46 @@ let currentCatalogSearch = '';
 let featuredShowcaseIndex = 0;
 let pendingGameLaunch = null;
 
+const ROUTE_SEO_META = {
+  'Inicio': {
+    title: 'Ruichis Lab | Libros en Amazon, Productividad Asimétrica & Sudoku Online Gratis',
+    description: 'Ruichis Lab: Editorial independiente en Amazon (Productividad Asimétrica, Asymmetric Productivity, 100 Grandes Sopas de Letras) y Gimnasio Mental gratuito sin anuncios.'
+  },
+  'Gimnasio Mental': {
+    title: 'Sudoku Online Gratis sin Anuncios, Sopas de Letras y Criptogramas | Ruichis Lab',
+    description: 'Juega Sudoku Maestro gratis sin anuncios: Reto del Día, modo 3 Vidas, pistas lógicas, entrada rápida, Sopas de Letras en 8 direcciones y Criptogramas.'
+  },
+  'Enciclopedia IA': {
+    title: 'Enciclopedia de Inteligencia Artificial | Ruichis Lab',
+    description: 'Guía de referencia técnica sobre modelos de lenguaje, arquitectura de IA y productividad asimétrica por Ruichis Lab.'
+  },
+  'Contacto': {
+    title: 'Contacto Editorial | Ruichis Lab',
+    description: 'Contacta con Ruichis Lab en contacto@ruichislab.com para colaboraciones, prensa y consultas editoriales.'
+  },
+  'Ruichis Lock': {
+    title: 'Ruichis Lock | Software & Seguridad — Ruichis Lab',
+    description: 'Herramientas de software independiente y enfoque digital desarrolladas por Ruichis Lab.'
+  }
+};
+
+function updateRouteSEO(moduleName) {
+  const meta = ROUTE_SEO_META[moduleName] || ROUTE_SEO_META['Inicio'];
+  document.title = meta.title;
+  const descEl = document.querySelector('meta[name="description"]');
+  if (descEl) descEl.setAttribute('content', meta.description);
+  const ogTitle = document.querySelector('meta[property="og:title"]');
+  if (ogTitle) ogTitle.setAttribute('content', meta.title);
+  const ogDesc = document.querySelector('meta[property="og:description"]');
+  if (ogDesc) ogDesc.setAttribute('content', meta.description);
+}
+
+document.addEventListener('modulo:cargado', (ev) => {
+  if (ev.detail && ev.detail.nombre) {
+    updateRouteSEO(ev.detail.nombre);
+  }
+});
+
 function openGimnasioMental(gameType = 'sopa', options = {}) {
   pendingGameLaunch = { gameType, options };
   closeMobileNav();
