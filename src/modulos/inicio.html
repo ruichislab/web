@@ -139,32 +139,92 @@
     </div>
   </section>
 
-  <!-- 3. GIMNASIO MENTAL GRATUITO: SOPA DE LETRAS & SUDOKU -->
+  <!-- 3. GIMNASIO MENTAL: SUITE COGNITIVA & PASATIEMPOS RUICHIS LAB -->
   <section id="gimnasio-mental" class="editorial-section gimnasio-mental-section">
     <div class="container">
       <div class="section-header-editorial">
         <div>
-          <span class="section-kicker">ENTRENAMIENTO COGNITIVO SIN COSTO • COLECCIÓN LETRAS Y RETOS</span>
-          <h2 class="section-heading">Gimnasio Mental: Sopa de Letras &amp; Sudoku Maestro</h2>
+          <span class="section-kicker">SUITE COGNITIVA COMPLETA • EDITORIAL RUICHIS LAB</span>
+          <h2 class="section-heading">Gimnasio Mental de Ruichis Lab</h2>
           <p class="section-sub">
-            Ejercita el reconocimiento de patrones y el razonamiento deductivo antes de tus bloques de trabajo profundo. Tableros 100% gratuitos, sin anuncios y listos para resolver en pantalla o imprimir.
+            Entrenamiento de patrones, deducción algorítmica y aforismos editoriales. Tableros 100% interactivos y gratuitos, sin anuncios y listos para resolver en pantalla o imprimir en papel.
           </p>
         </div>
       </div>
 
-      <div class="gimnasio-shell" id="gimnasio-mental-app">
-        <!-- Barra de pestañas de juego -->
-        <div class="gimnasio-tabs-bar">
-          <div class="game-Switch-buttons" role="tablist">
-            <button type="button" class="game-tab-btn active" data-game-tab="sopa">
-              <span>🔤</span> Sopa de Letras (8 Direcciones)
-            </button>
-            <button type="button" class="game-tab-btn" data-game-tab="sudoku">
-              <span>🔢</span> Sudoku Maestro 9×9
-            </button>
+      <!-- BARRA DE RENDIMIENTO COGNITIVO & HERRAMIENTAS ZEN -->
+      <div class="gym-performance-bar">
+        <div class="gym-perf-stats">
+          <div class="perf-metric">
+            <span class="perf-metric-icon">🔥</span>
+            <div>
+              <div class="perf-metric-label">Racha Diaria</div>
+              <div class="perf-metric-val" id="gym-streak-count">1 Día</div>
+            </div>
           </div>
-          <div class="topbar-badge">
-            ✨ 100% GRATIS • SIN REGISTRO • MODO IMPRIMIBLE
+          <div class="perf-metric-divider"></div>
+          <div class="perf-metric">
+            <span class="perf-metric-icon">🏆</span>
+            <div>
+              <div class="perf-metric-label">Desafíos Resueltos</div>
+              <div class="perf-metric-val" id="gym-solved-count">0</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="gym-perf-controls">
+          <button type="button" class="btn-perf-tool" id="btn-toggle-sound" title="Activar o silenciar síntesis acústica Web Audio API">
+            <span id="sound-icon">🔊</span> <span id="sound-text">Sonido: ON</span>
+          </button>
+          <button type="button" class="btn-perf-tool" id="btn-toggle-zen-mode" title="Modo Pantalla Completa sin distracciones">
+            ⛶ Modo Zen
+          </button>
+        </div>
+      </div>
+
+      <div class="gimnasio-shell" id="gimnasio-mental-app">
+        <!-- HUB CARDS SELECTORAS DE LOS 3 JUEGOS -->
+        <div class="gym-hub-grid" role="tablist">
+          <div class="gym-hub-card active" data-game-tab="sopa" tabindex="0" role="tab" aria-selected="true">
+            <div class="hub-card-header">
+              <span class="hub-card-badge">VOL. I &amp; II • RETO VERBAL</span>
+              <span class="hub-card-icon">🔤</span>
+            </div>
+            <h3 class="hub-card-title">Sopa de Letras Clásica</h3>
+            <p class="hub-card-desc">Búsqueda bidireccional en 8 sentidos con glosario educativo y píldoras vectoriales SVG.</p>
+            <div class="hub-card-tags">
+              <span>8 Sentidos</span>
+              <span>12 Palabras</span>
+              <span>Glosario ℹ️</span>
+            </div>
+          </div>
+
+          <div class="gym-hub-card" data-game-tab="sudoku" tabindex="0" role="tab" aria-selected="false">
+            <div class="hub-card-header">
+              <span class="hub-card-badge">LÓGICA PURA • 9×9</span>
+              <span class="hub-card-icon">🔢</span>
+            </div>
+            <h3 class="hub-card-title">Sudoku Maestro</h3>
+            <p class="hub-card-desc">4 niveles con micro-grilla de notas a lápiz 3×3, auto-candidatos lógicos y tracking de errores.</p>
+            <div class="hub-card-tags">
+              <span>Notas Lápiz</span>
+              <span>Auto-Candidatos</span>
+              <span>4 Dificultades</span>
+            </div>
+          </div>
+
+          <div class="gym-hub-card" data-game-tab="criptograma" tabindex="0" role="tab" aria-selected="false">
+            <div class="hub-card-header">
+              <span class="hub-card-badge">AFORISMOS &amp; FILOSOFÍA</span>
+              <span class="hub-card-icon">📜</span>
+            </div>
+            <h3 class="hub-card-title">Criptograma Asimétrico</h3>
+            <p class="hub-card-desc">Descifra citas y principios reales extraídos de <em>Productividad Asimétrica</em> y <em>Samaniego</em>.</p>
+            <div class="hub-card-tags">
+              <span>Deducción Verbal</span>
+              <span>Libros Reales</span>
+              <span>Teclado Táctil</span>
+            </div>
           </div>
         </div>
 
@@ -303,6 +363,71 @@
                 <div style="display:flex;gap:0.65rem;margin-top:0.35rem;flex-wrap:wrap;">
                   <a href="https://www.amazon.com/dp/B0HD2MY2HN" target="_blank" rel="noopener noreferrer" class="btn-book-amazon" style="flex:0 1 auto;padding:0.55rem 1rem;">
                     📚 Ver Productividad Asimétrica en Amazon ↗
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PANEL JUEGO 3: CRIPTOGRAMA ASIMÉTRICO -->
+        <div id="panel-juego-criptograma" style="display:none;">
+          <div class="gimnasio-toolbar">
+            <div class="toolbar-group">
+              <span class="puzzle-stat-pill">📜 Sabiduría Editorial</span>
+              <span class="puzzle-stat-pill" id="cripto-book-ref">Ruichis Lab • Productividad Asimétrica</span>
+            </div>
+
+            <div class="toolbar-group">
+              <button type="button" class="btn-puzzle-tool" id="btn-cripto-pista" title="Revelar una letra oculta">💡 Pista (+Letra)</button>
+              <button type="button" class="btn-puzzle-tool" id="btn-cripto-verificar" title="Comprobar si hay letras erróneas">✔️ Verificar</button>
+              <button type="button" class="btn-puzzle-tool" id="btn-cripto-nuevo" title="Cargar otra cita editorial">🔄 Siguiente Cita</button>
+              <button type="button" class="btn-puzzle-tool" id="btn-cripto-imprimir" title="Imprimir hoja de criptograma">🖨️ Imprimir</button>
+            </div>
+          </div>
+
+          <div id="cripto-status-msg" class="puzzle-status-bar">
+            Selecciona una casilla y escribe la letra para descifrar el aforismo editorial.
+          </div>
+
+          <div class="cripto-workspace">
+            <div class="cripto-board-frame">
+              <div class="cripto-hint-card">
+                <div class="cripto-hint-header">
+                  <span class="hint-kicker">PISTA CONTEXTUAL</span>
+                  <span class="hint-badge">DEDUCCIÓN EDITORIAL</span>
+                </div>
+                <p id="cripto-hint-text" class="cripto-hint-text">
+                  Principio medular del libro insignia sobre apalancamiento atencional y bloques puros.
+                </p>
+              </div>
+
+              <!-- Casillas de letras y palabras -->
+              <div id="cripto-board-slots" class="cripto-board-slots" aria-label="Tablero de descifrado"></div>
+
+              <!-- Teclado virtual -->
+              <div class="cripto-keyboard-wrapper">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.6rem;">
+                  <span style="font-size:0.75rem;font-weight:700;letter-spacing:0.06em;color:var(--text-muted);text-transform:uppercase;">Teclado de Descifrado (o usa tu teclado físico)</span>
+                  <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-muted);">FLECHAS / RETROCESO</span>
+                </div>
+                <div id="cripto-keyboard" class="cripto-keyboard"></div>
+              </div>
+            </div>
+
+            <div class="cripto-sidebar">
+              <div class="companion-book-callout">
+                <span class="section-kicker" style="margin:0;">LITERATURA EDITORIAL VINCULADA</span>
+                <h4>Productividad Asimétrica &amp; Fábulas Bilingües</h4>
+                <p>
+                  Cada criptograma es un aforismo extraído de nuestros títulos publicados en Amazon KDP. El ejercicio de descifrar agudiza el análisis lingüístico y la deducción lógica.
+                </p>
+                <div style="display:flex;flex-direction:column;gap:0.65rem;margin-top:0.75rem;">
+                  <a href="https://www.amazon.com/dp/B0HD2MY2HN" target="_blank" rel="noopener noreferrer" class="btn-book-amazon" style="padding:0.65rem 1rem;">
+                    📚 Productividad Asimétrica (ASIN: B0HD2MY2HN) ↗
+                  </a>
+                  <a href="https://www.amazon.com/s?k=Ruichis+Lab+Samaniego" target="_blank" rel="noopener noreferrer" class="btn-book-amazon" style="padding:0.65rem 1rem;background:rgba(212,175,55,0.12);border-color:rgba(212,175,55,0.4);color:var(--primary-color);">
+                    📖 Fábulas de Samaniego (Bilingüe) ↗
                   </a>
                 </div>
               </div>

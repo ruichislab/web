@@ -1,7 +1,104 @@
 // src/js/juegos-mentales.js
-// Gimnasio Mental Ruichis Lab — Sopa de Letras (8 Direcciones + SVG Pill Overlay) & Sudoku Maestro 9x9
+// Gimnasio Mental Ruichis Lab — Suite Cognitiva: Sopa de Letras (8 Direcciones), Sudoku Maestro 9x9 & Criptograma Asimétrico
 
 (function () {
+  // =========================================================================
+  // SISTEMA DE AUDIO HÁPTICO (WEB AUDIO API SINTETIZADA NATIVA)
+  // =========================================================================
+  const GymAudio = {
+    ctx: null,
+    enabled: true,
+    init() {
+      const saved = localStorage.getItem("ruichis_gym_sound");
+      if (saved === "off") this.enabled = false;
+      try {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (AudioCtx) this.ctx = new AudioCtx();
+      } catch (e) {
+        this.enabled = false;
+      }
+    },
+    toggle() {
+      this.enabled = !this.enabled;
+      localStorage.setItem("ruichis_gym_sound", this.enabled ? "on" : "off");
+      return this.enabled;
+    },
+    playTone(freq, type = "sine", duration = 0.08, gainVal = 0.04) {
+      if (!this.enabled || !this.ctx) return;
+      try {
+        if (this.ctx.state === "suspended") this.ctx.resume();
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+        gain.gain.setValueAtTime(gainVal, this.ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start();
+        osc.stop(this.ctx.currentTime + duration);
+      } catch (e) {}
+    },
+    click() { this.playTone(480, "sine", 0.03, 0.025); },
+    cellSelect() { this.playTone(540, "sine", 0.04, 0.03); },
+    foundWord() {
+      this.playTone(659.25, "triangle", 0.1, 0.07);
+      setTimeout(() => this.playTone(880, "triangle", 0.18, 0.08), 85);
+    },
+    victory() {
+      const notes = [523.25, 659.25, 783.99, 1046.50];
+      notes.forEach((n, i) => setTimeout(() => this.playTone(n, "triangle", 0.28, 0.09), i * 110));
+    },
+    error() { this.playTone(190, "sawtooth", 0.12, 0.04); }
+  };
+
+  // =========================================================================
+  // SISTEMA DE RACHAS Y ESTADÍSTICAS PERSISTENTES (LOCALSTORAGE)
+  // =========================================================================
+  const GymStats = {
+    load() {
+      try {
+        const raw = localStorage.getItem("ruichis_gym_stats");
+        const data = raw ? JSON.parse(raw) : {};
+        return {
+          solved: data.solved || 0,
+          streak: data.streak || 1,
+          lastDate: data.lastDate || new Date().toISOString().slice(0, 10),
+          wordsTotal: data.wordsTotal || 0
+        };
+      } catch (e) {
+        return { solved: 0, streak: 1, lastDate: "", wordsTotal: 0 };
+      }
+    },
+    save(stats) {
+      try {
+        localStorage.setItem("ruichis_gym_stats", JSON.stringify(stats));
+      } catch (e) {}
+    },
+    recordSolve() {
+      const s = this.load();
+      const today = new Date().toISOString().slice(0, 10);
+      s.solved += 1;
+      if (s.lastDate) {
+        const diffDays = Math.floor((new Date(today) - new Date(s.lastDate)) / (1000 * 60 * 60 * 24));
+        if (diffDays === 1) s.streak += 1;
+        else if (diffDays > 1) s.streak = 1;
+      }
+      s.lastDate = today;
+      this.save(s);
+      return s;
+    },
+    recordWordFound() {
+      const s = this.load();
+      s.wordsTotal = (s.wordsTotal || 0) + 1;
+      this.save(s);
+      return s;
+    }
+  };
+
+  // =========================================================================
+  // TEMAS DE SOPA DE LETRAS CON GLOSARIO EDUCATIVO
+  // =========================================================================
   const TEMAS_SOPA = {
     cultura_historia: {
       nombre: "Vol. I: Cultura General — Historia y Civilizaciones",
@@ -14,7 +111,21 @@
         "MESOPOTAMIA", "ALEJANDRIA", "RENACIMIENTO", "IMPRENTA",
         "ACROPOLIS", "FILOSOFIA", "CARTAGO", "BIZANCIO",
         "CRONICA", "MANUSCRITO", "DINASTIA", "ORACULO"
-      ]
+      ],
+      glosario: {
+        MESOPOTAMIA: "Cuna de la escritura cuneiforme y los primeros códigos de leyes de la humanidad.",
+        ALEJANDRIA: "Hogar de la mítica biblioteca y epicentro del saber clásico helenístico.",
+        RENACIMIENTO: "Movimiento cultural que restauró el humanismo, el arte y la ciencia empírica.",
+        IMPRENTA: "Revolución tipográfica de Gutenberg que multiplicó el acceso al conocimiento.",
+        ACROPOLIS: "Cumbre fortificada de Atenas y emblema de la democracia clásica occidental.",
+        FILOSOFIA: "Amor por la sabiduría: examen riguroso de la verdad, la ética y la lógica.",
+        CARTAGO: "Gran potencia mercantil del Mediterráneo y rival histórica de la República Romana.",
+        BIZANCIO: "Imperio Romano de Oriente que preservó el derecho y la herencia clásica por mil años.",
+        CRONICA: "Registro testimonial ordenado en el tiempo que preserva los hechos históricos.",
+        MANUSCRITO: "Documento redactado o iluminado a mano antes del surgimiento de la imprenta.",
+        DINASTIA: "Cadena de gobernantes de un mismo linaje que definieron eras históricas.",
+        ORACULO: "Centro sagrado donde se consultaba la voluntad divina en santuarios como Delfos."
+      }
     },
     cultura_arte: {
       nombre: "Vol. I: Cultura General — Arte, Literatura y Filosofía",
@@ -27,7 +138,21 @@
         "VANGUARDIA", "BARROCO", "SIMBOLISMO", "METAFORA",
         "SONETO", "ESCULTURA", "PERSPECTIVA", "LIENZO",
         "ANTOLOGIA", "EPISTOLA", "ESTETICA", "RETABLO"
-      ]
+      ],
+      glosario: {
+        VANGUARDIA: "Corrientes rupturistas que revolucionaron las formas artísticas en el siglo XX.",
+        BARROCO: "Estilo caracterizado por el claroscuro, el dinamismo y la tensión dramática.",
+        SIMBOLISMO: "Búsqueda poética de correspondencias sensoriales más allá de la apariencia visible.",
+        METAFORA: "Traslación de sentido entre dos conceptos para iluminar una idea oculta.",
+        SONETO: "Estructura poética clásica de catorce versos endecasílabos en dos cuartetos y dos tercetos.",
+        ESCULTURA: "Modelado tridimensional en piedra, madera o bronce que desafía al espacio.",
+        PERSPECTIVA: "Geometría visual desarrollada en el Renacimiento para recrear profundidad espacial.",
+        LIENZO: "Soporte textil tensado para óleo o acrílico fundamental en la pintura de caballete.",
+        ANTOLOGIA: "Selección curada de las mejores piezas literarias de una época o autor.",
+        EPISTOLA: "Composición literaria en forma de carta con propósito doctrinal o reflexivo.",
+        ESTETICA: "Rama de la filosofía que estudia la belleza, el arte y la percepción sensorial.",
+        RETABLO: "Estructura artística monumental situada detrás del altar en templos históricos."
+      }
     },
     biologia_celula: {
       nombre: "Vol. II: Biología — Célula, Genética y Vida Molecular",
@@ -40,7 +165,21 @@
         "MITOCONDRIA", "RIBOSOMA", "CROMOSOMA", "GENOMA",
         "ENZIMA", "NUCLEOTIDO", "MEIOSIS", "PROTEINA",
         "SINAPSIS", "CLOROPLASTO", "CITOPLASMA", "OSMOSIS"
-      ]
+      ],
+      glosario: {
+        MITOCONDRIA: "Orgánulo celular responsable de la respiración celular y la generación de ATP.",
+        RIBOSOMA: "Complejo molecular encargado de la síntesis de proteínas a partir del ARNm.",
+        CROMOSOMA: "Estructura organizada de ADN y proteínas que contiene la información hereditaria.",
+        GENOMA: "Conjunto completo de instrucciones genéticas contenidas en un organismo.",
+        ENZIMA: "Catalizador proteico que acelera millones de veces las reacciones químicas vitales.",
+        NUCLEOTIDO: "Unidad monomérica fundamental del ADN y ARN formada por base, azúcar y fosfato.",
+        MEIOSIS: "División celular que reduce a la mitad el número de cromosomas para formar gametos.",
+        PROTEINA: "Macromolécula compuesta de aminoácidos con funciones estructurales y enzimáticas.",
+        SINAPSIS: "Unión neuromuscular o neuronal por donde viaja el impulso eléctrico o químico.",
+        CLOROPLASTO: "Orgánulo de células vegetales donde se realiza la fotosíntesis con clorofila.",
+        CITOPLASMA: "Fluido celular que alberga los orgánulos y donde ocurren rutas metabólicas clave.",
+        OSMOSIS: "Difusión pasiva del agua a través de una membrana semipermeable hacia mayor concentración."
+      }
     },
     biologia_ecosistemas: {
       nombre: "Vol. II: Biología — Botánica, Zoología y Evolución",
@@ -53,7 +192,21 @@
         "FOTOSINTESIS", "BIODIVERSIDAD", "SIMBIOSIS", "TAXONOMIA",
         "ENDEMICO", "POLINIZACION", "FILOGENIA", "BIOMA",
         "ADAPTACION", "MICELIO", "ESTOMA", "ESPECIE"
-      ]
+      ],
+      glosario: {
+        FOTOSINTESIS: "Conversión de energía lumínica en energía química sintetizando glucosa a partir de CO2.",
+        BIODIVERSIDAD: "Variedad de seres vivos y ecosistemas que sostienen el equilibrio planetario.",
+        SIMBIOSIS: "Asociación estrecha y continuada entre organismos de distintas especies biológicas.",
+        TAXONOMIA: "Ciencia que clasifica y nombra a los seres vivos según parentesco y linaje.",
+        ENDEMICO: "Especie que habita exclusivamente en una región geográfica concreta.",
+        POLINIZACION: "Transferencia de polen desde los estambres hasta el estigma de las flores.",
+        FILOGENIA: "Historia del desarrollo evolutivo y relaciones de parentesco entre linajes.",
+        BIOMA: "Gran región bioclimática definida por su flora, fauna y clima dominante.",
+        ADAPTACION: "Rasgo heredable que incrementa la probabilidad de supervivencia y reproducción.",
+        MICELIO: "Red subterránea filamentosa de los hongos que nutre los suelos y conecta bosques.",
+        ESTOMA: "Poro microscópico en hojas para el intercambio de gases y transpiración.",
+        ESPECIE: "Grupo de poblaciones naturales cuyos individuos pueden cruzarse y dejar descendencia fértil."
+      }
     },
     productividad_sistemas: {
       nombre: "Especial: Productividad Asimétrica & Foco Profundo",
@@ -66,11 +219,24 @@
         "ASIMETRIA", "ALGORITMO", "HEURISTICA", "SISTEMAS",
         "ATENCION", "PALANCA", "EJECUCION", "MODULAR",
         "AISLAMIENTO", "SINAPSIS", "IMPACTO", "CLARIDAD"
-      ]
+      ],
+      glosario: {
+        ASIMETRIA: "Principio de apalancamiento: el 20% de las acciones críticas genera el 80% del impacto.",
+        ALGORITMO: "Conjunto sistemático de reglas finitas para resolver problemas complejos con precisión.",
+        HEURISTICA: "Atajo mental práctico que acelera la toma de decisiones efectivas bajo incertidumbre.",
+        SISTEMAS: "Arquitectura de procesos automatizados que elimina la fricción y el desgaste de voluntad.",
+        ATENCION: "El recurso cognitivo más escaso: foco indiviso como motor de excelencia.",
+        PALANCA: "Multiplicador de fuerza tecnológica para generar resultados exponenciales con menor esfuerzo.",
+        EJECUCION: "La materialización disciplinada de ideas en bloques ininterrumpidos de trabajo puro.",
+        MODULAR: "Diseño desacoplado donde cada componente puede evolucionar sin romper el conjunto.",
+        AISLAMIENTO: "Erradicación radical de notificaciones y dispersión para proteger el estado de flujo.",
+        SINAPSIS: "Conexión neuronal que se consolida mediante la práctica sostenida y el descanso estratégico.",
+        IMPACTO: "Medida tangible del valor producido frente a la actividad superficial reactiva.",
+        CLARIDAD: "Estado mental lúcido alcanzado al simplificar objetivos a lo estrictamente esencial."
+      }
     }
   };
 
-  // Alias de compatibilidad
   TEMAS_SOPA.ia_cibernetica = TEMAS_SOPA.productividad_sistemas;
 
   const DIRECCIONES_8 = [
@@ -99,15 +265,60 @@
     { stroke: "rgba(217, 119, 6, 0.48)", cell: "rgba(217, 119, 6, 0.24)", dot: "#D97706" }
   ];
 
+  // =========================================================================
+  // BIBLIOTECA DE CRIPTOGRAMAS ASIMÉTRICOS (JUEGO III)
+  // =========================================================================
+  const CRIPTOGRAMAS = [
+    {
+      id: "foco-puro",
+      libro: "Productividad Asimétrica (ASIN: B0HD2MY2HN)",
+      autor: "Ruichis Lab",
+      frase: "EL FOCO ASIMETRICO COMPRIME UNA SEMANA EN DOS HORAS DE EJECUCION PURA",
+      pista: "Principio medular del libro insignia sobre apalancamiento atencional y bloques puros."
+    },
+    {
+      id: "sistema-libera",
+      libro: "Productividad Asimétrica (ASIN: B0HD2MY2HN)",
+      autor: "Ruichis Lab",
+      frase: "NO CONFUNDAS VELOCIDAD CON APALANCAMIENTO EL SISTEMA MODULAR LIBERA",
+      pista: "Diferencia crítica entre el esfuerzo ciego y la arquitectura de sistemas duraderos."
+    },
+    {
+      id: "samaniego-trampa",
+      libro: "Learn Spanish / Aprende Inglés con Samaniego",
+      autor: "Félix María de Samaniego • Ruichis Lab",
+      frase: "QUIEN DE TRAMPAS SE VALE EN SU PROPIO LAZO SUELE CAER",
+      pista: "Moraleja clásica sobre la integridad de carácter y la justicia poética."
+    },
+    {
+      id: "perseverancia-logica",
+      libro: "100 Grandes Sopas de Letras (Colección Letras y Retos)",
+      autor: "Ruichis Lab",
+      frase: "LA PERSISTENCIA EN EL LABERINTO SUPERA SIEMPRE A LA PRISA DESORDENADA",
+      pista: "Filosofía del entrenamiento mental: paciencia analítica para descubrir patrones ocultos."
+    },
+    {
+      id: "moneda-atencion",
+      libro: "Productividad Asimétrica (ASIN: B0HD2MY2HN)",
+      autor: "Ruichis Lab",
+      frase: "LA ATENCION ES LA MONEDA MAS VALIOSA DEL SIGLO NO LA MALGASTES EN RUIDO",
+      pista: "Sentencia sobre la soberanía mental frente a los micro-estímulos y la dispersión."
+    }
+  ];
+
+  // =========================================================================
+  // CLASE PRINCIPAL: GIMNASIO MENTAL
+  // =========================================================================
   class GimnasioMental {
     constructor() {
-      this.activeGame = "sopa"; // 'sopa' | 'sudoku'
+      this.activeGame = "sopa"; // 'sopa' | 'sudoku' | 'criptograma'
+      GymAudio.init();
 
       // Estado Sopa de Letras
       this.sopaTemaActual = "cultura_historia";
       this.sopaSize = 13;
       this.sopaGrid = [];
-      this.sopaPlacements = []; // { word, cells: [{r,c}], dir, found, colorIndex }
+      this.sopaPlacements = [];
       this.sopaFoundCount = 0;
       this.sopaSelecting = false;
       this.sopaStartCell = null;
@@ -122,7 +333,7 @@
       this.sudokuSolution = [];
       this.sudokuInitial = [];
       this.sudokuBoard = [];
-      this.sudokuNotes = []; // 9x9 de Sets
+      this.sudokuNotes = [];
       this.sudokuSelected = { r: 0, c: 0 };
       this.sudokuNotesMode = false;
       this.sudokuHistory = [];
@@ -130,23 +341,77 @@
       this.sudokuTimerId = null;
       this.sudokuMistakes = 0;
       this.sudokuCompleted = false;
+
+      // Estado Criptograma
+      this.criptoIndex = 0;
+      this.criptoGuess = [];
+      this.criptoSelectedIndex = 0;
+      this.criptoSolved = false;
     }
 
     init() {
       const container = document.getElementById("gimnasio-mental-app");
       if (!container) return;
 
-      this.bindTabSwitching();
+      this.updateStatsDisplay();
+      this.bindAudioToggle();
+      this.bindZenMode();
+      this.bindHubSwitching();
       this.initSopaGame();
       this.initSudokuGame();
+      this.initCriptogramaGame();
     }
 
-    bindTabSwitching() {
-      const tabButtons = document.querySelectorAll("[data-game-tab]");
-      tabButtons.forEach(btn => {
+    updateStatsDisplay() {
+      const stats = GymStats.load();
+      const elSolved = document.getElementById("gym-solved-count");
+      const elStreak = document.getElementById("gym-streak-count");
+      if (elSolved) elSolved.textContent = stats.solved;
+      if (elStreak) elStreak.textContent = `${stats.streak} ${stats.streak === 1 ? "Día" : "Días"}`;
+    }
+
+    bindAudioToggle() {
+      const btn = document.getElementById("btn-toggle-sound");
+      if (!btn) return;
+      const updateLabel = () => {
+        const icon = document.getElementById("sound-icon");
+        const text = document.getElementById("sound-text");
+        if (icon) icon.textContent = GymAudio.enabled ? "🔊" : "🔇";
+        if (text) text.textContent = GymAudio.enabled ? "Sonido: ON" : "Sonido: OFF";
+      };
+      updateLabel();
+      btn.addEventListener("click", () => {
+        GymAudio.toggle();
+        updateLabel();
+        if (GymAudio.enabled) GymAudio.click();
+      });
+    }
+
+    bindZenMode() {
+      const btn = document.getElementById("btn-toggle-zen-mode");
+      const app = document.getElementById("gimnasio-mental-app");
+      if (!btn || !app) return;
+
+      btn.addEventListener("click", () => {
+        const isZen = app.classList.toggle("zen-mode");
+        btn.innerHTML = isZen ? "✕ Salir de Modo Zen" : "⛶ Modo Zen";
+        btn.classList.toggle("active", isZen);
+        if (isZen) {
+          document.body.style.overflow = "hidden";
+          app.scrollIntoView({ behavior: "smooth", block: "start" });
+        } else {
+          document.body.style.overflow = "";
+        }
+      });
+    }
+
+    bindHubSwitching() {
+      const hubCards = document.querySelectorAll("[data-game-tab]");
+      hubCards.forEach(btn => {
         btn.addEventListener("click", () => {
           const target = btn.getAttribute("data-game-tab");
           this.switchGame(target);
+          GymAudio.click();
         });
       });
     }
@@ -160,27 +425,29 @@
 
       const sopaPanel = document.getElementById("panel-juego-sopa");
       const sudokuPanel = document.getElementById("panel-juego-sudoku");
+      const criptoPanel = document.getElementById("panel-juego-criptograma");
 
-      if (sopaPanel && sudokuPanel) {
-        if (gameType === "sopa") {
-          sopaPanel.style.display = "block";
-          sudokuPanel.style.display = "none";
-          if (options.tema && TEMAS_SOPA[options.tema]) {
-            const select = document.getElementById("sopa-tema-select");
-            if (select) select.value = options.tema;
-            this.sopaTemaActual = options.tema;
-            this.generarNuevaSopa();
-          }
-        } else {
-          sopaPanel.style.display = "none";
-          sudokuPanel.style.display = "block";
-          if (options.dificultad) {
-            const diffBtns = document.querySelectorAll("[data-sudoku-diff]");
-            diffBtns.forEach(b => b.classList.toggle("active", b.getAttribute("data-sudoku-diff") === options.dificultad));
-            this.sudokuDifficulty = options.dificultad;
-            this.generarNuevoSudoku();
-          }
+      if (sopaPanel) sopaPanel.style.display = gameType === "sopa" ? "block" : "none";
+      if (sudokuPanel) sudokuPanel.style.display = gameType === "sudoku" ? "block" : "none";
+      if (criptoPanel) criptoPanel.style.display = gameType === "criptograma" ? "block" : "none";
+
+      if (gameType === "sopa") {
+        if (options.tema && TEMAS_SOPA[options.tema]) {
+          const select = document.getElementById("sopa-tema-select");
+          if (select) select.value = options.tema;
+          this.sopaTemaActual = options.tema;
+          this.generarNuevaSopa();
         }
+        setTimeout(() => this.renderSopaSvgOverlay(), 50);
+      } else if (gameType === "sudoku") {
+        if (options.dificultad) {
+          const diffBtns = document.querySelectorAll("[data-sudoku-diff]");
+          diffBtns.forEach(b => b.classList.toggle("active", b.getAttribute("data-sudoku-diff") === options.dificultad));
+          this.sudokuDifficulty = options.dificultad;
+          this.generarNuevoSudoku();
+        }
+      } else if (gameType === "criptograma") {
+        this.renderCriptograma();
       }
     }
 
@@ -193,11 +460,15 @@
         selectTema.addEventListener("change", (e) => {
           this.sopaTemaActual = e.target.value;
           this.generarNuevaSopa();
+          GymAudio.click();
         });
       }
 
       const btnNueva = document.getElementById("btn-sopa-nueva");
-      if (btnNueva) btnNueva.addEventListener("click", () => this.generarNuevaSopa());
+      if (btnNueva) btnNueva.addEventListener("click", () => {
+        this.generarNuevaSopa();
+        GymAudio.click();
+      });
 
       const btnPista = document.getElementById("btn-sopa-pista");
       if (btnPista) btnPista.addEventListener("click", () => this.darPistaSopa());
@@ -208,10 +479,15 @@
       const btnImprimir = document.getElementById("btn-sopa-imprimir");
       if (btnImprimir) btnImprimir.addEventListener("click", () => this.imprimirPasatiempoActual("sopa"));
 
-      // Eventos globales para finalizar arrastre fuera de la cuadrícula
       window.addEventListener("mouseup", () => {
         if (this.sopaSelecting) {
           this.finalizarSeleccionSopa();
+        }
+      });
+
+      window.addEventListener("resize", () => {
+        if (this.activeGame === "sopa") {
+          this.renderSopaSvgOverlay();
         }
       });
 
@@ -223,7 +499,6 @@
       this.sopaSize = config.gridSize || 13;
       const N = this.sopaSize;
 
-      // Inicializar matriz vacía
       this.sopaGrid = Array.from({ length: N }, () => Array(N).fill(""));
       this.sopaPlacements = [];
       this.sopaFoundCount = 0;
@@ -231,7 +506,6 @@
       this.sopaClickStart = null;
       this.sopaCurrentPath = [];
 
-      // Ordenar palabras de mayor a menor longitud para colocación óptima
       const palabrasOrdenadas = [...config.palabras].sort((a, b) => b.length - a.length);
 
       palabrasOrdenadas.forEach((palabra, idx) => {
@@ -241,7 +515,6 @@
         }
       });
 
-      // Rellenar celdas vacías con letras ponderadas del español
       const alfabeto = "AAABCCDEEEFGHIIIJKLMNNOOOPQRRSSSTTUUVWXYZ";
       for (let r = 0; r < N; r++) {
         for (let c = 0; c < N; c++) {
@@ -251,7 +524,6 @@
         }
       }
 
-      // Reiniciar temporizador
       this.iniciarTimerSopa();
       this.renderSopaUI(config);
       this.actualizarPreviewPalabraSopa("");
@@ -261,8 +533,6 @@
     colocarPalabraBalanceada(palabra, idx) {
       const N = this.sopaSize;
       const len = palabra.length;
-
-      // Rotar direcciones preferidas para balancear los 8 sentidos como en el libro KDP
       const dirsShuffled = [...DIRECCIONES_8].sort(() => Math.random() - 0.5);
 
       let mejoresCandidatos = [];
@@ -299,18 +569,14 @@
 
       if (mejoresCandidatos.length === 0) return false;
 
-      // Priorizar candidatos con 1 o 2 intersecciones para hacer el tablero más interesante
-      mejoresCandidatos.sort((a, b) => {
-        const scoreA = (a.intersecciones > 0 ? 10 : 0) + Math.random() * 6;
-        const scoreB = (b.intersecciones > 0 ? 10 : 0) + Math.random() * 6;
-        return scoreB - scoreA;
-      });
+      mejoresCandidatos.sort((a, b) => b.intersecciones - a.intersecciones);
+      const topPool = mejoresCandidatos.slice(0, 4);
+      const elegida = topPool[Math.floor(Math.random() * topPool.length)];
 
-      const elegido = mejoresCandidatos[0];
       const cells = [];
       for (let i = 0; i < len; i++) {
-        const nr = elegido.r + elegido.dir.dr * i;
-        const nc = elegido.c + elegido.dir.dc * i;
+        const nr = elegida.r + elegida.dir.dr * i;
+        const nc = elegida.c + elegida.dir.dc * i;
         this.sopaGrid[nr][nc] = palabra[i];
         cells.push({ r: nr, c: nc });
       }
@@ -318,7 +584,7 @@
       this.sopaPlacements.push({
         word: palabra,
         cells,
-        dir: elegido.dir.nombre,
+        dir: elegida.dir,
         found: false,
         colorIndex: idx % COLORES_PALABRAS.length
       });
@@ -328,502 +594,509 @@
 
     colocarPalabraForzada(palabra, idx) {
       const N = this.sopaSize;
-      const len = Math.min(palabra.length, N);
-      const r = idx % N;
-      const cells = [];
-      for (let i = 0; i < len; i++) {
-        this.sopaGrid[r][i] = palabra[i];
-        cells.push({ r, c: i });
+      const len = palabra.length;
+      for (let r = 0; r < N; r++) {
+        for (let c = 0; c <= N - len; c++) {
+          let libre = true;
+          for (let i = 0; i < len; i++) {
+            if (this.sopaGrid[r][c + i] !== "" && this.sopaGrid[r][c + i] !== palabra[i]) {
+              libre = false;
+              break;
+            }
+          }
+          if (libre) {
+            const cells = [];
+            for (let i = 0; i < len; i++) {
+              this.sopaGrid[r][c + i] = palabra[i];
+              cells.push({ r, c: c + i });
+            }
+            this.sopaPlacements.push({
+              word: palabra,
+              cells,
+              dir: DIRECCIONES_8[0],
+              found: false,
+              colorIndex: idx % COLORES_PALABRAS.length
+            });
+            return true;
+          }
+        }
       }
-      this.sopaPlacements.push({
-        word: palabra,
-        cells,
-        dir: "Horizontal →",
-        found: false,
-        colorIndex: idx % COLORES_PALABRAS.length
-      });
+      return false;
     }
 
     iniciarTimerSopa() {
       if (this.sopaTimerId) clearInterval(this.sopaTimerId);
       this.sopaSeconds = 0;
-      this.actualizarTimerSopaDOM();
+      const timerEl = document.getElementById("sopa-timer");
+      if (timerEl) timerEl.textContent = "00:00";
+
       this.sopaTimerId = setInterval(() => {
-        if (this.sopaFoundCount < this.sopaPlacements.length) {
-          this.sopaSeconds++;
-          this.actualizarTimerSopaDOM();
-        }
+        this.sopaSeconds++;
+        const mins = String(Math.floor(this.sopaSeconds / 60)).padStart(2, "0");
+        const secs = String(this.sopaSeconds % 60).padStart(2, "0");
+        if (timerEl) timerEl.textContent = `${mins}:${secs}`;
       }, 1000);
     }
 
-    actualizarTimerSopaDOM() {
-      const el = document.getElementById("sopa-timer");
-      if (el) {
-        const mins = String(Math.floor(this.sopaSeconds / 60)).padStart(2, "0");
-        const secs = String(this.sopaSeconds % 60).padStart(2, "0");
-        el.textContent = `${mins}:${secs}`;
+    renderSopaUI(config) {
+      const gridBoard = document.getElementById("sopa-grid-board");
+      const wordList = document.getElementById("sopa-word-list");
+      const descEl = document.getElementById("sopa-tema-descripcion");
+      const counterEl = document.getElementById("sopa-found-counter");
+      const fillEl = document.getElementById("sopa-progress-fill");
+      const statusEl = document.getElementById("sopa-status-msg");
+      const libroTitEl = document.getElementById("sopa-libro-vinculado-titulo");
+      const libroLinkEl = document.getElementById("sopa-libro-vinculado-link");
+
+      if (descEl) descEl.textContent = config.descripcion;
+      if (counterEl) counterEl.textContent = `0 / ${config.palabras.length}`;
+      if (fillEl) fillEl.style.width = "0%";
+      if (statusEl) {
+        statusEl.className = "puzzle-status-bar";
+        statusEl.innerHTML = "Arrastra sobre las letras o haz clic en la primera y última letra de cada palabra (8 direcciones).";
+      }
+      if (libroTitEl) libroTitEl.textContent = config.libroTitulo;
+      if (libroLinkEl) libroLinkEl.href = config.libroUrl;
+
+      if (wordList) {
+        wordList.innerHTML = config.palabras
+          .map((p, idx) => {
+            const def = config.glosario && config.glosario[p] ? config.glosario[p] : "";
+            return `
+            <li class="sopa-word-chip" data-word="${p}" title="${def ? def : 'Buscar esta palabra en el tablero'}">
+              <span class="chip-bullet">◆</span>
+              <span class="chip-text">${p}</span>
+              ${def ? `<button type="button" class="btn-word-info" data-word-def="${def}" aria-label="Ver significado">ℹ️</button>` : ""}
+            </li>
+          `;
+          })
+          .join("");
+
+        wordList.querySelectorAll(".btn-word-info").forEach(btn => {
+          btn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            const def = btn.getAttribute("data-word-def");
+            alert(`📖 Nota Editorial Ruichis Lab:\n\n${def}`);
+          });
+        });
+      }
+
+      if (gridBoard) {
+        gridBoard.style.gridTemplateColumns = `repeat(${this.sopaSize}, 1fr)`;
+        gridBoard.style.gridTemplateRows = `repeat(${this.sopaSize}, 1fr)`;
+
+        let cellsHtml = "";
+        for (let r = 0; r < this.sopaSize; r++) {
+          for (let c = 0; c < this.sopaSize; c++) {
+            cellsHtml += `<div class="sopa-cell" data-r="${r}" data-c="${c}">${this.sopaGrid[r][c]}</div>`;
+          }
+        }
+        gridBoard.innerHTML = cellsHtml;
+
+        this.bindSopaGridInteractions(gridBoard);
       }
     }
 
-    renderSopaUI(config) {
-      const descEl = document.getElementById("sopa-tema-descripcion");
-      if (descEl) descEl.textContent = config.descripcion;
+    bindSopaGridInteractions(gridBoard) {
+      const getCoords = (el) => ({
+        r: parseInt(el.getAttribute("data-r"), 10),
+        c: parseInt(el.getAttribute("data-c"), 10)
+      });
 
-      const bookBannerTitle = document.getElementById("sopa-libro-vinculado-titulo");
-      const bookBannerLink = document.getElementById("sopa-libro-vinculado-link");
-      if (bookBannerTitle) bookBannerTitle.textContent = config.libroTitulo;
-      if (bookBannerLink) bookBannerLink.href = config.libroUrl;
+      // Eventos Mouse
+      gridBoard.querySelectorAll(".sopa-cell").forEach(cell => {
+        cell.addEventListener("mousedown", (e) => {
+          e.preventDefault();
+          const coords = getCoords(cell);
+          this.iniciarSeleccionSopa(coords);
+          GymAudio.cellSelect();
+        });
 
-      const statusEl = document.getElementById("sopa-status-msg");
-      if (statusEl) {
-        statusEl.textContent = "Arrastra sobre las letras o haz clic en la primera y última letra de cada palabra (8 direcciones).";
-        statusEl.className = "puzzle-status-bar";
-      }
+        cell.addEventListener("mouseenter", () => {
+          if (this.sopaSelecting) {
+            const coords = getCoords(cell);
+            this.actualizarCaminoSopa(coords);
+          }
+        });
 
-      // Renderizar cuadrícula
-      const gridEl = document.getElementById("sopa-grid-board");
-      if (!gridEl) return;
+        cell.addEventListener("click", () => {
+          const coords = getCoords(cell);
+          this.manejarClickSopa(coords);
+        });
+      });
 
-      gridEl.style.gridTemplateColumns = `repeat(${this.sopaSize}, 1fr)`;
-      gridEl.innerHTML = "";
-
-      for (let r = 0; r < this.sopaSize; r++) {
-        for (let c = 0; c < this.sopaSize; c++) {
-          const cell = document.createElement("div");
-          cell.className = "sopa-cell";
-          cell.dataset.r = r;
-          cell.dataset.c = c;
-          cell.textContent = this.sopaGrid[r][c];
-
-          // Mouse events
-          cell.addEventListener("mousedown", (e) => {
-            e.preventDefault();
-            this.iniciarSeleccionSopa(r, c);
-          });
-
-          cell.addEventListener("mouseenter", () => {
-            if (this.sopaSelecting) {
-              this.actualizarSeleccionSopa(r, c);
-            } else if (this.sopaClickStart) {
-              // Vista previa en modo clic-inicio -> clic-fin al mover el cursor
-              const previewPath = this.calcularCaminoRecto(this.sopaClickStart.r, this.sopaClickStart.c, r, c);
-              this.sopaCurrentPath = previewPath;
-              this.pintarSeleccionTemporalSopa();
-            }
-          });
-
-          // Click inicio-fin alternativo para máxima comodidad
-          cell.addEventListener("click", () => {
-            this.manejarClickCeldaSopa(r, c);
-          });
-
-          gridEl.appendChild(cell);
-        }
-      }
-
-      // Soporte Touch móvil en el tablero
-      gridEl.ontouchstart = (e) => {
-        if (e.touches.length !== 1) return;
+      // Soporte Touch
+      gridBoard.addEventListener("touchstart", (e) => {
         const touch = e.touches[0];
         const target = document.elementFromPoint(touch.clientX, touch.clientY);
         if (target && target.classList.contains("sopa-cell")) {
           e.preventDefault();
-          const r = parseInt(target.dataset.r, 10);
-          const c = parseInt(target.dataset.c, 10);
-          this.iniciarSeleccionSopa(r, c);
+          this.iniciarSeleccionSopa(getCoords(target));
+          GymAudio.cellSelect();
         }
-      };
+      }, { passive: false });
 
-      gridEl.ontouchmove = (e) => {
-        if (!this.sopaSelecting || e.touches.length !== 1) return;
-        e.preventDefault();
+      gridBoard.addEventListener("touchmove", (e) => {
+        if (!this.sopaSelecting) return;
         const touch = e.touches[0];
         const target = document.elementFromPoint(touch.clientX, touch.clientY);
         if (target && target.classList.contains("sopa-cell")) {
-          const r = parseInt(target.dataset.r, 10);
-          const c = parseInt(target.dataset.c, 10);
-          this.actualizarSeleccionSopa(r, c);
+          this.actualizarCaminoSopa(getCoords(target));
         }
-      };
+      }, { passive: false });
 
-      gridEl.ontouchend = () => {
+      gridBoard.addEventListener("touchend", () => {
         if (this.sopaSelecting) {
           this.finalizarSeleccionSopa();
         }
-      };
-
-      this.renderListaPalabrasSopa();
-      this.actualizarProgresoSopa();
+      });
     }
 
-    iniciarSeleccionSopa(r, c) {
+    iniciarSeleccionSopa(coords) {
       this.sopaSelecting = true;
-      this.sopaStartCell = { r, c };
-      this.sopaCurrentPath = [{ r, c }];
-      this.pintarSeleccionTemporalSopa();
+      this.sopaStartCell = coords;
+      this.sopaCurrentPath = [coords];
+      this.resaltarCaminoTemporal();
     }
 
-    actualizarSeleccionSopa(r, c) {
+    actualizarCaminoSopa(endCoords) {
       if (!this.sopaStartCell) return;
-      const path = this.calcularCaminoRecto(this.sopaStartCell.r, this.sopaStartCell.c, r, c);
-      if (path.length > 0) {
-        this.sopaCurrentPath = path;
-        this.pintarSeleccionTemporalSopa();
-      }
-    }
+      const dr = endCoords.r - this.sopaStartCell.r;
+      const dc = endCoords.c - this.sopaStartCell.c;
 
-    manejarClickCeldaSopa(r, c) {
-      if (!this.sopaClickStart) {
-        this.sopaClickStart = { r, c };
-        const cellEl = this.obtenerCeldaSopaDOM(r, c);
-        if (cellEl) cellEl.classList.add("click-anchor");
-        this.actualizarPreviewPalabraSopa(this.sopaGrid[r][c]);
-      } else {
-        const start = this.sopaClickStart;
-        document.querySelectorAll(".sopa-cell.click-anchor").forEach(el => el.classList.remove("click-anchor"));
-        this.sopaClickStart = null;
-        if (start.r === r && start.c === c) {
-          this.sopaCurrentPath = [];
-          this.pintarSeleccionTemporalSopa();
-          return;
-        }
+      const stepR = dr === 0 ? 0 : dr > 0 ? 1 : -1;
+      const stepC = dc === 0 ? 0 : dc > 0 ? 1 : -1;
 
-        const path = this.calcularCaminoRecto(start.r, start.c, r, c);
-        if (path.length > 1) {
-          this.sopaCurrentPath = path;
-          this.verificarCaminoSopa();
-        }
-        this.sopaCurrentPath = [];
-        this.pintarSeleccionTemporalSopa();
-      }
-    }
+      const lenR = Math.abs(dr);
+      const lenC = Math.abs(dc);
 
-    calcularCaminoRecto(r1, c1, r2, c2) {
-      const dr = r2 - r1;
-      const dc = c2 - c1;
-      if (dr === 0 && dc === 0) return [{ r: r1, c: c1 }];
+      const esValido = dr === 0 || dc === 0 || lenR === lenC;
 
-      const absR = Math.abs(dr);
-      const absC = Math.abs(dc);
+      if (!esValido) return;
 
-      let stepR = 0;
-      let stepC = 0;
-      let steps = 0;
-
-      if (dr === 0) {
-        stepR = 0;
-        stepC = Math.sign(dc);
-        steps = absC;
-      } else if (dc === 0) {
-        stepR = Math.sign(dr);
-        stepC = 0;
-        steps = absR;
-      } else if (absR === absC) {
-        stepR = Math.sign(dr);
-        stepC = Math.sign(dc);
-        steps = absR;
-      } else {
-        return [];
-      }
-
+      const steps = Math.max(lenR, lenC);
       const path = [];
       for (let i = 0; i <= steps; i++) {
-        const nr = r1 + stepR * i;
-        const nc = c1 + stepC * i;
-        if (nr < 0 || nr >= this.sopaSize || nc < 0 || nc >= this.sopaSize) break;
-        path.push({ r: nr, c: nc });
+        path.push({
+          r: this.sopaStartCell.r + stepR * i,
+          c: this.sopaStartCell.c + stepC * i
+        });
       }
-      return path;
+
+      this.sopaCurrentPath = path;
+      this.resaltarCaminoTemporal();
+
+      const palabraFormada = path.map(pt => this.sopaGrid[pt.r][pt.c]).join("");
+      this.actualizarPreviewPalabraSopa(palabraFormada);
     }
 
-    actualizarPreviewPalabraSopa(str) {
-      const pill = document.getElementById("sopa-live-preview");
-      const lettersEl = document.getElementById("sopa-live-letters");
-      if (!lettersEl || !pill) return;
-
-      if (str && str.length > 0) {
-        lettersEl.textContent = str.split("").join(" ");
-        pill.classList.add("active");
+    manejarClickSopa(coords) {
+      if (!this.sopaClickStart) {
+        this.sopaClickStart = coords;
+        document.querySelectorAll(".sopa-cell").forEach(c => c.classList.remove("click-anchor"));
+        const cell = document.querySelector(`.sopa-cell[data-r="${coords.r}"][data-c="${coords.c}"]`);
+        if (cell) cell.classList.add("click-anchor");
+        this.actualizarPreviewPalabraSopa(this.sopaGrid[coords.r][coords.c]);
       } else {
-        lettersEl.textContent = "—";
-        pill.classList.remove("active");
-      }
-    }
+        const start = this.sopaClickStart;
+        const end = coords;
+        this.sopaClickStart = null;
+        document.querySelectorAll(".sopa-cell").forEach(c => c.classList.remove("click-anchor"));
 
-    renderSopaSvgOverlay() {
-      const svg = document.getElementById("sopa-svg-overlay");
-      if (!svg) return;
+        const dr = end.r - start.r;
+        const dc = end.c - start.c;
+        const stepR = dr === 0 ? 0 : dr > 0 ? 1 : -1;
+        const stepC = dc === 0 ? 0 : dc > 0 ? 1 : -1;
+        const lenR = Math.abs(dr);
+        const lenC = Math.abs(dc);
 
-      const N = this.sopaSize;
-      const pillStrokeWidth = (100 / N) * 0.72;
-      let linesHtml = "";
-
-      // 1. Dibujar cápsulas redondeadas para todas las palabras encontradas
-      this.sopaPlacements.forEach(p => {
-        if (!p.found || p.cells.length === 0) return;
-        const first = p.cells[0];
-        const last = p.cells[p.cells.length - 1];
-        const x1 = ((first.c + 0.5) / N) * 100;
-        const y1 = ((first.r + 0.5) / N) * 100;
-        const x2 = ((last.c + 0.5) / N) * 100;
-        const y2 = ((last.r + 0.5) / N) * 100;
-        const colorObj = COLORES_PALABRAS[p.colorIndex];
-
-        linesHtml += `<line x1="${x1.toFixed(2)}" y1="${y1.toFixed(2)}" x2="${x2.toFixed(2)}" y2="${y2.toFixed(2)}" stroke="${colorObj.stroke}" stroke-width="${pillStrokeWidth.toFixed(2)}" stroke-linecap="round" />`;
-      });
-
-      // 2. Dibujar cápsula activa de selección en tiempo real
-      if (this.sopaCurrentPath && this.sopaCurrentPath.length > 0) {
-        const first = this.sopaCurrentPath[0];
-        const last = this.sopaCurrentPath[this.sopaCurrentPath.length - 1];
-        const x1 = ((first.c + 0.5) / N) * 100;
-        const y1 = ((first.r + 0.5) / N) * 100;
-        let x2 = ((last.c + 0.5) / N) * 100;
-        const y2 = ((last.r + 0.5) / N) * 100;
-        if (Math.abs(x1 - x2) < 0.001 && Math.abs(y1 - y2) < 0.001) {
-          x2 = x1 + 0.01;
+        if (dr === 0 || dc === 0 || lenR === lenC) {
+          const steps = Math.max(lenR, lenC);
+          const path = [];
+          for (let i = 0; i <= steps; i++) {
+            path.push({ r: start.r + stepR * i, c: start.c + stepC * i });
+          }
+          this.sopaCurrentPath = path;
+          this.finalizarSeleccionSopa();
+        } else {
+          GymAudio.error();
         }
-
-        linesHtml += `<line x1="${x1.toFixed(2)}" y1="${y1.toFixed(2)}" x2="${x2.toFixed(2)}" y2="${y2.toFixed(2)}" stroke="rgba(0, 168, 255, 0.52)" stroke-width="${pillStrokeWidth.toFixed(2)}" stroke-linecap="round" />`;
       }
-
-      svg.innerHTML = linesHtml;
     }
 
-    pintarSeleccionTemporalSopa() {
-      document.querySelectorAll(".sopa-cell.selecting").forEach(el => el.classList.remove("selecting"));
-      this.sopaCurrentPath.forEach(({ r, c }) => {
-        const el = this.obtenerCeldaSopaDOM(r, c);
-        if (el) el.classList.add("selecting");
+    resaltarCaminoTemporal() {
+      document.querySelectorAll(".sopa-cell").forEach(c => c.classList.remove("selecting"));
+      this.sopaCurrentPath.forEach(pt => {
+        const cell = document.querySelector(`.sopa-cell[data-r="${pt.r}"][data-c="${pt.c}"]`);
+        if (cell) cell.classList.add("selecting");
       });
-
-      const currentWord = this.sopaCurrentPath.map(({ r, c }) => this.sopaGrid[r][c]).join("");
-      this.actualizarPreviewPalabraSopa(currentWord);
       this.renderSopaSvgOverlay();
     }
 
     finalizarSeleccionSopa() {
       this.sopaSelecting = false;
-      document.querySelectorAll(".sopa-cell.selecting").forEach(el => el.classList.remove("selecting"));
-      if (this.sopaCurrentPath.length > 1) {
-        this.verificarCaminoSopa();
+      document.querySelectorAll(".sopa-cell").forEach(c => c.classList.remove("selecting"));
+
+      if (this.sopaCurrentPath.length === 0) return;
+
+      const palabraFormada = this.sopaCurrentPath.map(pt => this.sopaGrid[pt.r][pt.c]).join("");
+      const palabraInvertida = palabraFormada.split("").reverse().join("");
+
+      let acertada = null;
+      for (const p of this.sopaPlacements) {
+        if (!p.found && (p.word === palabraFormada || p.word === palabraInvertida)) {
+          const cellsMatch =
+            this.coincidenCeldas(p.cells, this.sopaCurrentPath) ||
+            this.coincidenCeldas(p.cells, [...this.sopaCurrentPath].reverse());
+          if (cellsMatch) {
+            acertada = p;
+            break;
+          }
+        }
       }
+
+      if (acertada) {
+        acertada.found = true;
+        this.sopaFoundCount++;
+        GymAudio.foundWord();
+        GymStats.recordWordFound();
+
+        this.marcarPalabraEncontradaUI(acertada);
+        this.renderSopaSvgOverlay();
+        this.mostrarMensajeFeedback(`¡Excelente! Has encontrado <strong>${acertada.word}</strong>.`, "success");
+
+        if (this.sopaFoundCount === this.sopaPlacements.length) {
+          this.victoriaSopa();
+        }
+      } else {
+        GymAudio.error();
+      }
+
       this.sopaCurrentPath = [];
-      if (!this.sopaClickStart) {
-        this.actualizarPreviewPalabraSopa("");
-      }
+      this.sopaStartCell = null;
+      this.actualizarPreviewPalabraSopa("");
       this.renderSopaSvgOverlay();
     }
 
-    verificarCaminoSopa() {
-      const letrasSeleccionadas = this.sopaCurrentPath.map(({ r, c }) => this.sopaGrid[r][c]).join("");
-      const letrasInvertidas = letrasSeleccionadas.split("").reverse().join("");
-
-      const encontrado = this.sopaPlacements.find(
-        p => !p.found && (p.word === letrasSeleccionadas || p.word === letrasInvertidas)
-      );
-
-      if (encontrado) {
-        encontrado.found = true;
-        this.sopaFoundCount++;
-        this.sopaClickStart = null;
-        document.querySelectorAll(".sopa-cell.click-anchor").forEach(el => el.classList.remove("click-anchor"));
-
-        const colorObj = COLORES_PALABRAS[encontrado.colorIndex];
-        encontrado.cells.forEach(({ r, c }) => {
-          const el = this.obtenerCeldaSopaDOM(r, c);
-          if (el) {
-            el.classList.remove("hint-pulse");
-            el.classList.add("found");
-            el.style.backgroundColor = colorObj.cell;
-          }
-        });
-
-        this.renderSopaSvgOverlay();
-        this.renderListaPalabrasSopa();
-        this.actualizarProgresoSopa();
-
-        const statusEl = document.getElementById("sopa-status-msg");
-        if (this.sopaFoundCount === this.sopaPlacements.length) {
-          if (statusEl) {
-            statusEl.innerHTML = `🎉 <strong>¡Tablero Completado en ${document.getElementById("sopa-timer")?.textContent}!</strong> Has encontrado las ${this.sopaPlacements.length} palabras. Descubre los 100 desafíos completos en la edición impresa de Amazon.`;
-            statusEl.className = "puzzle-status-bar success";
-          }
-        } else if (statusEl) {
-          statusEl.innerHTML = `✨ ¡Excelente! Encontraste <strong>${encontrado.word}</strong> (${encontrado.dir}).`;
-          statusEl.className = "puzzle-status-bar highlight";
-        }
+    coincidenCeldas(a, b) {
+      if (a.length !== b.length) return false;
+      for (let i = 0; i < a.length; i++) {
+        if (a[i].r !== b[i].r || a[i].c !== b[i].c) return false;
       }
+      return true;
+    }
+
+    marcarPalabraEncontradaUI(placement) {
+      const chip = document.querySelector(`.sopa-word-chip[data-word="${placement.word}"]`);
+      if (chip) {
+        chip.classList.add("found");
+        const color = COLORES_PALABRAS[placement.colorIndex];
+        chip.style.borderColor = color.dot;
+        chip.style.color = color.dot;
+      }
+
+      placement.cells.forEach(pt => {
+        const cell = document.querySelector(`.sopa-cell[data-r="${pt.r}"][data-c="${pt.c}"]`);
+        if (cell) {
+          cell.classList.add("found");
+          cell.setAttribute("data-color-idx", placement.colorIndex);
+        }
+      });
+
+      const total = this.sopaPlacements.length;
+      const pct = Math.round((this.sopaFoundCount / total) * 100);
+      const counterEl = document.getElementById("sopa-found-counter");
+      const fillEl = document.getElementById("sopa-progress-fill");
+      if (counterEl) counterEl.textContent = `${this.sopaFoundCount} / ${total}`;
+      if (fillEl) fillEl.style.width = `${pct}%`;
+    }
+
+    renderSopaSvgOverlay() {
+      const svg = document.getElementById("sopa-svg-overlay");
+      const grid = document.getElementById("sopa-grid-board");
+      if (!svg || !grid) return;
+
+      const N = this.sopaSize;
+      const step = 100 / N;
+      const half = step / 2;
+
+      let markup = "";
+
+      // Dibujar palabras ya encontradas
+      this.sopaPlacements.forEach(p => {
+        if (p.found) {
+          const first = p.cells[0];
+          const last = p.cells[p.cells.length - 1];
+          const x1 = first.c * step + half;
+          const y1 = first.r * step + half;
+          const x2 = last.c * step + half;
+          const y2 = last.r * step + half;
+          const color = COLORES_PALABRAS[p.colorIndex] || COLORES_PALABRAS[0];
+
+          markup += `
+            <line
+              x1="${x1}%" y1="${y1}%" x2="${x2}%" y2="${y2}%"
+              stroke="${color.stroke}"
+              stroke-width="${step * 0.76}%"
+              stroke-linecap="round"
+            />
+          `;
+        }
+      });
+
+      // Dibujar selección activa
+      if (this.sopaCurrentPath.length > 1) {
+        const first = this.sopaCurrentPath[0];
+        const last = this.sopaCurrentPath[this.sopaCurrentPath.length - 1];
+        const x1 = first.c * step + half;
+        const y1 = first.r * step + half;
+        const x2 = last.c * step + half;
+        const y2 = last.r * step + half;
+
+        markup += `
+          <line
+            x1="${x1}%" y1="${y1}%" x2="${x2}%" y2="${y2}%"
+            stroke="rgba(0, 168, 255, 0.55)"
+            stroke-width="${step * 0.74}%"
+            stroke-linecap="round"
+            stroke-dasharray="2, 1"
+          />
+        `;
+      }
+
+      svg.innerHTML = markup;
+    }
+
+    actualizarPreviewPalabraSopa(texto) {
+      const lettersEl = document.getElementById("sopa-live-letters");
+      const pillEl = document.getElementById("sopa-live-preview");
+      if (lettersEl) lettersEl.textContent = texto || "—";
+      if (pillEl) pillEl.classList.toggle("active", Boolean(texto));
+    }
+
+    mostrarMensajeFeedback(html, tipo = "info") {
+      const msg = document.getElementById("sopa-status-msg");
+      if (!msg) return;
+      msg.className = `puzzle-status-bar ${tipo}`;
+      msg.innerHTML = html;
     }
 
     darPistaSopa() {
-      const pendientes = this.sopaPlacements.filter(p => !p.found);
-      if (pendientes.length === 0) return;
+      const noEncontradas = this.sopaPlacements.filter(p => !p.found);
+      if (noEncontradas.length === 0) return;
 
-      this.sopaHintsUsed++;
-      const objetivo = pendientes[Math.floor(Math.random() * pendientes.length)];
-      const primera = objetivo.cells[0];
-      const ultima = objetivo.cells[objetivo.cells.length - 1];
+      const randomP = noEncontradas[Math.floor(Math.random() * noEncontradas.length)];
+      const firstCell = randomP.cells[0];
+      const cellEl = document.querySelector(`.sopa-cell[data-r="${firstCell.r}"][data-c="${firstCell.c}"]`);
 
-      document.querySelectorAll(".sopa-cell.hint-pulse").forEach(el => el.classList.remove("hint-pulse"));
-
-      const cellStart = this.obtenerCeldaSopaDOM(primera.r, primera.c);
-      const cellEnd = this.obtenerCeldaSopaDOM(ultima.r, ultima.c);
-      if (cellStart) cellStart.classList.add("hint-pulse");
-      if (cellEnd) cellEnd.classList.add("hint-pulse");
-
-      const statusEl = document.getElementById("sopa-status-msg");
-      if (statusEl) {
-        statusEl.innerHTML = `💡 <strong>Pista:</strong> Busca <strong>${objetivo.word}</strong> desde la fila ${primera.r + 1}, columna ${primera.c + 1} (${objetivo.dir}).`;
-        statusEl.className = "puzzle-status-bar highlight";
+      if (cellEl) {
+        cellEl.classList.add("hint-pulse");
+        GymAudio.playTone(720, "sine", 0.2, 0.05);
+        this.mostrarMensajeFeedback(`💡 Pista: Primera letra de <strong>${randomP.word}</strong> resaltada en la cuadrícula.`, "warning");
+        setTimeout(() => cellEl.classList.remove("hint-pulse"), 3500);
       }
     }
 
     resolverSopaCompleta() {
+      if (!confirm("¿Deseas revelar la solución completa de esta Sopa de Letras?")) return;
       this.sopaPlacements.forEach(p => {
         if (!p.found) {
           p.found = true;
-          const colorObj = COLORES_PALABRAS[p.colorIndex];
-          p.cells.forEach(({ r, c }) => {
-            const el = this.obtenerCeldaSopaDOM(r, c);
-            if (el) {
-              el.classList.remove("hint-pulse");
-              el.classList.add("found");
-              el.style.backgroundColor = colorObj.cell;
-            }
-          });
+          this.marcarPalabraEncontradaUI(p);
         }
       });
-      this.sopaFoundCount = this.sopaPlacements.length;
       this.renderSopaSvgOverlay();
-      this.renderListaPalabrasSopa();
-      this.actualizarProgresoSopa();
-
-      const statusEl = document.getElementById("sopa-status-msg");
-      if (statusEl) {
-        statusEl.innerHTML = `📖 <strong>Solucionario Activado:</strong> Todas las palabras han sido trazadas en el tablero.`;
-        statusEl.className = "puzzle-status-bar";
-      }
+      this.mostrarMensajeFeedback("Tablero resuelto por completo.", "info");
     }
 
-    obtenerCeldaSopaDOM(r, c) {
-      return document.querySelector(`#sopa-grid-board .sopa-cell[data-r="${r}"][data-c="${c}"]`);
-    }
+    victoriaSopa() {
+      if (this.sopaTimerId) clearInterval(this.sopaTimerId);
+      GymAudio.victory();
+      GymStats.recordSolve();
+      this.updateStatsDisplay();
 
-    renderListaPalabrasSopa() {
-      const listEl = document.getElementById("sopa-word-list");
-      if (!listEl) return;
-
-      const ordenadas = [...this.sopaPlacements].sort((a, b) => a.word.localeCompare(b.word));
-      listEl.innerHTML = ordenadas
-        .map(p => {
-          const colorObj = COLORES_PALABRAS[p.colorIndex];
-          return `
-            <li class="sopa-word-item ${p.found ? "word-found" : ""}" data-word="${p.word}">
-              <span class="word-bullet" style="background:${p.found ? colorObj.dot : "rgba(255,255,255,0.22)"}"></span>
-              <span class="word-text">${p.word}</span>
-              ${p.found ? '<span class="word-check">✓</span>' : ""}
-            </li>
-          `;
-        })
-        .join("");
-    }
-
-    actualizarProgresoSopa() {
-      const total = this.sopaPlacements.length;
-      const countEl = document.getElementById("sopa-found-counter");
-      if (countEl) {
-        countEl.textContent = `${this.sopaFoundCount} / ${total}`;
-      }
-      const barEl = document.getElementById("sopa-progress-fill");
-      if (barEl) {
-        const pct = total > 0 ? Math.round((this.sopaFoundCount / total) * 100) : 0;
-        barEl.style.width = `${pct}%`;
-      }
+      const mins = Math.floor(this.sopaSeconds / 60);
+      const secs = this.sopaSeconds % 60;
+      this.mostrarMensajeFeedback(
+        `🏆 ¡FELICITACIONES! Has completado el reto en <strong>${mins}m ${secs}s</strong>.`,
+        "success"
+      );
     }
 
     // =========================================================================
-    // MOTOR 2: SUDOKU MAESTRO 9x9 (ENTRENAMIENTO DE FOCO PROFUNDO)
+    // MOTOR 2: SUDOKU MAESTRO 9X9 CON PENCIL NOTES Y AUTO-CANDIDATOS
     // =========================================================================
     initSudokuGame() {
-      document.querySelectorAll("[data-sudoku-diff]").forEach(btn => {
+      const diffButtons = document.querySelectorAll("[data-sudoku-diff]");
+      diffButtons.forEach(btn => {
         btn.addEventListener("click", () => {
-          document.querySelectorAll("[data-sudoku-diff]").forEach(b => b.classList.remove("active"));
+          diffButtons.forEach(b => b.classList.remove("active"));
           btn.classList.add("active");
           this.sudokuDifficulty = btn.getAttribute("data-sudoku-diff");
           this.generarNuevoSudoku();
+          GymAudio.click();
         });
       });
 
       const btnNuevo = document.getElementById("btn-sudoku-nuevo");
-      if (btnNuevo) btnNuevo.addEventListener("click", () => this.generarNuevoSudoku());
+      if (btnNuevo) btnNuevo.addEventListener("click", () => {
+        this.generarNuevoSudoku();
+        GymAudio.click();
+      });
 
       const btnNotas = document.getElementById("btn-sudoku-notas");
       if (btnNotas) {
         btnNotas.addEventListener("click", () => {
           this.sudokuNotesMode = !this.sudokuNotesMode;
           btnNotas.classList.toggle("active", this.sudokuNotesMode);
-          btnNotas.setAttribute("aria-pressed", String(this.sudokuNotesMode));
+          btnNotas.setAttribute("aria-pressed", this.sudokuNotesMode ? "true" : "false");
+          GymAudio.click();
         });
       }
 
-      const btnAutoCandidatos = document.getElementById("btn-sudoku-autocandidatos");
-      if (btnAutoCandidatos) {
-        btnAutoCandidatos.addEventListener("click", () => this.calcularAutoCandidatosSudoku());
-      }
+      const btnAuto = document.getElementById("btn-sudoku-autocandidatos");
+      if (btnAuto) btnAuto.addEventListener("click", () => this.calcularAutoCandidatos());
 
       const btnDeshacer = document.getElementById("btn-sudoku-deshacer");
-      if (btnDeshacer) btnDeshacer.addEventListener("click", () => this.deshacerSudoku());
+      if (btnDeshacer) btnDeshacer.addEventListener("click", () => this.deshacerJugadaSudoku());
 
       const btnBorrar = document.getElementById("btn-sudoku-borrar");
-      if (btnBorrar) btnBorrar.addEventListener("click", () => this.ingresarNumeroSudoku(0));
+      if (btnBorrar) btnBorrar.addEventListener("click", () => this.borrarCeldaActualSudoku());
 
       const btnPista = document.getElementById("btn-sudoku-pista");
       if (btnPista) btnPista.addEventListener("click", () => this.darPistaSudoku());
 
       const btnVerificar = document.getElementById("btn-sudoku-verificar");
-      if (btnVerificar) btnVerificar.addEventListener("click", () => this.verificarTableroSudoku());
+      if (btnVerificar) btnVerificar.addEventListener("click", () => this.verificarSudoku());
 
       const btnImprimir = document.getElementById("btn-sudoku-imprimir");
       if (btnImprimir) btnImprimir.addEventListener("click", () => this.imprimirPasatiempoActual("sudoku"));
 
-      // Teclado numérico en pantalla
+      // Teclado numérico virtual
       document.querySelectorAll("[data-sudoku-num]").forEach(btn => {
         btn.addEventListener("click", () => {
-          const val = parseInt(btn.getAttribute("data-sudoku-num"), 10);
-          this.ingresarNumeroSudoku(val);
+          const num = parseInt(btn.getAttribute("data-sudoku-num"), 10);
+          this.ingresarNumeroSudoku(num);
         });
       });
 
-      // Soporte de teclado físico cuando el panel Sudoku está visible
+      // Teclado físico
       window.addEventListener("keydown", (e) => {
         if (this.activeGame !== "sudoku") return;
-        const activeTag = document.activeElement?.tagName;
-        if (activeTag === "INPUT" || activeTag === "TEXTAREA" || activeTag === "SELECT") return;
+        if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return;
 
-        const { r, c } = this.sudokuSelected;
-        if (e.key >= "1" && e.key <= "9") {
+        const key = e.key;
+        if (key >= "1" && key <= "9") {
+          this.ingresarNumeroSudoku(parseInt(key, 10));
+        } else if (key === "Backspace" || key === "Delete") {
+          this.borrarCeldaActualSudoku();
+        } else if (key.toLowerCase() === "n") {
+          if (btnNotas) btnNotas.click();
+        } else if (key.toLowerCase() === "z" && (e.ctrlKey || e.metaKey)) {
+          this.deshacerJugadaSudoku();
+        } else if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(key)) {
           e.preventDefault();
-          this.ingresarNumeroSudoku(parseInt(e.key, 10));
-        } else if (e.key === "Backspace" || e.key === "Delete" || e.key === "0") {
-          e.preventDefault();
-          this.ingresarNumeroSudoku(0);
-        } else if (e.key === "n" || e.key === "N") {
-          e.preventDefault();
-          const btnNotasEl = document.getElementById("btn-sudoku-notas");
-          if (btnNotasEl) btnNotasEl.click();
-        } else if (e.key === "ArrowUp") {
-          e.preventDefault();
-          this.seleccionarCeldaSudoku((r + 8) % 9, c);
-        } else if (e.key === "ArrowDown") {
-          e.preventDefault();
-          this.seleccionarCeldaSudoku((r + 1) % 9, c);
-        } else if (e.key === "ArrowLeft") {
-          e.preventDefault();
-          this.seleccionarCeldaSudoku(r, (c + 8) % 9);
-        } else if (e.key === "ArrowRight") {
-          e.preventDefault();
-          this.seleccionarCeldaSudoku(r, (c + 1) % 9);
+          this.moverSeleccionSudoku(key);
         }
       });
 
@@ -831,406 +1104,661 @@
     }
 
     generarNuevoSudoku() {
-      const base = [
-        [1, 2, 3, 4, 5, 6, 7, 8, 9],
-        [4, 5, 6, 7, 8, 9, 1, 2, 3],
-        [7, 8, 9, 1, 2, 3, 4, 5, 6],
-        [2, 3, 4, 5, 6, 7, 8, 9, 1],
-        [5, 6, 7, 8, 9, 1, 2, 3, 4],
-        [8, 9, 1, 2, 3, 4, 5, 6, 7],
-        [3, 4, 5, 6, 7, 8, 9, 1, 2],
-        [6, 7, 8, 9, 1, 2, 3, 4, 5],
-        [9, 1, 2, 3, 4, 5, 6, 7, 8]
-      ];
-
-      const digits = [1, 2, 3, 4, 5, 6, 7, 8, 9].sort(() => Math.random() - 0.5);
-      let grid = base.map(row => row.map(v => digits[v - 1]));
-
-      for (let band = 0; band < 3; band++) {
-        const rows = [0, 1, 2].sort(() => Math.random() - 0.5);
-        const copy = [grid[band * 3], grid[band * 3 + 1], grid[band * 3 + 2]];
-        for (let i = 0; i < 3; i++) grid[band * 3 + i] = copy[rows[i]];
-      }
-
-      for (let stack = 0; stack < 3; stack++) {
-        const cols = [0, 1, 2].sort(() => Math.random() - 0.5);
-        for (let r = 0; r < 9; r++) {
-          const copy = [grid[r][stack * 3], grid[r][stack * 3 + 1], grid[r][stack * 3 + 2]];
-          for (let i = 0; i < 3; i++) grid[r][stack * 3 + i] = copy[cols[i]];
-        }
-      }
-
-      this.sudokuSolution = grid.map(r => [...r]);
-
-      const cluesMap = {
-        facil: 43,
-        medio: 35,
-        dificil: 29,
-        experto: 25
-      };
-      const targetClues = cluesMap[this.sudokuDifficulty] || 35;
-      const cellsToRemove = 81 - targetClues;
-
-      const board = grid.map(r => [...r]);
-      const positions = [];
-      for (let r = 0; r < 9; r++) {
-        for (let c = 0; c < 9; c++) {
-          positions.push({ r, c });
-        }
-      }
-      positions.sort(() => Math.random() - 0.5);
-
-      for (let i = 0; i < cellsToRemove; i++) {
-        const { r, c } = positions[i];
-        board[r][c] = 0;
-      }
-
-      this.sudokuInitial = board.map(r => [...r]);
-      this.sudokuBoard = board.map(r => [...r]);
+      this.sudokuSolution = this.generarTableroCompletoValido();
+      this.sudokuInitial = this.vaciarCeldasSegunDificultad(this.sudokuSolution, this.sudokuDifficulty);
+      this.sudokuBoard = this.sudokuInitial.map(row => [...row]);
       this.sudokuNotes = Array.from({ length: 9 }, () => Array.from({ length: 9 }, () => new Set()));
       this.sudokuHistory = [];
+      this.sudokuSelected = { r: 0, c: 0 };
       this.sudokuMistakes = 0;
       this.sudokuCompleted = false;
 
-      let firstEmpty = { r: 0, c: 0 };
-      outer: for (let r = 0; r < 9; r++) {
-        for (let c = 0; c < 9; c++) {
-          if (this.sudokuBoard[r][c] === 0) {
-            firstEmpty = { r, c };
-            break outer;
+      this.iniciarTimerSudoku();
+      this.renderSudokuGrid();
+      this.actualizarProgresoYTecladoSudoku();
+    }
+
+    generarTableroCompletoValido() {
+      const board = Array.from({ length: 9 }, () => Array(9).fill(0));
+
+      const esValido = (b, r, c, val) => {
+        for (let i = 0; i < 9; i++) {
+          if (b[r][i] === val || b[i][c] === val) return false;
+        }
+        const br = Math.floor(r / 3) * 3;
+        const bc = Math.floor(c / 3) * 3;
+        for (let i = 0; i < 3; i++) {
+          for (let j = 0; j < 3; j++) {
+            if (b[br + i][bc + j] === val) return false;
           }
         }
-      }
-      this.sudokuSelected = firstEmpty;
+        return true;
+      };
 
-      this.iniciarTimerSudoku();
-      this.renderSudokuBoard();
-      this.actualizarContadoresSudoku();
+      const resolver = (r = 0, c = 0) => {
+        if (r === 9) return true;
+        const nextR = c === 8 ? r + 1 : r;
+        const nextC = c === 8 ? 0 : c + 1;
 
-      const statusEl = document.getElementById("sudoku-status-msg");
-      if (statusEl) {
-        statusEl.innerHTML = "Selecciona una celda y usa el teclado numérico (1–9), activa <strong>✏️ Notas (Lápiz)</strong> o pulsa <strong>✨ Auto-Candidatos</strong> para desplegar todas las opciones lógicas.";
-        statusEl.className = "puzzle-status-bar";
+        const nums = [1, 2, 3, 4, 5, 6, 7, 8, 9].sort(() => Math.random() - 0.5);
+        for (const val of nums) {
+          if (esValido(board, r, c, val)) {
+            board[r][c] = val;
+            if (resolver(nextR, nextC)) return true;
+            board[r][c] = 0;
+          }
+        }
+        return false;
+      };
+
+      resolver();
+      return board;
+    }
+
+    vaciarCeldasSegunDificultad(solucion, diff) {
+      const board = solucion.map(row => [...row]);
+      const pistasPorDiff = {
+        facil: 44,
+        medio: 34,
+        dificil: 28,
+        experto: 24
+      };
+      const pistasDeseadas = pistasPorDiff[diff] || 34;
+      const celdasABorrar = 81 - pistasDeseadas;
+
+      const indices = [];
+      for (let i = 0; i < 81; i++) indices.push(i);
+      indices.sort(() => Math.random() - 0.5);
+
+      for (let i = 0; i < celdasABorrar; i++) {
+        const idx = indices[i];
+        const r = Math.floor(idx / 9);
+        const c = idx % 9;
+        board[r][c] = 0;
       }
+      return board;
     }
 
     iniciarTimerSudoku() {
       if (this.sudokuTimerId) clearInterval(this.sudokuTimerId);
       this.sudokuSeconds = 0;
-      this.actualizarTimerSudokuDOM();
+      const timerEl = document.getElementById("sudoku-timer");
+      if (timerEl) timerEl.textContent = "00:00";
+
       this.sudokuTimerId = setInterval(() => {
-        if (!this.sudokuCompleted) {
-          this.sudokuSeconds++;
-          this.actualizarTimerSudokuDOM();
-        }
+        this.sudokuSeconds++;
+        const mins = String(Math.floor(this.sudokuSeconds / 60)).padStart(2, "0");
+        const secs = String(this.sudokuSeconds % 60).padStart(2, "0");
+        if (timerEl) timerEl.textContent = `${mins}:${secs}`;
       }, 1000);
     }
 
-    actualizarTimerSudokuDOM() {
-      const el = document.getElementById("sudoku-timer");
-      if (el) {
-        const mins = String(Math.floor(this.sudokuSeconds / 60)).padStart(2, "0");
-        const secs = String(this.sudokuSeconds % 60).padStart(2, "0");
-        el.textContent = `${mins}:${secs}`;
-      }
-    }
+    renderSudokuGrid() {
+      const grid = document.getElementById("sudoku-grid-board");
+      if (!grid) return;
 
-    renderSudokuBoard() {
-      const boardEl = document.getElementById("sudoku-grid-board");
-      if (!boardEl) return;
-
-      boardEl.innerHTML = "";
-      const selR = this.sudokuSelected.r;
-      const selC = this.sudokuSelected.c;
-      const selVal = this.sudokuBoard[selR]?.[selC] || 0;
-
+      grid.innerHTML = "";
       for (let r = 0; r < 9; r++) {
         for (let c = 0; c < 9; c++) {
           const val = this.sudokuBoard[r][c];
-          const isInitial = this.sudokuInitial[r][c] !== 0;
-          const isSelected = r === selR && c === selC;
-          const isSameGroup =
-            r === selR ||
-            c === selC ||
-            (Math.floor(r / 3) === Math.floor(selR / 3) && Math.floor(c / 3) === Math.floor(selC / 3));
-          const isSameValue = val !== 0 && val === selVal;
-          const hasConflict = val !== 0 && !isInitial && this.tieneConflictoSudoku(r, c, val);
+          const isGiven = this.sudokuInitial[r][c] !== 0;
 
-          const cell = document.createElement("button");
-          cell.type = "button";
-          cell.className = [
-            "sudoku-cell",
-            isInitial ? "initial-clue" : "user-input",
-            isSelected ? "selected" : "",
-            !isSelected && isSameGroup ? "peer-cell" : "",
-            !isSelected && isSameValue ? "same-digit" : "",
-            hasConflict ? "conflict-cell" : "",
-            c === 2 || c === 5 ? "box-border-right" : "",
-            r === 2 || r === 5 ? "box-border-bottom" : ""
-          ]
-            .filter(Boolean)
-            .join(" ");
-
-          cell.dataset.r = r;
-          cell.dataset.c = c;
+          const cell = document.createElement("div");
+          cell.className = `sudoku-cell ${isGiven ? "given" : ""}`;
+          cell.setAttribute("data-r", r);
+          cell.setAttribute("data-c", c);
 
           if (val !== 0) {
             cell.textContent = val;
           } else {
-            const notesSet = this.sudokuNotes[r][c];
-            if (notesSet && notesSet.size > 0) {
-              const notesGrid = document.createElement("div");
-              notesGrid.className = "sudoku-notes-grid";
-              for (let n = 1; n <= 9; n++) {
-                const span = document.createElement("span");
-                span.textContent = notesSet.has(n) ? n : "";
-                if (selVal !== 0 && n === selVal && notesSet.has(n)) {
-                  span.className = "note-match";
-                }
-                notesGrid.appendChild(span);
-              }
-              cell.appendChild(notesGrid);
-            }
+            this.renderPencilNotesEnCelda(cell, r, c);
           }
 
           cell.addEventListener("click", () => {
             this.seleccionarCeldaSudoku(r, c);
+            GymAudio.cellSelect();
           });
 
-          boardEl.appendChild(cell);
+          grid.appendChild(cell);
         }
       }
+
+      this.seleccionarCeldaSudoku(this.sudokuSelected.r, this.sudokuSelected.c);
+    }
+
+    renderPencilNotesEnCelda(cellEl, r, c) {
+      const notes = this.sudokuNotes[r][c];
+      if (!notes || notes.size === 0) {
+        cellEl.innerHTML = "";
+        return;
+      }
+
+      let pencilHtml = '<div class="sudoku-pencil-grid">';
+      for (let n = 1; n <= 9; n++) {
+        pencilHtml += `<span class="sudoku-pencil-digit">${notes.has(n) ? n : ""}</span>`;
+      }
+      pencilHtml += "</div>";
+      cellEl.innerHTML = pencilHtml;
     }
 
     seleccionarCeldaSudoku(r, c) {
       this.sudokuSelected = { r, c };
-      this.renderSudokuBoard();
+      const currentVal = this.sudokuBoard[r][c];
+      const boxR = Math.floor(r / 3) * 3;
+      const boxC = Math.floor(c / 3) * 3;
+
+      document.querySelectorAll(".sudoku-cell").forEach(cell => {
+        const cr = parseInt(cell.getAttribute("data-r"), 10);
+        const cc = parseInt(cell.getAttribute("data-c"), 10);
+        const val = this.sudokuBoard[cr][cc];
+
+        cell.classList.remove("selected", "highlighted", "match-number");
+
+        if (cr === r && cc === c) {
+          cell.classList.add("selected");
+        } else if (cr === r || cc === c || (Math.floor(cr / 3) * 3 === boxR && Math.floor(cc / 3) * 3 === boxC)) {
+          cell.classList.add("highlighted");
+        }
+
+        if (currentVal !== 0 && val === currentVal) {
+          cell.classList.add("match-number");
+        }
+      });
     }
 
-    tieneConflictoSudoku(r, c, val) {
-      for (let i = 0; i < 9; i++) {
-        if (i !== c && this.sudokuBoard[r][i] === val) return true;
-        if (i !== r && this.sudokuBoard[i][c] === val) return true;
-      }
-      const startR = Math.floor(r / 3) * 3;
-      const startC = Math.floor(c / 3) * 3;
-      for (let dr = 0; dr < 3; dr++) {
-        for (let dc = 0; dc < 3; dc++) {
-          const nr = startR + dr;
-          const nc = startC + dc;
-          if ((nr !== r || nc !== c) && this.sudokuBoard[nr][nc] === val) return true;
-        }
-      }
-      return false;
-    }
-
-    calcularAutoCandidatosSudoku() {
-      if (this.sudokuCompleted) return;
-
-      // Guardar snapshot para permitir Deshacer
-      const snapshot = this.sudokuNotes.map(row => row.map(set => new Set(set)));
-      this.sudokuHistory.push({ bulkNotes: snapshot });
-
-      for (let r = 0; r < 9; r++) {
-        for (let c = 0; c < 9; c++) {
-          this.sudokuNotes[r][c].clear();
-          if (this.sudokuBoard[r][c] === 0) {
-            for (let n = 1; n <= 9; n++) {
-              if (!this.tieneConflictoSudoku(r, c, n)) {
-                this.sudokuNotes[r][c].add(n);
-              }
-            }
-          }
-        }
-      }
-
-      this.renderSudokuBoard();
-      const statusEl = document.getElementById("sudoku-status-msg");
-      if (statusEl) {
-        statusEl.innerHTML = `✨ <strong>Auto-Candidatos Calculados:</strong> Se han anotado todos los candidatos lógicamente válidos en cada celda vacía.`;
-        statusEl.className = "puzzle-status-bar highlight";
-      }
+    moverSeleccionSudoku(dir) {
+      let { r, c } = this.sudokuSelected;
+      if (dir === "ArrowUp") r = (r - 1 + 9) % 9;
+      if (dir === "ArrowDown") r = (r + 1) % 9;
+      if (dir === "ArrowLeft") c = (c - 1 + 9) % 9;
+      if (dir === "ArrowRight") c = (c + 1) % 9;
+      this.seleccionarCeldaSudoku(r, c);
     }
 
     ingresarNumeroSudoku(num) {
-      if (this.sudokuCompleted) return;
       const { r, c } = this.sudokuSelected;
-      if (this.sudokuInitial[r][c] !== 0) return;
+      if (this.sudokuInitial[r][c] !== 0) {
+        GymAudio.error();
+        return;
+      }
 
-      this.sudokuHistory.push({
-        r,
-        c,
-        prevVal: this.sudokuBoard[r][c],
-        prevNotes: new Set(this.sudokuNotes[r][c])
-      });
+      this.guardarEstadoHistorialSudoku();
 
-      if (num === 0) {
+      const cellEl = document.querySelector(`.sudoku-cell[data-r="${r}"][data-c="${c}"]`);
+
+      if (this.sudokuNotesMode) {
+        const notes = this.sudokuNotes[r][c];
+        if (notes.has(num)) notes.delete(num);
+        else notes.add(num);
         this.sudokuBoard[r][c] = 0;
-        this.sudokuNotes[r][c].clear();
-      } else if (this.sudokuNotesMode) {
-        this.sudokuBoard[r][c] = 0;
-        if (this.sudokuNotes[r][c].has(num)) {
-          this.sudokuNotes[r][c].delete(num);
-        } else {
-          this.sudokuNotes[r][c].add(num);
-        }
+        GymAudio.click();
+        this.renderPencilNotesEnCelda(cellEl, r, c);
       } else {
         this.sudokuBoard[r][c] = num;
         this.sudokuNotes[r][c].clear();
+        cellEl.textContent = num;
+        GymAudio.playTone(400 + num * 40, "sine", 0.05, 0.04);
+        this.limpiarNotasEnParesSudoku(r, c, num);
+      }
 
-        for (let i = 0; i < 9; i++) {
-          this.sudokuNotes[r][i].delete(num);
-          this.sudokuNotes[i][c].delete(num);
+      this.actualizarProgresoYTecladoSudoku();
+      this.seleccionarCeldaSudoku(r, c);
+
+      if (this.esTableroCompletoSudoku()) {
+        this.victoriaSudoku();
+      }
+    }
+
+    limpiarNotasEnParesSudoku(r, c, num) {
+      const boxR = Math.floor(r / 3) * 3;
+      const boxC = Math.floor(c / 3) * 3;
+
+      for (let i = 0; i < 9; i++) {
+        this.sudokuNotes[r][i].delete(num);
+        this.sudokuNotes[i][c].delete(num);
+      }
+      for (let i = 0; i < 3; i++) {
+        for (let j = 0; j < 3; j++) {
+          this.sudokuNotes[boxR + i][boxC + j].delete(num);
         }
-        const br = Math.floor(r / 3) * 3;
-        const bc = Math.floor(c / 3) * 3;
-        for (let dr = 0; dr < 3; dr++) {
-          for (let dc = 0; dc < 3; dc++) {
-            this.sudokuNotes[br + dr][bc + dc].delete(num);
+      }
+
+      document.querySelectorAll(".sudoku-cell").forEach(cell => {
+        const cr = parseInt(cell.getAttribute("data-r"), 10);
+        const cc = parseInt(cell.getAttribute("data-c"), 10);
+        if (this.sudokuBoard[cr][cc] === 0) {
+          this.renderPencilNotesEnCelda(cell, cr, cc);
+        }
+      });
+    }
+
+    borrarCeldaActualSudoku() {
+      const { r, c } = this.sudokuSelected;
+      if (this.sudokuInitial[r][c] !== 0) return;
+
+      this.guardarEstadoHistorialSudoku();
+      this.sudokuBoard[r][c] = 0;
+      this.sudokuNotes[r][c].clear();
+
+      const cellEl = document.querySelector(`.sudoku-cell[data-r="${r}"][data-c="${c}"]`);
+      if (cellEl) cellEl.textContent = "";
+
+      GymAudio.click();
+      this.actualizarProgresoYTecladoSudoku();
+      this.seleccionarCeldaSudoku(r, c);
+    }
+
+    guardarEstadoHistorialSudoku() {
+      const snapshot = {
+        board: this.sudokuBoard.map(row => [...row]),
+        notes: this.sudokuNotes.map(row => row.map(set => new Set(set)))
+      };
+      this.sudokuHistory.push(snapshot);
+      if (this.sudokuHistory.length > 30) this.sudokuHistory.shift();
+    }
+
+    deshacerJugadaSudoku() {
+      if (this.sudokuHistory.length === 0) return;
+      const prev = this.sudokuHistory.pop();
+      this.sudokuBoard = prev.board;
+      this.sudokuNotes = prev.notes;
+      this.renderSudokuGrid();
+      this.actualizarProgresoYTecladoSudoku();
+      GymAudio.click();
+    }
+
+    calcularAutoCandidatos() {
+      this.guardarEstadoHistorialSudoku();
+      for (let r = 0; r < 9; r++) {
+        for (let c = 0; c < 9; c++) {
+          if (this.sudokuBoard[r][c] === 0) {
+            this.sudokuNotes[r][c] = this.obtenerCandidatosValidos(r, c);
+            const cellEl = document.querySelector(`.sudoku-cell[data-r="${r}"][data-c="${c}"]`);
+            if (cellEl) this.renderPencilNotesEnCelda(cellEl, r, c);
           }
         }
       }
-
-      this.renderSudokuBoard();
-      this.actualizarContadoresSudoku();
-      this.comprobarVictoriaSudoku();
+      GymAudio.playTone(700, "sine", 0.12, 0.05);
+      const msg = document.getElementById("sudoku-status-msg");
+      if (msg) msg.innerHTML = "✨ <strong>Auto-candidatos calculados</strong> para todas las celdas vacías.";
     }
 
-    deshacerSudoku() {
-      if (this.sudokuHistory.length === 0) return;
-      const last = this.sudokuHistory.pop();
-      if (last.bulkNotes) {
-        this.sudokuNotes = last.bulkNotes;
-      } else {
-        this.sudokuBoard[last.r][last.c] = last.prevVal;
-        this.sudokuNotes[last.r][last.c] = last.prevNotes;
-        this.sudokuSelected = { r: last.r, c: last.c };
+    obtenerCandidatosValidos(r, c) {
+      const usados = new Set();
+      for (let i = 0; i < 9; i++) {
+        if (this.sudokuBoard[r][i] !== 0) usados.add(this.sudokuBoard[r][i]);
+        if (this.sudokuBoard[i][c] !== 0) usados.add(this.sudokuBoard[i][c]);
       }
-      this.renderSudokuBoard();
-      this.actualizarContadoresSudoku();
+      const br = Math.floor(r / 3) * 3;
+      const bc = Math.floor(c / 3) * 3;
+      for (let i = 0; i < 3; i++) {
+        for (let j = 0; j < 3; j++) {
+          if (this.sudokuBoard[br + i][bc + j] !== 0) usados.add(this.sudokuBoard[br + i][bc + j]);
+        }
+      }
+
+      const validos = new Set();
+      for (let n = 1; n <= 9; n++) {
+        if (!usados.has(n)) validos.add(n);
+      }
+      return validos;
     }
 
     darPistaSudoku() {
-      if (this.sudokuCompleted) return;
-      let { r, c } = this.sudokuSelected;
-
-      if (this.sudokuBoard[r][c] === this.sudokuSolution[r][c]) {
-        const candidatas = [];
-        for (let rr = 0; rr < 9; rr++) {
-          for (let cc = 0; cc < 9; cc++) {
-            if (this.sudokuBoard[rr][cc] !== this.sudokuSolution[rr][cc]) {
-              candidatas.push({ r: rr, c: cc });
-            }
-          }
+      const vacias = [];
+      for (let r = 0; r < 9; r++) {
+        for (let c = 0; c < 9; c++) {
+          if (this.sudokuBoard[r][c] === 0) vacias.push({ r, c });
         }
-        if (candidatas.length === 0) return;
-        const elegida = candidatas[Math.floor(Math.random() * candidatas.length)];
-        r = elegida.r;
-        c = elegida.c;
       }
+      if (vacias.length === 0) return;
 
-      const valorCorrecto = this.sudokuSolution[r][c];
-      this.sudokuSelected = { r, c };
-      const prevNotesMode = this.sudokuNotesMode;
-      this.sudokuNotesMode = false;
-      this.ingresarNumeroSudoku(valorCorrecto);
-      this.sudokuNotesMode = prevNotesMode;
+      const celda = vacias[Math.floor(Math.random() * vacias.length)];
+      const numCorrecto = this.sudokuSolution[celda.r][celda.c];
 
-      const statusEl = document.getElementById("sudoku-status-msg");
-      if (statusEl && !this.sudokuCompleted) {
-        statusEl.innerHTML = `💡 <strong>Pista Aplicada:</strong> En la fila ${r + 1}, columna ${c + 1} el valor exacto es <strong>${valorCorrecto}</strong>.`;
-        statusEl.className = "puzzle-status-bar highlight";
-      }
+      this.seleccionarCeldaSudoku(celda.r, celda.c);
+      this.ingresarNumeroSudoku(numCorrecto);
+
+      GymAudio.playTone(620, "sine", 0.15, 0.05);
+      const msg = document.getElementById("sudoku-status-msg");
+      if (msg) msg.innerHTML = `💡 Pista revelada: Celda (${celda.r + 1}, ${celda.c + 1}) completada.`;
     }
 
-    verificarTableroSudoku() {
+    verificarSudoku() {
       let errores = 0;
-      let vacias = 0;
-      for (let r = 0; r < 9; r++) {
-        for (let c = 0; c < 9; c++) {
-          const v = this.sudokuBoard[r][c];
-          if (v === 0) {
-            vacias++;
-          } else if (v !== this.sudokuSolution[r][c]) {
-            errores++;
-          }
+      document.querySelectorAll(".sudoku-cell").forEach(cell => {
+        const r = parseInt(cell.getAttribute("data-r"), 10);
+        const c = parseInt(cell.getAttribute("data-c"), 10);
+        const val = this.sudokuBoard[r][c];
+
+        cell.classList.remove("conflict");
+        if (val !== 0 && val !== this.sudokuSolution[r][c]) {
+          cell.classList.add("conflict");
+          errores++;
         }
-      }
-
-      const statusEl = document.getElementById("sudoku-status-msg");
-      if (!statusEl) return;
-
-      if (errores === 0 && vacias > 0) {
-        statusEl.innerHTML = `✅ <strong>Verificación Impecable:</strong> Todos los números ingresados hasta ahora son correctos (${vacias} celdas por completar).`;
-        statusEl.className = "puzzle-status-bar highlight";
-      } else if (errores > 0) {
-        statusEl.innerHTML = `⚠️ Se detectaron <strong>${errores} celda(s)</strong> que no coinciden con la solución única. Revisa tus deducciones o usa Deshacer.`;
-        statusEl.className = "puzzle-status-bar warning";
-      }
-    }
-
-    actualizarContadoresSudoku() {
-      const counts = Array(10).fill(0);
-      let completadas = 0;
-      for (let r = 0; r < 9; r++) {
-        for (let c = 0; c < 9; c++) {
-          const v = this.sudokuBoard[r][c];
-          if (v >= 1 && v <= 9) {
-            counts[v]++;
-            completadas++;
-          }
-        }
-      }
-
-      document.querySelectorAll("[data-sudoku-num]").forEach(btn => {
-        const n = parseInt(btn.getAttribute("data-sudoku-num"), 10);
-        const rem = Math.max(0, 9 - counts[n]);
-        const sub = btn.querySelector(".numpad-rem");
-        if (sub) sub.textContent = rem;
-        btn.classList.toggle("digit-complete", rem === 0);
       });
 
-      const progEl = document.getElementById("sudoku-progress-counter");
-      if (progEl) progEl.textContent = `${completadas} / 81`;
+      const msg = document.getElementById("sudoku-status-msg");
+      if (msg) {
+        if (errores === 0) {
+          GymAudio.foundWord();
+          msg.className = "puzzle-status-bar success";
+          msg.innerHTML = "✔️ ¡Excelente! Todas las celdas ingresadas hasta ahora son 100% correctas.";
+        } else {
+          GymAudio.error();
+          msg.className = "puzzle-status-bar warning";
+          msg.innerHTML = `⚠️ Se encontraron <strong>${errores}</strong> celdas con errores (resaltadas en rojo).`;
+        }
+      }
     }
 
-    comprobarVictoriaSudoku() {
+    actualizarProgresoYTecladoSudoku() {
+      const conteo = Array(10).fill(0);
+      let llenas = 0;
+
       for (let r = 0; r < 9; r++) {
         for (let c = 0; c < 9; c++) {
-          if (this.sudokuBoard[r][c] !== this.sudokuSolution[r][c]) return;
+          const val = this.sudokuBoard[r][c];
+          if (val !== 0) {
+            conteo[val]++;
+            llenas++;
+          }
         }
       }
 
+      for (let n = 1; n <= 9; n++) {
+        const rem = 9 - conteo[n];
+        const btn = document.querySelector(`[data-sudoku-num="${n}"]`);
+        if (btn) {
+          const remEl = btn.querySelector(".numpad-rem");
+          if (remEl) remEl.textContent = rem > 0 ? rem : "✓";
+          btn.classList.toggle("digit-complete", rem <= 0);
+        }
+      }
+
+      const counterEl = document.getElementById("sudoku-progress-counter");
+      if (counterEl) counterEl.textContent = `${llenas} / 81`;
+    }
+
+    esTableroCompletoSudoku() {
+      for (let r = 0; r < 9; r++) {
+        for (let c = 0; c < 9; c++) {
+          if (this.sudokuBoard[r][c] !== this.sudokuSolution[r][c]) {
+            return false;
+          }
+        }
+      }
+      return true;
+    }
+
+    victoriaSudoku() {
+      if (this.sudokuTimerId) clearInterval(this.sudokuTimerId);
       this.sudokuCompleted = true;
-      const statusEl = document.getElementById("sudoku-status-msg");
-      if (statusEl) {
-        statusEl.innerHTML = `🏆 <strong>¡Sudoku Maestro Resuelto en ${document.getElementById("sudoku-timer")?.textContent}!</strong> Foco profundo al 100%. Explora nuestro catálogo de libros en Amazon KDP.`;
-        statusEl.className = "puzzle-status-bar success";
+      GymAudio.victory();
+      GymStats.recordSolve();
+      this.updateStatsDisplay();
+
+      const mins = Math.floor(this.sudokuSeconds / 60);
+      const secs = this.sudokuSeconds % 60;
+      const msg = document.getElementById("sudoku-status-msg");
+      if (msg) {
+        msg.className = "puzzle-status-bar success";
+        msg.innerHTML = `🏆 ¡SUDOKU RESUELTO CON ÉXITO! Tiempo total: <strong>${mins}m ${secs}s</strong>.`;
       }
     }
 
     // =========================================================================
-    // MODO IMPRIMIBLE (HOJA DE PASATIEMPO PARA IMPRIMIR)
+    // MOTOR 3: CRIPTOGRAMA ASIMÉTRICO (JUEGO III DE SABIDURÍA EDITORIAL)
+    // =========================================================================
+    initCriptogramaGame() {
+      const btnNuevo = document.getElementById("btn-cripto-nuevo");
+      if (btnNuevo) btnNuevo.addEventListener("click", () => {
+        this.siguienteCriptograma();
+        GymAudio.click();
+      });
+
+      const btnPista = document.getElementById("btn-cripto-pista");
+      if (btnPista) btnPista.addEventListener("click", () => this.darPistaCriptograma());
+
+      const btnVerificar = document.getElementById("btn-cripto-verificar");
+      if (btnVerificar) btnVerificar.addEventListener("click", () => this.verificarCriptograma());
+
+      const btnImprimir = document.getElementById("btn-cripto-imprimir");
+      if (btnImprimir) btnImprimir.addEventListener("click", () => this.imprimirPasatiempoActual("criptograma"));
+
+      // Teclado virtual del criptograma
+      const teclado = document.getElementById("cripto-keyboard");
+      if (teclado) {
+        const alfabeto = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZ".split("");
+        teclado.innerHTML = alfabeto
+          .map(letra => `<button type="button" class="btn-keyboard-key" data-key="${letra}">${letra}</button>`)
+          .join("") + `<button type="button" class="btn-keyboard-key key-del" data-key="DEL">⌫</button>`;
+
+        teclado.querySelectorAll("[data-key]").forEach(k => {
+          k.addEventListener("click", () => {
+            const val = k.getAttribute("data-key");
+            if (val === "DEL") {
+              this.borrarLetraCriptograma();
+            } else {
+              this.ingresarLetraCriptograma(val);
+            }
+          });
+        });
+      }
+
+      // Teclado físico
+      window.addEventListener("keydown", (e) => {
+        if (this.activeGame !== "criptograma") return;
+        if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return;
+
+        const key = e.key.toUpperCase();
+        if (/^[A-ZÑ]$/.test(key)) {
+          this.ingresarLetraCriptograma(key);
+        } else if (e.key === "Backspace" || e.key === "Delete") {
+          this.borrarLetraCriptograma();
+        } else if (e.key === "ArrowLeft") {
+          this.moverSlotCriptograma(-1);
+        } else if (e.key === "ArrowRight") {
+          this.moverSlotCriptograma(1);
+        }
+      });
+
+      this.cargarCriptograma(0);
+    }
+
+    cargarCriptograma(index) {
+      this.criptoIndex = index % CRIPTOGRAMAS.length;
+      const data = CRIPTOGRAMAS[this.criptoIndex];
+      this.criptoSolved = false;
+
+      // Crear estado de respuestas
+      this.criptoGuess = data.frase.split("").map(ch => {
+        if (ch === " ") return " ";
+        // Revelar el 20% de las letras iniciales como anclaje
+        return Math.random() < 0.22 ? ch : "";
+      });
+
+      // Encontrar primer slot vacío
+      this.criptoSelectedIndex = this.criptoGuess.findIndex(ch => ch === "");
+      if (this.criptoSelectedIndex === -1) this.criptoSelectedIndex = 0;
+
+      this.renderCriptograma();
+    }
+
+    siguienteCriptograma() {
+      this.cargarCriptograma(this.criptoIndex + 1);
+    }
+
+    renderCriptograma() {
+      const data = CRIPTOGRAMAS[this.criptoIndex];
+      const bookEl = document.getElementById("cripto-book-ref");
+      const hintEl = document.getElementById("cripto-hint-text");
+      const boardEl = document.getElementById("cripto-board-slots");
+      const statusEl = document.getElementById("cripto-status-msg");
+
+      if (bookEl) bookEl.textContent = `${data.autor} • ${data.libro}`;
+      if (hintEl) hintEl.textContent = data.pista;
+      if (statusEl) {
+        statusEl.className = "puzzle-status-bar";
+        statusEl.innerHTML = "Selecciona una casilla y escribe la letra para descifrar el aforismo.";
+      }
+
+      if (!boardEl) return;
+
+      const palabras = data.frase.split(" ");
+      let slotIndex = 0;
+      let html = "";
+
+      palabras.forEach(palabra => {
+        html += '<div class="cripto-word-cluster">';
+        for (let i = 0; i < palabra.length; i++) {
+          const currentIndex = slotIndex;
+          const letter = this.criptoGuess[currentIndex];
+          const isSelected = currentIndex === this.criptoSelectedIndex;
+
+          html += `
+            <div class="cripto-slot ${isSelected ? "selected" : ""} ${letter ? "filled" : ""}" data-slot-idx="${currentIndex}">
+              <span class="slot-letter">${letter || ""}</span>
+              <span class="slot-line"></span>
+            </div>
+          `;
+          slotIndex++;
+        }
+        html += "</div>";
+        slotIndex++; // Por el espacio
+      });
+
+      boardEl.innerHTML = html;
+
+      boardEl.querySelectorAll(".cripto-slot").forEach(slot => {
+        slot.addEventListener("click", () => {
+          const idx = parseInt(slot.getAttribute("data-slot-idx"), 10);
+          this.criptoSelectedIndex = idx;
+          this.renderCriptograma();
+          GymAudio.cellSelect();
+        });
+      });
+    }
+
+    ingresarLetraCriptograma(letra) {
+      if (this.criptoSolved) return;
+      const data = CRIPTOGRAMAS[this.criptoIndex];
+
+      this.criptoGuess[this.criptoSelectedIndex] = letra;
+      GymAudio.click();
+
+      // Mover al siguiente slot vacío
+      let next = this.criptoSelectedIndex + 1;
+      while (next < data.frase.length && (data.frase[next] === " " || this.criptoGuess[next] !== "")) {
+        next++;
+      }
+      if (next < data.frase.length) {
+        this.criptoSelectedIndex = next;
+      }
+
+      this.renderCriptograma();
+
+      if (this.criptoGuess.join("") === data.frase) {
+        this.victoriaCriptograma();
+      }
+    }
+
+    borrarLetraCriptograma() {
+      if (this.criptoSolved) return;
+      this.criptoGuess[this.criptoSelectedIndex] = "";
+      GymAudio.click();
+      this.renderCriptograma();
+    }
+
+    moverSlotCriptograma(dir) {
+      const data = CRIPTOGRAMAS[this.criptoIndex];
+      let next = this.criptoSelectedIndex + dir;
+      while (next >= 0 && next < data.frase.length && data.frase[next] === " ") {
+        next += dir;
+      }
+      if (next >= 0 && next < data.frase.length) {
+        this.criptoSelectedIndex = next;
+        this.renderCriptograma();
+      }
+    }
+
+    darPistaCriptograma() {
+      const data = CRIPTOGRAMAS[this.criptoIndex];
+      const vacios = [];
+      for (let i = 0; i < data.frase.length; i++) {
+        if (data.frase[i] !== " " && this.criptoGuess[i] !== data.frase[i]) {
+          vacios.push(i);
+        }
+      }
+      if (vacios.length === 0) return;
+
+      const idx = vacios[Math.floor(Math.random() * vacios.length)];
+      this.criptoGuess[idx] = data.frase[idx];
+      this.criptoSelectedIndex = idx;
+      GymAudio.playTone(650, "sine", 0.15, 0.05);
+      this.renderCriptograma();
+
+      if (this.criptoGuess.join("") === data.frase) {
+        this.victoriaCriptograma();
+      }
+    }
+
+    verificarCriptograma() {
+      const data = CRIPTOGRAMAS[this.criptoIndex];
+      let errores = 0;
+      for (let i = 0; i < data.frase.length; i++) {
+        if (data.frase[i] !== " " && this.criptoGuess[i] && this.criptoGuess[i] !== data.frase[i]) {
+          errores++;
+        }
+      }
+
+      const statusEl = document.getElementById("cripto-status-msg");
+      if (statusEl) {
+        if (errores === 0) {
+          GymAudio.foundWord();
+          statusEl.className = "puzzle-status-bar success";
+          statusEl.innerHTML = "✔️ ¡Excelente deducción! Todas las letras ingresadas son correctas.";
+        } else {
+          GymAudio.error();
+          statusEl.className = "puzzle-status-bar warning";
+          statusEl.innerHTML = `⚠️ Se han detectado <strong>${errores}</strong> letras erróneas en tu propuesta.`;
+        }
+      }
+    }
+
+    victoriaCriptograma() {
+      this.criptoSolved = true;
+      GymAudio.victory();
+      GymStats.recordSolve();
+      this.updateStatsDisplay();
+
+      const data = CRIPTOGRAMAS[this.criptoIndex];
+      const statusEl = document.getElementById("cripto-status-msg");
+      if (statusEl) {
+        statusEl.className = "puzzle-status-bar success";
+        statusEl.innerHTML = `
+          🏆 <strong>¡CRIPTOGRAMA RESUELTO!</strong><br>
+          «<em>${data.frase}</em>» — <strong>${data.autor}</strong> (${data.libro}).
+        `;
+      }
+    }
+
+    // =========================================================================
+    // IMPRESIÓN LIMPIA EN FORMATO LIBRO PARA LLEVAR AL PAPEL FÍSICO
     // =========================================================================
     imprimirPasatiempoActual(tipo) {
-      const win = window.open("", "_blank", "width=850,height=950");
-      if (!win) {
-        window.print();
-        return;
-      }
+      const win = window.open("", "_blank");
+      if (!win) return;
 
       if (tipo === "sopa") {
         const config = TEMAS_SOPA[this.sopaTemaActual] || TEMAS_SOPA.cultura_historia;
         const rowsHtml = this.sopaGrid
-          .map(
-            row =>
-              `<tr>${row.map(ch => `<td>${ch}</td>`).join("")}</tr>`
-          )
+          .map(row => `<tr>${row.map(cell => `<td>${cell}</td>`).join("")}</tr>`)
           .join("");
-        const wordsHtml = [...this.sopaPlacements]
-          .sort((a, b) => a.word.localeCompare(b.word))
-          .map(p => `<div class="word-item">☐ ${p.word}</div>`)
-          .join("");
+
+        const wordsHtml = config.palabras
+          .map(w => `<span class="word-tag">□ ${w}</span>`)
+          .join(" ");
 
         win.document.write(`
           <!DOCTYPE html>
@@ -1239,14 +1767,15 @@
             <meta charset="UTF-8">
             <title>${config.nombre} — Ruichis Lab</title>
             <style>
-              body { font-family: Georgia, serif; color: #111; max-width: 720px; margin: 24px auto; padding: 0 20px; }
-              .header { text-align: center; border-bottom: 2px solid #111; padding-bottom: 12px; margin-bottom: 20px; }
+              body { font-family: Georgia, serif; color: #111; max-width: 680px; margin: 24px auto; padding: 0 20px; text-align: center; }
+              .header { border-bottom: 2px solid #111; padding-bottom: 12px; margin-bottom: 24px; }
               .imprint { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: #444; }
-              h1 { font-size: 22px; margin: 6px 0; }
-              p.desc { font-size: 13px; color: #333; margin: 4px 0 0; }
-              table.grid { margin: 20px auto; border-collapse: collapse; border: 2px solid #111; }
-              table.grid td { width: 34px; height: 34px; text-align: center; vertical-align: middle; font-family: 'Courier New', monospace; font-size: 18px; font-weight: bold; border: 1px solid #bbb; }
-              .words-box { margin-top: 22px; border-top: 1px solid #111; padding-top: 14px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px 16px; font-family: sans-serif; font-size: 13px; font-weight: 600; }
+              h1 { font-size: 20px; margin: 8px 0; font-family: Georgia, serif; }
+              p.desc { font-size: 13px; color: #555; margin: 0; }
+              table.grid { margin: 24px auto; border-collapse: collapse; }
+              table.grid td { width: 32px; height: 32px; text-align: center; vertical-align: middle; font-family: 'Courier New', monospace; font-size: 16px; font-weight: bold; border: 1px solid #ddd; }
+              .words-box { margin-top: 24px; padding: 16px; border: 1px solid #111; border-radius: 4px; text-align: left; }
+              .word-tag { display: inline-block; width: 32%; margin-bottom: 8px; font-family: 'Courier New', monospace; font-size: 13px; }
               .footer { margin-top: 32px; text-align: center; font-size: 12px; color: #444; border-top: 1px solid #ccc; padding-top: 10px; }
             </style>
           </head>
@@ -1259,14 +1788,14 @@
             <table class="grid">${rowsHtml}</table>
             <div class="words-box">${wordsHtml}</div>
             <div class="footer">
-              Muestra interactiva gratuita de <strong>${config.libroTitulo}</strong> • Ruichis Lab • ruichislab.com
+              Muestra física del libro <strong>${config.libroTitulo}</strong> • Ruichis Lab • ruichislab.com
             </div>
             <script>window.onload = () => { window.print(); };</script>
           </body>
           </html>
         `);
         win.document.close();
-      } else {
+      } else if (tipo === "sudoku") {
         const rowsHtml = this.sudokuBoard
           .map(
             (row, r) =>
@@ -1303,6 +1832,41 @@
             <table class="sudoku">${rowsHtml}</table>
             <div class="footer">
               Generado en el Gimnasio Mental de <strong>Ruichis Lab</strong> • Descubre nuestros libros en Amazon KDP • ruichislab.com
+            </div>
+            <script>window.onload = () => { window.print(); };</script>
+          </body>
+          </html>
+        `);
+        win.document.close();
+      } else if (tipo === "criptograma") {
+        const data = CRIPTOGRAMAS[this.criptoIndex];
+        win.document.write(`
+          <!DOCTYPE html>
+          <html lang="es">
+          <head>
+            <meta charset="UTF-8">
+            <title>Criptograma Asimétrico — Ruichis Lab</title>
+            <style>
+              body { font-family: Georgia, serif; color: #111; max-width: 680px; margin: 24px auto; padding: 0 20px; }
+              .header { border-bottom: 2px solid #111; padding-bottom: 12px; margin-bottom: 24px; text-align: center; }
+              .imprint { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: #444; }
+              .pista { background: #f4f4f4; padding: 14px; border-left: 3px solid #111; font-style: italic; margin-bottom: 24px; }
+              .phrase-box { border: 2px dashed #333; padding: 30px; letter-spacing: 4px; font-family: monospace; font-size: 18px; line-height: 2.2; text-align: center; }
+              .footer { margin-top: 32px; font-size: 12px; color: #444; border-top: 1px solid #ccc; padding-top: 10px; text-align: center; }
+            </style>
+          </head>
+          <body>
+            <div class="header">
+              <div class="imprint">RUICHIS LAB • CRIPTOGRAMAS & FILOSOFÍA</div>
+              <h1>Criptograma Asimétrico</h1>
+              <p>Fuente: <strong>${data.libro}</strong> (${data.autor})</p>
+            </div>
+            <div class="pista">Pista: ${data.pista}</div>
+            <div class="phrase-box">
+              ${data.frase.replace(/[A-ZÑ]/g, "_ ")}
+            </div>
+            <div class="footer">
+              Gimnasio Mental de <strong>Ruichis Lab</strong> • ruichislab.com
             </div>
             <script>window.onload = () => { window.print(); };</script>
           </body>

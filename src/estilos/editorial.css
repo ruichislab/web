@@ -1187,17 +1187,266 @@ body.theme-paper .gimnasio-mental-section {
     #EFE9DA;
 }
 
+/* ==========================================================================
+   9A. BARRA DE RENDIMIENTO COGNITIVO & MODO ZEN
+   ========================================================================== */
+.gym-performance-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 1rem 1.5rem;
+  margin-bottom: 1.5rem;
+  background: linear-gradient(135deg, rgba(19, 27, 46, 0.85) 0%, rgba(13, 19, 33, 0.95) 100%);
+  border: 1px solid rgba(212, 175, 55, 0.28);
+  border-radius: var(--border-radius-lg);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  flex-wrap: wrap;
+}
+
+body.theme-paper .gym-performance-bar {
+  background: linear-gradient(135deg, #FCF9F2 0%, #F5EEDF 100%);
+  border-color: rgba(212, 175, 55, 0.4);
+  box-shadow: 0 4px 16px rgba(24, 24, 27, 0.06);
+}
+
+.gym-perf-stats {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.perf-metric {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.perf-metric-icon {
+  font-size: 1.4rem;
+  line-height: 1;
+}
+
+.perf-metric-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  line-height: 1.2;
+}
+
+.perf-metric-val {
+  font-family: var(--font-mono);
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--primary-color);
+  line-height: 1.2;
+}
+
+.perf-metric-divider {
+  width: 1px;
+  height: 28px;
+  background: var(--border-subtle);
+}
+
+.gym-perf-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+}
+
+.btn-perf-tool {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  padding: 0.5rem 0.95rem;
+  border-radius: var(--border-radius-sm);
+  font-family: var(--font-primary);
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  transition: all var(--transition-fast);
+}
+
+body.theme-paper .btn-perf-tool {
+  background: #FFFFFF;
+  color: #18181B;
+  border-color: rgba(24, 24, 27, 0.15);
+}
+
+.btn-perf-tool:hover {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+  background: rgba(212, 175, 55, 0.14);
+  transform: translateY(-1px);
+}
+
+.btn-perf-tool.active {
+  border-color: #10B981;
+  color: #10B981;
+  background: rgba(16, 185, 129, 0.16);
+}
+
+/* ==========================================================================
+   9B. SHELL DEL GIMNASIO & MODO ZEN PANTALLA COMPLETA
+   ========================================================================== */
 .gimnasio-shell {
   background: var(--surface-card);
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius-xl);
   padding: 2rem;
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+  transition: all 0.3s ease;
 }
 
 body.theme-paper .gimnasio-shell {
   background: #FCF9F2;
   box-shadow: 0 12px 30px rgba(24, 24, 27, 0.06);
+}
+
+/* MODO ZEN (PANTALLA COMPLETA INMERSIVA) */
+#gimnasio-mental-app.zen-mode {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: var(--background-primary);
+  border-radius: 0;
+  border: none;
+  padding: 2.5rem 3.5rem;
+  overflow-y: auto;
+  box-shadow: none;
+}
+
+body.theme-paper #gimnasio-mental-app.zen-mode {
+  background: #FAF6EE;
+}
+
+/* HUB DE 3 RETOS COGNITIVOS */
+.gym-hub-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+  margin-bottom: 2rem;
+}
+
+@media (max-width: 900px) {
+  .gym-hub-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.gym-hub-card {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1.5px solid var(--border-subtle);
+  border-radius: var(--border-radius-lg);
+  padding: 1.35rem 1.45rem;
+  cursor: pointer;
+  transition: all var(--transition-medium);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  outline: none;
+}
+
+body.theme-paper .gym-hub-card {
+  background: rgba(255, 255, 255, 0.6);
+  border-color: rgba(24, 24, 27, 0.12);
+}
+
+.gym-hub-card:hover {
+  border-color: rgba(212, 175, 55, 0.45);
+  transform: translateY(-3px);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+body.theme-paper .gym-hub-card:hover {
+  background: #FFFFFF;
+}
+
+.gym-hub-card:focus-visible {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.35);
+}
+
+.gym-hub-card.active {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.14) 0%, rgba(212, 175, 55, 0.10) 100%);
+  border-color: #10B981;
+  box-shadow: 0 8px 24px rgba(16, 185, 129, 0.18);
+}
+
+body.theme-paper .gym-hub-card.active {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.10) 0%, rgba(212, 175, 55, 0.08) 100%);
+  border-color: #059669;
+}
+
+.hub-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.65rem;
+}
+
+.hub-card-badge {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--primary-color);
+  text-transform: uppercase;
+}
+
+.hub-card-icon {
+  font-size: 1.4rem;
+  line-height: 1;
+}
+
+.hub-card-title {
+  font-family: var(--font-heading);
+  font-size: 1.18rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 0.35rem 0;
+  line-height: 1.25;
+}
+
+body.theme-paper .hub-card-title {
+  color: #18181B;
+}
+
+.hub-card-desc {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  line-height: 1.45;
+  margin: 0 0 1rem 0;
+  flex-grow: 1;
+}
+
+.hub-card-tags {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.hub-card-tags span {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-subtle);
+  border-radius: 4px;
+  padding: 0.2rem 0.5rem;
+}
+
+body.theme-paper .hub-card-tags span {
+  background: rgba(0, 0, 0, 0.04);
 }
 
 .gimnasio-tabs-bar {
@@ -1582,6 +1831,23 @@ body.theme-paper .sopa-word-chip {
   border-color: transparent;
 }
 
+.btn-word-info {
+  background: transparent;
+  border: none;
+  font-size: 0.82rem;
+  cursor: pointer;
+  padding: 0 0.15rem;
+  line-height: 1;
+  opacity: 0.65;
+  margin-left: auto;
+  transition: all var(--transition-fast);
+}
+
+.btn-word-info:hover {
+  opacity: 1;
+  transform: scale(1.25);
+}
+
 .companion-book-callout {
   background: linear-gradient(135deg, rgba(212, 175, 55, 0.10) 0%, rgba(16, 185, 129, 0.08) 100%);
   border: 1px solid rgba(212, 175, 55, 0.3);
@@ -1787,6 +2053,228 @@ body.theme-paper .numpad-btn {
   color: var(--text-muted);
   margin-top: 0.25rem;
   font-family: var(--font-mono);
+}
+
+/* ==========================================================================
+   9C. MOTOR 3: CRIPTOGRAMA ASIMÉTRICO (AFORISMOS Y SABIDURÍA EDITORIAL)
+   ========================================================================== */
+.cripto-workspace {
+  display: grid;
+  grid-template-columns: minmax(320px, 660px) 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .cripto-workspace {
+    grid-template-columns: 1fr;
+  }
+}
+
+.cripto-board-frame {
+  background: var(--background-primary);
+  border: 2px solid var(--border-color);
+  border-radius: var(--border-radius-lg);
+  padding: 1.75rem;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.45);
+}
+
+body.theme-paper .cripto-board-frame {
+  background: #FAF6EE;
+  border-color: rgba(24, 24, 27, 0.2);
+}
+
+.cripto-hint-card {
+  background: rgba(212, 175, 55, 0.08);
+  border-left: 4px solid var(--primary-color);
+  padding: 1.1rem 1.35rem;
+  border-radius: var(--border-radius-sm);
+  margin-bottom: 1.75rem;
+}
+
+body.theme-paper .cripto-hint-card {
+  background: rgba(212, 175, 55, 0.14);
+}
+
+.cripto-hint-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.4rem;
+}
+
+.hint-kicker {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--primary-color);
+}
+
+.hint-badge {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 0.06em;
+}
+
+.cripto-hint-text {
+  font-style: italic;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  margin: 0;
+  line-height: 1.5;
+}
+
+body.theme-paper .cripto-hint-text {
+  color: #18181B;
+}
+
+/* TABLERO DE CASILLAS DE LETRAS */
+.cripto-board-slots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.35rem 0.85rem;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 1.25rem 0.5rem 2rem;
+  min-height: 180px;
+}
+
+.cripto-word-cluster {
+  display: inline-flex;
+  gap: 0.35rem;
+  align-items: flex-end;
+}
+
+.cripto-slot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  width: 34px;
+  height: 52px;
+  cursor: pointer;
+  position: relative;
+  transition: all var(--transition-fast);
+  user-select: none;
+}
+
+.cripto-slot .slot-letter {
+  font-family: var(--font-mono);
+  font-size: 1.5rem;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--primary-color);
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color var(--transition-fast);
+}
+
+body.theme-paper .cripto-slot .slot-letter {
+  color: #9A6F0B;
+}
+
+.cripto-slot .slot-line {
+  width: 100%;
+  height: 2.5px;
+  background: var(--border-color);
+  border-radius: 2px;
+  transition: all var(--transition-fast);
+}
+
+.cripto-slot:hover .slot-line {
+  background: var(--primary-color);
+  height: 3px;
+}
+
+.cripto-slot.selected {
+  background: rgba(0, 168, 255, 0.12);
+  border-radius: 4px 4px 0 0;
+}
+
+.cripto-slot.selected .slot-line {
+  background: #38BDF8;
+  height: 3.5px;
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.7);
+}
+
+.cripto-slot.filled .slot-letter {
+  color: var(--text-primary);
+}
+
+body.theme-paper .cripto-slot.filled .slot-letter {
+  color: #18181B;
+}
+
+.cripto-slot.filled .slot-line {
+  background: var(--text-muted);
+}
+
+/* TECLADO VIRTUAL DE DESCIFRADO */
+.cripto-keyboard-wrapper {
+  margin-top: 1.25rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.cripto-keyboard {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  justify-content: center;
+}
+
+.btn-keyboard-key {
+  min-width: 36px;
+  height: 40px;
+  padding: 0 0.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--border-radius-sm);
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+body.theme-paper .btn-keyboard-key {
+  background: #FFFFFF;
+  color: #18181B;
+  border-color: rgba(24, 24, 27, 0.15);
+}
+
+.btn-keyboard-key:hover {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+  background: rgba(212, 175, 55, 0.18);
+  transform: translateY(-2px);
+}
+
+.btn-keyboard-key.key-del {
+  min-width: 50px;
+  background: rgba(244, 63, 94, 0.16);
+  color: #F43F5E;
+  border-color: rgba(244, 63, 94, 0.35);
+}
+
+.btn-keyboard-key.key-del:hover {
+  background: rgba(244, 63, 94, 0.3);
+  color: #FFFFFF;
+}
+
+.cripto-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
 /* ==========================================================================
