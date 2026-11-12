@@ -385,10 +385,7 @@
         return;
       }
 
-      const isIos = /iphone|ipad|ipod/i.test(navigator.userAgent);
-      if (window.__deferredPwaPrompt || isIos) {
-        btn.hidden = false;
-      }
+      btn.hidden = false;
 
       btn.addEventListener("click", async () => {
         GymAudio.click();
@@ -401,8 +398,10 @@
             }
           } catch (e) {}
           window.__deferredPwaPrompt = null;
-        } else if (isIos) {
-          alert("📲 Para instalar Ruichis Lab como App Nativa en iOS:\n\n1. Toca el botón Compartir (cuadro con flecha ↑) en Safari.\n2. Selecciona «Agregar a pantalla de inicio».\n3. ¡Listo! Se abrirá en pantalla completa sin navegador.");
+        } else if (/iphone|ipad|ipod/i.test(navigator.userAgent)) {
+          alert("📲 Instalar Ruichis Lab como App Nativa en iOS:\n\n1. Toca el botón Compartir (cuadro con flecha ↑) en Safari.\n2. Selecciona «Agregar a pantalla de inicio».\n3. ¡Listo! Se abrirá en pantalla completa sin navegador.");
+        } else {
+          alert("📲 Instalar Ruichis Lab como App Nativa:\n\n• En Chrome / Edge (PC): haz clic en el ícono ⊕ («Instalar») en la barra de direcciones o en Menú (⋮) → «Instalar Ruichis Lab».\n• En Android: abre el menú (⋮) → «Instalar aplicación» o «Agregar a la pantalla principal».");
         }
       });
     }
