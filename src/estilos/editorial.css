@@ -3227,3 +3227,28 @@ body.theme-paper .footer-section p {
     font-size: 0.8rem;
   }
 }
+
+/* ==========================================================================
+   SUBNAVEGACIÓN DEDICADA DE PÁGINA: GIMNASIO MENTAL
+   ========================================================================== */
+.gym-page-subnav {
+  background: rgba(15, 23, 42, 0.72);
+  border-bottom: 1px solid var(--border-color);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+body.theme-paper .gym-page-subnav {
+  background: rgba(250, 246, 238, 0.92);
+  border-bottom-color: rgba(24, 24, 27, 0.12);
+}
+
+.gym-page-subnav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.9rem 0;
+  flex-wrap: wrap;
+}
+

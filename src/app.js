@@ -7,6 +7,25 @@ let activeModuloName = 'Inicio';
 let currentCatalogFilter = 'todos';
 let currentCatalogSearch = '';
 let featuredShowcaseIndex = 0;
+let pendingGameLaunch = null;
+
+function openGimnasioMental(gameType = 'sopa', options = {}) {
+  pendingGameLaunch = { gameType, options };
+  closeMobileNav();
+
+  if (activeModuloName === 'Gimnasio Mental' && window.gimnasioInstance) {
+    window.gimnasioInstance.switchGame(gameType, options);
+    pendingGameLaunch = null;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  } else {
+    agente.navegarA('Gimnasio Mental');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+  const activeLink = document.querySelector('.nav-link[data-modulo="Gimnasio Mental"]');
+  if (activeLink) activeLink.classList.add('active');
+}
 
 // --- FUNCIÓN DE INICIALIZACIÓN DE LA PORTADA EDITORIAL ---
 function initEditorialHome(contenedor) {
@@ -16,23 +35,17 @@ function initEditorialHome(contenedor) {
   // 1. Inicializar Vitrina Interactiva 3D del Hero
   initHeroShowcase(catalogData.libros);
 
-  // 2. Renderizar Catálogo de 5 Libros Verificados y conectar filtros/búsqueda
+  // 2. Renderizar Catálogo de Libros y conectar filtros/búsqueda
   renderCatalogBooks(catalogData.libros);
   initCatalogFilters(catalogData.libros);
 
-  // 3. Inicializar Gimnasio Mental (Sopa de Letras + Sudoku Maestro)
-  if (window.GimnasioMental) {
-    window.gimnasioInstance = new window.GimnasioMental();
-    window.gimnasioInstance.init();
-  }
-
-  // 5. Botón Política de Privacidad RuichisLab Book Ranker
+  // 3. Botón Política de Privacidad RuichisLab Book Ranker
   const btnPrivacy = contenedor.querySelector('#btn-open-privacy-modal');
   if (btnPrivacy) {
     btnPrivacy.addEventListener('click', () => openPrivacyPolicyModal());
   }
 
-  // 6. Botones de scroll interno del Hero
+  // 4. Botones de scroll interno del Hero
   contenedor.querySelectorAll('[data-scroll-to]').forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.preventDefault();
@@ -40,20 +53,6 @@ function initEditorialHome(contenedor) {
       const targetEl = document.getElementById(targetId);
       if (targetEl) {
         targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    });
-  });
-
-  // 7. Botones de acceso rápido del Hero para jugar Sopa de Letras o Sudoku inmediatamente
-  contenedor.querySelectorAll('[data-quick-play]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const gameType = btn.getAttribute('data-quick-play');
-      const gimSection = document.getElementById('gimnasio-mental');
-      if (gimSection) {
-        gimSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-      if (window.gimnasioInstance && gameType) {
-        window.gimnasioInstance.switchGame(gameType);
       }
     });
   });
@@ -384,13 +383,7 @@ function openBookModal(bookId) {
   if (btnPlay && book.juegoRelacionado) {
     btnPlay.addEventListener('click', () => {
       closeBookModal();
-      const gimSection = document.getElementById('gimnasio-mental');
-      if (gimSection) {
-        gimSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-      if (window.gimnasioInstance) {
-        window.gimnasioInstance.switchGame(book.juegoRelacionado.tipo, book.juegoRelacionado);
-      }
+      openGimnasioMental(book.juegoRelacionado.tipo, book.juegoRelacionado);
     });
   }
 
@@ -435,6 +428,21 @@ agente.registrarModulo('Inicio', {
   init: (contenedor) => {
     activeModuloName = 'Inicio';
     initEditorialHome(contenedor);
+  }
+});
+
+agente.registrarModulo('Gimnasio Mental', {
+  templateUrl: 'src/modulos/gimnasio-mental.html',
+  init: () => {
+    activeModuloName = 'Gimnasio Mental';
+    if (window.GimnasioMental) {
+      window.gimnasioInstance = new window.GimnasioMental();
+      window.gimnasioInstance.init();
+      if (pendingGameLaunch) {
+        window.gimnasioInstance.switchGame(pendingGameLaunch.gameType, pendingGameLaunch.options);
+        pendingGameLaunch = null;
+      }
+    }
   }
 });
 
@@ -576,7 +584,17 @@ document.addEventListener('click', (e) => {
     return;
   }
 
-  // 2. Enlaces a módulos SPA completos (Inicio, Enciclopedia IA, Ruichis Lock, Contacto)
+  // 2. Enlaces directos a un juego específico del Gimnasio Mental
+  const openGameEl = e.target.closest('[data-open-game]');
+  if (openGameEl) {
+    e.preventDefault();
+    closeMobileNav();
+    const gameType = openGameEl.getAttribute('data-open-game') || 'sopa';
+    openGimnasioMental(gameType);
+    return;
+  }
+
+  // 3. Enlaces a módulos SPA completos (Inicio, Gimnasio Mental, Enciclopedia IA, Ruichis Lock, Contacto)
   const moduleElement = e.target.closest('[data-modulo]');
   if (moduleElement) {
     e.preventDefault();
@@ -644,8 +662,15 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Cargar módulo inicial
-  agente.navegarA('Inicio');
+  // Cargar módulo inicial (soporte directo para #gimnasio-mental)
+  if (window.location.hash === '#gimnasio-mental') {
+    agente.navegarA('Gimnasio Mental');
+    document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+    const gymNavLink = document.querySelector('.nav-link[data-modulo="Gimnasio Mental"]');
+    if (gymNavLink) gymNavLink.classList.add('active');
+  } else {
+    agente.navegarA('Inicio');
+  }
 
   // Si la URL incluye #privacy o ?privacy, abrir política de privacidad de Book Ranker
   if (window.location.hash === '#privacy' || window.location.search.includes('privacy')) {
