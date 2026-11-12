@@ -700,6 +700,16 @@ document.addEventListener('DOMContentLoaded', () => {
     if (e.key === 'Escape') {
       closeBookModal();
       closeMobileNav();
+      return;
+    }
+    if (modalBackdrop && modalBackdrop.classList.contains('open')) {
+      if (e.key === 'ArrowLeft') {
+        const prevBtn = document.getElementById('btn-modal-prev-book');
+        if (prevBtn) prevBtn.click();
+      } else if (e.key === 'ArrowRight') {
+        const nextBtn = document.getElementById('btn-modal-next-book');
+        if (nextBtn) nextBtn.click();
+      }
     }
   });
 
@@ -727,12 +737,15 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Cargar módulo inicial (soporte directo para #gimnasio-mental)
-  if (window.location.hash === '#gimnasio-mental') {
+  // Cargar módulo inicial (soporte directo para #gimnasio-mental, #sudoku, #sopa, #criptograma)
+  const initialHash = window.location.hash;
+  if (initialHash === '#gimnasio-mental') {
     agente.navegarA('Gimnasio Mental');
     document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
     const gymNavLink = document.querySelector('.nav-link[data-modulo="Gimnasio Mental"]');
     if (gymNavLink) gymNavLink.classList.add('active');
+  } else if (initialHash === '#sudoku' || initialHash === '#sopa' || initialHash === '#criptograma') {
+    openGimnasioMental(initialHash.slice(1));
   } else {
     agente.navegarA('Inicio');
   }
