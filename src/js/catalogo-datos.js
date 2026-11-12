@@ -4,7 +4,7 @@
 window.RUICHIS_CATALOGO = {
   editorialInfo: {
     nombre: "Ruichis Lab",
-    lema: "Productividad Asimétrica, Colección Letras y Retos & Aprendizaje Bilingüe",
+    lema: "Productividad Asimétrica & Colección Letras y Retos",
     ciudad: "Bogotá, Colombia",
     distribucion: "Amazon KDP (Kindle eBook & Tapa Blanda)",
     amazonAuthorSearch: "https://www.amazon.com/s?k=Ruichis+Lab"
@@ -135,36 +135,6 @@ window.RUICHIS_CATALOGO = {
       ],
       extractoTitulo: "Introducción al Volumen II: El Léxico de la Vida",
       extracto: "«Al rastrear términos como mitocondria, ribosoma, cromosoma, fotosíntesis o filogenia entre las letras entrelazadas, el cerebro refuerza simultáneamente la memoria visual, la precisión ortográfica y el dominio conceptual de la biología.»"
-    },
-
-    // 5. LEARN SPANISH / APRENDE INGLÉS CON SAMANIEGO
-    {
-      id: "learn-spanish-samaniego",
-      titulo: "Learn Spanish / Aprende Inglés con / with Samaniego",
-      subtitulo: "A Two-Way Bilingual Fable Reader & Workbook (Trilogía Completa: Fábulas 1–75)",
-      descripcionCorta: "Método bidireccional de lectura paralela Español–Inglés con vocabulario y ejercicios basado en 75 fábulas clásicas universales.",
-      autor: "Ruichis Lab",
-      sello: "Ruichis Lab",
-      categoria: "bilingue",
-      categoriaLabel: "Aprendizaje Bilingüe",
-      idioma: "Bilingüe",
-      idiomaBadge: "ES ⇄ EN",
-      formato: "Tapa Blanda & Kindle eBook",
-      paginas: "Trilogía Completa • Fábulas 1–75",
-      portada: "src/assets/covers/learn-spanish-samaniego.jpg",
-      destacado: true,
-      badgeEspecial: "TRILOGÍA BILINGÜE • 75 FÁBULAS",
-      asin: "BILINGUAL-SAMANIEGO",
-      amazonUrl: "https://www.amazon.com/s?k=Learn+Spanish+Aprende+Ingles+Samaniego+Ruichis+Lab",
-      juegoRelacionado: { tipo: "sopa", tema: "cultura_arte" },
-      sinopsis: "Un método bidireccional (Two-Way Bilingual Reader & Workbook) para aprender español o inglés a través de las 75 fábulas clásicas de Félix María de Samaniego. Presenta lectura paralela Español–Inglés, vocabulario clave y ejercicios de comprensión divididos en tres volúmenes progresivos.",
-      caracteristicas: [
-        "Volumen 1 (Fábulas 1–25), Volumen 2 (Fábulas 26–50) y Volumen 3 (Fábulas 51–75).",
-        "Diseño bidireccional: ideal tanto para hispanohablantes que aprenden inglés como para angloparlantes que estudian español.",
-        "Lectura comparada con vocabulario contextual y moralejas clásicas."
-      ],
-      extractoTitulo: "Muestra Bilingüe — La Cigarra y la Hormiga / The Cicada and the Ant",
-      extracto: "«Cantando la Cigarra pasó el verano entero, sin hacer provisiones allá para el invierno... / Singing the whole summer through, the Cicada spent her days, making no provisions at all for the coming winter days...»"
     }
   ],
 

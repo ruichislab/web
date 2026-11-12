@@ -138,13 +138,14 @@ function initHeroShowcase(libros) {
 function initCatalogFilters(libros) {
   const pillsContainer = document.getElementById('catalog-filter-pills');
   const searchInput = document.getElementById('catalog-search-input');
+  const navBadge = document.getElementById('nav-books-count');
+  if (navBadge) navBadge.textContent = libros.length;
 
   if (pillsContainer) {
     const counts = {
       todos: libros.length,
       productividad: libros.filter(b => b.categoria === 'productividad').length,
-      pasatiempos: libros.filter(b => b.categoria === 'pasatiempos').length,
-      bilingue: libros.filter(b => b.categoria === 'bilingue').length
+      pasatiempos: libros.filter(b => b.categoria === 'pasatiempos').length
     };
 
     pillsContainer.querySelectorAll('[data-filter]').forEach(btn => {
@@ -152,7 +153,6 @@ function initCatalogFilters(libros) {
       if (cat === 'todos') btn.textContent = `Todos los Libros (${counts.todos})`;
       if (cat === 'productividad') btn.textContent = `⚡ Productividad Asimétrica (${counts.productividad})`;
       if (cat === 'pasatiempos') btn.textContent = `🧩 Colección Letras y Retos (${counts.pasatiempos})`;
-      if (cat === 'bilingue') btn.textContent = `🌐 Aprendizaje Bilingüe (${counts.bilingue})`;
 
       btn.addEventListener('click', () => {
         currentCatalogFilter = cat;

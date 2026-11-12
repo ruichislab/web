@@ -284,11 +284,11 @@
       pista: "Diferencia crítica entre el esfuerzo ciego y la arquitectura de sistemas duraderos."
     },
     {
-      id: "samaniego-trampa",
-      libro: "Learn Spanish / Aprende Inglés con Samaniego",
-      autor: "Félix María de Samaniego • Ruichis Lab",
-      frase: "QUIEN DE TRAMPAS SE VALE EN SU PROPIO LAZO SUELE CAER",
-      pista: "Moraleja clásica sobre la integridad de carácter y la justicia poética."
+      id: "claridad-arquitectura",
+      libro: "Productividad Asimétrica (ASIN: B0HD2MY2HN)",
+      autor: "Ruichis Lab",
+      frase: "LA CLARIDAD ARQUITECTONICA SUPRIME EL DESGASTE DE LA FUERZA DE VOLUNTAD",
+      pista: "Axioma sobre la primacía de los sistemas modulares sobre el desgaste de la disciplina reactiva."
     },
     {
       id: "perseverancia-logica",
