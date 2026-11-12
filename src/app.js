@@ -16,7 +16,7 @@ function initEditorialHome(contenedor) {
   // 1. Inicializar Vitrina Interactiva 3D del Hero
   initHeroShowcase(catalogData.libros);
 
-  // 2. Renderizar Catálogo de 7 Libros Verificados y conectar filtros/búsqueda
+  // 2. Renderizar Catálogo de 5 Libros Verificados y conectar filtros/búsqueda
   renderCatalogBooks(catalogData.libros);
   initCatalogFilters(catalogData.libros);
 
@@ -25,9 +25,6 @@ function initEditorialHome(contenedor) {
     window.gimnasioInstance = new window.GimnasioMental();
     window.gimnasioInstance.init();
   }
-
-  // 4. Renderizar Autores Verificados
-  renderAuthorsGrid(catalogData.autores);
 
   // 5. Botón Política de Privacidad RuichisLab Book Ranker
   const btnPrivacy = contenedor.querySelector('#btn-open-privacy-modal');
@@ -147,7 +144,6 @@ function initCatalogFilters(libros) {
       todos: libros.length,
       productividad: libros.filter(b => b.categoria === 'productividad').length,
       pasatiempos: libros.filter(b => b.categoria === 'pasatiempos').length,
-      ficcion: libros.filter(b => b.categoria === 'ficcion').length,
       bilingue: libros.filter(b => b.categoria === 'bilingue').length
     };
 
@@ -156,7 +152,6 @@ function initCatalogFilters(libros) {
       if (cat === 'todos') btn.textContent = `Todos los Libros (${counts.todos})`;
       if (cat === 'productividad') btn.textContent = `⚡ Productividad Asimétrica (${counts.productividad})`;
       if (cat === 'pasatiempos') btn.textContent = `🧩 Colección Letras y Retos (${counts.pasatiempos})`;
-      if (cat === 'ficcion') btn.textContent = `🕵️‍♂️ Thriller Tecnológico (${counts.ficcion})`;
       if (cat === 'bilingue') btn.textContent = `🌐 Aprendizaje Bilingüe (${counts.bilingue})`;
 
       btn.addEventListener('click', () => {
@@ -206,7 +201,7 @@ function renderCatalogBooks(libros) {
     grid.innerHTML = `
       <div style="grid-column:1/-1;text-align:center;padding:3rem;background:var(--surface-card);border-radius:16px;border:1px solid var(--border-subtle);">
         <p style="margin:0 auto 1rem;font-size:1.05rem;color:var(--text-primary);">No se encontraron libros que coincidan con tu búsqueda.</p>
-        <button type="button" class="btn-editorial outline" id="btn-reset-catalog-filter">Ver los 7 Libros</button>
+        <button type="button" class="btn-editorial outline" id="btn-reset-catalog-filter">Ver los 5 Libros</button>
       </div>
     `;
     const resetBtn = document.getElementById('btn-reset-catalog-filter');
@@ -428,31 +423,8 @@ function closeBookModal() {
   if (modal) modal.classList.remove('open');
 }
 
-// --- 4. AUTORES VERIFICADOS ---
-function renderAuthorsGrid(autores) {
-  const grid = document.getElementById('editorial-authors-grid');
-  if (!grid || !autores) return;
+// --- 4. ACERCA DE RUICHIS LAB (Estructurado en src/modulos/inicio.html) ---
 
-  grid.innerHTML = autores
-    .map(
-      a => `
-      <article class="author-card">
-        <div class="author-header">
-          <div class="author-avatar">${a.avatar}</div>
-          <div>
-            <h3 class="author-name">${a.nombre}</h3>
-            <span class="author-role">${a.rol}</span>
-          </div>
-        </div>
-        <p class="author-bio">${a.bio}</p>
-        <ul class="author-works-list">
-          ${a.obrasDestacadas.map(w => `<li>${w}</li>`).join('')}
-        </ul>
-      </article>
-    `
-    )
-    .join('');
-}
 
 // --- REGISTRO DE MÓDULOS SPA ---
 agente.registrarModulo('Inicio', {

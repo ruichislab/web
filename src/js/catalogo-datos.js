@@ -4,7 +4,7 @@
 window.RUICHIS_CATALOGO = {
   editorialInfo: {
     nombre: "Ruichis Lab",
-    lema: "Productividad Asimétrica, Colección Letras y Retos, Thriller Tecnológico & Aprendizaje Bilingüe",
+    lema: "Productividad Asimétrica, Colección Letras y Retos & Aprendizaje Bilingüe",
     ciudad: "Bogotá, Colombia",
     distribucion: "Amazon KDP (Kindle eBook & Tapa Blanda)",
     amazonAuthorSearch: "https://www.amazon.com/s?k=Ruichis+Lab"
@@ -14,8 +14,9 @@ window.RUICHIS_CATALOGO = {
     // 1. PRODUCTIVIDAD ASIMÉTRICA (ESPAÑOL)
     {
       id: "productividad-asimetrica-es",
-      titulo: "Productividad Asimétrica: El arte de hacer en dos horas lo que a otros les lleva una semana",
-      subtitulo: "Edición en Español • Aislamiento Cognitivo Profundo, Apalancamiento Algorítmico y Sistemas Modulares",
+      titulo: "Productividad Asimétrica",
+      subtitulo: "El arte de hacer en dos horas lo que a otros les lleva una semana",
+      descripcionCorta: "Aislamiento cognitivo profundo, apalancamiento algorítmico y sistemas modulares para multiplicar el impacto en bloques de 120 minutos.",
       autor: "Ruichis Lab",
       sello: "Ruichis Lab",
       categoria: "productividad",
@@ -23,6 +24,7 @@ window.RUICHIS_CATALOGO = {
       idioma: "Español",
       idiomaBadge: "ES",
       formato: "Kindle eBook & Tapa Blanda (5\" × 8\")",
+      paginas: "Formato Bolsillo 5\" × 8\"",
       portada: "src/assets/covers/productividad-asimetrica-es.jpg",
       portadaAlternativa: "src/assets/covers/herramientas-asimetricas.jpg",
       portadaAlternativaLabel: "🖼️ Ver Portada Alternativa",
@@ -45,8 +47,9 @@ window.RUICHIS_CATALOGO = {
     // 2. ASYMMETRIC PRODUCTIVITY (ENGLISH EDITION)
     {
       id: "asymmetric-productivity-en",
-      titulo: "Asymmetric Productivity: The Art of Doing in Two Hours What Takes Others a Week",
-      subtitulo: "English Edition • Cognitive Isolation Protocols, Algorithmic Leverage & High-Output Execution",
+      titulo: "Asymmetric Productivity",
+      subtitulo: "The Art of Doing in Two Hours What Takes Others a Week",
+      descripcionCorta: "The international English edition on cognitive leverage, autonomous workflows, and eliminating attentional residue for high-output creators.",
       autor: "Ruichis Lab",
       sello: "Ruichis Lab",
       categoria: "productividad",
@@ -54,6 +57,7 @@ window.RUICHIS_CATALOGO = {
       idioma: "Inglés",
       idiomaBadge: "EN",
       formato: "Kindle eBook & Paperback (5\" × 8\")",
+      paginas: "Pocket Edition 5\" × 8\"",
       portada: "src/assets/covers/asymmetric-productivity-en.jpg",
       destacado: true,
       badgeEspecial: "ASIN: B0HJ42QFCV",
@@ -74,19 +78,21 @@ window.RUICHIS_CATALOGO = {
     {
       id: "sopas-cultura-general",
       titulo: "100 Grandes Sopas de Letras de Cultura General",
-      subtitulo: "Colección Letras y Retos (Vol. I) • Historia • Ciencia • Arte • Geografía • Filosofía — 100 Desafíos Temáticos • 1.200 Palabras",
+      subtitulo: "Colección Letras y Retos (Vol. I) • Historia • Ciencia • Arte • Geografía • Filosofía",
+      descripcionCorta: "100 desafíos temáticos únicos con 1.200 palabras seleccionadas en 8 direcciones dinámicas. Formato bolsillo con letra clara y soluciones al final.",
       autor: "Ruichis Lab",
       sello: "Colección Letras y Retos",
       categoria: "pasatiempos",
       categoriaLabel: "Colección Letras y Retos",
       idioma: "Español",
       idiomaBadge: "ES",
-      formato: "Edición de Bolsillo 5\" × 8\" • Letra Clara • 132 págs.",
+      formato: "Edición Bolsillo 5\" × 8\" • 132 págs.",
+      paginas: "132 páginas • Letra Clara",
       portada: "src/assets/covers/100-sopas-cultura-general.jpg",
       portadaWrap: "src/assets/covers/100-sopas-cultura-wrap.jpg",
       destacado: true,
       badgeEspecial: "VOLUMEN I • 1.200 PALABRAS",
-      asin: "",
+      asin: "VOL-1-CULTURA",
       amazonUrl: "https://www.amazon.com/s?k=100+Grandes+Sopas+de+Letras+de+Cultura+General+Ruichis+Lab",
       juegoRelacionado: { tipo: "sopa", tema: "cultura_historia" },
       sinopsis: "Desafía tu mente y amplía tu vocabulario con 100 tableros temáticos cuidadosamente diseñados en 8 direcciones. Desde las grandes civilizaciones de la historia y los hitos de la ciencia hasta el arte universal, la geografía del mundo y las corrientes filosóficas.",
@@ -94,7 +100,7 @@ window.RUICHIS_CATALOGO = {
         "100 desafíos temáticos únicos con 12 palabras por tablero (1.200 términos culturales).",
         "Palabras distribuidas en 8 direcciones: horizontal, vertical, diagonal e invertidas.",
         "Edición de bolsillo 5\" × 8\" (132 páginas) con tipografía de letra clara y alto contraste.",
-        "Incluye solucionario completo en la sección final del libro."
+        "Incluye solucionario completo e ilustrado en la sección final del libro."
       ],
       extractoTitulo: "Presentación de la Colección Letras y Retos (Vol. I)",
       extracto: "«Entrenar la atención sostenida en una época dominada por la fragmentación digital es un acto de resistencia cognitiva. Cada uno de los 100 tableros de este primer volumen ha sido construido como una expedición por el saber humano: Historia, Ciencia, Arte, Geografía y Filosofía.»"
@@ -104,19 +110,21 @@ window.RUICHIS_CATALOGO = {
     {
       id: "sopas-biologia",
       titulo: "100 Grandes Sopas de Letras de Biología",
-      subtitulo: "Colección Letras y Retos (Vol. II) • Célula • Genética • Botánica • Zoología • Evolución — 100 Desafíos Temáticos • 1.200 Palabras",
+      subtitulo: "Colección Letras y Retos (Vol. II) • Célula • Genética • Botánica • Zoología • Evolución",
+      descripcionCorta: "100 desafíos especializados en las ciencias de la vida. 1.200 términos científicos rigurosos en matrices cómodas sin fatiga visual.",
       autor: "Ruichis Lab",
       sello: "Colección Letras y Retos",
       categoria: "pasatiempos",
       categoriaLabel: "Colección Letras y Retos",
       idioma: "Español",
       idiomaBadge: "ES",
-      formato: "Edición de Bolsillo 5\" × 8\" • Letra Clara • 132 págs.",
+      formato: "Edición Bolsillo 5\" × 8\" • 132 págs.",
+      paginas: "132 páginas • Letra Clara",
       portada: "src/assets/covers/100-sopas-biologia.jpg",
       portadaWrap: "src/assets/covers/100-sopas-biologia-wrap.jpg",
       destacado: true,
       badgeEspecial: "VOLUMEN II • CIENCIAS BIOLÓGICAS",
-      asin: "",
+      asin: "VOL-2-BIOLOGIA",
       amazonUrl: "https://www.amazon.com/s?k=100+Grandes+Sopas+de+Letras+de+Biologia+Ruichis+Lab",
       juegoRelacionado: { tipo: "sopa", tema: "biologia_celula" },
       sinopsis: "Explora los fundamentos de las ciencias de la vida mientras ejercitas tu agilidad mental. El Volumen II de la Colección Letras y Retos reúne 1.200 términos esenciales de biología celular, genética molecular, botánica, zoología, ecología y evolución.",
@@ -129,81 +137,24 @@ window.RUICHIS_CATALOGO = {
       extracto: "«Al rastrear términos como mitocondria, ribosoma, cromosoma, fotosíntesis o filogenia entre las letras entrelazadas, el cerebro refuerza simultáneamente la memoria visual, la precisión ortográfica y el dominio conceptual de la biología.»"
     },
 
-    // 5. CORPORATE SILENCE — BOOK 1: PUSH
-    {
-      id: "corporate-silence-1",
-      titulo: "Corporate Silence — Book 1: Push",
-      subtitulo: "Techno-Thriller de Espionaje Financiero y Algoritmos de Sombra (Edición en Español e Inglés)",
-      autor: "Daemon Drew",
-      sello: "Ruichis Lab",
-      categoria: "ficcion",
-      categoriaLabel: "Thriller Tecnológico",
-      idioma: "Español & Inglés",
-      idiomaBadge: "ES / EN",
-      formato: "Kindle eBook",
-      portada: "src/assets/covers/corporate-silence-1.jpg",
-      destacado: true,
-      badgeEspecial: "ASIN: B0HDQ91SD1 / B0HDM455NT",
-      asin: "B0HDQ91SD1",
-      asinSecundario: "B0HDM455NT",
-      amazonUrl: "https://www.amazon.com/dp/B0HDQ91SD1",
-      amazonUrlEn: "https://www.amazon.com/dp/B0HDM455NT",
-      juegoRelacionado: { tipo: "sudoku", dificultad: "experto" },
-      sinopsis: "En las altas esferas financieras, el silencio corporativo nunca es casual: se compra, se cifra y se ejecuta en microsegundos. Cuando sale a la luz una anomalía oculta en los conductos de liquidación algorítmica, un simple 'push' en producción desata una persecución implacable entre consorcios financieros y operadores de inteligencia privada.",
-      caracteristicas: [
-        "Libro 1 de la saga 'Corporate Silence' escrita por Daemon Drew.",
-        "Thriller tecnológico de alta tensión sobre ciberseguridad, código crítico y poder corporativo.",
-        "Edición en Español disponible en Kindle (ASIN: B0HDQ91SD1).",
-        "Edición en Inglés disponible en Kindle (ASIN: B0HDM455NT)."
-      ],
-      extractoTitulo: "Fragmento — Book 1: Push",
-      extracto: "«En los mercados de alta frecuencia nadie dispara un arma cuando puede alterar tres líneas de un servicio de conciliación. El rastro no desapareció; simplemente quedó fuera del alcance de quienes no poseían la llave criptográfica correcta.»"
-    },
-
-    // 6. CORPORATE SILENCE — LIBRO 2: NOISE
-    {
-      id: "corporate-silence-2",
-      titulo: "Corporate Silence — Libro 2: Noise",
-      subtitulo: "Secuela de Corporate Silence: Push • Guerra Algorítmica y Silencio Corporativo",
-      autor: "Daemon Drew",
-      sello: "Ruichis Lab",
-      categoria: "ficcion",
-      categoriaLabel: "Thriller Tecnológico",
-      idioma: "Español",
-      idiomaBadge: "ES",
-      formato: "Kindle eBook",
-      portada: "src/assets/covers/corporate-silence-2.jpg",
-      destacado: true,
-      badgeEspecial: "ASIN: B0HKTLLGMM",
-      asin: "B0HKTLLGMM",
-      amazonUrl: "https://www.amazon.com/dp/B0HKTLLGMM",
-      juegoRelacionado: { tipo: "sudoku", dificultad: "experto" },
-      sinopsis: "Secuela directa de 'Corporate Silence: Push'. La confrontación escala hacia una guerra algorítmica donde el arma definitiva ya no es ocultar los datos, sino inundar los canales de auditoría y vigilancia global con ruido sintético indistinguible de la verdad.",
-      caracteristicas: [
-        "Segundo libro de la serie 'Corporate Silence' de Daemon Drew.",
-        "Explora la desinformación sintética, bóvedas de datos y espionaje financiero de nueva generación.",
-        "Disponible en formato Kindle eBook en Amazon (ASIN: B0HKTLLGMM)."
-      ],
-      extractoTitulo: "Fragmento — Libro 2: Noise",
-      extracto: "«Si quieres ocultar una operación crítica en la era de la vigilancia total, no apagas los sensores. Inundas la red con diez millones de señales falsas matemáticamente perfectas. No necesitas silencio cuando eres el dueño del ruido.»"
-    },
-
-    // 7. LEARN SPANISH / APRENDE INGLÉS CON SAMANIEGO
+    // 5. LEARN SPANISH / APRENDE INGLÉS CON SAMANIEGO
     {
       id: "learn-spanish-samaniego",
       titulo: "Learn Spanish / Aprende Inglés con / with Samaniego",
-      subtitulo: "A Two-Way Bilingual Fable Reader & Workbook (Trilogía Bilingüe Español–Inglés: Fábulas 1–75)",
+      subtitulo: "A Two-Way Bilingual Fable Reader & Workbook (Trilogía Completa: Fábulas 1–75)",
+      descripcionCorta: "Método bidireccional de lectura paralela Español–Inglés con vocabulario y ejercicios basado en 75 fábulas clásicas universales.",
       autor: "Ruichis Lab",
       sello: "Ruichis Lab",
       categoria: "bilingue",
       categoriaLabel: "Aprendizaje Bilingüe",
       idioma: "Bilingüe",
       idiomaBadge: "ES ⇄ EN",
-      formato: "Tapa Blanda & Kindle eBook (Vols. 1, 2 y 3)",
+      formato: "Tapa Blanda & Kindle eBook",
+      paginas: "Trilogía Completa • Fábulas 1–75",
       portada: "src/assets/covers/learn-spanish-samaniego.jpg",
       destacado: true,
-      badgeEspecial: "TRILOGÍA BILINGÜE • FÁBULAS 1–75",
-      asin: "",
+      badgeEspecial: "TRILOGÍA BILINGÜE • 75 FÁBULAS",
+      asin: "BILINGUAL-SAMANIEGO",
       amazonUrl: "https://www.amazon.com/s?k=Learn+Spanish+Aprende+Ingles+Samaniego+Ruichis+Lab",
       juegoRelacionado: { tipo: "sopa", tema: "cultura_arte" },
       sinopsis: "Un método bidireccional (Two-Way Bilingual Reader & Workbook) para aprender español o inglés a través de las 75 fábulas clásicas de Félix María de Samaniego. Presenta lectura paralela Español–Inglés, vocabulario clave y ejercicios de comprensión divididos en tres volúmenes progresivos.",
@@ -217,29 +168,27 @@ window.RUICHIS_CATALOGO = {
     }
   ],
 
-  autores: [
-    {
-      nombre: "Ruichis Lab",
-      rol: "Sello Editorial & Laboratorio de Ingeniería Cognitiva",
-      avatar: "🏛️",
-      bio: "Proyecto editorial independiente con sede en Bogotá. Publica obras de productividad de alto apalancamiento ('Productividad Asimétrica' en español e inglés), cuadernos de entrenamiento mental ('Colección Letras y Retos') y ediciones bilingües Español–Inglés.",
-      obrasDestacadas: [
-        "Productividad Asimétrica (Español — ASIN: B0HD2MY2HN)",
-        "Asymmetric Productivity (English — ASIN: B0HJ42QFCV)",
-        "100 Grandes Sopas de Letras de Cultura General (Vol. I)",
-        "100 Grandes Sopas de Letras de Biología (Vol. II)",
-        "Learn Spanish / Aprende Inglés con / with Samaniego (Fábulas 1–75)"
-      ]
-    },
-    {
-      nombre: "Daemon Drew",
-      rol: "Autor de Thriller Tecnológico & Ficción Especulativa",
-      avatar: "🕵️‍♂️",
-      bio: "Autor de la serie de techno-thrillers 'Corporate Silence', donde convergen el espionaje financiero, la ciberseguridad de alto nivel y la guerra algorítmica contemporánea.",
-      obrasDestacadas: [
-        "Corporate Silence — Book 1: Push (Español: B0HDQ91SD1 / Inglés: B0HDM455NT)",
-        "Corporate Silence — Libro 2: Noise (Español: B0HKTLLGMM)"
-      ]
-    }
-  ]
+  acercaDe: {
+    nombre: "Ruichis Lab",
+    subtitulo: "Ingeniería Cognitiva, Productividad & Entretenimiento Lógico",
+    ciudad: "Bogotá, Colombia",
+    descripcion: "Ruichis Lab es un proyecto independiente enfocado en la creación de herramientas de alto apalancamiento mental. Desde publicaciones editoriales publicadas en Amazon KDP hasta utilidades de software como Ruichis Lock (cifrado AES-256) y RuichisLab Book Ranker para autores, cada desarrollo busca maximizar la claridad, el foco profundo y la soberanía del tiempo.",
+    pilares: [
+      {
+        icono: "⚡",
+        titulo: "Productividad Asimétrica",
+        desc: "Sistemas para concentrar semanas de trabajo reactivo en bloques de foco puro de dos horas."
+      },
+      {
+        icono: "🧩",
+        titulo: "Entrenamiento Mental",
+        desc: "Pasatiempos estructurados con algoritmos balanceados para cultivar la atención sostenida."
+      },
+      {
+        icono: "🌐",
+        titulo: "Publicación Global",
+        desc: "Distribución internacional en papel y digital a través de Amazon Kindle Direct Publishing."
+      }
+    ]
+  }
 };
