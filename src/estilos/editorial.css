@@ -3403,4 +3403,49 @@ body.theme-paper .victory-stat {
   justify-content: center;
 }
 
+.btn-daily-challenge {
+  border-color: rgba(212, 175, 55, 0.45) !important;
+  color: var(--primary-color) !important;
+}
+
+.btn-daily-challenge.active {
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.25), rgba(212, 175, 55, 0.12)) !important;
+  border-color: var(--primary-color) !important;
+}
+
+.numpad-btn.digit-complete {
+  opacity: 0.42;
+}
+
+.numpad-btn.fast-active {
+  border-color: #38BDF8 !important;
+  background: rgba(0, 168, 255, 0.2) !important;
+  box-shadow: 0 0 0 2px rgba(0, 168, 255, 0.35);
+  transform: translateY(-2px);
+}
+
+@keyframes sudokuUnitFlash {
+  0% { background: rgba(212, 175, 55, 0.45); }
+  100% { background: transparent; }
+}
+
+.sudoku-cell.unit-flash {
+  animation: sudokuUnitFlash 0.65s ease;
+}
+
+.victory-record-badge {
+  display: inline-block;
+  margin-bottom: 0.55rem;
+  padding: 0.25rem 0.7rem;
+  border-radius: 999px;
+  background: rgba(212, 175, 55, 0.18);
+  border: 1px solid rgba(212, 175, 55, 0.55);
+  color: var(--primary-color);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+
 
