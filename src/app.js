@@ -229,11 +229,13 @@ function renderCatalogBooks(libros) {
       return `
       <article class="book-card" data-book-id="${book.id}">
         <div class="book-card-body">
-          <div class="book-card-top">
-            <div class="book-cover-frame book-3d-stage" data-open-book="${book.id}" title="Ver vista previa, portada completa y detalles">
-              <div class="book-3d-spine"></div>
-              <span class="book-lang-pill">${book.idiomaBadge}</span>
-              <img src="${book.portada}" alt="Portada de ${book.titulo}" loading="lazy">
+          <div class="book-card-columns">
+            <div class="book-cover-col">
+              <div class="book-cover-frame book-3d-stage" data-open-book="${book.id}" title="Ver vista previa, cubierta completa y extracto">
+                <div class="book-3d-spine"></div>
+                <span class="book-lang-pill">${book.idiomaBadge}</span>
+                <img src="${book.portada}" alt="Portada de ${book.titulo}" loading="lazy">
+              </div>
             </div>
             <div class="book-meta-col">
               <div class="book-badges-row">
@@ -242,20 +244,21 @@ function renderCatalogBooks(libros) {
               </div>
               <h3 class="book-title" data-open-book="${book.id}">${book.titulo}</h3>
               <p class="book-subtitle">${book.subtitulo}</p>
-              <span class="book-author">Por <strong>${book.autor}</strong> • ${book.idioma}</span>
-              <span class="book-format-badge">${book.formato}</span>
+              <div class="book-specs-row">
+                <span class="book-format-badge">📘 ${book.formato}</span>
+                <span class="book-author-badge">Sello: <strong>${book.sello}</strong></span>
+              </div>
+              <p class="book-synopsis">${book.sinopsis}</p>
+              <div class="book-card-actions">
+                <button type="button" class="btn-book-detail" data-open-book="${book.id}">
+                  📖 Ficha &amp; Extracto
+                </button>
+                <a href="${book.amazonUrl}" target="_blank" rel="noopener noreferrer" class="btn-book-amazon">
+                  🛒 Comprar en Amazon ↗
+                </a>
+              </div>
             </div>
           </div>
-          <p class="book-synopsis">${book.sinopsis}</p>
-        </div>
-
-        <div class="book-card-footer">
-          <button type="button" class="btn-book-detail" data-open-book="${book.id}">
-            📖 Vista Previa &amp; Detalles
-          </button>
-          <a href="${book.amazonUrl}" target="_blank" rel="noopener noreferrer" class="btn-book-amazon">
-            🛒 Ver en Amazon ↗
-          </a>
         </div>
       </article>
     `;
