@@ -184,6 +184,7 @@
             <div class="toolbar-group">
               <span class="puzzle-stat-pill" title="Tiempo">⏱️ <span id="sudoku-timer">00:00</span></span>
               <span class="puzzle-stat-pill" title="Celdas completadas">📊 <span id="sudoku-progress-counter">35 / 81</span></span>
+              <span class="puzzle-stat-pill" id="sudoku-mistakes-pill" title="Errores cometidos">❌ Errores: <span id="sudoku-mistakes-count">0</span></span>
               <button type="button" class="btn-puzzle-tool" id="btn-sudoku-notas" aria-pressed="false" title="Modo Notas de Lápiz (Tecla N)">✏️ Notas (Lápiz)</button>
               <button type="button" class="btn-puzzle-tool" id="btn-sudoku-autocandidatos" title="Calcular candidatos válidos para todas las celdas vacías">✨ Auto-Candidatos</button>
               <button type="button" class="btn-puzzle-tool" id="btn-sudoku-deshacer" title="Deshacer última jugada">↩️ Deshacer</button>
@@ -202,6 +203,32 @@
           <div class="sudoku-workspace">
             <div class="sudoku-board-frame">
               <div id="sudoku-grid-board" class="sudoku-grid" aria-label="Tablero de Sudoku 9 por 9"></div>
+
+              <div id="sudoku-victory-overlay" class="puzzle-victory-overlay" hidden aria-live="polite">
+                <div class="puzzle-victory-card">
+                  <div class="victory-trophy">🏆</div>
+                  <h3>¡Sudoku Completado!</h3>
+                  <p id="sudoku-victory-subtitle">Has resuelto el tablero con precisión lógica.</p>
+                  <div class="victory-stats-row">
+                    <div class="victory-stat">
+                      <span class="victory-stat-label">TIEMPO</span>
+                      <strong id="sudoku-victory-time">00:00</strong>
+                    </div>
+                    <div class="victory-stat">
+                      <span class="victory-stat-label">ERRORES</span>
+                      <strong id="sudoku-victory-mistakes">0</strong>
+                    </div>
+                    <div class="victory-stat">
+                      <span class="victory-stat-label">NIVEL</span>
+                      <strong id="sudoku-victory-diff">Medio</strong>
+                    </div>
+                  </div>
+                  <div class="victory-actions">
+                    <button type="button" class="btn-hero-primary" id="btn-sudoku-victory-new">🔄 Jugar Nuevo Sudoku</button>
+                    <button type="button" class="btn-puzzle-tool" id="btn-sudoku-victory-view">👁️ Ver Tablero</button>
+                  </div>
+                </div>
+              </div>
             </div>
 
             <div class="sudoku-controls-panel">
