@@ -1,0 +1,58 @@
+// sw.js — Service Worker ligero de Ruichis Lab (Offline-Ready para Gimnasio Mental y Catálogo)
+const CACHE_NAME = 'ruichis-lab-v1';
+
+const CORE_ASSETS = [
+  './',
+  './index.html',
+  './manifest.webmanifest',
+  './src/estilos/variables.css',
+  './src/estilos/components.css',
+  './src/estilos/modules.css',
+  './src/estilos/main.css',
+  './src/estilos/editorial.css',
+  './src/utils/cleanup.js',
+  './src/js/catalogo-datos.js',
+  './src/js/juegos-mentales.js',
+  './src/js/enciclopedia.js',
+  './src/agenteModular.js',
+  './src/app.js',
+  './src/modulos/inicio.html',
+  './src/modulos/gimnasio-mental.html',
+  './src/modulos/contacto.html'
+];
+
+self.addEventListener('install', (event) => {
+  event.waitUntil(
+    caches.open(CACHE_NAME)
+      .then((cache) => cache.addAll(CORE_ASSETS))
+      .then(() => self.skipWaiting())
+      .catch(() => {})
+  );
+});
+
+self.addEventListener('activate', (event) => {
+  event.waitUntil(
+    caches.keys().then((keys) =>
+      Promise.all(keys.filter((k) => k !== CACHE_NAME).map((k) => caches.delete(k)))
+    ).then(() => self.clients.claim())
+  );
+});
+
+self.addEventListener('fetch', (event) => {
+  if (event.request.method !== 'GET') return;
+  const url = new URL(event.request.url);
+  if (url.origin !== self.location.origin) return;
+
+  // Network-first con fallback a caché para mantener siempre la última versión online y funcionar offline
+  event.respondWith(
+    fetch(event.request)
+      .then((response) => {
+        if (response && response.status === 200) {
+          const copy = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy)).catch(() => {});
+        }
+        return response;
+      })
+      .catch(() => caches.match(event.request).then((cached) => cached || caches.match('./index.html')))
+  );
+});
