@@ -2892,7 +2892,7 @@ body.theme-paper .footer-section p {
 
   /* Tarjetas del Hub de Juegos compactas para mantener el tablero a la vista */
   .gym-hub-grid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 0.65rem;
     margin-bottom: 1.35rem;
   }
@@ -3705,10 +3705,69 @@ body.theme-paper .daily-day-dot {
   color: #10B981;
 }
 
+/* ==========================================================================
+   MODO APP NATIVA (PWA STANDALONE) & TACTO DE JUEGO INSTANTÁNEO
+   ========================================================================== */
+.sudoku-cell,
+.numpad-btn,
+.sopa-cell,
+.btn-puzzle-tool,
+.btn-perf-tool,
+.gym-hub-card {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
 
+.sopa-board-frame,
+.sudoku-board-frame {
+  overscroll-behavior: none;
+}
 
+.sopa-cell {
+  font-size: clamp(0.68rem, 2.25vw, 1.02rem);
+}
 
+@keyframes sopaCellPop {
+  0% { transform: scale(1); }
+  45% { transform: scale(1.18); filter: brightness(1.25); }
+  100% { transform: scale(1); }
+}
 
+.sopa-cell.just-found {
+  animation: sopaCellPop 0.42s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
 
+#btn-install-pwa {
+  background: rgba(212, 175, 55, 0.16);
+  border-color: rgba(212, 175, 55, 0.5);
+  color: var(--primary-color);
+  font-weight: 700;
+}
 
+#btn-install-pwa:hover {
+  background: rgba(212, 175, 55, 0.28);
+}
 
+body.pwa-standalone {
+  overscroll-behavior-y: contain;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+body.pwa-standalone .editorial-topbar {
+  display: none;
+}
+
+body.pwa-standalone .editorial-footer {
+  display: none;
+}
+
+body.pwa-standalone .editorial-section {
+  padding: 1rem 0 2rem;
+}
+
+@media (display-mode: standalone) {
+  body {
+    overscroll-behavior-y: contain;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+}

@@ -1,10 +1,12 @@
 {
   "name": "Ruichis Lab — Editorial & Gimnasio Mental",
   "short_name": "Ruichis Lab",
-  "description": "Obras de productividad asimétrica y Gimnasio Mental gratuito sin anuncios (Sudoku Maestro, Sopas de Letras y Criptogramas) disponible sin conexión.",
-  "start_url": "./",
+  "description": "Suite cognitiva gratuita sin anuncios: Sopas de Letras Pro y Sudoku Maestro 9x9 de Ruichis Lab, jugable sin conexión como app nativa.",
+  "start_url": "./#gimnasio-mental",
   "scope": "./",
   "display": "standalone",
+  "orientation": "any",
+  "categories": ["games", "puzzle", "education"],
   "background_color": "#0B0F19",
   "theme_color": "#D4AF37",
   "lang": "es",
@@ -23,9 +25,9 @@
       "url": "./#sudoku"
     },
     {
-      "name": "Gimnasio Mental Completo",
-      "short_name": "Juegos",
-      "url": "./#gimnasio-mental"
+      "name": "Sopas de Letras Pro",
+      "short_name": "Sopas Pro",
+      "url": "./#sopa"
     }
   ]
 }
