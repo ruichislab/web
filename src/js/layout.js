@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
         <div class="footer-section">
           <h3>CONTACTO</h3>
-          <p>info@ruichislab.com</p>
+          <p>contacto@ruichislab.com</p>
           <p>Bogotá, Colombia</p>
         </div>
         <div class="footer-section">

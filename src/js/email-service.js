@@ -71,7 +71,7 @@ ${templateParams.mensaje}
 Enviado desde el formulario de contacto de Ruichis Lab
 Fecha: ${new Date().toLocaleString('es-ES')}`;
 
-    const mailtoLink = `mailto:ruichislab@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    const mailtoLink = `mailto:contacto@ruichislab.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     
     try {
       window.open(mailtoLink, '_blank');
@@ -86,7 +86,7 @@ Fecha: ${new Date().toLocaleString('es-ES')}`;
   }
 
   clipboardFallback(templateParams, subject, body) {
-    const emailContent = `Para: ruichislab@gmail.com
+    const emailContent = `Para: contacto@ruichislab.com
 Asunto: ${subject}
 
 ${body}`;
