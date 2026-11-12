@@ -1,56 +1,106 @@
-<section class="enciclopedia-ia-section">
+<!-- src/modulos/enciclopedia.html -->
+<!-- Ruichis Lab — Enciclopedia Universal de Inteligencia Artificial (20 Monografías Técnicas) -->
 
-  <!-- HERO SECTION -->
-  <header class="hero-enciclopedia">
-    <h1 class="titulo-glitch glitch" data-text="ENCICLOPEDIA DE IA">
-      <span class="titulo-icon" role="img" aria-label="Books">📚</span>
-      ENCICLOPEDIA DE IA
-    </h1>
-    <p class="subtitulo-cyber">Una colección de artículos y guías para explorar el fascinante mundo de la Inteligencia Artificial.</p>
-  </header>
+<div class="editorial-home-wrapper">
+  <section class="editorial-section ia-encyclopedia-section" id="enciclopedia-ia-app">
+    <div class="container">
+      <!-- HERO EDITORIAL -->
+      <header class="ia-hero-header">
+        <div class="ia-hero-kicker">BIBLIOTECA TÉCNICA • RUICHIS LAB</div>
+        <h1 class="ia-hero-title">Enciclopedia Universal de Inteligencia Artificial</h1>
+        <p class="ia-hero-subtitle">
+          Veinte monografías técnicas rigurosas que cubren desde los fundamentos matemáticos y redes neuronales hasta Transformers, LLMs, RAG, Agentes MCP, Hardware de Inferencia y Seguridad.
+        </p>
 
-  <!-- BARRA DE BÚSQUEDA (FUNCIONALIDAD FUTURA) -->
-  <div class="search-bar-container">
-    <input type="search" id="ia-search" class="input-cyber" placeholder="Buscar un término (ej: Redes Neuronales)..." disabled>
-    <p class="search-note">Funcionalidad de búsqueda próximamente disponible.</p>
-  </div>
+        <div class="ia-hero-stats">
+          <div class="ia-stat-pill"><strong>20</strong> Monografías</div>
+          <div class="ia-stat-pill"><strong>7</strong> Áreas Clave</div>
+          <div class="ia-stat-pill"><strong>Índice</strong> Interactivo</div>
+          <div class="ia-stat-pill"><strong>100%</strong> Offline</div>
+        </div>
+      </header>
 
-  <!-- GRID DE ARTÍCULOS -->
-  <main class="articulos-grid">
+      <!-- BARRA DE BÚSQUEDA Y CONTROLES -->
+      <div class="ia-controls-panel">
+        <div class="ia-search-row">
+          <div class="ia-search-input-wrap">
+            <span class="ia-search-icon" aria-hidden="true">🔍</span>
+            <input
+              type="search"
+              id="ia-search"
+              class="ia-search-input"
+              placeholder="Buscar concepto, arquitectura o término (ej: Transformer, LoRA, RAG, Backpropagation, MCP)..."
+              autocomplete="off"
+              aria-label="Buscar en la Enciclopedia de IA"
+            >
+          </div>
+          <div class="ia-quick-actions">
+            <button type="button" class="btn-puzzle-tool" id="btn-ia-random" title="Abrir una monografía al azar">
+              🎲 Aleatorio
+            </button>
+            <button type="button" class="btn-puzzle-tool" id="btn-ia-bookmarks" aria-pressed="false" title="Ver artículos guardados">
+              🔖 Guardados (<span id="ia-bookmarks-count">0</span>)
+            </button>
+          </div>
+        </div>
 
-    <article class="articulo-card" data-articulo="que-es-ia">
-      <div class="articulo-icon">🤖</div>
-      <h3>¿Qué es la Inteligencia Artificial?</h3>
-      <p>Una introducción fundamental al concepto de IA, su historia y sus principales ramas de estudio.</p>
-      <div class="articulo-badge">CONCEPTOS BÁSICOS</div>
-    </article>
+        <!-- FILTROS DE CATEGORÍA -->
+        <div class="ia-filter-row" id="ia-category-pills" role="tablist" aria-label="Filtrar por área de conocimiento"></div>
 
-    <article class="articulo-card" data-articulo="machine-learning">
-      <div class="articulo-icon">📈</div>
-      <h3>Machine Learning</h3>
-      <p>Descubre cómo las máquinas aprenden de los datos para hacer predicciones y tomar decisiones.</p>
-      <div class="articulo-badge">APRENDIZAJE AUTOMÁTICO</div>
-    </article>
+        <!-- FILTROS DE NIVEL Y CONTADOR -->
+        <div class="ia-meta-bar">
+          <div class="ia-level-filters" role="group" aria-label="Filtrar por nivel técnico">
+            <button type="button" class="ia-level-btn active" data-ia-level="todos">Todos los niveles</button>
+            <button type="button" class="ia-level-btn" data-ia-level="Esencial">Esencial</button>
+            <button type="button" class="ia-level-btn" data-ia-level="Intermedio">Intermedio</button>
+            <button type="button" class="ia-level-btn" data-ia-level="Avanzado">Avanzado</button>
+          </div>
+          <div class="ia-results-count" id="ia-results-count">Mostrando 20 de 20 monografías</div>
+        </div>
+      </div>
 
-    <article class="articulo-card" data-articulo="redes-neuronales">
-      <div class="articulo-icon">🧠</div>
-      <h3>Redes Neuronales</h3>
-      <p>Explora la arquitectura inspirada en el cerebro humano que impulsa el Deep Learning.</p>
-      <div class="articulo-badge">DEEP LEARNING</div>
-    </article>
+      <!-- LECTOR DE MONOGRAFÍA (SE MUESTRA AL ABRIR UN ARTÍCULO) -->
+      <aside id="articulo-detalle-container" class="ia-reader-shell" hidden aria-live="polite">
+        <div class="ia-reader-topbar">
+          <button type="button" class="btn-puzzle-tool" id="btn-ia-back-catalog">
+            ← Volver al Catálogo
+          </button>
+          <div class="ia-reader-badges" id="ia-reader-badges"></div>
+          <div class="ia-reader-actions">
+            <button type="button" class="btn-puzzle-tool" id="btn-ia-toggle-bookmark">🔖 Guardar</button>
+            <button type="button" class="btn-puzzle-tool" id="btn-ia-share-article">🔗 Copiar Enlace</button>
+          </div>
+        </div>
 
-    <article class="articulo-card" data-articulo="deep-learning">
-      <div class="articulo-icon">🔮</div>
-      <h3>Deep Learning</h3>
-      <p>Sumérgete en el subcampo del Machine Learning que utiliza redes neuronales profundas para resolver problemas complejos.</p>
-      <div class="articulo-badge">DEEP LEARNING</div>
-    </article>
+        <div class="ia-reader-layout">
+          <nav class="ia-reader-toc-card" aria-label="Tabla de contenidos del artículo">
+            <div class="ia-toc-title">CONTENIDO DE LA MONOGRAFÍA</div>
+            <ul id="ia-reader-toc" class="ia-toc-list"></ul>
+          </nav>
 
-  </main>
+          <article class="ia-reader-article">
+            <div id="ia-reader-body" class="ia-markdown-body"></div>
 
-  <!-- CONTENEDOR PARA EL ARTÍCULO DETALLADO -->
-  <aside id="articulo-detalle-container" class="articulo-detalle-container">
-    <!-- El contenido del artículo se cargará aquí dinámicamente -->
-  </aside>
+            <div class="ia-related-section" id="ia-related-section">
+              <h3>Conceptos Relacionados</h3>
+              <div class="ia-related-grid" id="ia-related-grid"></div>
+            </div>
 
-</section>
+            <div class="ia-prev-next-nav" id="ia-prev-next-nav"></div>
+          </article>
+        </div>
+      </aside>
+
+      <!-- GRID DE MONOGRAFÍAS -->
+      <main class="ia-articles-grid" id="ia-articles-grid" aria-label="Catálogo de monografías de Inteligencia Artificial"></main>
+
+      <!-- ESTADO VACÍO -->
+      <div id="ia-empty-state" class="ia-empty-state" hidden>
+        <div style="font-size:2.4rem;margin-bottom:0.5rem;">🔭</div>
+        <h3>No se encontraron monografías con ese criterio</h3>
+        <p>Prueba otro término de búsqueda o restablece los filtros de área y nivel.</p>
+        <button type="button" class="btn-hero-primary" id="btn-ia-reset-filters">Mostrar las 20 monografías</button>
+      </div>
+    </div>
+  </section>
+</div>
