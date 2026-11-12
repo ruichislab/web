@@ -1,5 +1,5 @@
 // src/js/juegos-mentales.js
-// Gimnasio Mental Ruichis Lab — Suite Cognitiva: Sopa de Letras (8 Direcciones), Sudoku Maestro 9x9 & Criptograma Asimétrico
+// Gimnasio Mental Ruichis Lab — Suite Cognitiva: Sopas de Letras Pro (8 Direcciones) & Sudoku Maestro 9x9
 
 (function () {
   // =========================================================================
@@ -97,7 +97,7 @@
   };
 
   // =========================================================================
-  // TEMAS DE SOPA DE LETRAS CON GLOSARIO EDUCATIVO
+  // TEMAS DE SOPA DE LETRAS PRO CON GLOSARIO EDUCATIVO (20+ PALABRAS POR TEMA)
   // =========================================================================
   const TEMAS_SOPA = {
     cultura_historia: {
@@ -105,12 +105,13 @@
       libroTitulo: "100 Grandes Sopas de Letras de Cultura General (Vol. I)",
       libroUrl: "https://www.amazon.com/s?k=100+Grandes+Sopas+de+Letras+de+Cultura+General+Ruichis+Lab",
       libroId: "sopas-cultura-general",
-      descripcion: "Rastrea 12 conceptos clave de las grandes civilizaciones antiguas, la historia clásica y los hitos documentales de la humanidad.",
-      gridSize: 13,
+      descripcion: "Rastrea conceptos clave de las grandes civilizaciones antiguas, la historia clásica y los hitos documentales de la humanidad.",
       palabras: [
         "MESOPOTAMIA", "ALEJANDRIA", "RENACIMIENTO", "IMPRENTA",
         "ACROPOLIS", "FILOSOFIA", "CARTAGO", "BIZANCIO",
-        "CRONICA", "MANUSCRITO", "DINASTIA", "ORACULO"
+        "CRONICA", "MANUSCRITO", "DINASTIA", "ORACULO",
+        "BABILONIA", "ESPARTA", "PARTENON", "PERGAMINO",
+        "REPUBLICA", "SENADO", "IMPERIO", "ARCHIVO"
       ],
       glosario: {
         MESOPOTAMIA: "Cuna de la escritura cuneiforme y los primeros códigos de leyes de la humanidad.",
@@ -124,7 +125,15 @@
         CRONICA: "Registro testimonial ordenado en el tiempo que preserva los hechos históricos.",
         MANUSCRITO: "Documento redactado o iluminado a mano antes del surgimiento de la imprenta.",
         DINASTIA: "Cadena de gobernantes de un mismo linaje que definieron eras históricas.",
-        ORACULO: "Centro sagrado donde se consultaba la voluntad divina en santuarios como Delfos."
+        ORACULO: "Centro sagrado donde se consultaba la voluntad divina en santuarios como Delfos.",
+        BABILONIA: "Metrópoli antigua famosa por sus jardines colgantes y el Código de Hammurabi.",
+        ESPARTA: "Polis griega célebre por su disciplina cívica, austeridad y entrenamiento militar.",
+        PARTENON: "Templo dórico consagrado a Atenea en la Acrópolis, cumbre de la arquitectura clásica.",
+        PERGAMINO: "Material de escritura elaborado con piel tratada que sustituyó progresivamente al papiro.",
+        REPUBLICA: "Forma de gobierno basada en la ley, la magistratura y la representación ciudadana.",
+        SENADO: "Asamblea deliberativa suprema que articuló la política de la antigua Roma.",
+        IMPERIO: "Organización política extensa que integra múltiples territorios bajo una autoridad central.",
+        ARCHIVO: "Repositorio institucional dedicado a conservar documentos históricos y legales."
       }
     },
     cultura_arte: {
@@ -133,11 +142,12 @@
       libroUrl: "https://www.amazon.com/s?k=100+Grandes+Sopas+de+Letras+de+Cultura+General+Ruichis+Lab",
       libroId: "sopas-cultura-general",
       descripcion: "Movimientos estéticos, géneros literarios y técnicas maestras del arte universal presentes en nuestro Volumen I.",
-      gridSize: 13,
       palabras: [
         "VANGUARDIA", "BARROCO", "SIMBOLISMO", "METAFORA",
         "SONETO", "ESCULTURA", "PERSPECTIVA", "LIENZO",
-        "ANTOLOGIA", "EPISTOLA", "ESTETICA", "RETABLO"
+        "ANTOLOGIA", "EPISTOLA", "ESTETICA", "RETABLO",
+        "CLAROSCURO", "FRESCO", "ODISEA", "TRAGEDIA",
+        "ENSAYO", "POETICA", "MUSEO", "CANON"
       ],
       glosario: {
         VANGUARDIA: "Corrientes rupturistas que revolucionaron las formas artísticas en el siglo XX.",
@@ -151,7 +161,15 @@
         ANTOLOGIA: "Selección curada de las mejores piezas literarias de una época o autor.",
         EPISTOLA: "Composición literaria en forma de carta con propósito doctrinal o reflexivo.",
         ESTETICA: "Rama de la filosofía que estudia la belleza, el arte y la percepción sensorial.",
-        RETABLO: "Estructura artística monumental situada detrás del altar en templos históricos."
+        RETABLO: "Estructura artística monumental situada detrás del altar en templos históricos.",
+        CLAROSCURO: "Contraste intenso entre luces y sombras para modelar volumen y dramatismo.",
+        FRESCO: "Técnica pictórica mural aplicada sobre mortero de cal aún húmedo.",
+        ODISEA: "Epopeya clásica que narra el regreso, el ingenio y la resiliencia frente al destino.",
+        TRAGEDIA: "Género dramático clásico que explora los dilemas morales y la catarsis humana.",
+        ENSAYO: "Prosa reflexiva breve que examina una idea con libertad estilística y rigor.",
+        POETICA: "Tratado o conjunto de principios que rigen la creación literaria y artística.",
+        MUSEO: "Institución dedicada a custodiar, investigar y exhibir el patrimonio cultural.",
+        CANON: "Conjunto de obras y reglas consideradas ejemplares dentro de una tradición."
       }
     },
     biologia_celula: {
@@ -160,11 +178,12 @@
       libroUrl: "https://www.amazon.com/s?k=100+Grandes+Sopas+de+Letras+de+Biologia+Ruichis+Lab",
       libroId: "sopas-biologia",
       descripcion: "Explora la maquinaria microscópica de la vida: orgánulos celulares, genética molecular y bioquímica.",
-      gridSize: 13,
       palabras: [
         "MITOCONDRIA", "RIBOSOMA", "CROMOSOMA", "GENOMA",
         "ENZIMA", "NUCLEOTIDO", "MEIOSIS", "PROTEINA",
-        "SINAPSIS", "CLOROPLASTO", "CITOPLASMA", "OSMOSIS"
+        "SINAPSIS", "CLOROPLASTO", "CITOPLASMA", "OSMOSIS",
+        "MEMBRANA", "LISOSOMA", "MUTACION", "MITOSIS",
+        "GLUCOSA", "NEURONA", "TEJIDO", "NUCLEO"
       ],
       glosario: {
         MITOCONDRIA: "Orgánulo celular responsable de la respiración celular y la generación de ATP.",
@@ -178,7 +197,15 @@
         SINAPSIS: "Unión neuromuscular o neuronal por donde viaja el impulso eléctrico o químico.",
         CLOROPLASTO: "Orgánulo de células vegetales donde se realiza la fotosíntesis con clorofila.",
         CITOPLASMA: "Fluido celular que alberga los orgánulos y donde ocurren rutas metabólicas clave.",
-        OSMOSIS: "Difusión pasiva del agua a través de una membrana semipermeable hacia mayor concentración."
+        OSMOSIS: "Difusión pasiva del agua a través de una membrana semipermeable hacia mayor concentración.",
+        MEMBRANA: "Bicapa lipídica selectiva que delimita la célula y regula el intercambio molecular.",
+        LISOSOMA: "Vesícula celular rica en enzimas digestivas encargada de reciclar componentes.",
+        MUTACION: "Cambio heredable en la secuencia de nucleótidos que impulsa la variabilidad genética.",
+        MITOSIS: "División celular ecuacional que origina dos células hijas genéticamente idénticas.",
+        GLUCOSA: "Monosacárido esencial que actúa como combustible primario del metabolismo celular.",
+        NEURONA: "Célula excitable del sistema nervioso especializada en procesar y transmitir señales.",
+        TEJIDO: "Conjunto organizado de células especializadas que cooperan en una misma función.",
+        NUCLEO: "Compartimento eucariota que resguarda el ADN y coordina la expresión génica."
       }
     },
     biologia_ecosistemas: {
@@ -187,11 +214,12 @@
       libroUrl: "https://www.amazon.com/s?k=100+Grandes+Sopas+de+Letras+de+Biologia+Ruichis+Lab",
       libroId: "sopas-biologia",
       descripcion: "Procesos ecológicos, botánica y mecanismos evolutivos seleccionados del Volumen II de la Colección Letras y Retos.",
-      gridSize: 14,
       palabras: [
         "FOTOSINTESIS", "BIODIVERSIDAD", "SIMBIOSIS", "TAXONOMIA",
         "ENDEMICO", "POLINIZACION", "FILOGENIA", "BIOMA",
-        "ADAPTACION", "MICELIO", "ESTOMA", "ESPECIE"
+        "ADAPTACION", "MICELIO", "ESTOMA", "ESPECIE",
+        "HABITAT", "ECOSISTEMA", "PREDADOR", "FAUNA",
+        "FLORA", "CLOROFILA", "SAVIA", "CORAL"
       ],
       glosario: {
         FOTOSINTESIS: "Conversión de energía lumínica en energía química sintetizando glucosa a partir de CO2.",
@@ -205,7 +233,15 @@
         ADAPTACION: "Rasgo heredable que incrementa la probabilidad de supervivencia y reproducción.",
         MICELIO: "Red subterránea filamentosa de los hongos que nutre los suelos y conecta bosques.",
         ESTOMA: "Poro microscópico en hojas para el intercambio de gases y transpiración.",
-        ESPECIE: "Grupo de poblaciones naturales cuyos individuos pueden cruzarse y dejar descendencia fértil."
+        ESPECIE: "Grupo de poblaciones naturales cuyos individuos pueden cruzarse y dejar descendencia fértil.",
+        HABITAT: "Entorno físico y biológico específico donde una especie encuentra refugio y recursos.",
+        ECOSISTEMA: "Sistema dinámico formado por la comunidad biológica y su ambiente abiótico.",
+        PREDADOR: "Organismo que regula poblaciones al cazar y consumir a otras especies.",
+        FAUNA: "Conjunto de especies animales que habitan una región o período geológico.",
+        FLORA: "Conjunto de especies vegetales características de un territorio determinado.",
+        CLOROFILA: "Pigmento verde esencial que captura fotones solares en plantas y algas.",
+        SAVIA: "Fluido vital que transporta agua, minerales y azúcares por los vasos vegetales.",
+        CORAL: "Organismo marino colonial que construye arrecifes ricos en vida oceánica."
       }
     },
     productividad_sistemas: {
@@ -214,11 +250,12 @@
       libroUrl: "https://www.amazon.com/dp/B0HD2MY2HN",
       libroId: "productividad-asimetrica-es",
       descripcion: "Conceptos clave de ejecución profunda, aislamiento cognitivo, apalancamiento algorítmico y sistemas modulares.",
-      gridSize: 13,
       palabras: [
         "ASIMETRIA", "ALGORITMO", "HEURISTICA", "SISTEMAS",
         "ATENCION", "PALANCA", "EJECUCION", "MODULAR",
-        "AISLAMIENTO", "SINAPSIS", "IMPACTO", "CLARIDAD"
+        "AISLAMIENTO", "SINAPSIS", "IMPACTO", "CLARIDAD",
+        "DISCIPLINA", "PRECISION", "SINTESIS", "CRITERIO",
+        "FLUJO", "MAESTRIA", "RITMO", "METODO"
       ],
       glosario: {
         ASIMETRIA: "Principio de apalancamiento: el 20% de las acciones críticas genera el 80% del impacto.",
@@ -232,7 +269,15 @@
         AISLAMIENTO: "Erradicación radical de notificaciones y dispersión para proteger el estado de flujo.",
         SINAPSIS: "Conexión neuronal que se consolida mediante la práctica sostenida y el descanso estratégico.",
         IMPACTO: "Medida tangible del valor producido frente a la actividad superficial reactiva.",
-        CLARIDAD: "Estado mental lúcido alcanzado al simplificar objetivos a lo estrictamente esencial."
+        CLARIDAD: "Estado mental lúcido alcanzado al simplificar objetivos a lo estrictamente esencial.",
+        DISCIPLINA: "Consistencia deliberada en la ejecución más allá de la fluctuación emocional.",
+        PRECISION: "Exactitud quirúrgica al definir metas, métricas y bloques de concentración.",
+        SINTESIS: "Capacidad de condensar información compleja en principios accionables claros.",
+        CRITERIO: "Juicio estratégico para distinguir lo urgente y ruidoso de lo verdaderamente vital.",
+        FLUJO: "Estado de inmersión total donde el tiempo se diluye y el rendimiento se multiplica.",
+        MAESTRIA: "Dominio profundo adquirido tras ciclos continuos de práctica y retroalimentación.",
+        RITMO: "Cadencia sostenible que equilibra picos de esfuerzo intenso con recuperación real.",
+        METODO: "Procedimiento ordenado y replicable que convierte la intención en resultado."
       }
     }
   };
@@ -266,57 +311,18 @@
   ];
 
   // =========================================================================
-  // BIBLIOTECA DE CRIPTOGRAMAS ASIMÉTRICOS (JUEGO III)
-  // =========================================================================
-  const CRIPTOGRAMAS = [
-    {
-      id: "foco-puro",
-      libro: "Productividad Asimétrica (ASIN: B0HD2MY2HN)",
-      autor: "Ruichis Lab",
-      frase: "EL FOCO ASIMETRICO COMPRIME UNA SEMANA EN DOS HORAS DE EJECUCION PURA",
-      pista: "Principio medular del libro insignia sobre apalancamiento atencional y bloques puros."
-    },
-    {
-      id: "sistema-libera",
-      libro: "Productividad Asimétrica (ASIN: B0HD2MY2HN)",
-      autor: "Ruichis Lab",
-      frase: "NO CONFUNDAS VELOCIDAD CON APALANCAMIENTO EL SISTEMA MODULAR LIBERA",
-      pista: "Diferencia crítica entre el esfuerzo ciego y la arquitectura de sistemas duraderos."
-    },
-    {
-      id: "claridad-arquitectura",
-      libro: "Productividad Asimétrica (ASIN: B0HD2MY2HN)",
-      autor: "Ruichis Lab",
-      frase: "LA CLARIDAD ARQUITECTONICA SUPRIME EL DESGASTE DE LA FUERZA DE VOLUNTAD",
-      pista: "Axioma sobre la primacía de los sistemas modulares sobre el desgaste de la disciplina reactiva."
-    },
-    {
-      id: "perseverancia-logica",
-      libro: "100 Grandes Sopas de Letras (Colección Letras y Retos)",
-      autor: "Ruichis Lab",
-      frase: "LA PERSISTENCIA EN EL LABERINTO SUPERA SIEMPRE A LA PRISA DESORDENADA",
-      pista: "Filosofía del entrenamiento mental: paciencia analítica para descubrir patrones ocultos."
-    },
-    {
-      id: "moneda-atencion",
-      libro: "Productividad Asimétrica (ASIN: B0HD2MY2HN)",
-      autor: "Ruichis Lab",
-      frase: "LA ATENCION ES LA MONEDA MAS VALIOSA DEL SIGLO NO LA MALGASTES EN RUIDO",
-      pista: "Sentencia sobre la soberanía mental frente a los micro-estímulos y la dispersión."
-    }
-  ];
-
-  // =========================================================================
   // CLASE PRINCIPAL: GIMNASIO MENTAL
   // =========================================================================
   class GimnasioMental {
     constructor() {
-      this.activeGame = "sopa"; // 'sopa' | 'sudoku' | 'criptograma'
+      this.activeGame = "sopa"; // 'sopa' | 'sudoku'
       GymAudio.init();
 
-      // Estado Sopa de Letras
+      // Estado Sopa de Letras Pro
       this.sopaTemaActual = "cultura_historia";
-      this.sopaSize = 13;
+      this.sopaMode = "14"; // '12' | '14' | '16' | 'diario'
+      this.sopaSize = 14;
+      this.sopaCurrentWords = [];
       this.sopaGrid = [];
       this.sopaPlacements = [];
       this.sopaFoundCount = 0;
@@ -327,6 +333,7 @@
       this.sopaSeconds = 0;
       this.sopaTimerId = null;
       this.sopaHintsUsed = 0;
+      this.sopaCompleted = false;
 
       // Estado Sudoku
       this.sudokuDifficulty = "medio";
@@ -341,12 +348,6 @@
       this.sudokuTimerId = null;
       this.sudokuMistakes = 0;
       this.sudokuCompleted = false;
-
-      // Estado Criptograma
-      this.criptoIndex = 0;
-      this.criptoGuess = [];
-      this.criptoSelectedIndex = 0;
-      this.criptoSolved = false;
     }
 
     init() {
@@ -359,7 +360,6 @@
       this.bindHubSwitching();
       this.initSopaGame();
       this.initSudokuGame();
-      this.initCriptogramaGame();
     }
 
     updateStatsDisplay() {
@@ -425,23 +425,21 @@
     }
 
     switchGame(gameType, options = {}) {
-      this.activeGame = gameType;
+      this.activeGame = gameType === "sudoku" ? "sudoku" : "sopa";
 
       document.querySelectorAll("[data-game-tab]").forEach(btn => {
-        const isActive = btn.getAttribute("data-game-tab") === gameType;
+        const isActive = btn.getAttribute("data-game-tab") === this.activeGame;
         btn.classList.toggle("active", isActive);
         btn.setAttribute("aria-selected", isActive ? "true" : "false");
       });
 
       const sopaPanel = document.getElementById("panel-juego-sopa");
       const sudokuPanel = document.getElementById("panel-juego-sudoku");
-      const criptoPanel = document.getElementById("panel-juego-criptograma");
 
-      if (sopaPanel) sopaPanel.style.display = gameType === "sopa" ? "block" : "none";
-      if (sudokuPanel) sudokuPanel.style.display = gameType === "sudoku" ? "block" : "none";
-      if (criptoPanel) criptoPanel.style.display = gameType === "criptograma" ? "block" : "none";
+      if (sopaPanel) sopaPanel.style.display = this.activeGame === "sopa" ? "block" : "none";
+      if (sudokuPanel) sudokuPanel.style.display = this.activeGame === "sudoku" ? "block" : "none";
 
-      if (gameType === "sopa") {
+      if (this.activeGame === "sopa") {
         if (options.tema && TEMAS_SOPA[options.tema]) {
           const select = document.getElementById("sopa-tema-select");
           if (select) select.value = options.tema;
@@ -449,20 +447,18 @@
           this.generarNuevaSopa();
         }
         setTimeout(() => this.renderSopaSvgOverlay(), 50);
-      } else if (gameType === "sudoku") {
+      } else if (this.activeGame === "sudoku") {
         if (options.dificultad) {
           const diffBtns = document.querySelectorAll("[data-sudoku-diff]");
           diffBtns.forEach(b => b.classList.toggle("active", b.getAttribute("data-sudoku-diff") === options.dificultad));
           this.sudokuDifficulty = options.dificultad;
           this.generarNuevoSudoku();
         }
-      } else if (gameType === "criptograma") {
-        this.renderCriptograma();
       }
     }
 
     // =========================================================================
-    // MOTOR 1: SOPA DE LETRAS EN 8 DIRECCIONES (COLECCIÓN LETRAS Y RETOS)
+    // MOTOR 1: SOPA DE LETRAS PRO EN 8 DIRECCIONES (COLECCIÓN LETRAS Y RETOS)
     // =========================================================================
     initSopaGame() {
       const selectTema = document.getElementById("sopa-tema-select");
@@ -473,6 +469,17 @@
           GymAudio.click();
         });
       }
+
+      const sizeBtns = document.querySelectorAll("[data-sopa-size]");
+      sizeBtns.forEach(btn => {
+        btn.addEventListener("click", () => {
+          sizeBtns.forEach(b => b.classList.remove("active"));
+          btn.classList.add("active");
+          this.sopaMode = btn.getAttribute("data-sopa-size") || "14";
+          this.generarNuevaSopa();
+          GymAudio.click();
+        });
+      });
 
       const btnNueva = document.getElementById("btn-sopa-nueva");
       if (btnNueva) btnNueva.addEventListener("click", () => {
@@ -489,6 +496,26 @@
       const btnImprimir = document.getElementById("btn-sopa-imprimir");
       if (btnImprimir) btnImprimir.addEventListener("click", () => this.imprimirPasatiempoActual("sopa"));
 
+      const btnVictoryShare = document.getElementById("btn-sopa-victory-share");
+      if (btnVictoryShare) btnVictoryShare.addEventListener("click", () => this.compartirResultadoSopa(btnVictoryShare));
+
+      const btnVictoryNew = document.getElementById("btn-sopa-victory-new");
+      if (btnVictoryNew) {
+        btnVictoryNew.addEventListener("click", () => {
+          this.generarNuevaSopa();
+          GymAudio.click();
+        });
+      }
+
+      const btnVictoryView = document.getElementById("btn-sopa-victory-view");
+      if (btnVictoryView) {
+        btnVictoryView.addEventListener("click", () => {
+          const ov = document.getElementById("sopa-victory-overlay");
+          if (ov) ov.hidden = true;
+          GymAudio.click();
+        });
+      }
+
       window.addEventListener("mouseup", () => {
         if (this.sopaSelecting) {
           this.finalizarSeleccionSopa();
@@ -504,10 +531,38 @@
       this.generarNuevaSopa();
     }
 
+    actualizarMejorTiempoSopaUI() {
+      const bestEl = document.getElementById("sopa-best-time");
+      if (!bestEl) return;
+      try {
+        const raw = localStorage.getItem("ruichis_sopa_best_v1");
+        const bests = raw ? JSON.parse(raw) : {};
+        const sec = bests[this.sopaMode];
+        bestEl.textContent = typeof sec === "number" ? this.formatearTiempoMMSS(sec) : "--:--";
+      } catch (e) {
+        bestEl.textContent = "--:--";
+      }
+    }
+
     generarNuevaSopa() {
       const config = TEMAS_SOPA[this.sopaTemaActual] || TEMAS_SOPA.cultura_historia;
-      this.sopaSize = config.gridSize || 13;
-      const N = this.sopaSize;
+      const isDiario = this.sopaMode === "diario";
+      const N = isDiario ? 14 : (parseInt(this.sopaMode, 10) || 14);
+      this.sopaSize = N;
+
+      const wordCount = N === 12 ? 8 : N === 16 ? 12 : 10;
+      const rng = isDiario
+        ? this.crearRngSemilla(`ruichis-sopa-${this.sopaTemaActual}-${this.obtenerFechaHoyKey()}`)
+        : Math.random;
+
+      // Barajar banco de palabras que caben en N×N y seleccionar subconjunto fresco
+      const elegibles = config.palabras.filter(w => w.length <= N);
+      const pool = [...elegibles];
+      for (let i = pool.length - 1; i > 0; i--) {
+        const j = Math.floor(rng() * (i + 1));
+        [pool[i], pool[j]] = [pool[j], pool[i]];
+      }
+      this.sopaCurrentWords = pool.slice(0, Math.min(wordCount, pool.length));
 
       this.sopaGrid = Array.from({ length: N }, () => Array(N).fill(""));
       this.sopaPlacements = [];
@@ -515,11 +570,15 @@
       this.sopaHintsUsed = 0;
       this.sopaClickStart = null;
       this.sopaCurrentPath = [];
+      this.sopaCompleted = false;
 
-      const palabrasOrdenadas = [...config.palabras].sort((a, b) => b.length - a.length);
+      const victoryOverlay = document.getElementById("sopa-victory-overlay");
+      if (victoryOverlay) victoryOverlay.hidden = true;
+
+      const palabrasOrdenadas = [...this.sopaCurrentWords].sort((a, b) => b.length - a.length);
 
       palabrasOrdenadas.forEach((palabra, idx) => {
-        const colocada = this.colocarPalabraBalanceada(palabra, idx);
+        const colocada = this.colocarPalabraBalanceada(palabra, idx, rng);
         if (!colocada) {
           this.colocarPalabraForzada(palabra, idx);
         }
@@ -529,21 +588,26 @@
       for (let r = 0; r < N; r++) {
         for (let c = 0; c < N; c++) {
           if (!this.sopaGrid[r][c]) {
-            this.sopaGrid[r][c] = alfabeto[Math.floor(Math.random() * alfabeto.length)];
+            this.sopaGrid[r][c] = alfabeto[Math.floor(rng() * alfabeto.length)];
           }
         }
       }
 
       this.iniciarTimerSopa();
+      this.actualizarMejorTiempoSopaUI();
       this.renderSopaUI(config);
       this.actualizarPreviewPalabraSopa("");
       this.renderSopaSvgOverlay();
     }
 
-    colocarPalabraBalanceada(palabra, idx) {
+    colocarPalabraBalanceada(palabra, idx, rng = Math.random) {
       const N = this.sopaSize;
       const len = palabra.length;
-      const dirsShuffled = [...DIRECCIONES_8].sort(() => Math.random() - 0.5);
+      const dirsShuffled = [...DIRECCIONES_8];
+      for (let i = dirsShuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(rng() * (i + 1));
+        [dirsShuffled[i], dirsShuffled[j]] = [dirsShuffled[j], dirsShuffled[i]];
+      }
 
       let mejoresCandidatos = [];
 
@@ -581,7 +645,7 @@
 
       mejoresCandidatos.sort((a, b) => b.intersecciones - a.intersecciones);
       const topPool = mejoresCandidatos.slice(0, 4);
-      const elegida = topPool[Math.floor(Math.random() * topPool.length)];
+      const elegida = topPool[Math.floor(rng() * topPool.length)];
 
       const cells = [];
       for (let i = 0; i < len; i++) {
@@ -653,24 +717,30 @@
       const wordList = document.getElementById("sopa-word-list");
       const descEl = document.getElementById("sopa-tema-descripcion");
       const counterEl = document.getElementById("sopa-found-counter");
+      const panelTitleEl = document.getElementById("sopa-words-panel-title");
       const fillEl = document.getElementById("sopa-progress-fill");
       const statusEl = document.getElementById("sopa-status-msg");
       const libroTitEl = document.getElementById("sopa-libro-vinculado-titulo");
       const libroLinkEl = document.getElementById("sopa-libro-vinculado-link");
 
+      const words = this.sopaCurrentWords;
+
       if (descEl) descEl.textContent = config.descripcion;
-      if (counterEl) counterEl.textContent = `0 / ${config.palabras.length}`;
+      if (counterEl) counterEl.textContent = `0 / ${words.length}`;
+      if (panelTitleEl) panelTitleEl.textContent = `Palabras a Encontrar (${words.length})`;
       if (fillEl) fillEl.style.width = "0%";
       if (statusEl) {
         statusEl.className = "puzzle-status-bar";
-        statusEl.innerHTML = "Arrastra sobre las letras o haz clic en la primera y última letra de cada palabra (8 direcciones).";
+        statusEl.innerHTML = this.sopaMode === "diario"
+          ? "📅 <strong>Sopa del Día</strong>: mismo tablero y palabras para toda la comunidad hoy. Arrastra o haz clic en inicio y fin."
+          : "Arrastra sobre las letras o haz clic en la primera y última letra de cada palabra (8 direcciones).";
       }
       if (libroTitEl) libroTitEl.textContent = config.libroTitulo;
       if (libroLinkEl) libroLinkEl.href = config.libroUrl;
 
       if (wordList) {
-        wordList.innerHTML = config.palabras
-          .map((p, idx) => {
+        wordList.innerHTML = words
+          .map((p) => {
             const def = config.glosario && config.glosario[p] ? config.glosario[p] : "";
             return `
             <li class="sopa-word-chip" data-word="${p}" title="${def ? def : 'Buscar esta palabra en el tablero'}">
@@ -1020,18 +1090,84 @@
     }
 
     victoriaSopa() {
+      if (this.sopaCompleted) return;
+      this.sopaCompleted = true;
       if (this.sopaTimerId) clearInterval(this.sopaTimerId);
       GymAudio.victory();
       GymStats.recordSolve();
       this.updateStatsDisplay();
 
+      const timeStr = this.formatearTiempoMMSS(this.sopaSeconds);
       const mins = Math.floor(this.sopaSeconds / 60);
       const secs = this.sopaSeconds % 60;
+      const total = this.sopaPlacements.length;
+
+      // Guardar mejor tiempo por modo/tamaño
+      let isNewRecord = false;
+      try {
+        const raw = localStorage.getItem("ruichis_sopa_best_v1");
+        const bests = raw ? JSON.parse(raw) : {};
+        if (typeof bests[this.sopaMode] !== "number" || this.sopaSeconds < bests[this.sopaMode]) {
+          bests[this.sopaMode] = this.sopaSeconds;
+          localStorage.setItem("ruichis_sopa_best_v1", JSON.stringify(bests));
+          isNewRecord = true;
+        }
+      } catch (e) {}
+      this.actualizarMejorTiempoSopaUI();
+
       this.mostrarMensajeFeedback(
         `🏆 ¡FELICITACIONES! Has completado el reto en <strong>${mins}m ${secs}s</strong>.`,
         "success"
       );
+
+      const modeLabels = {
+        "12": "12×12 Normal",
+        "14": "14×14 Desafío",
+        "16": "16×16 Experto",
+        "diario": "📅 Sopa del Día"
+      };
+      const overlay = document.getElementById("sopa-victory-overlay");
+      const timeEl = document.getElementById("sopa-victory-time");
+      const wordsEl = document.getElementById("sopa-victory-words");
+      const modeEl = document.getElementById("sopa-victory-mode");
+      const badgeEl = document.getElementById("sopa-victory-record-badge");
+
+      if (timeEl) timeEl.textContent = timeStr;
+      if (wordsEl) wordsEl.textContent = `${total} / ${total}`;
+      if (modeEl) modeEl.textContent = modeLabels[this.sopaMode] || `${this.sopaSize}×${this.sopaSize}`;
+      if (badgeEl) badgeEl.hidden = !isNewRecord;
+      if (overlay) overlay.hidden = false;
+
       this.lanzarConfetiEn(".sopa-board-frame");
+    }
+
+    compartirResultadoSopa(btn) {
+      const config = TEMAS_SOPA[this.sopaTemaActual] || TEMAS_SOPA.cultura_historia;
+      const modeLabels = {
+        "12": "12×12 Normal",
+        "14": "14×14 Desafío",
+        "16": "16×16 Experto",
+        "diario": `Sopa del Día (${this.obtenerFechaHoyKey()})`
+      };
+      const label = modeLabels[this.sopaMode] || `${this.sopaSize}×${this.sopaSize}`;
+      const timeStr = this.formatearTiempoMMSS(this.sopaSeconds);
+      const total = this.sopaPlacements.length;
+      const shareText = `🔤 Sopas de Letras Pro — Ruichis Lab\nTema: ${config.nombre}\nModo: ${label}\n⏱️ Tiempo: ${timeStr} | 🎯 Palabras: ${total}/${total}\nJuega gratis sin anuncios: https://ruichislab.com/#sopa`;
+
+      const markCopied = () => {
+        if (!btn) return;
+        const orig = btn.innerHTML;
+        btn.innerHTML = "✅ ¡Resultado Copiado!";
+        setTimeout(() => { btn.innerHTML = orig; }, 2200);
+      };
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(shareText).then(markCopied).catch(() => {
+          alert(shareText);
+        });
+      } else {
+        alert(shareText);
+      }
     }
 
     // =========================================================================
@@ -2153,243 +2289,6 @@
     }
 
     // =========================================================================
-    // MOTOR 3: CRIPTOGRAMA ASIMÉTRICO (JUEGO III DE SABIDURÍA EDITORIAL)
-    // =========================================================================
-    initCriptogramaGame() {
-      const btnNuevo = document.getElementById("btn-cripto-nuevo");
-      if (btnNuevo) btnNuevo.addEventListener("click", () => {
-        this.siguienteCriptograma();
-        GymAudio.click();
-      });
-
-      const btnPista = document.getElementById("btn-cripto-pista");
-      if (btnPista) btnPista.addEventListener("click", () => this.darPistaCriptograma());
-
-      const btnVerificar = document.getElementById("btn-cripto-verificar");
-      if (btnVerificar) btnVerificar.addEventListener("click", () => this.verificarCriptograma());
-
-      const btnImprimir = document.getElementById("btn-cripto-imprimir");
-      if (btnImprimir) btnImprimir.addEventListener("click", () => this.imprimirPasatiempoActual("criptograma"));
-
-      // Teclado virtual del criptograma
-      const teclado = document.getElementById("cripto-keyboard");
-      if (teclado) {
-        const alfabeto = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZ".split("");
-        teclado.innerHTML = alfabeto
-          .map(letra => `<button type="button" class="btn-keyboard-key" data-key="${letra}">${letra}</button>`)
-          .join("") + `<button type="button" class="btn-keyboard-key key-del" data-key="DEL">⌫</button>`;
-
-        teclado.querySelectorAll("[data-key]").forEach(k => {
-          k.addEventListener("click", () => {
-            const val = k.getAttribute("data-key");
-            if (val === "DEL") {
-              this.borrarLetraCriptograma();
-            } else {
-              this.ingresarLetraCriptograma(val);
-            }
-          });
-        });
-      }
-
-      // Teclado físico
-      window.addEventListener("keydown", (e) => {
-        if (this.activeGame !== "criptograma") return;
-        if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return;
-
-        const key = e.key.toUpperCase();
-        if (/^[A-ZÑ]$/.test(key)) {
-          this.ingresarLetraCriptograma(key);
-        } else if (e.key === "Backspace" || e.key === "Delete") {
-          this.borrarLetraCriptograma();
-        } else if (e.key === "ArrowLeft") {
-          this.moverSlotCriptograma(-1);
-        } else if (e.key === "ArrowRight") {
-          this.moverSlotCriptograma(1);
-        }
-      });
-
-      this.cargarCriptograma(0);
-    }
-
-    cargarCriptograma(index) {
-      this.criptoIndex = index % CRIPTOGRAMAS.length;
-      const data = CRIPTOGRAMAS[this.criptoIndex];
-      this.criptoSolved = false;
-
-      // Crear estado de respuestas
-      this.criptoGuess = data.frase.split("").map(ch => {
-        if (ch === " ") return " ";
-        // Revelar el 20% de las letras iniciales como anclaje
-        return Math.random() < 0.22 ? ch : "";
-      });
-
-      // Encontrar primer slot vacío
-      this.criptoSelectedIndex = this.criptoGuess.findIndex(ch => ch === "");
-      if (this.criptoSelectedIndex === -1) this.criptoSelectedIndex = 0;
-
-      this.renderCriptograma();
-    }
-
-    siguienteCriptograma() {
-      this.cargarCriptograma(this.criptoIndex + 1);
-    }
-
-    renderCriptograma() {
-      const data = CRIPTOGRAMAS[this.criptoIndex];
-      const bookEl = document.getElementById("cripto-book-ref");
-      const hintEl = document.getElementById("cripto-hint-text");
-      const boardEl = document.getElementById("cripto-board-slots");
-      const statusEl = document.getElementById("cripto-status-msg");
-
-      if (bookEl) bookEl.textContent = `${data.autor} • ${data.libro}`;
-      if (hintEl) hintEl.textContent = data.pista;
-      if (statusEl) {
-        statusEl.className = "puzzle-status-bar";
-        statusEl.innerHTML = "Selecciona una casilla y escribe la letra para descifrar el aforismo.";
-      }
-
-      if (!boardEl) return;
-
-      const palabras = data.frase.split(" ");
-      let slotIndex = 0;
-      let html = "";
-
-      palabras.forEach(palabra => {
-        html += '<div class="cripto-word-cluster">';
-        for (let i = 0; i < palabra.length; i++) {
-          const currentIndex = slotIndex;
-          const letter = this.criptoGuess[currentIndex];
-          const isSelected = currentIndex === this.criptoSelectedIndex;
-
-          html += `
-            <div class="cripto-slot ${isSelected ? "selected" : ""} ${letter ? "filled" : ""}" data-slot-idx="${currentIndex}">
-              <span class="slot-letter">${letter || ""}</span>
-              <span class="slot-line"></span>
-            </div>
-          `;
-          slotIndex++;
-        }
-        html += "</div>";
-        slotIndex++; // Por el espacio
-      });
-
-      boardEl.innerHTML = html;
-
-      boardEl.querySelectorAll(".cripto-slot").forEach(slot => {
-        slot.addEventListener("click", () => {
-          const idx = parseInt(slot.getAttribute("data-slot-idx"), 10);
-          this.criptoSelectedIndex = idx;
-          this.renderCriptograma();
-          GymAudio.cellSelect();
-        });
-      });
-    }
-
-    ingresarLetraCriptograma(letra) {
-      if (this.criptoSolved) return;
-      const data = CRIPTOGRAMAS[this.criptoIndex];
-
-      this.criptoGuess[this.criptoSelectedIndex] = letra;
-      GymAudio.click();
-
-      // Mover al siguiente slot vacío
-      let next = this.criptoSelectedIndex + 1;
-      while (next < data.frase.length && (data.frase[next] === " " || this.criptoGuess[next] !== "")) {
-        next++;
-      }
-      if (next < data.frase.length) {
-        this.criptoSelectedIndex = next;
-      }
-
-      this.renderCriptograma();
-
-      if (this.criptoGuess.join("") === data.frase) {
-        this.victoriaCriptograma();
-      }
-    }
-
-    borrarLetraCriptograma() {
-      if (this.criptoSolved) return;
-      this.criptoGuess[this.criptoSelectedIndex] = "";
-      GymAudio.click();
-      this.renderCriptograma();
-    }
-
-    moverSlotCriptograma(dir) {
-      const data = CRIPTOGRAMAS[this.criptoIndex];
-      let next = this.criptoSelectedIndex + dir;
-      while (next >= 0 && next < data.frase.length && data.frase[next] === " ") {
-        next += dir;
-      }
-      if (next >= 0 && next < data.frase.length) {
-        this.criptoSelectedIndex = next;
-        this.renderCriptograma();
-      }
-    }
-
-    darPistaCriptograma() {
-      const data = CRIPTOGRAMAS[this.criptoIndex];
-      const vacios = [];
-      for (let i = 0; i < data.frase.length; i++) {
-        if (data.frase[i] !== " " && this.criptoGuess[i] !== data.frase[i]) {
-          vacios.push(i);
-        }
-      }
-      if (vacios.length === 0) return;
-
-      const idx = vacios[Math.floor(Math.random() * vacios.length)];
-      this.criptoGuess[idx] = data.frase[idx];
-      this.criptoSelectedIndex = idx;
-      GymAudio.playTone(650, "sine", 0.15, 0.05);
-      this.renderCriptograma();
-
-      if (this.criptoGuess.join("") === data.frase) {
-        this.victoriaCriptograma();
-      }
-    }
-
-    verificarCriptograma() {
-      const data = CRIPTOGRAMAS[this.criptoIndex];
-      let errores = 0;
-      for (let i = 0; i < data.frase.length; i++) {
-        if (data.frase[i] !== " " && this.criptoGuess[i] && this.criptoGuess[i] !== data.frase[i]) {
-          errores++;
-        }
-      }
-
-      const statusEl = document.getElementById("cripto-status-msg");
-      if (statusEl) {
-        if (errores === 0) {
-          GymAudio.foundWord();
-          statusEl.className = "puzzle-status-bar success";
-          statusEl.innerHTML = "✔️ ¡Excelente deducción! Todas las letras ingresadas son correctas.";
-        } else {
-          GymAudio.error();
-          statusEl.className = "puzzle-status-bar warning";
-          statusEl.innerHTML = `⚠️ Se han detectado <strong>${errores}</strong> letras erróneas en tu propuesta.`;
-        }
-      }
-    }
-
-    victoriaCriptograma() {
-      this.criptoSolved = true;
-      GymAudio.victory();
-      GymStats.recordSolve();
-      this.updateStatsDisplay();
-
-      const data = CRIPTOGRAMAS[this.criptoIndex];
-      const statusEl = document.getElementById("cripto-status-msg");
-      if (statusEl) {
-        statusEl.className = "puzzle-status-bar success";
-        statusEl.innerHTML = `
-          🏆 <strong>¡CRIPTOGRAMA RESUELTO!</strong><br>
-          «<em>${data.frase}</em>» — <strong>${data.autor}</strong> (${data.libro}).
-        `;
-      }
-      this.lanzarConfetiEn(".cripto-board-card");
-    }
-
-    // =========================================================================
     // IMPRESIÓN LIMPIA EN FORMATO LIBRO PARA LLEVAR AL PAPEL FÍSICO
     // =========================================================================
     imprimirPasatiempoActual(tipo) {
@@ -2402,7 +2301,10 @@
           .map(row => `<tr>${row.map(cell => `<td>${cell}</td>`).join("")}</tr>`)
           .join("");
 
-        const wordsHtml = config.palabras
+        const words = this.sopaCurrentWords && this.sopaCurrentWords.length
+          ? this.sopaCurrentWords
+          : config.palabras;
+        const wordsHtml = words
           .map(w => `<span class="word-tag">□ ${w}</span>`)
           .join(" ");
 
@@ -2428,7 +2330,7 @@
           <body>
             <div class="header">
               <div class="imprint">RUICHIS LAB • COLECCIÓN LETRAS Y RETOS</div>
-              <h1>${config.nombre}</h1>
+              <h1>${config.nombre} (${this.sopaSize}×${this.sopaSize})</h1>
               <p class="desc">${config.descripcion}</p>
             </div>
             <table class="grid">${rowsHtml}</table>
@@ -2478,41 +2380,6 @@
             <table class="sudoku">${rowsHtml}</table>
             <div class="footer">
               Generado en el Gimnasio Mental de <strong>Ruichis Lab</strong> • Descubre nuestros libros en Amazon KDP • ruichislab.com
-            </div>
-            <script>window.onload = () => { window.print(); };</script>
-          </body>
-          </html>
-        `);
-        win.document.close();
-      } else if (tipo === "criptograma") {
-        const data = CRIPTOGRAMAS[this.criptoIndex];
-        win.document.write(`
-          <!DOCTYPE html>
-          <html lang="es">
-          <head>
-            <meta charset="UTF-8">
-            <title>Criptograma Asimétrico — Ruichis Lab</title>
-            <style>
-              body { font-family: Georgia, serif; color: #111; max-width: 680px; margin: 24px auto; padding: 0 20px; }
-              .header { border-bottom: 2px solid #111; padding-bottom: 12px; margin-bottom: 24px; text-align: center; }
-              .imprint { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: #444; }
-              .pista { background: #f4f4f4; padding: 14px; border-left: 3px solid #111; font-style: italic; margin-bottom: 24px; }
-              .phrase-box { border: 2px dashed #333; padding: 30px; letter-spacing: 4px; font-family: monospace; font-size: 18px; line-height: 2.2; text-align: center; }
-              .footer { margin-top: 32px; font-size: 12px; color: #444; border-top: 1px solid #ccc; padding-top: 10px; text-align: center; }
-            </style>
-          </head>
-          <body>
-            <div class="header">
-              <div class="imprint">RUICHIS LAB • CRIPTOGRAMAS & FILOSOFÍA</div>
-              <h1>Criptograma Asimétrico</h1>
-              <p>Fuente: <strong>${data.libro}</strong> (${data.autor})</p>
-            </div>
-            <div class="pista">Pista: ${data.pista}</div>
-            <div class="phrase-box">
-              ${data.frase.replace(/[A-ZÑ]/g, "_ ")}
-            </div>
-            <div class="footer">
-              Gimnasio Mental de <strong>Ruichis Lab</strong> • ruichislab.com
             </div>
             <script>window.onload = () => { window.print(); };</script>
           </body>
