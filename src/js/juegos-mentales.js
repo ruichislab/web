@@ -1078,6 +1078,39 @@
       const btnResume = document.getElementById("btn-sudoku-resume");
       if (btnResume) btnResume.addEventListener("click", () => this.togglePausaSudoku(false));
 
+      const btnLivesMode = document.getElementById("btn-sudoku-lives-mode");
+      if (btnLivesMode) {
+        btnLivesMode.addEventListener("click", () => {
+          this.sudokuLivesMode = !this.sudokuLivesMode;
+          btnLivesMode.classList.toggle("active", this.sudokuLivesMode);
+          btnLivesMode.setAttribute("aria-pressed", this.sudokuLivesMode ? "true" : "false");
+          btnLivesMode.textContent = this.sudokuLivesMode ? "❤️ 3 Vidas: ON" : "❤️ 3 Vidas: OFF";
+          this.actualizarContadorErroresSudoku();
+          GymAudio.click();
+        });
+      }
+
+      const btnStats = document.getElementById("btn-sudoku-stats");
+      if (btnStats) btnStats.addEventListener("click", () => this.abrirModalEstadisticasSudoku());
+
+      const btnStatsClose = document.getElementById("btn-sudoku-stats-close");
+      if (btnStatsClose) {
+        btnStatsClose.addEventListener("click", () => {
+          const modal = document.getElementById("sudoku-stats-overlay");
+          if (modal) modal.hidden = true;
+          GymAudio.click();
+        });
+      }
+
+      const btnRetrySame = document.getElementById("btn-sudoku-retry-same");
+      if (btnRetrySame) btnRetrySame.addEventListener("click", () => this.reintentarMismoSudoku());
+
+      const btnGameOverNew = document.getElementById("btn-sudoku-gameover-new");
+      if (btnGameOverNew) btnGameOverNew.addEventListener("click", () => {
+        this.generarNuevoSudoku();
+        GymAudio.click();
+      });
+
       const btnFastMode = document.getElementById("btn-sudoku-fast-mode");
       if (btnFastMode) {
         btnFastMode.addEventListener("click", () => {
@@ -1087,6 +1120,7 @@
           if (!this.sudokuFastMode) {
             this.sudokuLockedNumber = null;
             document.querySelectorAll("[data-sudoku-num]").forEach(b => b.classList.remove("fast-active"));
+            this.seleccionarCeldaSudoku(this.sudokuSelected.r, this.sudokuSelected.c);
           }
           GymAudio.click();
         });
@@ -1117,6 +1151,7 @@
             document.querySelectorAll("[data-sudoku-num]").forEach(b => {
               b.classList.toggle("fast-active", parseInt(b.getAttribute("data-sudoku-num"), 10) === this.sudokuLockedNumber);
             });
+            this.resaltarNumeroEnTablero(this.sudokuLockedNumber);
             GymAudio.click();
           } else {
             this.ingresarNumeroSudoku(num);
@@ -1126,7 +1161,7 @@
 
       // Teclado físico
       window.addEventListener("keydown", (e) => {
-        if (this.activeGame !== "sudoku" || this.sudokuPaused) return;
+        if (this.activeGame !== "sudoku" || this.sudokuPaused || this.sudokuGameOver) return;
         if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return;
 
         const key = e.key;
@@ -1149,6 +1184,8 @@
       this.sudokuFastMode = false;
       this.sudokuLockedNumber = null;
       this.sudokuPaused = false;
+      this.sudokuLivesMode = false;
+      this.sudokuGameOver = false;
 
       if (!this.cargarPartidaSudoku()) {
         this.generarNuevoSudoku();
@@ -1278,11 +1315,16 @@
       this.sudokuMistakes = 0;
       this.sudokuCompleted = false;
       this.sudokuPaused = false;
+      this.sudokuGameOver = false;
 
       const overlay = document.getElementById("sudoku-victory-overlay");
       if (overlay) overlay.hidden = true;
       const pauseOverlay = document.getElementById("sudoku-pause-overlay");
       if (pauseOverlay) pauseOverlay.hidden = true;
+      const gameOverOverlay = document.getElementById("sudoku-gameover-overlay");
+      if (gameOverOverlay) gameOverOverlay.hidden = true;
+      const statsOverlay = document.getElementById("sudoku-stats-overlay");
+      if (statsOverlay) statsOverlay.hidden = true;
       const btnPausa = document.getElementById("btn-sudoku-pausa");
       if (btnPausa) btnPausa.innerHTML = "⏸️ Pausar";
 
@@ -1300,6 +1342,26 @@
       this.renderSudokuGrid();
       this.actualizarProgresoYTecladoSudoku();
       this.guardarPartidaSudoku();
+    }
+
+    reintentarMismoSudoku() {
+      this.sudokuBoard = this.sudokuInitial.map(row => [...row]);
+      this.sudokuNotes = Array.from({ length: 9 }, () => Array.from({ length: 9 }, () => new Set()));
+      this.sudokuHistory = [];
+      this.sudokuMistakes = 0;
+      this.sudokuCompleted = false;
+      this.sudokuPaused = false;
+      this.sudokuGameOver = false;
+
+      const gameOverOverlay = document.getElementById("sudoku-gameover-overlay");
+      if (gameOverOverlay) gameOverOverlay.hidden = true;
+
+      this.actualizarContadorErroresSudoku();
+      this.iniciarTimerSudoku(0);
+      this.renderSudokuGrid();
+      this.actualizarProgresoYTecladoSudoku();
+      this.guardarPartidaSudoku();
+      GymAudio.click();
     }
 
     generarTableroCompletoValido(rng = Math.random) {
@@ -1378,7 +1440,7 @@
       if (timerEl) timerEl.textContent = this.formatearTiempoMMSS(this.sudokuSeconds);
 
       this.sudokuTimerId = setInterval(() => {
-        if (this.sudokuPaused || this.sudokuCompleted) return;
+        if (this.sudokuPaused || this.sudokuCompleted || this.sudokuGameOver) return;
         this.sudokuSeconds++;
         if (timerEl) timerEl.textContent = this.formatearTiempoMMSS(this.sudokuSeconds);
         if (this.sudokuSeconds % 5 === 0) {
@@ -1490,8 +1552,20 @@
     actualizarContadorErroresSudoku() {
       const countEl = document.getElementById("sudoku-mistakes-count");
       const pillEl = document.getElementById("sudoku-mistakes-pill");
-      if (countEl) countEl.textContent = String(this.sudokuMistakes || 0);
-      if (pillEl) pillEl.classList.toggle("has-error", (this.sudokuMistakes || 0) > 0);
+      const mistakes = this.sudokuMistakes || 0;
+      if (countEl) {
+        countEl.textContent = this.sudokuLivesMode ? `${mistakes} / 3` : String(mistakes);
+      }
+      if (pillEl) pillEl.classList.toggle("has-error", mistakes > 0);
+    }
+
+    resaltarNumeroEnTablero(targetNum) {
+      document.querySelectorAll(".sudoku-cell").forEach(cell => {
+        const cr = parseInt(cell.getAttribute("data-r"), 10);
+        const cc = parseInt(cell.getAttribute("data-c"), 10);
+        const val = this.sudokuBoard[cr][cc];
+        cell.classList.toggle("match-number", Boolean(targetNum) && val === targetNum);
+      });
     }
 
     tieneConflictoReglaSudoku(r, c, val) {
@@ -1541,7 +1615,7 @@
 
     seleccionarCeldaSudoku(r, c) {
       this.sudokuSelected = { r, c };
-      const currentVal = this.sudokuBoard[r][c];
+      const currentVal = (this.sudokuFastMode && this.sudokuLockedNumber) ? this.sudokuLockedNumber : this.sudokuBoard[r][c];
       const boxR = Math.floor(r / 3) * 3;
       const boxC = Math.floor(c / 3) * 3;
 
@@ -1574,7 +1648,7 @@
     }
 
     ingresarNumeroSudoku(num) {
-      if (this.sudokuCompleted || this.sudokuPaused) return;
+      if (this.sudokuCompleted || this.sudokuPaused || this.sudokuGameOver) return;
       const { r, c } = this.sudokuSelected;
       if (this.sudokuInitial[r][c] !== 0) {
         GymAudio.error();
@@ -1616,6 +1690,12 @@
             msg.innerHTML = hayConflicto
               ? `❌ El número <strong>${num}</strong> en (${r + 1}, ${c + 1}) repite un dígito en su fila, columna o bloque 3×3.`
               : `❌ El número <strong>${num}</strong> no corresponde a la celda (${r + 1}, ${c + 1}). Puedes corregirlo o pulsar <strong>🧹 Borrar</strong>.`;
+          }
+
+          if (this.sudokuLivesMode && this.sudokuMistakes >= 3) {
+            this.sudokuGameOver = true;
+            const overOverlay = document.getElementById("sudoku-gameover-overlay");
+            if (overOverlay) overOverlay.hidden = false;
           }
         } else {
           GymAudio.playTone(400 + num * 40, "sine", 0.05, 0.04);
@@ -1748,23 +1828,34 @@
     }
 
     darPistaSudoku() {
+      if (this.sudokuCompleted || this.sudokuPaused || this.sudokuGameOver) return;
       const vacias = [];
       for (let r = 0; r < 9; r++) {
         for (let c = 0; c < 9; c++) {
-          if (this.sudokuBoard[r][c] === 0) vacias.push({ r, c });
+          if (this.sudokuBoard[r][c] === 0) {
+            const candidatos = this.obtenerCandidatosValidos(r, c);
+            vacias.push({ r, c, candidatos });
+          }
         }
       }
       if (vacias.length === 0) return;
 
-      const celda = vacias[Math.floor(Math.random() * vacias.length)];
-      const numCorrecto = this.sudokuSolution[celda.r][celda.c];
+      vacias.sort((a, b) => a.candidatos.size - b.candidatos.size);
+      const mejor = vacias[0];
+      const numCorrecto = this.sudokuSolution[mejor.r][mejor.c];
+      const esCandidatoUnico = mejor.candidatos.size === 1 && mejor.candidatos.has(numCorrecto);
 
-      this.seleccionarCeldaSudoku(celda.r, celda.c);
+      this.seleccionarCeldaSudoku(mejor.r, mejor.c);
       this.ingresarNumeroSudoku(numCorrecto);
 
       GymAudio.playTone(620, "sine", 0.15, 0.05);
       const msg = document.getElementById("sudoku-status-msg");
-      if (msg) msg.innerHTML = `💡 Pista revelada: Celda (${celda.r + 1}, ${celda.c + 1}) completada.`;
+      if (msg) {
+        msg.className = "puzzle-status-bar";
+        msg.innerHTML = esCandidatoUnico
+          ? `💡 <strong>Pista Lógica (Único Candidato):</strong> En (${mejor.r + 1}, ${mejor.c + 1}) solo cabe el <strong>${numCorrecto}</strong> porque el resto ya aparecen en su fila, columna o bloque 3×3.`
+          : `💡 <strong>Pista Estratégica:</strong> Celda (${mejor.r + 1}, ${mejor.c + 1}) completada con <strong>${numCorrecto}</strong> (tenía ${mejor.candidatos.size} candidatos posibles).`;
+      }
     }
 
     verificarSudoku() {
@@ -1866,6 +1957,15 @@
       } catch (e) {}
       this.actualizarMejorTiempoUI();
 
+      try {
+        const rawStats = localStorage.getItem("ruichis_sudoku_stats_v1");
+        const st = rawStats ? JSON.parse(rawStats) : { won: 0, perfect: 0, dailyCompleted: 0 };
+        st.won = (st.won || 0) + 1;
+        if (this.sudokuMistakes === 0) st.perfect = (st.perfect || 0) + 1;
+        if (this.sudokuDifficulty === "diario") st.dailyCompleted = (st.dailyCompleted || 0) + 1;
+        localStorage.setItem("ruichis_sudoku_stats_v1", JSON.stringify(st));
+      } catch (e) {}
+
       const msg = document.getElementById("sudoku-status-msg");
       if (msg) {
         msg.className = "puzzle-status-bar success";
@@ -1889,6 +1989,64 @@
           : "Has completado las 81 celdas correctamente.";
       }
       if (overlay) overlay.hidden = false;
+      this.lanzarConfetiSudoku();
+    }
+
+    lanzarConfetiSudoku() {
+      const frame = document.querySelector(".sudoku-board-frame");
+      if (!frame) return;
+      const colors = ["#D4AF37", "#38BDF8", "#10B981", "#F59E0B", "#F43F5E"];
+      for (let i = 0; i < 28; i++) {
+        const piece = document.createElement("span");
+        piece.className = "sudoku-confetti-piece";
+        piece.style.left = `${Math.random() * 94 + 3}%`;
+        piece.style.backgroundColor = colors[i % colors.length];
+        piece.style.animationDelay = `${Math.random() * 0.45}s`;
+        frame.appendChild(piece);
+        setTimeout(() => piece.remove(), 2400);
+      }
+    }
+
+    abrirModalEstadisticasSudoku() {
+      const modal = document.getElementById("sudoku-stats-overlay");
+      if (!modal) return;
+
+      let st = { won: 0, perfect: 0, dailyCompleted: 0 };
+      let bests = {};
+      try {
+        const rawStats = localStorage.getItem("ruichis_sudoku_stats_v1");
+        if (rawStats) st = JSON.parse(rawStats);
+        const rawBests = localStorage.getItem("ruichis_sudoku_best_v1");
+        if (rawBests) bests = JSON.parse(rawBests);
+      } catch (e) {}
+
+      const wonEl = document.getElementById("stats-sudoku-won");
+      const perfEl = document.getElementById("stats-sudoku-perfect");
+      const dailyEl = document.getElementById("stats-sudoku-daily");
+      const listEl = document.getElementById("stats-sudoku-best-list");
+
+      if (wonEl) wonEl.textContent = String(st.won || 0);
+      if (perfEl) perfEl.textContent = String(st.perfect || 0);
+      if (dailyEl) dailyEl.textContent = String(st.dailyCompleted || 0);
+
+      if (listEl) {
+        const niveles = [
+          { key: "facil", label: "Fácil" },
+          { key: "medio", label: "Medio" },
+          { key: "dificil", label: "Difícil" },
+          { key: "experto", label: "Experto" },
+          { key: "diario", label: "📅 Reto del Día" }
+        ];
+        listEl.innerHTML = niveles
+          .map(n => {
+            const val = typeof bests[n.key] === "number" ? this.formatearTiempoMMSS(bests[n.key]) : "—";
+            return `<div class="stats-best-row"><span>${n.label}</span><strong>${val}</strong></div>`;
+          })
+          .join("");
+      }
+
+      modal.hidden = false;
+      GymAudio.click();
     }
 
     compartirResultadoSudoku(btn) {
