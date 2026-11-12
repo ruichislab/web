@@ -534,11 +534,19 @@ agente.registrarModulo('Ruichis Lock', {
 });
 
 // --- EVENTOS GLOBALES DE NAVEGACIÓN, MODAL Y TEMA ---
+function closeMobileNav() {
+  const drawer = document.getElementById('main-nav-drawer');
+  const toggleBtn = document.getElementById('mobile-nav-toggle');
+  if (drawer) drawer.classList.remove('nav-open');
+  if (toggleBtn) toggleBtn.setAttribute('aria-expanded', 'false');
+}
+
 document.addEventListener('click', (e) => {
-  // 1. Enlaces a secciones dentro de la portada (Catálogo, Juegos, Autores)
+  // 1. Enlaces a secciones dentro de la portada (Catálogo, Juegos, Estudio)
   const navSectionLink = e.target.closest('[data-nav-section]');
   if (navSectionLink) {
     e.preventDefault();
+    closeMobileNav();
     const targetSectionId = navSectionLink.getAttribute('data-nav-section');
 
     const scrollToTarget = () => {
@@ -572,6 +580,7 @@ document.addEventListener('click', (e) => {
   const moduleElement = e.target.closest('[data-modulo]');
   if (moduleElement) {
     e.preventDefault();
+    closeMobileNav();
     const moduleName = moduleElement.getAttribute('data-modulo');
     if (moduleName) {
       agente.navegarA(moduleName);
@@ -585,6 +594,16 @@ document.addEventListener('click', (e) => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
+  // Menú hamburguesa móvil
+  const mobileNavToggle = document.getElementById('mobile-nav-toggle');
+  const mainNavDrawer = document.getElementById('main-nav-drawer');
+  if (mobileNavToggle && mainNavDrawer) {
+    mobileNavToggle.addEventListener('click', () => {
+      const isOpen = mainNavDrawer.classList.toggle('nav-open');
+      mobileNavToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    });
+  }
+
   // Cerrar modal con botón X o clic en el fondo
   const closeBtn = document.getElementById('modal-close-btn');
   const modalBackdrop = document.getElementById('book-detail-modal');
@@ -595,7 +614,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
   window.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') closeBookModal();
+    if (e.key === 'Escape') {
+      closeBookModal();
+      closeMobileNav();
+    }
   });
 
   // Alternador de Tema Oscuro Obsidiana / Modo Papel Cálido
