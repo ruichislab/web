@@ -174,15 +174,18 @@
         <div id="panel-juego-sudoku" style="display:none;">
           <div class="gimnasio-toolbar">
             <div class="toolbar-group">
-              <span style="font-size:0.8rem;font-weight:700;color:var(--text-secondary);">Dificultad:</span>
+              <span style="font-size:0.8rem;font-weight:700;color:var(--text-secondary);">Modo:</span>
               <button type="button" class="btn-puzzle-tool" data-sudoku-diff="facil">Fácil</button>
               <button type="button" class="btn-puzzle-tool active" data-sudoku-diff="medio">Medio</button>
               <button type="button" class="btn-puzzle-tool" data-sudoku-diff="dificil">Difícil</button>
               <button type="button" class="btn-puzzle-tool" data-sudoku-diff="experto">Experto</button>
+              <button type="button" class="btn-puzzle-tool btn-daily-challenge" data-sudoku-diff="diario" title="Mismo Sudoku para todos hoy">📅 Reto del Día</button>
             </div>
 
             <div class="toolbar-group">
               <span class="puzzle-stat-pill" title="Tiempo">⏱️ <span id="sudoku-timer">00:00</span></span>
+              <button type="button" class="btn-puzzle-tool" id="btn-sudoku-pausa" title="Pausar o reanudar cronómetro">⏸️ Pausar</button>
+              <span class="puzzle-stat-pill" id="sudoku-best-pill" title="Tu mejor tiempo en este nivel">🏆 Mejor: <span id="sudoku-best-time">--:--</span></span>
               <span class="puzzle-stat-pill" title="Celdas completadas">📊 <span id="sudoku-progress-counter">35 / 81</span></span>
               <span class="puzzle-stat-pill" id="sudoku-mistakes-pill" title="Errores cometidos">❌ Errores: <span id="sudoku-mistakes-count">0</span></span>
               <button type="button" class="btn-puzzle-tool" id="btn-sudoku-notas" aria-pressed="false" title="Modo Notas de Lápiz (Tecla N)">✏️ Notas (Lápiz)</button>
@@ -197,16 +200,28 @@
           </div>
 
           <div id="sudoku-status-msg" class="puzzle-status-bar">
-            Selecciona una celda y usa el teclado numérico (1–9), activa <strong>✏️ Notas (Lápiz)</strong> o pulsa <strong>✨ Auto-Candidatos</strong> para desplegar todas las opciones lógicas.
+            Selecciona una celda y usa el teclado numérico (1–9), activa <strong>✏️ Notas (Lápiz)</strong> o pulsa <strong>⚡ Entrada Rápida</strong> para rellenar dígitos al instante.
           </div>
 
           <div class="sudoku-workspace">
             <div class="sudoku-board-frame">
               <div id="sudoku-grid-board" class="sudoku-grid" aria-label="Tablero de Sudoku 9 por 9"></div>
 
+              <div id="sudoku-pause-overlay" class="puzzle-victory-overlay" hidden aria-live="polite">
+                <div class="puzzle-victory-card">
+                  <div class="victory-trophy">⏸️</div>
+                  <h3>Partida en Pausa</h3>
+                  <p>El cronómetro está detenido y el tablero oculto para proteger tu concentración.</p>
+                  <div class="victory-actions">
+                    <button type="button" class="btn-hero-primary" id="btn-sudoku-resume">▶️ Reanudar Partida</button>
+                  </div>
+                </div>
+              </div>
+
               <div id="sudoku-victory-overlay" class="puzzle-victory-overlay" hidden aria-live="polite">
                 <div class="puzzle-victory-card">
                   <div class="victory-trophy">🏆</div>
+                  <div id="sudoku-victory-record-badge" class="victory-record-badge" hidden>✨ ¡NUEVO RÉCORD PERSONAL!</div>
                   <h3>¡Sudoku Completado!</h3>
                   <p id="sudoku-victory-subtitle">Has resuelto el tablero con precisión lógica.</p>
                   <div class="victory-stats-row">
@@ -224,7 +239,8 @@
                     </div>
                   </div>
                   <div class="victory-actions">
-                    <button type="button" class="btn-hero-primary" id="btn-sudoku-victory-new">🔄 Jugar Nuevo Sudoku</button>
+                    <button type="button" class="btn-hero-primary" id="btn-sudoku-victory-share">📤 Copiar Resultado</button>
+                    <button type="button" class="btn-puzzle-tool" id="btn-sudoku-victory-new">🔄 Jugar Nuevo Sudoku</button>
                     <button type="button" class="btn-puzzle-tool" id="btn-sudoku-victory-view">👁️ Ver Tablero</button>
                   </div>
                 </div>
@@ -233,9 +249,9 @@
 
             <div class="sudoku-controls-panel">
               <div class="sopa-words-panel">
-                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.85rem;">
+                <div style="display:flex;justify-content:space-between;align-items:center;gap:0.5rem;margin-bottom:0.85rem;flex-wrap:wrap;">
                   <strong style="font-family:var(--font-heading);font-size:1.05rem;">Teclado Numérico</strong>
-                  <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-muted);">TECLAS 1–9 / FLECHAS / N</span>
+                  <button type="button" class="btn-puzzle-tool" id="btn-sudoku-fast-mode" aria-pressed="false" title="Elige un número y toca celdas vacías para colocarlo al instante">⚡ Entrada Rápida</button>
                 </div>
 
                 <div class="sudoku-numpad">
