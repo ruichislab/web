@@ -1,109 +1,130 @@
 <!-- src/modulos/inicio.html -->
-<!-- Casa Editorial Ruichis Lab & Gimnasio Mental Interactivo -->
+<!-- Ruichis Lab — Catálogo Oficial en Amazon KDP & Gimnasio Mental Interactivo -->
 
 <div class="editorial-home-wrapper">
 
-  <!-- 1. HERO EDITORIAL Y VITRINA INTERACTIVA -->
+  <!-- 1. HERO EDITORIAL Y VITRINA INTERACTIVA 3D -->
   <section id="hero-editorial" class="hero-editorial">
     <div class="hero-editorial-grid">
       <div class="hero-copy-col">
         <div class="hero-kicker">
           <span>🏛️</span>
-          <span>CASA EDITORIAL INDEPENDIENTE • BOGOTÁ &amp; AMAZON KDP GLOBAL</span>
+          <span>RUICHIS LAB • CATÁLOGO OFICIAL EN AMAZON KDP</span>
         </div>
         <h1 class="hero-headline">
-          Literatura de Alto Voltaje, <span class="gold-italic">Productividad Asimétrica</span> y Entrenamiento Mental.
+          Sistemas de <span class="gold-italic">Productividad Asimétrica</span>, Ficción Algorítmica y Retos Mentales.
         </h1>
         <p class="hero-lead">
-          En <strong>Ruichis Lab Publishing</strong> editamos obras diseñadas para expandir la soberanía intelectual: desde ensayos sobre <strong>inteligencia artificial agéntica y arquitectura cloud</strong> hasta <strong>techno-thrillers financieros</strong>, narrativa contemporánea, colecciones bilingües y nuestra <strong>Colección Letras y Retos</strong> de pasatiempos cognitivos.
+          Bienvenido a <strong>Ruichis Lab</strong>. Publicamos obras diseñadas para el foco profundo y el entrenamiento intelectual: nuestra serie insignia <strong>Productividad Asimétrica</strong> (en español e inglés), la <strong>Colección Letras y Retos</strong> de sopas de letras temáticas, los techno-thrillers <strong>Corporate Silence</strong> de Daemon Drew y ediciones de <strong>aprendizaje bilingüe ES ⇄ EN</strong>.
         </p>
 
         <div class="hero-actions">
           <a href="#catalogo-libros" class="btn-editorial primary" data-scroll-to="catalogo-libros">
-            <span>📚</span> Explorar Catálogo Editorial
+            <span>📚</span> Ver los 7 Libros en Catálogo
           </a>
           <a href="#gimnasio-mental" class="btn-editorial emerald" data-scroll-to="gimnasio-mental">
-            <span>🧩</span> Jugar Gratis: Sopa de Letras &amp; Sudoku
+            <span>🧩</span> Jugar Sopa de Letras &amp; Sudoku
           </a>
           <a href="https://www.amazon.com/s?k=Ruichis+Lab" target="_blank" rel="noopener noreferrer" class="btn-editorial outline">
-            <span>🛒</span> Ver Tienda en Amazon
+            <span>🛒</span> Amazon KDP ↗
           </a>
+        </div>
+
+        <!-- TARJETA DE ACCESO RÁPIDO AL GIMNASIO MENTAL -->
+        <div class="hero-quick-games-bar" aria-label="Acceso rápido a juegos mentales">
+          <div class="quick-games-label">
+            <span class="quick-games-dot"></span>
+            <span><strong>Gimnasio Mental Interactivo:</strong> Juega ahora sin registro</span>
+          </div>
+          <div class="quick-games-buttons">
+            <button type="button" class="btn-quick-game" data-quick-play="sopa">
+              🔤 Sopa de Letras (8 Sentidos)
+            </button>
+            <button type="button" class="btn-quick-game" data-quick-play="sudoku">
+              🔢 Sudoku Maestro 9×9
+            </button>
+          </div>
         </div>
 
         <div class="hero-metrics">
           <div class="metric-item">
-            <span class="metric-value">50+</span>
-            <span class="metric-label">Obras y Ediciones en Amazon KDP</span>
+            <span class="metric-value">7</span>
+            <span class="metric-label">Obras Verificadas en Amazon KDP</span>
           </div>
           <div class="metric-item">
-            <span class="metric-value">5</span>
-            <span class="metric-label">Colecciones &amp; Sellos Editoriales</span>
+            <span class="metric-value">2.400</span>
+            <span class="metric-label">Palabras en Colección Letras y Retos</span>
           </div>
           <div class="metric-item">
-            <span class="metric-value">2.400+</span>
-            <span class="metric-label">Términos en Colección Letras y Retos</span>
+            <span class="metric-value">75</span>
+            <span class="metric-label">Fábulas Bilingües (Samaniego ES ⇄ EN)</span>
           </div>
           <div class="metric-item">
             <span class="metric-value">ES / EN</span>
-            <span class="metric-label">Publicación Bilingüe Internacional</span>
+            <span class="metric-label">Ediciones en Español e Inglés</span>
           </div>
         </div>
       </div>
 
-      <!-- VITRINA INTERACTIVA DE DESTACADOS -->
+      <!-- VITRINA INTERACTIVA 3D DE LOS 7 LIBROS -->
       <aside class="hero-showcase-box" aria-label="Obra Destacada en Vitrina">
         <div class="showcase-header">
-          <span class="showcase-badge" id="showcase-badge">★ EN VITRINA EDITORIAL</span>
-          <span class="topbar-badge" id="showcase-lang">ES / KDP</span>
+          <span class="showcase-badge" id="showcase-badge">★ ASIN: B0HD2MY2HN</span>
+          <div class="showcase-nav-arrows">
+            <span class="topbar-badge" id="showcase-lang">ES • KDP</span>
+            <button type="button" class="showcase-arrow-btn" id="showcase-prev-btn" aria-label="Libro anterior" title="Libro anterior">‹</button>
+            <button type="button" class="showcase-arrow-btn" id="showcase-next-btn" aria-label="Siguiente libro" title="Siguiente libro">›</button>
+          </div>
         </div>
 
         <div class="showcase-main">
-          <div class="showcase-cover-wrap" id="showcase-cover-trigger" title="Ver ficha completa y fragmento">
+          <div class="showcase-cover-wrap book-3d-stage" id="showcase-cover-trigger" title="Ver vista previa y ficha técnica">
+            <div class="book-3d-spine"></div>
             <img id="showcase-cover-img" src="src/assets/covers/productividad-asimetrica-es.jpg" alt="Portada libro destacado Ruichis Lab">
           </div>
           <div class="showcase-info">
-            <h3 id="showcase-title">Productividad Asimétrica</h3>
-            <div class="showcase-author" id="showcase-author">Por Ruichis Lab • Ensayo &amp; Sistemas</div>
+            <h3 id="showcase-title">Productividad Asimétrica: El arte de hacer en dos horas lo que a otros les lleva una semana</h3>
+            <div class="showcase-author" id="showcase-author">Por Ruichis Lab • Productividad Asimétrica</div>
             <p class="showcase-desc" id="showcase-desc">
-              El arte de hacer en dos horas lo que a otros les toma una semana. Aislamiento cognitivo profundo, apalancamiento algorítmico y sistemas modulares.
+              Aislamiento cognitivo profundo, apalancamiento algorítmico y sistemas modulares para comprimir semanas de trabajo fragmentado en bloques de ejecución de dos horas.
             </p>
             <div class="showcase-actions">
               <button type="button" class="btn-book-detail" id="showcase-btn-ficha">
-                📖 Leer Fragmento
+                📖 Vista Previa &amp; Detalles
               </button>
               <a id="showcase-btn-amazon" href="https://www.amazon.com/dp/B0HD2MY2HN" target="_blank" rel="noopener noreferrer" class="btn-book-amazon">
-                Amazon KDP ↗
+                🛒 Ver en Amazon ↗
               </a>
             </div>
           </div>
         </div>
 
-        <div class="showcase-thumbs" id="showcase-thumbs-container" aria-label="Seleccionar libro destacado">
+        <div class="showcase-thumbs" id="showcase-thumbs-container" aria-label="Seleccionar libro del catálogo">
           <!-- Renderizado dinámicamente por JS -->
         </div>
       </aside>
     </div>
   </section>
 
-  <!-- 2. CATÁLOGO EDITORIAL COMPLETO -->
+  <!-- 2. CATÁLOGO OFICIAL DE LIBROS (7 OBRAS VERIFICADAS) -->
   <section id="catalogo-libros" class="editorial-section">
     <div class="section-header-editorial">
       <div>
-        <span class="section-kicker">FONDO EDITORIAL RUICHIS LAB</span>
-        <h2 class="section-heading">Catálogo de Publicaciones y Series</h2>
+        <span class="section-kicker">CATÁLOGO OFICIAL VERIFICADO • AMAZON KDP</span>
+        <h2 class="section-heading">Publicaciones de Ruichis Lab</h2>
         <p class="section-sub">
-          Explora nuestras colecciones originales disponibles en formato Kindle eBook y Tapa Blanda a través de Amazon KDP. Haz clic en cualquier obra para leer un fragmento y conocer su ficha técnica.
+          Nuestras 7 ediciones oficiales publicadas en Amazon Kindle Direct Publishing (eBook y Tapa Blanda 5" × 8"). Haz clic en cualquier portada para inspeccionar su cubierta completa, leer un extracto y ver los enlaces directos a Amazon.
         </p>
       </div>
     </div>
 
     <div class="catalog-controls">
       <div class="filter-pills" id="catalog-filter-pills" role="tablist" aria-label="Filtrar catálogo por colección">
-        <button type="button" class="filter-pill active" data-filter="todos">Todos los Libros (14)</button>
-        <button type="button" class="filter-pill" data-filter="pasatiempos">🧩 Letras y Retos / Pasatiempos (3)</button>
-        <button type="button" class="filter-pill" data-filter="productividad">⚡ Productividad, IA &amp; Cloud (5)</button>
-        <button type="button" class="filter-pill" data-filter="ficcion">🕵️‍♂️ Ficción &amp; Techno-Thrillers (5)</button>
-        <button type="button" class="filter-pill" data-filter="bilingue">🌐 Bilingües ES/EN (2)</button>
+        <button type="button" class="filter-pill active" data-filter="todos">Todos los Libros (7)</button>
+        <button type="button" class="filter-pill" data-filter="productividad">⚡ Productividad Asimétrica (2)</button>
+        <button type="button" class="filter-pill" data-filter="pasatiempos">🧩 Colección Letras y Retos (2)</button>
+        <button type="button" class="filter-pill" data-filter="ficcion">🕵️‍♂️ Thriller Tecnológico (2)</button>
+        <button type="button" class="filter-pill" data-filter="bilingue">🌐 Aprendizaje Bilingüe (1)</button>
       </div>
 
       <div class="catalog-search-wrap">
@@ -119,7 +140,7 @@
     </div>
 
     <div class="books-grid" id="catalog-books-grid">
-      <!-- Tarjetas de libros inyectadas dinámicamente por src/app.js -->
+      <!-- Tarjetas de libros 3D inyectadas dinámicamente por src/app.js -->
     </div>
   </section>
 
@@ -127,10 +148,10 @@
   <section id="gimnasio-mental" class="editorial-section gimnasio-mental-section">
     <div class="section-header-editorial">
       <div>
-        <span class="section-kicker">COMPLEMENTO INTERACTIVO GRATUITO • COLECCIÓN LETRAS Y RETOS</span>
-        <h2 class="section-heading">Gimnasio Mental: Sopas de Letras &amp; Sudoku Maestro</h2>
+        <span class="section-kicker">EXPERIENCIA INTERACTIVA GRATUITA • COLECCIÓN LETRAS Y RETOS</span>
+        <h2 class="section-heading">Gimnasio Mental: Sopa de Letras &amp; Sudoku Maestro</h2>
         <p class="section-sub">
-          Entrena tu atención sostenida, agilidad léxica y deducción lógica directamente en el navegador o imprime hojas de pasatiempo con calidad editorial para resolver en papel.
+          Pon a prueba tu agilidad visual y deducción lógica con nuestros tableros interactivos inspirados en la <em>Colección Letras y Retos</em> y <em>Productividad Asimétrica</em>, o imprime hojas listas para resolver en papel.
         </p>
       </div>
     </div>
@@ -140,14 +161,14 @@
       <div class="gimnasio-tabs-bar">
         <div class="game-Switch-buttons" role="tablist">
           <button type="button" class="game-tab-btn active" data-game-tab="sopa">
-            <span>🔤</span> Sopa de Letras (8 Direcciones)
+            <span>🔤</span> Sopa de Letras Interactiva (8 Direcciones)
           </button>
           <button type="button" class="game-tab-btn" data-game-tab="sudoku">
             <span>🔢</span> Sudoku Maestro 9×9
           </button>
         </div>
         <div class="topbar-badge">
-          ✨ 100% GRATIS • SIN ANUNCIOS • IMPRIMIBLE
+          ✨ 100% GRATIS • SIN ANUNCIOS • MODO IMPRIMIBLE
         </div>
       </div>
 
@@ -158,10 +179,10 @@
             <label for="sopa-tema-select" style="font-size:0.8rem;font-weight:700;color:var(--text-secondary);">Edición / Tema:</label>
             <select id="sopa-tema-select" class="puzzle-select">
               <option value="cultura_historia">Vol. I: Cultura General — Historia y Civilizaciones</option>
-              <option value="cultura_arte">Vol. I: Cultura General — Arte, Literatura y Pensamiento</option>
+              <option value="cultura_arte">Vol. I: Cultura General — Arte, Literatura y Filosofía</option>
               <option value="biologia_celula">Vol. II: Biología — Célula, Genética y Vida Molecular</option>
-              <option value="biologia_ecosistemas">Vol. II: Biología — Botánica, Ecosistemas y Evolución</option>
-              <option value="ia_cibernetica">Especial Editorial: IA Asimétrica &amp; Cibernética</option>
+              <option value="biologia_ecosistemas">Vol. II: Biología — Botánica, Zoología y Evolución</option>
+              <option value="productividad_sistemas">Especial: Productividad Asimétrica &amp; Foco Profundo</option>
             </select>
           </div>
 
@@ -175,22 +196,32 @@
           </div>
         </div>
 
-        <div id="sopa-status-msg" class="puzzle-status-bar">
-          Arrastra con el mouse/dedo o haz clic en la primera y última letra de cada palabra (8 direcciones).
+        <!-- Barra de estado + Píldora de previsualización en vivo de palabra seleccionada -->
+        <div class="sopa-topbar-feedback">
+          <div id="sopa-status-msg" class="puzzle-status-bar" style="margin-bottom:0;flex:1;">
+            Arrastra sobre las letras o haz clic en la primera y última letra de cada palabra (8 direcciones).
+          </div>
+          <div class="sopa-live-preview-pill" id="sopa-live-preview" aria-live="polite">
+            <span class="preview-label">SELECCIÓN:</span>
+            <span class="preview-letters" id="sopa-live-letters">—</span>
+          </div>
         </div>
 
         <div class="sopa-workspace">
           <div class="sopa-board-frame">
-            <div id="sopa-grid-board" class="sopa-grid" aria-label="Tablero de Sopa de Letras"></div>
+            <div class="sopa-stage-inner">
+              <svg id="sopa-svg-overlay" class="sopa-svg-overlay" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"></svg>
+              <div id="sopa-grid-board" class="sopa-grid" aria-label="Tablero de Sopa de Letras"></div>
+            </div>
           </div>
 
           <div class="sopa-sidebar">
             <div class="sopa-words-panel">
               <div style="display:flex;justify-content:space-between;align-items:center;">
-                <strong style="font-family:var(--font-heading);font-size:1.05rem;">Palabras a Encontrar (12)</strong>
-                <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--primary-color);">8 SENTIDOS</span>
+                <strong style="font-family:var(--font-heading);font-size:1.08rem;">Palabras a Encontrar (12)</strong>
+                <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--primary-color);">8 DIRECCIONES</span>
               </div>
-              <p id="sopa-tema-descripcion" style="font-size:0.8rem;color:var(--text-muted);margin:0.35rem 0 0;"></p>
+              <p id="sopa-tema-descripcion" style="font-size:0.82rem;color:var(--text-muted);margin:0.35rem 0 0;"></p>
               <div class="sopa-progress-bar">
                 <div id="sopa-progress-fill" class="sopa-progress-fill"></div>
               </div>
@@ -198,14 +229,14 @@
             </div>
 
             <div class="companion-book-callout">
-              <span class="section-kicker" style="margin:0;">LIBRO OFICIAL EN AMAZON KDP</span>
+              <span class="section-kicker" style="margin:0;">COLECCIÓN LETRAS Y RETOS EN AMAZON</span>
               <h4 id="sopa-libro-vinculado-titulo">100 Grandes Sopas de Letras de Cultura General (Vol. I)</h4>
               <p>
-                ¿Te gustó este tablero? Consigue la edición impresa de bolsillo (5" × 8") con <strong>100 desafíos temáticos completos (1.200 palabras)</strong> y solucionario ilustrado.
+                ¿Disfrutaste este reto? Consigue la edición impresa de bolsillo (5" × 8", 132 págs., letra clara) con <strong>100 desafíos temáticos y 1.200 palabras</strong> en Amazon KDP.
               </p>
               <div style="display:flex;gap:0.65rem;margin-top:0.35rem;flex-wrap:wrap;">
                 <a id="sopa-libro-vinculado-link" href="https://www.amazon.com/s?k=100+Grandes+Sopas+de+Letras+de+Cultura+General+Ruichis+Lab" target="_blank" rel="noopener noreferrer" class="btn-book-amazon" style="flex:0 1 auto;padding:0.55rem 1rem;">
-                  🛒 Comprar Edición Impresa en Amazon ↗
+                  🛒 Ver Libro en Amazon ↗
                 </a>
               </div>
             </div>
@@ -227,18 +258,19 @@
           <div class="toolbar-group">
             <span class="puzzle-stat-pill" title="Tiempo">⏱️ <span id="sudoku-timer">00:00</span></span>
             <span class="puzzle-stat-pill" title="Celdas completadas">📊 <span id="sudoku-progress-counter">35 / 81</span></span>
-            <button type="button" class="btn-puzzle-tool" id="btn-sudoku-notas" aria-pressed="false" title="Tecla N">✏️ Notas (Lápiz)</button>
-            <button type="button" class="btn-puzzle-tool" id="btn-sudoku-deshacer" title="Deshacer jugada">↩️ Deshacer</button>
-            <button type="button" class="btn-puzzle-tool" id="btn-sudoku-borrar" title="Borrar celda">🧹 Borrar</button>
-            <button type="button" class="btn-puzzle-tool" id="btn-sudoku-pista">💡 Pista</button>
-            <button type="button" class="btn-puzzle-tool" id="btn-sudoku-verificar">✔️ Verificar</button>
-            <button type="button" class="btn-puzzle-tool" id="btn-sudoku-nuevo">🔄 Nuevo</button>
-            <button type="button" class="btn-puzzle-tool" id="btn-sudoku-imprimir">🖨️ Imprimir</button>
+            <button type="button" class="btn-puzzle-tool" id="btn-sudoku-notas" aria-pressed="false" title="Modo Notas de Lápiz (Tecla N)">✏️ Notas (Lápiz)</button>
+            <button type="button" class="btn-puzzle-tool" id="btn-sudoku-autocandidatos" title="Calcular candidatos válidos para todas las celdas vacías">✨ Auto-Candidatos</button>
+            <button type="button" class="btn-puzzle-tool" id="btn-sudoku-deshacer" title="Deshacer última jugada">↩️ Deshacer</button>
+            <button type="button" class="btn-puzzle-tool" id="btn-sudoku-borrar" title="Borrar celda seleccionada">🧹 Borrar</button>
+            <button type="button" class="btn-puzzle-tool" id="btn-sudoku-pista" title="Revelar celda correcta">💡 Pista</button>
+            <button type="button" class="btn-puzzle-tool" id="btn-sudoku-verificar" title="Comprobar si hay errores">✔️ Verificar</button>
+            <button type="button" class="btn-puzzle-tool" id="btn-sudoku-nuevo" title="Generar nuevo Sudoku">🔄 Nuevo</button>
+            <button type="button" class="btn-puzzle-tool" id="btn-sudoku-imprimir" title="Imprimir hoja de Sudoku">🖨️ Imprimir</button>
           </div>
         </div>
 
         <div id="sudoku-status-msg" class="puzzle-status-bar">
-          Selecciona una celda y usa el teclado numérico (1–9) o activa el <strong>Modo Notas (Lápiz)</strong> para anotar candidatos.
+          Selecciona una celda y usa el teclado numérico (1–9), activa <strong>✏️ Notas (Lápiz)</strong> o pulsa <strong>✨ Auto-Candidatos</strong> para desplegar todas las opciones lógicas.
         </div>
 
         <div class="sudoku-workspace">
@@ -250,7 +282,7 @@
             <div class="sopa-words-panel">
               <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.85rem;">
                 <strong style="font-family:var(--font-heading);font-size:1.05rem;">Teclado Numérico</strong>
-                <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-muted);">TECLAS 1–9 / FLECHAS</span>
+                <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-muted);">TECLAS 1–9 / FLECHAS / N</span>
               </div>
 
               <div class="sudoku-numpad">
@@ -268,9 +300,9 @@
 
             <div class="companion-book-callout">
               <span class="section-kicker" style="margin:0;">ENTRENAMIENTO DE FOCO PROFUNDO</span>
-              <h4>Productividad Asimétrica &amp; Gimnasio Lógico</h4>
+              <h4>Productividad Asimétrica (ASIN: B0HD2MY2HN)</h4>
               <p>
-                Resolver un Sudoku sin distracciones entrena la memoria de trabajo y limpia el residuo atencional antes de una sesión de ejecución profunda de dos horas.
+                Resolver un Sudoku de lógica pura limpia el residuo atencional y prepara tu corteza prefrontal antes de iniciar un bloque de ejecución profunda de dos horas.
               </p>
               <div style="display:flex;gap:0.65rem;margin-top:0.35rem;flex-wrap:wrap;">
                 <a href="https://www.amazon.com/dp/B0HD2MY2HN" target="_blank" rel="noopener noreferrer" class="btn-book-amazon" style="flex:0 1 auto;padding:0.55rem 1rem;">
@@ -284,14 +316,14 @@
     </div>
   </section>
 
-  <!-- 4. AUTORES, PLUMAS Y SELLOS DE LA CASA EDITORIAL -->
+  <!-- 4. AUTORES DEL CATÁLOGO OFICIAL -->
   <section id="autores-sellos" class="editorial-section">
     <div class="section-header-editorial">
       <div>
-        <span class="section-kicker">PLUMAS Y VOCES DEL CATÁLOGO</span>
-        <h2 class="section-heading">Autores &amp; Sellos Editoriales</h2>
+        <span class="section-kicker">AUTORES VERIFICADOS</span>
+        <h2 class="section-heading">Autores en Ruichis Lab</h2>
         <p class="section-sub">
-          Conoce a los autores y líneas editoriales que integran el catálogo de Ruichis Lab Publishing en ensayo técnico, ficción especulativa, narrativa contemporánea y pasatiempos.
+          Conoce las firmas detrás de nuestras publicaciones en ensayo de productividad, pasatiempos cognitivos, aprendizaje bilingüe y thriller tecnológico.
         </p>
       </div>
     </div>
@@ -301,34 +333,14 @@
     </div>
   </section>
 
-  <!-- 5. BIBLIOTECA UNIVERSAL DE GRANDES CLÁSICOS KDP -->
-  <section id="clasicos-universales" class="editorial-section">
-    <div class="section-header-editorial">
-      <div>
-        <span class="section-kicker">PATRIMONIO LITERARIO RESTAURADO</span>
-        <h2 class="section-heading">Biblioteca Universal de Grandes Clásicos KDP</h2>
-        <p class="section-sub">
-          Además de nuestras obras originales, en Ruichis Lab cuidamos y maquetamos más de 35 ediciones restauradas de obras cumbre de la literatura hispánica y universal para Kindle y Tapa Blanda.
-        </p>
-      </div>
-      <a href="https://www.amazon.com/s?k=Ruichis+Lab" target="_blank" rel="noopener noreferrer" class="btn-editorial outline">
-        Explorar Clásicos en Amazon ↗
-      </a>
-    </div>
-
-    <div class="classics-shelf" id="editorial-classics-shelf">
-      <!-- Renderizado por JS desde RUICHIS_CATALOGO.clasicosKdp -->
-    </div>
-  </section>
-
-  <!-- 6. LABORATORIO DIGITAL & HERRAMIENTAS PARA AUTORES Y LECTORES -->
+  <!-- 5. LABORATORIO DIGITAL & HERRAMIENTAS DE SOFTWARE -->
   <section id="ecosistema-digital" class="editorial-section" style="border-bottom:none;">
     <div class="section-header-editorial">
       <div>
         <span class="section-kicker">INGENIERÍA DE SOFTWARE &amp; ECOSISTEMA KDP</span>
         <h2 class="section-heading">Laboratorio Digital &amp; Herramientas Ruichis Lab</h2>
         <p class="section-sub">
-          Nuestro sello editorial se apoya en herramientas propias de análisis editorial, seguridad criptográfica y divulgación en inteligencia artificial.
+          Además de nuestras ediciones en Amazon KDP, desarrollamos utilidades de análisis editorial, cifrado de archivos y divulgación técnica.
         </p>
       </div>
     </div>
@@ -358,7 +370,7 @@
             Ruichis Lock (AES-256)
           </h3>
           <p style="font-size:0.86rem;color:var(--text-secondary);">
-            Bóveda de seguridad y cifrado militar AES-256 con derivación PBKDF2 para proteger manuscritos inéditos, activos intelectuales y archivos confidenciales en Windows 10/11.
+            Bóveda de seguridad y cifrado AES-256 con derivación PBKDF2 para proteger manuscritos, activos intelectuales y archivos confidenciales en Windows 10/11.
           </p>
         </div>
         <div style="display:flex;gap:0.6rem;margin-top:1rem;">

@@ -1,5 +1,5 @@
 // src/js/juegos-mentales.js
-// Gimnasio Mental Ruichis Lab — Sopa de Letras (8 Direcciones) & Sudoku Maestro 9x9
+// Gimnasio Mental Ruichis Lab — Sopa de Letras (8 Direcciones + SVG Pill Overlay) & Sudoku Maestro 9x9
 
 (function () {
   const TEMAS_SOPA = {
@@ -17,7 +17,7 @@
       ]
     },
     cultura_arte: {
-      nombre: "Vol. I: Cultura General — Arte, Literatura y Pensamiento",
+      nombre: "Vol. I: Cultura General — Arte, Literatura y Filosofía",
       libroTitulo: "100 Grandes Sopas de Letras de Cultura General (Vol. I)",
       libroUrl: "https://www.amazon.com/s?k=100+Grandes+Sopas+de+Letras+de+Cultura+General+Ruichis+Lab",
       libroId: "sopas-cultura-general",
@@ -43,7 +43,7 @@
       ]
     },
     biologia_ecosistemas: {
-      nombre: "Vol. II: Biología — Botánica, Ecosistemas y Evolución",
+      nombre: "Vol. II: Biología — Botánica, Zoología y Evolución",
       libroTitulo: "100 Grandes Sopas de Letras de Biología (Vol. II)",
       libroUrl: "https://www.amazon.com/s?k=100+Grandes+Sopas+de+Letras+de+Biologia+Ruichis+Lab",
       libroId: "sopas-biologia",
@@ -55,20 +55,23 @@
         "ADAPTACION", "MICELIO", "ESTOMA", "ESPECIE"
       ]
     },
-    ia_cibernetica: {
-      nombre: "Especial Editorial: IA Asimétrica & Cibernética",
-      libroTitulo: "IA Asimétrica & Productividad Asimétrica",
+    productividad_sistemas: {
+      nombre: "Especial: Productividad Asimétrica & Foco Profundo",
+      libroTitulo: "Productividad Asimétrica (ASIN: B0HD2MY2HN)",
       libroUrl: "https://www.amazon.com/dp/B0HD2MY2HN",
       libroId: "productividad-asimetrica-es",
-      descripcion: "Vocabulario técnico de arquitectura agéntica, criptografía, redes neuronales y apalancamiento asimétrico.",
+      descripcion: "Conceptos clave de ejecución profunda, aislamiento cognitivo, apalancamiento algorítmico y sistemas modulares.",
       gridSize: 13,
       palabras: [
-        "ALGORITMO", "ASIMETRIA", "HEURISTICA", "AGENTE",
-        "LATENCIA", "CRIPTOGRAFIA", "SILICIO", "SINCRONIA",
-        "AUTOMATA", "VECTORES", "NEURONAL", "PROMPT"
+        "ASIMETRIA", "ALGORITMO", "HEURISTICA", "SISTEMAS",
+        "ATENCION", "PALANCA", "EJECUCION", "MODULAR",
+        "AISLAMIENTO", "SINAPSIS", "IMPACTO", "CLARIDAD"
       ]
     }
   };
+
+  // Alias de compatibilidad
+  TEMAS_SOPA.ia_cibernetica = TEMAS_SOPA.productividad_sistemas;
 
   const DIRECCIONES_8 = [
     { dr: 0, dc: 1, nombre: "Horizontal →" },
@@ -82,18 +85,18 @@
   ];
 
   const COLORES_PALABRAS = [
-    "rgba(212, 175, 55, 0.36)",  // Oro editorial
-    "rgba(16, 185, 129, 0.35)",  // Esmeralda
-    "rgba(56, 189, 248, 0.35)",  // Cian
-    "rgba(168, 85, 247, 0.35)",  // Amatista
-    "rgba(244, 63, 94, 0.33)",   // Coral
-    "rgba(245, 158, 11, 0.35)",  // Ámbar
-    "rgba(20, 184, 166, 0.35)",  // Turquesa
-    "rgba(99, 102, 241, 0.35)",  // Índigo
-    "rgba(236, 72, 153, 0.33)",  // Rosa
-    "rgba(132, 204, 22, 0.33)",  // Lima
-    "rgba(14, 165, 233, 0.35)",  // Azul cielo
-    "rgba(217, 119, 6, 0.36)"    // Bronce
+    { stroke: "rgba(212, 175, 55, 0.48)", cell: "rgba(212, 175, 55, 0.24)", dot: "#D4AF37" },
+    { stroke: "rgba(16, 185, 129, 0.48)", cell: "rgba(16, 185, 129, 0.24)", dot: "#10B981" },
+    { stroke: "rgba(56, 189, 248, 0.48)", cell: "rgba(56, 189, 248, 0.24)", dot: "#38BDF8" },
+    { stroke: "rgba(168, 85, 247, 0.48)", cell: "rgba(168, 85, 247, 0.24)", dot: "#A855F7" },
+    { stroke: "rgba(244, 63, 94, 0.46)", cell: "rgba(244, 63, 94, 0.22)", dot: "#F43F5E" },
+    { stroke: "rgba(245, 158, 11, 0.48)", cell: "rgba(245, 158, 11, 0.24)", dot: "#F59E0B" },
+    { stroke: "rgba(20, 184, 166, 0.48)", cell: "rgba(20, 184, 166, 0.24)", dot: "#14B8A6" },
+    { stroke: "rgba(99, 102, 241, 0.48)", cell: "rgba(99, 102, 241, 0.24)", dot: "#6366F1" },
+    { stroke: "rgba(236, 72, 153, 0.46)", cell: "rgba(236, 72, 153, 0.22)", dot: "#EC4899" },
+    { stroke: "rgba(132, 204, 22, 0.46)", cell: "rgba(132, 204, 22, 0.22)", dot: "#84CC16" },
+    { stroke: "rgba(14, 165, 233, 0.48)", cell: "rgba(14, 165, 233, 0.24)", dot: "#0EA5E9" },
+    { stroke: "rgba(217, 119, 6, 0.48)", cell: "rgba(217, 119, 6, 0.24)", dot: "#D97706" }
   ];
 
   class GimnasioMental {
@@ -251,6 +254,8 @@
       // Reiniciar temporizador
       this.iniciarTimerSopa();
       this.renderSopaUI(config);
+      this.actualizarPreviewPalabraSopa("");
+      this.renderSopaSvgOverlay();
     }
 
     colocarPalabraBalanceada(palabra, idx) {
@@ -371,7 +376,7 @@
 
       const statusEl = document.getElementById("sopa-status-msg");
       if (statusEl) {
-        statusEl.textContent = "Arrastra con el mouse/dedo o haz clic en la primera y última letra de cada palabra (8 direcciones).";
+        statusEl.textContent = "Arrastra sobre las letras o haz clic en la primera y última letra de cada palabra (8 direcciones).";
         statusEl.className = "puzzle-status-bar";
       }
 
@@ -399,6 +404,11 @@
           cell.addEventListener("mouseenter", () => {
             if (this.sopaSelecting) {
               this.actualizarSeleccionSopa(r, c);
+            } else if (this.sopaClickStart) {
+              // Vista previa en modo clic-inicio -> clic-fin al mover el cursor
+              const previewPath = this.calcularCaminoRecto(this.sopaClickStart.r, this.sopaClickStart.c, r, c);
+              this.sopaCurrentPath = previewPath;
+              this.pintarSeleccionTemporalSopa();
             }
           });
 
@@ -467,17 +477,24 @@
         this.sopaClickStart = { r, c };
         const cellEl = this.obtenerCeldaSopaDOM(r, c);
         if (cellEl) cellEl.classList.add("click-anchor");
+        this.actualizarPreviewPalabraSopa(this.sopaGrid[r][c]);
       } else {
         const start = this.sopaClickStart;
         document.querySelectorAll(".sopa-cell.click-anchor").forEach(el => el.classList.remove("click-anchor"));
         this.sopaClickStart = null;
-        if (start.r === r && start.c === c) return;
+        if (start.r === r && start.c === c) {
+          this.sopaCurrentPath = [];
+          this.pintarSeleccionTemporalSopa();
+          return;
+        }
 
         const path = this.calcularCaminoRecto(start.r, start.c, r, c);
         if (path.length > 1) {
           this.sopaCurrentPath = path;
           this.verificarCaminoSopa();
         }
+        this.sopaCurrentPath = [];
+        this.pintarSeleccionTemporalSopa();
       }
     }
 
@@ -486,7 +503,6 @@
       const dc = c2 - c1;
       if (dr === 0 && dc === 0) return [{ r: r1, c: c1 }];
 
-      // Verificar si está alineado en una de las 8 direcciones (o aproximar al rayo de 45° más cercano)
       const absR = Math.abs(dr);
       const absC = Math.abs(dc);
 
@@ -520,12 +536,70 @@
       return path;
     }
 
+    actualizarPreviewPalabraSopa(str) {
+      const pill = document.getElementById("sopa-live-preview");
+      const lettersEl = document.getElementById("sopa-live-letters");
+      if (!lettersEl || !pill) return;
+
+      if (str && str.length > 0) {
+        lettersEl.textContent = str.split("").join(" ");
+        pill.classList.add("active");
+      } else {
+        lettersEl.textContent = "—";
+        pill.classList.remove("active");
+      }
+    }
+
+    renderSopaSvgOverlay() {
+      const svg = document.getElementById("sopa-svg-overlay");
+      if (!svg) return;
+
+      const N = this.sopaSize;
+      const pillStrokeWidth = (100 / N) * 0.72;
+      let linesHtml = "";
+
+      // 1. Dibujar cápsulas redondeadas para todas las palabras encontradas
+      this.sopaPlacements.forEach(p => {
+        if (!p.found || p.cells.length === 0) return;
+        const first = p.cells[0];
+        const last = p.cells[p.cells.length - 1];
+        const x1 = ((first.c + 0.5) / N) * 100;
+        const y1 = ((first.r + 0.5) / N) * 100;
+        const x2 = ((last.c + 0.5) / N) * 100;
+        const y2 = ((last.r + 0.5) / N) * 100;
+        const colorObj = COLORES_PALABRAS[p.colorIndex];
+
+        linesHtml += `<line x1="${x1.toFixed(2)}" y1="${y1.toFixed(2)}" x2="${x2.toFixed(2)}" y2="${y2.toFixed(2)}" stroke="${colorObj.stroke}" stroke-width="${pillStrokeWidth.toFixed(2)}" stroke-linecap="round" />`;
+      });
+
+      // 2. Dibujar cápsula activa de selección en tiempo real
+      if (this.sopaCurrentPath && this.sopaCurrentPath.length > 0) {
+        const first = this.sopaCurrentPath[0];
+        const last = this.sopaCurrentPath[this.sopaCurrentPath.length - 1];
+        const x1 = ((first.c + 0.5) / N) * 100;
+        const y1 = ((first.r + 0.5) / N) * 100;
+        let x2 = ((last.c + 0.5) / N) * 100;
+        const y2 = ((last.r + 0.5) / N) * 100;
+        if (Math.abs(x1 - x2) < 0.001 && Math.abs(y1 - y2) < 0.001) {
+          x2 = x1 + 0.01;
+        }
+
+        linesHtml += `<line x1="${x1.toFixed(2)}" y1="${y1.toFixed(2)}" x2="${x2.toFixed(2)}" y2="${y2.toFixed(2)}" stroke="rgba(0, 168, 255, 0.52)" stroke-width="${pillStrokeWidth.toFixed(2)}" stroke-linecap="round" />`;
+      }
+
+      svg.innerHTML = linesHtml;
+    }
+
     pintarSeleccionTemporalSopa() {
       document.querySelectorAll(".sopa-cell.selecting").forEach(el => el.classList.remove("selecting"));
       this.sopaCurrentPath.forEach(({ r, c }) => {
         const el = this.obtenerCeldaSopaDOM(r, c);
         if (el) el.classList.add("selecting");
       });
+
+      const currentWord = this.sopaCurrentPath.map(({ r, c }) => this.sopaGrid[r][c]).join("");
+      this.actualizarPreviewPalabraSopa(currentWord);
+      this.renderSopaSvgOverlay();
     }
 
     finalizarSeleccionSopa() {
@@ -535,6 +609,10 @@
         this.verificarCaminoSopa();
       }
       this.sopaCurrentPath = [];
+      if (!this.sopaClickStart) {
+        this.actualizarPreviewPalabraSopa("");
+      }
+      this.renderSopaSvgOverlay();
     }
 
     verificarCaminoSopa() {
@@ -551,23 +629,24 @@
         this.sopaClickStart = null;
         document.querySelectorAll(".sopa-cell.click-anchor").forEach(el => el.classList.remove("click-anchor"));
 
-        const bgColor = COLORES_PALABRAS[encontrado.colorIndex];
+        const colorObj = COLORES_PALABRAS[encontrado.colorIndex];
         encontrado.cells.forEach(({ r, c }) => {
           const el = this.obtenerCeldaSopaDOM(r, c);
           if (el) {
             el.classList.remove("hint-pulse");
             el.classList.add("found");
-            el.style.backgroundColor = bgColor;
+            el.style.backgroundColor = colorObj.cell;
           }
         });
 
+        this.renderSopaSvgOverlay();
         this.renderListaPalabrasSopa();
         this.actualizarProgresoSopa();
 
         const statusEl = document.getElementById("sopa-status-msg");
         if (this.sopaFoundCount === this.sopaPlacements.length) {
           if (statusEl) {
-            statusEl.innerHTML = `🎉 <strong>¡Tablero Completado en ${document.getElementById("sopa-timer")?.textContent}!</strong> Has encontrado las ${this.sopaPlacements.length} palabras. Descubre los 100 tableros completos en nuestra edición impresa de Amazon.`;
+            statusEl.innerHTML = `🎉 <strong>¡Tablero Completado en ${document.getElementById("sopa-timer")?.textContent}!</strong> Has encontrado las ${this.sopaPlacements.length} palabras. Descubre los 100 desafíos completos en la edición impresa de Amazon.`;
             statusEl.className = "puzzle-status-bar success";
           }
         } else if (statusEl) {
@@ -595,7 +674,7 @@
 
       const statusEl = document.getElementById("sopa-status-msg");
       if (statusEl) {
-        statusEl.innerHTML = `💡 <strong>Pista Editorial:</strong> Busca <strong>${objetivo.word}</strong> desde la fila ${primera.r + 1}, columna ${primera.c + 1} (${objetivo.dir}).`;
+        statusEl.innerHTML = `💡 <strong>Pista:</strong> Busca <strong>${objetivo.word}</strong> desde la fila ${primera.r + 1}, columna ${primera.c + 1} (${objetivo.dir}).`;
         statusEl.className = "puzzle-status-bar highlight";
       }
     }
@@ -604,24 +683,25 @@
       this.sopaPlacements.forEach(p => {
         if (!p.found) {
           p.found = true;
-          const bgColor = COLORES_PALABRAS[p.colorIndex];
+          const colorObj = COLORES_PALABRAS[p.colorIndex];
           p.cells.forEach(({ r, c }) => {
             const el = this.obtenerCeldaSopaDOM(r, c);
             if (el) {
               el.classList.remove("hint-pulse");
               el.classList.add("found");
-              el.style.backgroundColor = bgColor;
+              el.style.backgroundColor = colorObj.cell;
             }
           });
         }
       });
       this.sopaFoundCount = this.sopaPlacements.length;
+      this.renderSopaSvgOverlay();
       this.renderListaPalabrasSopa();
       this.actualizarProgresoSopa();
 
       const statusEl = document.getElementById("sopa-status-msg");
       if (statusEl) {
-        statusEl.innerHTML = `📖 <strong>Solucionario Activado:</strong> Todas las palabras han sido reveladas en el tablero.`;
+        statusEl.innerHTML = `📖 <strong>Solucionario Activado:</strong> Todas las palabras han sido trazadas en el tablero.`;
         statusEl.className = "puzzle-status-bar";
       }
     }
@@ -634,14 +714,13 @@
       const listEl = document.getElementById("sopa-word-list");
       if (!listEl) return;
 
-      // Mostrar en orden alfabético como en el libro KDP
       const ordenadas = [...this.sopaPlacements].sort((a, b) => a.word.localeCompare(b.word));
       listEl.innerHTML = ordenadas
         .map(p => {
-          const dotColor = COLORES_PALABRAS[p.colorIndex].replace("0.35", "0.9").replace("0.36", "0.9").replace("0.33", "0.9");
+          const colorObj = COLORES_PALABRAS[p.colorIndex];
           return `
             <li class="sopa-word-item ${p.found ? "word-found" : ""}" data-word="${p.word}">
-              <span class="word-bullet" style="background:${p.found ? dotColor : "rgba(255,255,255,0.2)"}"></span>
+              <span class="word-bullet" style="background:${p.found ? colorObj.dot : "rgba(255,255,255,0.22)"}"></span>
               <span class="word-text">${p.word}</span>
               ${p.found ? '<span class="word-check">✓</span>' : ""}
             </li>
@@ -686,6 +765,11 @@
           btnNotas.classList.toggle("active", this.sudokuNotesMode);
           btnNotas.setAttribute("aria-pressed", String(this.sudokuNotesMode));
         });
+      }
+
+      const btnAutoCandidatos = document.getElementById("btn-sudoku-autocandidatos");
+      if (btnAutoCandidatos) {
+        btnAutoCandidatos.addEventListener("click", () => this.calcularAutoCandidatosSudoku());
       }
 
       const btnDeshacer = document.getElementById("btn-sudoku-deshacer");
@@ -747,7 +831,6 @@
     }
 
     generarNuevoSudoku() {
-      // Generar una solución válida 9x9 mediante permutaciones algebraicas + barajado de bandas/pilas
       const base = [
         [1, 2, 3, 4, 5, 6, 7, 8, 9],
         [4, 5, 6, 7, 8, 9, 1, 2, 3],
@@ -760,18 +843,15 @@
         [9, 1, 2, 3, 4, 5, 6, 7, 8]
       ];
 
-      // Permutar símbolos 1..9
       const digits = [1, 2, 3, 4, 5, 6, 7, 8, 9].sort(() => Math.random() - 0.5);
       let grid = base.map(row => row.map(v => digits[v - 1]));
 
-      // Barajar filas dentro de cada banda de 3
       for (let band = 0; band < 3; band++) {
         const rows = [0, 1, 2].sort(() => Math.random() - 0.5);
         const copy = [grid[band * 3], grid[band * 3 + 1], grid[band * 3 + 2]];
         for (let i = 0; i < 3; i++) grid[band * 3 + i] = copy[rows[i]];
       }
 
-      // Barajar columnas dentro de cada pila de 3
       for (let stack = 0; stack < 3; stack++) {
         const cols = [0, 1, 2].sort(() => Math.random() - 0.5);
         for (let r = 0; r < 9; r++) {
@@ -812,7 +892,6 @@
       this.sudokuMistakes = 0;
       this.sudokuCompleted = false;
 
-      // Seleccionar la primera celda vacía
       let firstEmpty = { r: 0, c: 0 };
       outer: for (let r = 0; r < 9; r++) {
         for (let c = 0; c < 9; c++) {
@@ -830,7 +909,7 @@
 
       const statusEl = document.getElementById("sudoku-status-msg");
       if (statusEl) {
-        statusEl.innerHTML = "Selecciona una celda y usa el teclado numérico (1–9) o activa el <strong>Modo Notas (Lápiz)</strong> para anotar candidatos.";
+        statusEl.innerHTML = "Selecciona una celda y usa el teclado numérico (1–9), activa <strong>✏️ Notas (Lápiz)</strong> o pulsa <strong>✨ Auto-Candidatos</strong> para desplegar todas las opciones lógicas.";
         statusEl.className = "puzzle-status-bar";
       }
     }
@@ -905,6 +984,9 @@
               for (let n = 1; n <= 9; n++) {
                 const span = document.createElement("span");
                 span.textContent = notesSet.has(n) ? n : "";
+                if (selVal !== 0 && n === selVal && notesSet.has(n)) {
+                  span.className = "note-match";
+                }
                 notesGrid.appendChild(span);
               }
               cell.appendChild(notesGrid);
@@ -942,12 +1024,39 @@
       return false;
     }
 
+    calcularAutoCandidatosSudoku() {
+      if (this.sudokuCompleted) return;
+
+      // Guardar snapshot para permitir Deshacer
+      const snapshot = this.sudokuNotes.map(row => row.map(set => new Set(set)));
+      this.sudokuHistory.push({ bulkNotes: snapshot });
+
+      for (let r = 0; r < 9; r++) {
+        for (let c = 0; c < 9; c++) {
+          this.sudokuNotes[r][c].clear();
+          if (this.sudokuBoard[r][c] === 0) {
+            for (let n = 1; n <= 9; n++) {
+              if (!this.tieneConflictoSudoku(r, c, n)) {
+                this.sudokuNotes[r][c].add(n);
+              }
+            }
+          }
+        }
+      }
+
+      this.renderSudokuBoard();
+      const statusEl = document.getElementById("sudoku-status-msg");
+      if (statusEl) {
+        statusEl.innerHTML = `✨ <strong>Auto-Candidatos Calculados:</strong> Se han anotado todos los candidatos lógicamente válidos en cada celda vacía.`;
+        statusEl.className = "puzzle-status-bar highlight";
+      }
+    }
+
     ingresarNumeroSudoku(num) {
       if (this.sudokuCompleted) return;
       const { r, c } = this.sudokuSelected;
       if (this.sudokuInitial[r][c] !== 0) return;
 
-      // Guardar estado para Deshacer
       this.sudokuHistory.push({
         r,
         c,
@@ -969,7 +1078,6 @@
         this.sudokuBoard[r][c] = num;
         this.sudokuNotes[r][c].clear();
 
-        // Limpiar automáticamente ese candidato en la misma fila, columna y bloque 3x3
         for (let i = 0; i < 9; i++) {
           this.sudokuNotes[r][i].delete(num);
           this.sudokuNotes[i][c].delete(num);
@@ -991,9 +1099,13 @@
     deshacerSudoku() {
       if (this.sudokuHistory.length === 0) return;
       const last = this.sudokuHistory.pop();
-      this.sudokuBoard[last.r][last.c] = last.prevVal;
-      this.sudokuNotes[last.r][last.c] = last.prevNotes;
-      this.sudokuSelected = { r: last.r, c: last.c };
+      if (last.bulkNotes) {
+        this.sudokuNotes = last.bulkNotes;
+      } else {
+        this.sudokuBoard[last.r][last.c] = last.prevVal;
+        this.sudokuNotes[last.r][last.c] = last.prevNotes;
+        this.sudokuSelected = { r: last.r, c: last.c };
+      }
       this.renderSudokuBoard();
       this.actualizarContadoresSudoku();
     }
@@ -1003,7 +1115,6 @@
       let { r, c } = this.sudokuSelected;
 
       if (this.sudokuBoard[r][c] === this.sudokuSolution[r][c]) {
-        // Buscar otra celda vacía o incorrecta
         const candidatas = [];
         for (let rr = 0; rr < 9; rr++) {
           for (let cc = 0; cc < 9; cc++) {
@@ -1093,13 +1204,13 @@
       this.sudokuCompleted = true;
       const statusEl = document.getElementById("sudoku-status-msg");
       if (statusEl) {
-        statusEl.innerHTML = `🏆 <strong>¡Sudoku Maestro Resuelto en ${document.getElementById("sudoku-timer")?.textContent}!</strong> Foco profundo al 100%. Explora nuestra colección editorial para más retos.`;
+        statusEl.innerHTML = `🏆 <strong>¡Sudoku Maestro Resuelto en ${document.getElementById("sudoku-timer")?.textContent}!</strong> Foco profundo al 100%. Explora nuestro catálogo de libros en Amazon KDP.`;
         statusEl.className = "puzzle-status-bar success";
       }
     }
 
     // =========================================================================
-    // MODO IMPRIMIBLE KDP (HOJA DE PASATIEMPO PARA IMPRIMIR)
+    // MODO IMPRIMIBLE (HOJA DE PASATIEMPO PARA IMPRIMIR)
     // =========================================================================
     imprimirPasatiempoActual(tipo) {
       const win = window.open("", "_blank", "width=850,height=950");
@@ -1126,7 +1237,7 @@
           <html lang="es">
           <head>
             <meta charset="UTF-8">
-            <title>${config.nombre} — Ruichis Lab Publishing</title>
+            <title>${config.nombre} — Ruichis Lab</title>
             <style>
               body { font-family: Georgia, serif; color: #111; max-width: 720px; margin: 24px auto; padding: 0 20px; }
               .header { text-align: center; border-bottom: 2px solid #111; padding-bottom: 12px; margin-bottom: 20px; }
@@ -1141,14 +1252,14 @@
           </head>
           <body>
             <div class="header">
-              <div class="imprint">RUICHIS LAB PUBLISHING • COLECCIÓN LETRAS Y RETOS</div>
+              <div class="imprint">RUICHIS LAB • COLECCIÓN LETRAS Y RETOS</div>
               <h1>${config.nombre}</h1>
               <p class="desc">${config.descripcion}</p>
             </div>
             <table class="grid">${rowsHtml}</table>
             <div class="words-box">${wordsHtml}</div>
             <div class="footer">
-              Muestra interactiva gratuita de <strong>${config.libroTitulo}</strong> • Disponible en Amazon KDP • ruichislab.com
+              Muestra interactiva gratuita de <strong>${config.libroTitulo}</strong> • Ruichis Lab • ruichislab.com
             </div>
             <script>window.onload = () => { window.print(); };</script>
           </body>
@@ -1174,7 +1285,7 @@
           <html lang="es">
           <head>
             <meta charset="UTF-8">
-            <title>Sudoku Maestro (${this.sudokuDifficulty.toUpperCase()}) — Ruichis Lab Publishing</title>
+            <title>Sudoku Maestro (${this.sudokuDifficulty.toUpperCase()}) — Ruichis Lab</title>
             <style>
               body { font-family: Georgia, serif; color: #111; max-width: 680px; margin: 24px auto; padding: 0 20px; text-align: center; }
               .header { border-bottom: 2px solid #111; padding-bottom: 12px; margin-bottom: 24px; }
@@ -1186,12 +1297,12 @@
           </head>
           <body>
             <div class="header">
-              <div class="imprint">RUICHIS LAB PUBLISHING • ENTRENAMIENTO DE FOCO PROFUNDO</div>
+              <div class="imprint">RUICHIS LAB • ENTRENAMIENTO DE FOCO PROFUNDO</div>
               <h1>Sudoku Maestro 9×9 — Nivel: ${this.sudokuDifficulty.toUpperCase()}</h1>
             </div>
             <table class="sudoku">${rowsHtml}</table>
             <div class="footer">
-              Generado en el Gimnasio Mental de <strong>Ruichis Lab Publishing</strong> • Descubre nuestros libros en Amazon KDP • ruichislab.com
+              Generado en el Gimnasio Mental de <strong>Ruichis Lab</strong> • Descubre nuestros libros en Amazon KDP • ruichislab.com
             </div>
             <script>window.onload = () => { window.print(); };</script>
           </body>
