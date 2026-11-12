@@ -492,13 +492,13 @@ agente.registrarModulo('Contacto', {
               alert('✅ ' + (result.message || 'Mensaje preparado correctamente.'));
               e.target.reset();
             } else {
-              alert('📧 Por favor, contacta directamente a info@ruichislab.com');
+              alert('📧 Por favor, contacta directamente a contacto@ruichislab.com');
             }
             submitBtn.disabled = false;
             submitBtn.innerHTML = originalText;
           }, 400);
         } catch (error) {
-          alert('📧 Por favor, contacta directamente a info@ruichislab.com');
+          alert('📧 Por favor, contacta directamente a contacto@ruichislab.com');
           submitBtn.disabled = false;
           submitBtn.innerHTML = originalText;
         }
