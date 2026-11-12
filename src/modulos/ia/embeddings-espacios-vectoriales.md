@@ -1,129 +1,114 @@
-# Embeddings y Espacios Vectoriales Semánticos: Geometría de Alta Dimensión, Similitud y Búsqueda con HNSW
+# Embeddings y Espacios Vectoriales: El Mapa Matemático del Significado
 
-Un **embedding** (o incrustación vectorial) es una función matemática $f: \mathcal{X} \to \mathbb{R}^d$ que proyecta entidades discretas o multimodales —como palabras, documentos, imágenes o grafos— hacia vectores densos y continuos en un espacio de dimensión intermedia o alta ($d \in [128, 4096]$). La premisa central del espacio vectorial semántico es que la proximidad métrica y la orientación angular codifican afinidades conceptuales y funcionales. Al transformar símbolos aislados en coordenadas continuas, los modelos de aprendizaje automático pueden computar significado mediante álgebra lineal, sustentando la recuperación de información moderna y los modelos neuronales de lenguaje.
+Las computadoras no comprenden el significado de las palabras ni de las imágenes; para un procesador, todo se reduce a cadenas de ceros y unos. Si queremos que una máquina entienda que "médico" y "doctor" expresan la misma idea, o que buscar "reparar un grifo" se vincula con "fontanería", debemos traducir esos conceptos a coordenadas numéricas comparables. A esa representación se le denomina incrustación o *embedding*.
 
----
-
-## 1. Origen e Intuición Fundamental
-
-Tradicionalmente, el procesamiento del lenguaje natural representaba el vocabulario mediante esquemas *one-hot*, donde cada término era un vector disperso de dimensión igual al tamaño del léxico ($|V| \sim 10^5 - 10^7$). Bajo esta estructura, dos palabras cualesquiera $w_i, w_j$ resultaban ortogonales ($\langle \mathbf{w}_i, \mathbf{w}_j \rangle = 0$), imposibilitando modelar grados de sinonimia o similitud.
-
-La superación de este límite se fundamenta en la **hipótesis distribucional** de la lingüística teórica (Firth, 1957): *"conocerás una palabra por las compañías que frecuenta"*. El significado se captura a partir de las regularidades estadísticas del contexto lingüístico.
-
-### Codificación Geométrica en Alta Dimensión
-
-Al situar conceptos en variedades continuas dentro de $\mathbb{R}^d$:
-1. **Composicionalidad Vectorial:** Operaciones lineales simples descubren analogías semánticas mediante desplazamientos en el espacio:
-   $$\vec{v}_{\text{reina}} \approx \vec{v}_{\text{rey}} - \vec{v}_{\text{hombre}} + \vec{v}_{\text{mujer}}$$
-2. **Propiedades de la Alta Dimensión:** Por concentración de la medida, vectores generados al azar en $\mathbb{R}^d$ ($d \gg 100$) son casi con certeza ortogonales. De este modo, una separación angular pequeña ($\theta \ll 90^\circ$) representa una señal semántica real y no una coincidencia estocástica.
-3. **Evolución Representacional:** El campo transitó desde representaciones estáticas (Word2Vec, GloVe), donde cada término tiene un vector fijo, hacia incrustaciones contextuales dinámicas mediante Transformers (BERT, bi-encoders modernos), donde el vector se computa en función del contexto circundante.
+> **En pocas palabras:** Un embedding es una lista de números que resume el significado de un dato, situándolo en un mapa matemático donde los conceptos parecidos quedan juntos y los diferentes se distancian.
 
 ---
 
-## 2. Arquitectura, Mecánica o Formulación Matemática
+## 1. De dónde viene y cómo se entiende fácil
 
-### 2.1 Similitud del Coseno y Normalización
+Antes de los embeddings modernos, la informática trataba las palabras como etiquetas aisladas mediante la codificación *one-hot*. Si un vocabulario tenía 50.000 palabras, cada término se guardaba en una lista de 50.000 casillas llena de ceros, con un único "1" en la posición de ese vocablo. Con esa técnica, la distancia matemática entre "perro" y "gato" era idéntica a la que había entre "perro" y "submarino": cero coincidencia computable.
 
-La distancia euclidiana directa es sensible a la magnitud del vector. Por ello, la métrica estándar para medir concordancia semántica entre dos vectores $\mathbf{u}, \mathbf{v} \in \mathbb{R}^d$ es la **similitud del coseno**:
+Para resolver este límite, los investigadores recurrieron al principio del lingüista británico John Rupert Firth en 1957: *"Conocerás a una palabra por las compañías que frecuenta"*. En cualquier texto, términos como "perro", "cachorro" y "mascota" conviven junto a palabras similares ("ladrar", "pasear", "veterinario"). El contexto compartido define el significado.
 
-$$\text{sim}_{\cos}(\mathbf{u}, \mathbf{v}) = \frac{\mathbf{u} \cdot \mathbf{v}}{\|\mathbf{u}\|_2 \|\mathbf{v}\|_2} = \frac{\sum_{i=1}^d u_i v_i}{\sqrt{\sum_{i=1}^d u_i^2} \sqrt{\sum_{i=1}^d v_i^2}}$$
+Una analogía sencilla es un club de lectura. Si en vez de registrar a los socios por su nombre los evalúas con notas del 1 al 10 en tres temas —ciencia ficción, cocina e historia—, cada socio ocupa una posición física en una sala tridimensional. Dos amantes de la cocina y la historia conversarán cerca, mientras que un lector exclusivo de ciencia ficción se situará en el extremo opuesto. 
 
-Cuando los vectores están normalizados bajo la norma euclidiana $L_2$ ($\|\mathbf{u}\|_2 = \|\mathbf{v}\|_2 = 1$), la similitud del coseno equivale directamente al producto escalar:
+En inteligencia artificial ocurre lo mismo, pero en lugar de 3 ejes, el espacio suele tener entre 256 y 1.536 dimensiones abstractas.
 
-$$\text{sim}_{\cos}(\mathbf{u}, \mathbf{v}) = \langle \mathbf{u}, \mathbf{v} \rangle$$
+En 2013, Tomáš Mikolov y su equipo en Google publicaron Word2Vec, demostrando que estos vectores resolvían analogías mediante álgebra básica:
 
-La distancia euclidiana cuadrática entre vectores unitarios se relaciona analíticamente como:
+vector("rey") - vector("hombre") + vector("mujer") ≈ vector("reina")
 
-$$\|\mathbf{u} - \mathbf{v}\|_2^2 = 2 - 2 \langle \mathbf{u}, \mathbf{v} \rangle$$
+Con la llegada de la arquitectura Transformer en 2017 y modelos como BERT en 2018, los embeddings pasaron de ser estáticos a ser contextuales: la palabra "banco" recibe coordenadas distintas si acompaña a "dinero" o a "parque".
 
-### 2.2 Optimización con Pérdida Contrastiva (InfoNCE)
+---
 
-Los modelos de incrustación densa se entrenan frecuentemente con encoders siameses y la función InfoNCE. Para una consulta $\mathbf{q}$, un documento relevante $\mathbf{d}^+$ y $K$ negativos $\mathbf{d}^-_j$, la pérdida minimiza la distancia al objetivo positivo:
+## 2. Cómo funciona por dentro
 
-$$\mathcal{L}_{\text{InfoNCE}} = -\log \frac{\exp\left(\frac{\langle \mathbf{q}, \mathbf{d}^+ \rangle}{\tau}\right)}{\exp\left(\frac{\langle \mathbf{q}, \mathbf{d}^+ \rangle}{\tau}\right) + \sum_{j=1}^K \exp\left(\frac{\langle \mathbf{q}, \mathbf{d}^-_j \rangle}{\tau}\right)}$$
+El sistema articula tres componentes: cálculo de cercanía, optimización del mapa y búsqueda acelerada.
 
-donde $\tau > 0$ es un hiperparámetro de temperatura que modula la selectividad sobre los ejemplos negativos difíciles.
-
-### 2.3 Búsqueda Vectorial con HNSW
-
-La búsqueda exacta de vecinos más cercanos ($k$-NN) tiene costo $\mathcal{O}(N \cdot d)$, inviable para colecciones con millones de elementos. El algoritmo **HNSW** (*Hierarchical Navigable Small World*) organiza el espacio vectorial en una estructura multicapa de grafos geométricos:
-
-1. **Capas Superiores:** Pocos nodos con aristas de largo alcance métrico para exploración global rápida (*coarse routing*).
-2. **Descenso Guiado:** La búsqueda avanza de forma ávida hacia el mínimo local relativo y transfiere el punto de entrada a la capa inferior.
-3. **Capa Base ($l_0$):** Contiene todos los vectores indexados con conexiones locales densas, acotada por una cola de prioridad de tamaño $efSearch$.
+### Similitud del coseno
+Medir distancias en línea recta suele fallar en textos, pues un documento largo acumula valores mayores solo por su extensión. Por ello se emplea la **similitud del coseno**, que calcula el ángulo entre dos vectores desde el origen:
 
 ```
-Capa 2 (Saltos de largo alcance):    [A] --------------------> [B]
-                                      ↓                         ↓
-Capa 1 (Densidad intermedia):        [A] --------> [C] ------> [B]
-                                      ↓             ↓           ↓
-Capa 0 (Vértices completos, k-NN):   [A]-[D]-[E]--[C]-[F]-----[B]-[G]
+                  A · B                ∑ (A[i] × B[i])
+similitud = ----------------- = -----------------------------
+            ||A||₂ × ||B||₂     √(∑ (A[i])²) × √(∑ (B[i])²)
 ```
 
-### 2.4 Implementación en Python: Normalización y Búsqueda
+Si dos flechas apuntan en idéntica dirección, el ángulo es 0° y su coseno es 1 (afinidad total). Si son perpendiculares, el resultado es 0. Al normalizar los vectores a longitud unitaria, la similitud equivale al producto escalar directo.
+
+### Entrenamiento contrastivo
+Los modelos se entrenan enfrentando ejemplos positivos y negativos con funciones como InfoNCE (Aaron van den Oord, 2018). Ante una pregunta, el algoritmo ajusta sus parámetros para acercar la respuesta correcta y repeler pasajes no relacionados, estructurando el espacio semántico.
+
+### Búsqueda rápida con HNSW
+Comparar una consulta contra millones de vectores uno a uno colapsaría el servicio. Por ello se emplea **HNSW** (*Hierarchical Navigable Small World*, Malkov y Yashunin, 2016), una estructura multicapa inspirada en las redes de transporte:
+
+```
+Capa 2 (Autopistas veloces):   [A] ------------------------> [B]
+                                │                             │
+Capa 1 (Vías comarcales):      [A] ---------> [C] ----------> [B]
+                                │              │              │
+Capa 0 (Calles locales):       [A]──[D]──[E]──[C]──[F]───────[B]──[G]
+```
+
+La búsqueda inicia en la capa superior con saltos amplios y desciende hacia capas más densas hasta hallar los vecinos más cercanos en milisegundos.
 
 ```python
 import numpy as np
 
-def buscar_similitud_coseno(consulta: np.ndarray, corpus: np.ndarray, k: int = 2):
-    """Calcula los k elementos más similares mediante producto escalar unitario."""
-    # Normalización L2 unitaria
-    q_norm = consulta / np.linalg.norm(consulta)
-    c_norm = corpus / np.linalg.norm(corpus, axis=1, keepdims=True)
-    
-    # Producto escalar sobre vectores unitarios
-    similitudes = np.dot(c_norm, q_norm)
-    indices = np.argsort(similitudes)[::-1][:k]
-    
-    return [(int(i), float(similitudes[i])) for i in indices]
+def buscar(consulta, documentos, top_k=2):
+    q = consulta / np.linalg.norm(consulta)
+    docs = documentos / np.linalg.norm(documentos, axis=1, keepdims=True)
+    puntuaciones = np.dot(docs, q)
+    mejores = np.argsort(puntuaciones)[::-1][:top_k]
+    return [(idx, puntuaciones[idx]) for idx in mejores]
 
-# Demostración conceptual
-if __name__ == "__main__":
-    docs = np.array([
-        [0.82, 0.12, 0.48, 0.22],  # Doc 0: Inteligencia Artificial y LLMs
-        [0.79, 0.18, 0.52, 0.15],  # Doc 1: Aprendizaje Automático
-        [0.05, 0.94, 0.12, 0.85],  # Doc 2: Gastronomía Italiana
-    ])
-    query = np.array([0.88, 0.10, 0.44, 0.18])  # "Modelos neuronales"
-    
-    for doc_id, puntaje in buscar_similitud_coseno(query, docs, k=2):
-        print(f"Documento {doc_id} -> Similitud Coseno: {puntaje:.4f}")
+corpus = np.array([
+    [0.85, 0.12, 0.44, 0.20],  # Doc 0: Redes neuronales
+    [0.80, 0.15, 0.50, 0.18],  # Doc 1: Aprendizaje automático
+    [0.05, 0.95, 0.10, 0.88],  # Doc 2: Recetas de cocina
+])
+query = np.array([0.88, 0.11, 0.45, 0.19])  # "Inteligencia artificial"
+
+for doc_id, puntaje in buscar(query, corpus):
+    print(f"Doc {doc_id} -> Afinidad: {puntaje:.4f}")
 ```
 
 ---
 
-## 3. Casos de Uso y Aplicaciones Reales
+## 3. Dónde se usa hoy en la vida real
 
-* **Generación Aumentada por Recuperación (RAG):** Motores vectoriales (como Milvus, Qdrant o pgvector) indexan fragmentos documentales con HNSW. Al recibir una consulta, recuperan los pasajes más afines semánticamente y los incorporan en el contexto del LLM para fundamentar sus respuestas en fuentes factuales.
-* **Búsqueda Semántica Multimodal:** Modelos como CLIP proyectan imágenes y descripciones de texto en un espacio común, permitiendo recuperar imágenes mediante lenguaje natural libre.
-* **Sistemas de Recomendación:** Modelos de dos torres (*two-tower architectures*) mapean perfiles de usuario y catálogo a embeddings compartidos, permitiendo recomendaciones ultrarrápidas en tiempo real.
-* **Detección de Anomalías:** Registros de red o transacciones se codifican en vectores continuos; desviaciones de distancia respecto al centroide de comportamiento habitual disparan alertas preventivas de seguridad.
+* **Generación Aumentada por Recuperación (RAG):** Los asistentes corporativos convierten manuales y políticas en embeddings para recuperar el fragmento idóneo antes de contestar, reduciendo alucinaciones.
+* **Comercio electrónico:** Al buscar "zapatillas impermeables", el sistema localiza calzado de montaña aunque la ficha comercial no use esas palabras exactas.
+* **Sistemas de recomendación:** Spotify o Netflix sitúan usuarios y contenidos en el mismo mapa para sugerir canciones o películas según su cercanía vectorial.
+* **Búsqueda multimodal:** Con modelos como CLIP (OpenAI, 2021), fotos y textos conviven en un espacio compartido, permitiendo buscar imágenes mediante lenguaje natural.
+* **Prevención de fraudes:** Operaciones inusuales con tarjeta generan vectores apartados del patrón habitual del cliente, activando alertas preventivas.
 
 ---
 
-## 4. Ventajas, Limitaciones y Riesgos
+## 4. Qué hace bien, qué falla y qué riesgos tiene
 
-### Comparativa de Métodos de Indexación Vectorial
-
-| Método | Principio Operativo | Latencia de Consulta | Recall ($k$-NN) | Consumo de RAM | Escalabilidad |
+| Método | Principio operativo | Velocidad | Precisión (*Recall*) | Memoria RAM | Escala recomendada |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Flat (Exacto)** | Comparación exhaustiva $\mathcal{O}(N \cdot d)$ | Alta | 100% | Mínimo | Baja ($N > 10^5$) |
-| **IVF** | Partición en celdas Voronoi | Media | Media-Alta | Bajo | Alta ($N \sim 10^7$) |
-| **PQ** | Cuantización subvectorial | Baja | Media | Muy bajo | Masiva ($N > 10^8$) |
-| **HNSW** | Grafos multicapa navegables | Ultrabaja ($\mathcal{O}(\log N)$) | Muy alta (>95%) | Alto (grafo en memoria) | Alta ($N \sim 10^7$) |
+| **Exacto (Flat)** | Compara la consulta con todos los vectores | Lenta | 100% | Mínima | Menos de 100.000 |
+| **IVF** | Agrupa en celdas y revisa solo las más próximas | Rápida | Media-Alta (85%-95%) | Bajo | De 100.000 a 10 millones |
+| **HNSW** | Grafos jerárquicos de largo y corto alcance | Ultrarrápida | Muy alta (95%-99%) | Alto (grafo en RAM) | De 1 a 50 millones |
+| **PQ** | Comprime vectores dividiéndolos en subvectores | Ultrarrápida | Moderada (75%-90%) | Muy bajo (ahorro 90%) | Cientos de millones |
 
-### Limitaciones Principales
+### Limitaciones y riesgos principales
 
-1. **Maldición de la Dimensionalidad:** A dimensionalidades elevadas, el ratio de distancias relativas entre puntos tiende a estrecharse, exigiendo que los datos descansen en subvariedades de menor dimensión intrínseca.
-2. **Anisotropía y Efecto Cono:** Algunos modelos de lenguaje agrupan sus representaciones en un cono hipergeométrico estrecho, lo que incrementa artificialmente la similitud del coseno basal.
-3. **Huella de Memoria de HNSW:** Almacenar aristas de grafos en RAM impone costos de infraestructura considerables para corpus masivos, mitigados con técnicas híbridas como HNSW-PQ.
-4. **Reproducción de Sesgos:** Las incrustaciones pueden heredar y amplificar asociaciones estereotípicas presentes en los datos de preentrenamiento.
+* **Efecto cono (anisotropía):** En varios modelos, los vectores se concentran en un cono estrecho, arrojando similitudes altas entre frases inconexas.
+* **Maldición de la dimensión:** En espacios de cientos de dimensiones, las distancias entre puntos tienden a uniformarse, exigiendo calibraciones finas.
+* **Costes de infraestructura:** Mantener grafos HNSW en memoria RAM encarece los servidores a medida que el catálogo crece a decenas de millones.
+* **Propagación de sesgos:** Al alimentarse de la web, los embeddings pueden heredar y amplificar prejuicios sociales y laborales.
 
 ---
 
-## 5. Conceptos Relacionados
+## 5. Temas relacionados
 
-* **Retrieval-Augmented Generation (RAG):** Arquitectura que integra bases vectoriales densas con generadores neuronales para reducir alucinaciones factuales.
-* **Modelos de Lenguaje Grande (LLMs) y Mecanismos de Atención:** Redes neuronales profundas que producen embeddings contextuales dinámicos.
-* **Reducción de Dimensionalidad (t-SNE, UMAP, PCA):** Métodos analíticos para proyectar espacios vectoriales complejos hacia 2D o 3D para su inspección visual.
-* **Aprendizaje Contrastivo:** Enfoque metodológico para entrenar codificadores representacionales discriminando pares afines frente a contrastes.
+* **Generación Aumentada por Recuperación (RAG):** Enlace de bases vectoriales con modelos de lenguaje para asegurar respuestas verídicas.
+* **Modelos de Lenguaje Grande (LLMs) y Atención:** Redes profundas que extraen embeddings dinámicos según el contexto.
+* **Reducción de Dimensionalidad (t-SNE, UMAP, PCA):** Métodos matemáticos para proyectar vectores a planos 2D o 3D y visualizarlos.
+* **Bases de Datos Vectoriales:** Motores especializados (Milvus, Qdrant, Chroma, pgvector) para indexar y consultar embeddings a escala.

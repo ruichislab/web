@@ -1,136 +1,98 @@
-# Aprendizaje por Refuerzo (Reinforcement Learning)
+# Aprendizaje por Refuerzo
 
-El **Aprendizaje por Refuerzo** (*Reinforcement Learning*, RL) es una rama fundamental del aprendizaje automático enfocada en la toma secuencial de decisiones óptimas en entornos dinámicos e inciertos. En este paradigma, un **agente** aprende a interactuar con un **entorno** ejecutando acciones y recibiendo observaciones de estado y recompensas escalares. A diferencia del aprendizaje supervisado —basado en datos explícitamente etiquetados— y del no supervisado —que busca estructuras ocultas—, el RL descubre políticas efectivas mediante prueba, error y evaluación de recompensas diferidas. Actualmente, es indispensable en robótica autónoma, control de sistemas complejos y el alineamiento de modelos de lenguaje a gran escala (*Large Language Models*, LLMs).
+El aprendizaje por refuerzo es la rama de la inteligencia artificial donde una máquina aprende a tomar decisiones interactuando directamente con su entorno. A diferencia del aprendizaje supervisado, donde una persona entrega miles de ejemplos resueltos, aquí el programa aprende mediante ensayo y error: ejecuta acciones, recibe recompensas cuando acierta o penalizaciones cuando falla, y ajusta su conducta para acumular el mayor beneficio a lo largo del tiempo.
 
----
-
-## 1. Origen e Intuición Fundamental
-
-El aprendizaje por refuerzo integra dos vertientes: la psicología conductista del aprendizaje animal y la teoría de control óptimo.
-
-Por un lado, la **Ley del Efecto** (Thorndike) y el condicionamiento operante (Skinner) demostraron que los comportamientos premiados tienden a repetirse y los castigados a extinguirse. Por otro lado, en la década de 1950, Richard Bellman formuló la **programación dinámica**, estableciendo las bases matemáticas para optimizar procesos estocásticos. En la década de 1980, Richard Sutton y Andrew Barto fusionaron ambas disciplinas mediante los métodos de diferencias temporales.
-
-### Interacción Agente-Entorno
-
-El flujo operativo se modela en instantes discretos $t = 0, 1, 2, \dots$:
-1. El agente percibe el estado $S_t \in \mathcal{S}$.
-2. Según su política $\pi$, ejecuta la acción $A_t \in \mathcal{A}$.
-3. El entorno transiciona al estado $S_{t+1} \in \mathcal{S}$ y devuelve una recompensa $R_{t+1} \in \mathbb{R}$.
-
-El objetivo del agente es maximizar el **retorno acumulado descontado** $G_t$:
-
-$$G_t = \sum_{k=0}^{\infty} \gamma^k R_{t+k+1}$$
-
-donde $\gamma \in [0, 1)$ es el factor de descuento temporal que pondera la relevancia entre beneficios inmediatos y futuros, asegurando convergencia en horizontes ilimitados.
-
-### Exploración vs. Explotación
-
-El dilema central del RL consiste en balancear dos fuerzas opuestas:
-* **Explotación:** Elegir la mejor acción conocida según los datos históricos para maximizar la recompensa a corto plazo.
-* **Exploración:** Probar acciones desconocidas para descubrir recompensas potencialmente más altas y evitar mínimos locales.
-
-Entre los métodos habituales para gestionar este balance destacan la estrategia **$\epsilon$-greedy** (selección codiciosa con probabilidad $1-\epsilon$ y acción aleatoria uniforme con $\epsilon$), la exploración por **Softmax/Boltzmann** y los algoritmos de **Cota Superior de Confianza (UCB)**.
+> **En pocas palabras:** Enseña a un sistema informático a decidir bien premiando sus aciertos y castigando sus errores, igual que se educa a un cachorro con caricias y galletas.
 
 ---
 
-## 2. Arquitectura, Mecánica o Formulación Matemática
+## 1. De dónde viene y cómo se entiende fácil
 
-### Procesos de Decisión de Markov (MDP)
+Imagina a un niño aprendiendo a montar en bicicleta. Nadie adquiere esa destreza memorizando un manual sobre el centro de masas. El niño sube, se balancea, apoya el pie para no caerse (señal negativa), corrige el manillar, pedalea con más fuerza y avanza diez metros seguidos (señal positiva). Tras muchos intentos, su cerebro consolida los movimientos correctos de forma automática.
 
-El RL se formaliza matemáticamente mediante un **Proceso de Decisión de Markov** $\langle \mathcal{S}, \mathcal{A}, \mathcal{P}, \mathcal{R}, \gamma \rangle$:
-* $\mathcal{S}$: Conjunto de estados admisibles.
-* $\mathcal{A}$: Espacio de acciones.
-* $\mathcal{P}$: Probabilidad de transición $\mathcal{P}(s' \mid s, a) = P(S_{t+1}=s' \mid S_t=s, A_t=a)$, que satisface la **propiedad de Markov** (el estado presente resume toda la información previa relevante).
-* $\mathcal{R}$: Función de recompensa esperada $\mathcal{R}(s, a) = \mathbb{E}[R_{t+1} \mid S_t=s, A_t=a]$.
-* $\gamma$: Factor de descuento.
+El aprendizaje por refuerzo (*Reinforcement Learning* o RL) nace del cruce de dos corrientes:
 
-Una política $\pi(a \mid s)$ define el comportamiento del agente. Se derivan dos funciones de valor centrales:
-* **Valor de estado:** $V^\pi(s) = \mathbb{E}_\pi [G_t \mid S_t = s]$
-* **Valor de acción:** $Q^\pi(s, a) = \mathbb{E}_\pi [G_t \mid S_t = s, A_t = a]$
+* **La psicología animal:** A finales del siglo XIX, Edward Thorndike enunció la Ley del Efecto al comprobar que las conductas placenteras tienden a repetirse y las molestas se extinguen. En los años 30, B. F. Skinner formalizó este fenómeno como condicionamiento operante.
+* **El control matemático:** En los años 50, Richard Bellman desarrolló en RAND la programación dinámica, fijando cómo optimizar decisiones escalonadas en el tiempo.
 
-### Ecuaciones de Bellman
+En los años 80, Richard Sutton y Andrew Barto unieron ambas disciplinas en la Universidad de Massachusetts Amherst con los métodos de diferencias temporales, que permiten a una máquina calcular el valor de sus acciones sobre la marcha sin esperar al final.
 
-Las ecuaciones de optimalidad de Bellman descomponen recursivamente el valor óptimo:
+### El dilema entre explorar y explotar
 
-$$V^*(s) = \max_{a} \left[ \mathcal{R}(s, a) + \gamma \sum_{s'} \mathcal{P}(s' \mid s, a) V^*(s') \right]$$
+Cualquier sistema de refuerzo afronta una disyuntiva constante:
+* **Explotación:** Elegir la mejor alternativa conocida para asegurar un buen resultado inmediato.
+* **Exploración:** Probar opciones nuevas para descubrir si esconden un premio mayor, asumiendo el riesgo de fallar.
 
-$$Q^*(s, a) = \mathcal{R}(s, a) + \gamma \sum_{s'} \mathcal{P}(s' \mid s, a) \max_{a'} Q^*(s', a')$$
+Es como decidir dónde cenar: puedes volver a tu restaurante favorito de siempre (explotación) o probar un local nuevo (exploración). La técnica habitual es épsilon-voraz (*epsilon-greedy*): el algoritmo elige lo mejor que conoce el 90 % de las veces y se reserva un 10 % aleatorio para explorar.
 
-### Q-Learning y DQN
+---
 
-Cuando se desconoce el modelo del entorno (*model-free*), **Q-Learning** (Watkins, 1989) actualiza la estimación de $Q$ de manera *off-policy*:
+## 2. Cómo funciona por dentro
 
-$$Q(S_t, A_t) \leftarrow Q(S_t, A_t) + \alpha \left[ R_{t+1} + \gamma \max_{a} Q(S_{t+1}, a) - Q(S_t, A_t) \right]$$
+La mecánica opera como un diálogo constante entre el **agente** (el programa que decide) y el **entorno** (el mundo donde actúa):
 
-donde $\alpha$ es la tasa de aprendizaje. En espacios de alta dimensionalidad, **DQN** aproxima $Q(s, a; \theta)$ mediante redes neuronales profundas e introduce un búfer de repetición (*replay buffer*) y una red objetivo (*target network*) para estabilizar el gradiente.
+1. El agente observa el **estado** actual del entorno.
+2. Consulta su **política** (su guía interna de decisión) y ejecuta una **acción**.
+3. El entorno responde con un nuevo estado y una **recompensa** numérica.
 
-```python
-def paso_q_learning(q_tabla, s, a, r, s_sig, alpha, gamma):
-    """Actualización temporal tabular de la función Q."""
-    mejor_q_sig = max(q_tabla[s_sig].values())
-    error_td = r + gamma * mejor_q_sig - q_tabla[s][a]
-    q_tabla[s][a] += alpha * error_td
-    return q_tabla
+Para evitar que el agente busque solo ganancias inmediatas, se aplica un factor de descuento temporal (la letra griega gamma, γ, entre 0 y 1). Un valor cercano a 1 premia la visión a largo plazo; un valor cercano a 0 prioriza el beneficio inmediato.
+
+Este proceso se modela como un **Proceso de Decisión de Markov** (MDP). Su premisa es la propiedad de Markov: para elegir la mejor jugada basta con la foto del estado presente; la historia previa no altera las opciones futuras.
+
+### La regla de Bellman
+
+El cálculo central se resume de forma limpia:
+
+```text
+Q(estado, acción) = Recompensa + γ × Valor_máximo(nuevo_estado)
 ```
 
-### Proximal Policy Optimization (PPO)
+En palabras sencillas: el valor de una acción equivale a la recompensa inmediata obtenida más el mejor valor futuro que se podrá conseguir desde la nueva situación alcanzada.
 
-Los métodos de gradiente de política optimizan $\pi_\theta(a \mid s)$ directamente. Para evitar actualizaciones drásticas que colapsen la política, **PPO** (Schulman et al., 2017) implementa una función objetivo con recorte (*clipped objective*):
+### De tablas a redes neuronales (DQN)
 
-$$L^{CLIP}(\theta) = \hat{\mathbb{E}}_t \left[ \min \left( r_t(\theta)\hat{A}_t, \, \text{clip}(r_t(\theta), 1 - \epsilon, 1 + \epsilon)\hat{A}_t \right) \right]$$
+En 1989, Chris Watkins propuso **Q-Learning**, que guardaba estos valores en tablas. Servía en problemas pequeños, pero colapsaba ante tareas complejas.
 
-donde $r_t(\theta) = \frac{\pi_\theta(a_t \mid s_t)}{\pi_{\theta_{old}}(a_t \mid s_t)}$ es el ratio de probabilidades, $\hat{A}_t$ es la ventaja estimada y $\epsilon \approx 0.2$. El recorte impide desviaciones excesivas entre iteraciones consecutivas.
+En 2013 y 2015, DeepMind resolvió este límite con **DQN** (*Deep Q-Network*), sustituyendo la tabla por una red neuronal profunda. El sistema aprendió a jugar a videojuegos de Atari 2600 analizando directamente los píxeles de la pantalla, superando el nivel humano sin conocer de antemano las reglas.
 
-### Alineamiento de LLMs: RLHF y DPO
+### Modelos de lenguaje: RLHF y DPO
 
-En modelos de lenguaje generativos, el prompt representa el estado y los tokens generados corresponden a las acciones.
+En un modelo conversacional, el texto escrito es el estado y cada palabra generada es una acción:
 
-#### 1. RLHF (Reinforcement Learning from Human Feedback)
-Consta de tres fases:
-1. **Supervised Fine-Tuning (SFT):** Afinamiento del modelo base con respuestas instruccionales de alta calidad.
-2. **Reward Model (RM):** Se recogen comparaciones humanas ($y_w \succ y_l$, elegida vs. rechazada) y se entrena un modelo de recompensa $r_\psi(x, y)$ bajo el marco de Bradley-Terry:
-   $$\mathcal{L}_{RM}(\psi) = -\mathbb{E}_{(x, y_w, y_l)} \left[ \log \sigma \left( r_\psi(x, y_w) - r_\psi(x, y_l) \right) \right]$$
-3. **PPO con Penalización KL:** Se optimiza el LLM maximizando la recompensa escalar del RM sujeto a una penalización por divergencia Kullback-Leibler frente a la política de referencia $\pi_{ref}$ para prevenir alucinaciones y *reward hacking*:
-   $$\max_\theta \mathbb{E}_{x, y \sim \pi_\theta} [r_\psi(x, y)] - \beta \, \mathbb{D}_{KL}(\pi_\theta \parallel \pi_{ref})$$
-
-#### 2. DPO (Direct Preference Optimization)
-Rafailov et al. (2023) demostraron que la recompensa implícita se deriva analíticamente de la política óptima: $r^*(x, y) = \beta \log \frac{\pi^*(y \mid x)}{\pi_{ref}(y \mid x)} + \beta \log Z(x)$. Sustituyendo esto en la función de verosimilitud de preferencias, el término de normalización se cancela, derivando una función de pérdida supervisada directa:
-
-$$\mathcal{L}_{DPO}(\theta; \pi_{ref}) = -\mathbb{E}_{(x, y_w, y_l)} \left[ \log \sigma \left( \beta \log \frac{\pi_\theta(y_w \mid x)}{\pi_{ref}(y_w \mid x)} - \beta \log \frac{\pi_\theta(y_l \mid x)}{\pi_{ref}(y_l \mid x)} \right) \right]$$
-
-DPO prescinde del entrenamiento del Reward Model y del costoso bucle de muestreo autorregresivo de PPO, aportando estabilidad matemática y eficiencia computacional superior.
+* **RLHF** (*Reinforcement Learning from Human Feedback*): Popularizado en 2022 con ChatGPT. Evaluadores humanos califican respuestas; con esos datos se entrena un modelo de recompensa automático. Luego, el algoritmo PPO (*Proximal Policy Optimization*, OpenAI, 2017) ajusta el modelo con pasos prudentes para que sea útil, seguro y coherente.
+* **DPO** (*Direct Preference Optimization*): Presentado en 2023 por la Universidad de Stanford, demostró que el modelo puede optimizarse directamente con preferencias humanas, prescindiendo del modelo de recompensa intermedio y de PPO.
 
 ---
 
-## 3. Casos de Uso y Aplicaciones Reales
+## 3. Dónde se usa hoy en la vida real
 
-1. **Alineamiento de LLMs:** Fundamento de modelos como ChatGPT, Claude y Llama para asegurar veracidad, seguimiento estricto de instrucciones y mitigación de toxicidad.
-2. **Juegos Estratégicos:** Dominio sobrehumano en Go y ajedrez (AlphaZero) y videojuegos dinámicos por equipos (OpenAI Five, AlphaStar).
-3. **Robótica Avanzada:** Aprendizaje de locomoción ágil en robots bípedos y cuadrúpedos, así como manipulación diestra mediante simulación con transferencia a hardware real (*Sim-to-Real*).
-4. **Optimización Energética:** Regulación autónoma en tiempo real de centros de datos, reduciendo hasta un 40% del consumo energético de enfriamiento industrial.
+* **Alineamiento de modelos de lenguaje:** ChatGPT, Claude y Llama usan RLHF y DPO para seguir instrucciones, mitigar errores y rechazar peticiones dañinas.
+* **Juegos estratégicos:** AlphaGo (DeepMind, 2016) derrotó al campeón mundial de Go Lee Sedol. AlphaZero (2017) dominó el ajedrez compitiendo contra sí mismo. En videojuegos, OpenAI Five (2019) venció en Dota 2 y AlphaStar (2019) en StarCraft II.
+* **Robótica:** Robots bípedos y cuadrúpedos entrenan su marcha en simuladores virtuales. El control aprendido se transfiere con éxito a motores reales (*Sim-to-Real*).
+* **Eficiencia energética:** En 2016, DeepMind aplicó este método al enfriamiento de centros de datos de Google, reduciendo un 40 % la energía en climatización.
 
 ---
 
-## 4. Ventajas, Limitaciones y Riesgos
+## 4. Qué hace bien, qué falla y qué riesgos tiene
 
-| Enfoque | Principio Mecánico | Ventajas | Limitaciones | Riesgo Principal |
+| Enfoque | Mecanismo | Fortaleza principal | Principal debilidad | Riesgo clave |
 | :--- | :--- | :--- | :--- | :--- |
-| **Q-Learning / DQN** | Diferencias temporales *off-policy*. | Teóricamente transparente; reutiliza datos previos del buffer. | Inviable en acciones continuas de gran escala. | Inestabilidad al combinar aproximadores no lineales (*Deadly Triad*). |
-| **PPO** | Gradiente de política con ratio recortado. | Elevada estabilidad empírica; estándar de control continuo. | Ineficiente en muestras; requiere descartar trayectorias viejas. | Convergencia a políticas locales subóptimas. |
-| **RLHF (PPO)** | Guía mediante Reward Model y penalización KL. | Incorpora juicios cualitativos humanos complejos. | Requiere mantener 4 redes simultáneas en GPU. | **Reward Hacking:** el modelo aprende a engañar al RM con verborrea. |
-| **DPO** | Optimización de preferencias en forma cerrada. | Elimina el Reward Model y el bucle PPO; cómputo ligero. | Sensible a datos ruidosos o fuera de distribución (*OOD*). | Reducción de la diversidad lingüística (*mode collapse*). |
+| **Q-Learning / DQN** | Estima el valor de cada acción con diferencias temporales. | Reutiliza experiencias pasadas guardadas en memoria. | Solo opera con pocas acciones discretas. | Inestabilidad si la red sobreestima el valor de jugadas. |
+| **PPO** | Ajusta la estrategia con pasos prudentes y recortados. | Muy estable en robótica y control continuo. | Exige millones de intentos y desecha datos previos. | Puede estancarse en una estrategia mediocre. |
+| **RLHF (con PPO)** | Guía el modelo con un evaluador automático de premios. | Modela matices humanos de estilo y veracidad. | Muy costoso: exige varias redes en memoria GPU. | Trampa de recompensa: respuestas largas y aduladoras pero vacías. |
+| **DPO** | Entrena directamente sobre pares de textos preferidos. | Prescinde del evaluador intermedio; ahorra cómputo. | Sensible a datos con preferencias inconsistentes. | Puede empobrecer el vocabulario si se sobreajusta. |
 
-### Limitaciones Transversales
+### Limitaciones prácticas y riesgos
 
-* **Ineficiencia Muestral (*Sample Inefficiency*):** Exige millones de interacciones de prueba y error, forzando el uso de simuladores sintéticos.
-* **Ley de Goodhart y Reward Hacking:** Cuando la métrica de recompensa se fija como objetivo absoluto, el agente suele explotar resquicios que producen recompensas numéricas altas con conductas disfuncionales.
-* **Impuesto de Alineamiento (*Alignment Tax*):** Un alineamiento excesivo para maximizar seguridad puede menoscabar ligeramente las capacidades analíticas generales del modelo base.
+* **Demanda de ensayos (*Sample Inefficiency*):** Un vehículo autónomo no puede aprender en la calle real solo por refuerzo porque chocaría al inicio. Requiere millones de kilómetros en simuladores.
+* **Trampa de recompensa (*Reward Hacking*):** Al perseguir una puntuación, el sistema puede hallar atajos absurdos. Si se premia a una aspiradora por recoger polvo, puede aprender a vaciar su depósito en la alfombra para volver a aspirar. Cumple la Ley de Goodhart: cuando un indicador se vuelve el objetivo, deja de ser un buen indicador.
+* **Impuesto de alineamiento (*Alignment Tax*):** Limitar en exceso a un modelo para evitar fallos puede reducir su chispa creativa o su soltura en razonamiento abstracto.
 
 ---
 
-## 5. Conceptos Relacionados
+## 5. Temas relacionados
 
-* **Modelos de Lenguaje de Gran Escala (LLMs):** Modelos generativos donde RLHF y DPO guían la distribución de probabilidades de salida según preferencias humanas.
-* **Redes Neuronales Profundas (Deep Learning):** Arquitecturas no lineales empleadas para aproximar funciones de valor y políticas de alta dimensionalidad.
-* **Ajuste Fino Supervisado (Supervised Fine-Tuning - SFT):** Fase obligatoria previa al RL para dotar al modelo de capacidades instruccionales base.
-* **Seguridad y Alineamiento en IA (AI Safety):** Disciplina enfocada en garantizar que los sistemas de IA actúen en consonancia con la intención y valores humanos.
+* **Aprendizaje supervisado:** Enfoque donde el modelo aprende a partir de datos resueltos y etiquetados por personas.
+* **Modelos de lenguaje de gran escala (LLMs):** Redes entrenadas con texto masivo que se afinan mediante refuerzo para dialogar con seguridad.
+* **Aprendizaje por imitación:** Técnica donde el agente copia demostraciones de expertos antes de explorar por su cuenta.
+* **Alineamiento y seguridad en IA:** Disciplina dedicada a que los sistemas inteligentes respeten los valores y la seguridad humana.

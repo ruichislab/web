@@ -1,145 +1,91 @@
-# Hardware de IA e Inferencia Eficiente: Aceleradores y Optimización de Serving
+# Hardware de IA e inferencia eficiente: cómo ejecutar modelos a escala
 
-La inferencia en modelos de lenguaje masivos (LLMs) y arquitecturas profundas presenta desafíos computacionales fundamentalmente distintos a los del entrenamiento. Mientras que el entrenamiento es intensivo en cómputo (*compute-bound*) y procesa operaciones densas en lotes (*batches*) masivos, la decodificación autoregresiva es intrínsecamente secuencial y está limitada por el ancho de banda de memoria (*memory-bound*). Para desplegar modelos a escala con mínima latencia y máxima densidad de usuarios, la ingeniería de IA se apoya en el co-diseño de aceleradores especializados (GPUs con Tensor Cores, TPUs con matrices sistólicas) y algoritmos de optimización: cuantización de precisión reducida (FP8, INT4, AWQ, GGUF), gestión de memoria mediante PagedAttention y paralelismo temporal con decodificación especulativa.
+Entrenar un modelo de lenguaje masivo como ChatGPT o Claude exige semanas de cálculo para aprender patrones a partir de billones de palabras. Pero cuando ese entrenamiento concluye, comienza el reto operativo: la inferencia. La inferencia es el proceso en el que el modelo ya entrenado atiende la consulta de un usuario y calcula la respuesta palabra a palabra (token por token). Al procesar millones de consultas simultáneas, el consumo eléctrico y la saturación de los servidores se disparan. La inferencia eficiente reúne las técnicas de microarquitectura y software que permiten a estos modelos responder en milisegundos con menor memoria y consumo energético.
 
----
+> **En pocas palabras:** La inferencia eficiente combina procesadores especializados y compresión matemática para que los modelos de inteligencia artificial respondan rápido sin colapsar los centros de datos ni disparar la factura eléctrica.
 
-## 1. Origen e Intuición Fundamental
+## 1. De dónde viene y cómo se entiende fácil
 
-El cuello de botella de la inferencia moderna se formaliza mediante el **Modelo Roofline**, que define el rendimiento alcanzable $P$ (FLOP/s) en función de la intensidad aritmética $I$ (FLOPs/byte) y el ancho de banda de memoria $B_{\text{mem}}$:
+El cuello de botella de la inferencia se comprende con una analogía en una cocina:
 
-$$P = \min(P_{\text{peak}}, I \times B_{\text{mem}})$$
+Imagina un cocinero hiperrápido picando ingredientes en su mesa de trabajo. Si tiene los alimentos a mano, prepara platos al instante. Pero si para cada rodaja debe cruzar una nave de cincuenta metros, abrir una cámara frigorífica, coger una pieza y volver, su velocidad real ya no depende de lo rápido que mueva el cuchillo, sino del tiempo perdido yendo a la despensa.
 
-En la inferencia de transformadores surgen dos regímenes operativos:
-1. **Fase de Prefill (Procesamiento de Contexto):** Procesa el prompt de longitud $T_{\text{in}}$ en paralelo. Posee alta intensidad aritmética y satura las unidades de cómputo matricial (*compute-bound*).
-2. **Fase de Decodificación (Generación de Tokens):** Genera tokens uno a uno. Para cada nuevo token, deben transferirse decenas de gigabytes de parámetros desde la memoria de alto ancho de banda (HBM) a los núcleos de cómputo para realizar una única multiplicación matriz-vector ($I \ll 1$), operando en régimen *memory-bound*.
+En computación, este fenómeno se describe con el **Modelo Roofline** (Williams, Waterman y Patterson, UC Berkeley 2009). Todo procesador tiene dos techos físicos:
 
-La inferencia eficiente busca desplazar este cuello de botella reduciendo los bytes leídos por parámetro (cuantización), evitando la recomputación de estados intermedios (KV-Cache), optimizando la fragmentación de memoria (PagedAttention) y aumentando los tokens generados por transferencia de pesos (decodificación especulativa).
+1. **Límite de cómputo (*compute-bound*):** Los núcleos calculan a máxima capacidad con datos ya cargados en sus registros. Su techo lo marca la cantidad de operaciones por segundo (FLOP/s).
+2. **Límite de memoria (*memory-bound*):** Los núcleos pasan casi todo el tiempo desocupados esperando a que los datos viajen desde la memoria principal a través del bus de comunicación.
 
----
+La inferencia de modelos de lenguaje opera en dos etapas:
 
-## 2. Arquitectura, Mecánica o Formulación Matemática
+- **Fase de lectura (*prefill*):** Procesa la pregunta del usuario en paralelo. Al recibir todas las palabras juntas, satura la capacidad matemática del procesador (*compute-bound*).
+- **Fase de generación (*decode*):** Genera la respuesta palabra tras palabra de forma secuencial. Para calcular un solo token nuevo, el chip debe transferir desde la memoria decenas de gigabytes de parámetros, realizar una operación matemática mínima y repetir el ciclo para la siguiente palabra. Aquí el sistema está asfixiado por el ancho de banda (*memory-bound*).
 
-### 2.1 Aceleradores Matriciales: Tensor Cores y Matrices Sistólicas
+## 2. Cómo funciona por dentro
 
-Las GPUs modernas incorporan **Tensor Cores**, unidades cableadas que ejecutan multiplicaciones de matrices en precisión mixta (FMA fusionado) en un solo ciclo:
+La inferencia eficiente optimiza cuatro áreas: diseño de aceleradores, compresión numérica, gestión de memoria y generación especulativa.
 
-$$D = A \times B + C$$
+### Aceleradores: Tensor Cores y matrices sistólicas
 
-Donde $A$ y $B$ residen en precisión reducida (FP16, BF16, FP8 o INT4) y los acumuladores $C$ y $D$ mantienen fidelidad en FP32. En contraste, las **TPUs** adoptan una **Matriz Sistólica** (*Systolic Array*): una red bidimensional de celdas computacionales donde las activaciones fluyen horizontalmente y los pesos verticalmente, reutilizando valores intermedios sin acceder repetidamente a registros o SRAM.
+Las GPU integran miles de núcleos en paralelo. Desde la arquitectura Volta (2017), NVIDIA incluye **Tensor Cores**: circuitos diseñados para ejecutar operaciones matriciales FMA (*Fused Multiply-Add*) en un solo ciclo:
 
-### 2.2 Cuantización: FP8, INT4, AWQ y GGUF
-
-La cuantización lineal mapea valores continuos $x \in \mathbb{R}$ a un rango discreto $x_q \in \mathbb{Z}$:
-
-$$x_q = \text{clip}\left(\left\lfloor \frac{x}{S} \right\rceil + Z, \, q_{\min}, \, q_{\max}\right), \quad \hat{x} = S \times (x_q - Z)$$
-
-Donde $S$ es el factor de escala y $Z$ el punto cero.
-* **FP8 (8-bit Floating Point):** Soporta dos formatos estándar en silicio: **E4M3** (1 bit signo, 4 exponente, 3 mantisa), ideal para activaciones e inferencia por su mayor resolución numérica, y **E5M2** (1 signo, 5 exponente, 2 mantisa), que mantiene el rango dinámico de FP16.
-* **AWQ (Activation-aware Weight Quantization):** Observa que solo un $1\%$ de los canales de activación contienen magnitudes salientes que determinan la perplejidad. En lugar de preservar estos pesos en FP16, AWQ aplica un escalado por canal $s > 1$:
-  
-  $$W' = W \cdot \text{diag}(s), \quad X' = \text{diag}(s)^{-1} \cdot X$$
-  
-  Esto reduce el error de redondeo relativo y permite cuantizar la matriz completa a INT4 con pérdida semántica casi nula.
-* **Formato GGUF:** Diseñado por el proyecto *llama.cpp*, estructura tensores y metadatos en un archivo binario indexado (*mmap*), soportando cuantización por bloques no uniformes (`k-quants` como Q4_K_M) y facilitando el reparto de capas entre GPU (VRAM) y CPU (DRAM).
-
-### 2.3 KV-Cache y PagedAttention
-
-Para computar la atención autoregresiva sobre el contexto acumulado $\le t$:
-
-$$\text{Attention}(Q_t, K_{\le t}, V_{\le t}) = \text{softmax}\left(\frac{Q_t K_{\le t}^T}{\sqrt{d_k}}\right) V_{\le t}$$
-
-Las representaciones de clave ($K$) y valor ($V$) previas se retienen en una **KV-Cache** dinámica. El consumo de memoria crece linealmente con la longitud de secuencia $L$:
-
-$$M_{\text{KV}} = 2 \times n_{\text{layers}} \times n_{\text{heads\_kv}} \times d_{\text{head}} \times L \times b_{\text{bytes}}$$
-
-La asignación contigua convencional generaba hasta un $80\%$ de desperdicio por fragmentación interna y reserva estática. **PagedAttention** resuelve esto particionando la KV-Cache en bloques virtuales no contiguos mapeados dinámicamente mediante una tabla de páginas:
-
-```mermaid
-flowchart LR
-    subgraph Logica["Tokens Lógicos"]
-        L0["Bloque 0: [t0..t15]"]
-        L1["Bloque 1: [t16..t31]"]
-    end
-    subgraph Tabla["Tabla de Bloques"]
-        T0["B0 → Marco 5"]
-        T1["B1 → Marco 2"]
-    end
-    subgraph Fisica["VRAM GPU"]
-        F2["Marco Físico 2"]
-        F5["Marco Físico 5"]
-    end
-    L0 --> T0 --> F5
-    L1 --> T1 --> F2
+```text
+D = (A × B) + C
 ```
 
-PagedAttention reduce la fragmentación a menos del $4\%$ y permite compartir bloques idénticos en memoria mediante *Copy-on-Write* durante decodificación paralela.
+Las entradas A y B se leen en precisión reducida (FP16 o FP8), mientras que el acumulador C mantiene 32 bits (FP32) para evitar errores de redondeo.
 
-### 2.4 Decodificación Especulativa (Speculative Decoding)
+Por su parte, las TPU de Google (2017) adoptan una **matriz sistólica** (Kung y Leiserson, 1978). Los datos fluyen rítmicamente entre celdas contiguas —como el pulso cardíaco—, multiplicándose por los parámetros fijos en la malla. Esto evita lecturas y escrituras continuas en memoria y ahorra gran cantidad de energía.
 
-Esta técnica desacopla la generación autoregresiva usando un modelo borrador rápido ($M_q$) y un modelo principal de alta fidelidad ($M_p$):
-1. $M_q$ propone rápidamente $K$ tokens candidatos en pasos individuales.
-2. $M_p$ procesa los $K$ candidatos en una única pasada paralela (*compute-bound*).
-3. Cada token candidato $x_i$ se acepta secuencialmente con probabilidad:
-   
-   $$\alpha = \min\left(1, \frac{P_{M_p}(x_i \mid x_{<i})}{P_{M_q}(x_i \mid x_{<i})}\right)$$
+### Cuantización: FP8, AWQ e INT4
 
-Si un token es rechazado, se muestrea directamente del residuo normalizado de $P_{M_p}$, garantizando sin aproximaciones la misma distribución teórica de $M_p$.
+Cada parámetro de una red neuronal suele guardarse en coma flotante de 16 bits (dos bytes). Un modelo de 70.000 millones de parámetros (70B) requiere unos 140 gigabytes de memoria gráfica (VRAM) solo para cargarse. La cuantización proyecta estos valores continuos a enteros discretos:
 
-```python
-import torch
-
-def speculative_verify(target_probs, draft_probs, draft_tokens):
-    """
-    Verifica y acepta/rechaza tokens especulados (batch=1).
-    target_probs: [K, Vocab], draft_probs: [K], draft_tokens: [K]
-    """
-    accepted = []
-    for i, tok in enumerate(draft_tokens):
-        p = target_probs[i, tok]
-        q = draft_probs[i]
-        alpha = torch.clamp(p / (q + 1e-9), max=1.0)
-        
-        if torch.rand(1).item() < alpha.item():
-            accepted.append(tok)
-        else:
-            # Token rechazado: muestrear del residuo positivo
-            diff = torch.clamp(target_probs[i] - q, min=0.0)
-            res_prob = diff / (diff.sum() + 1e-9)
-            accepted.append(torch.multinomial(res_prob, 1).item())
-            break
-    return accepted
+```text
+x_cuantizado = clip(redondeo(x ÷ Escala) + Punto_Cero, min_entero, max_entero)
+x_reconstruido = Escala × (x_cuantizado - Punto_Cero)
 ```
 
----
+- **FP8 (8 bits):** Estándar en GPUs modernas (NVIDIA H100 y Blackwell). Su formato E4M3 ofrece inferencia precisa, reduciendo el tráfico de datos a la mitad frente a FP16.
+- **AWQ (*Activation-aware Weight Quantization*, MIT 2023):** Demostró que apenas el 1 % de los canales de activación concentra la información crítica. AWQ protege ese 1 % y comprime el 99 % restante a enteros de 4 bits (INT4), reduciendo el tamaño a una cuarta parte con mínima pérdida semántica.
+- **Formato GGUF:** Creado por Georgi Gerganov en *llama.cpp* (2023), permite repartir capas del modelo entre la VRAM de la GPU y la RAM del sistema en ordenadores personales.
 
-## 3. Casos de Uso y Aplicaciones Reales
+### PagedAttention y decodificación especulativa
 
-* **Serving en Producción a Gran Escala:** Servidores como **vLLM**, **TGI** y **TensorRT-LLM** combinan PagedAttention, cuantización FP8/INT4 y *continuous batching* para multiplicar el rendimiento de solicitudes simultáneas en clusters H100 y B200.
-* **Inferencia Local en Dispositivos de Consumo:** Motores como **llama.cpp** y **Ollama** utilizan cuantizaciones GGUF (INT4/INT5) y memoria unificada (Apple Silicon, CPU+iGPU) para ejecutar modelos de hasta 70B de parámetros en estaciones de trabajo y portátiles.
-* **Asistentes de Voz y Agentes Interactivos:** Aplicaciones donde el *Time-to-First-Token* (TTFT) y la latencia inter-token deben permanecer por debajo de 50 ms emplean decodificación especulativa y AWQ para lograr respuestas fluidas en tiempo real.
+Para no recalcular palabras previas, el modelo guarda sus estados intermedios en una memoria llamada **KV-Cache** (*Key-Value Cache*). Reservar espacio contiguo por adelantado desperdiciaba entre el 60 % y el 80 % de la VRAM por fragmentación. En 2023, investigadores de UC Berkeley crearon **PagedAttention** (núcleo de vLLM), que fragmenta la KV-Cache en pequeños bloques virtuales no contiguos asignados bajo demanda, reduciendo el desperdicio a menos del 4 % y triplicando los usuarios simultáneos.
 
----
+Por otro lado, la **decodificación especulativa** desacopla la generación usando un modelo borrador pequeño y veloz que propone una ráfaga de K tokens candidatos. El modelo principal los valida en paralelo en una sola pasada con probabilidad:
 
-## 4. Ventajas, Limitaciones y Riesgos
+```text
+Probabilidad de aceptación = min(1, P_principal(token) ÷ P_borrador(token))
+```
 
-| Dimensión / Técnica | Beneficio Principal | Sobrecarga / Limitación | Impacto en Calidad |
+Si el modelo principal rechaza un token, lo sustituye por una muestra corregida y descarta los siguientes, conservando con exactitud la calidad matemática original y acelerando la generación de 1,5 a 2,5 veces.
+
+## 3. Dónde se usa hoy en la vida real
+
+- **Servidores en la nube:** Motores como vLLM, TensorRT-LLM y TGI despachan millones de consultas por hora en clusters de GPUs H100 y B200 para plataformas como ChatGPT o Claude.
+- **Inferencia local en ordenadores:** Ollama, LM Studio y *llama.cpp* ejecutan modelos cuantizados en GGUF sobre chips Apple Silicon (M1 a M4) y tarjetas domésticas con total privacidad sin enviar datos a la red.
+- **Asistentes de audio en directo:** Servicios donde la respuesta debe tardar menos de 50 milisegundos combinan AWQ a 4 bits con decodificación especulativa para mantener diálogos fluidos.
+
+## 4. Qué hace bien, qué falla y qué riesgos tiene
+
+| Dimensión | Beneficio principal | Limitación técnica | Impacto en calidad |
 | :--- | :--- | :--- | :--- |
-| **Tensor Cores / Matriz Sistólica** | Rendimiento masivo en FLOPS para álgebra matricial. | Requiere paralelismo masivo y formas alineadas; ineficiente en decodificación aislada ($B=1$). | Exacto en precisión nativa; sin distorsión. |
-| **Cuantización FP8 / INT4 (AWQ)** | Reduce el uso de VRAM en $50\%-75\%$ y alivia el ancho de banda. | Requiere calibración con activaciones reales y kernels específicos de descompresión. | Prácticamente imperceptible en 8/4 bits; riesgo de degradación por debajo de 3 bits. |
-| **Formato GGUF** | Alta portabilidad y descarga híbrida entre GPU y RAM de sistema. | La velocidad cae drásticamente si una porción sustancial del modelo opera en DRAM de CPU. | Idéntico a la compresión numérica elegida. |
-| **PagedAttention** | Elimina casi el $100\%$ del desperdicio de VRAM por fragmentación en KV-Cache. | Introduce sobrecarga de direccionamiento mediante tablas de bloques en kernels CUDA. | Cero pérdida matemática en logits o estados internos. |
-| **Speculative Decoding** | Acelera la generación de $1.5\times$ a $2.5\times$ en latencia sin cambiar la distribución. | Requiere alojar dos modelos en memoria; pierde efectividad si la correlación decae ($\alpha < 0.5$). | Idéntico al modelo de referencia original. |
+| **Tensor Cores / Matriz sistólica** | Aceleración masiva de cálculo con bajo consumo. | Rendimiento subóptimo con un usuario en generación secuencial. | Exacto; cálculo numérico sin distorsión. |
+| **Cuantización FP8 / INT4 (AWQ)** | Reduce el uso de VRAM en 50 % a 75 % y alivia el bus. | Exige calibración previa y núcleos de software optimizados. | Casi imperceptible en 8 y 4 bits; riesgo bajo 3 bits. |
+| **Formato GGUF** | Reparte el modelo entre GPU y RAM del sistema. | La velocidad cae si gran parte corre en la RAM de la CPU. | Idéntico a la compresión elegida. |
+| **PagedAttention** | Reduce el desperdicio en KV-Cache a menos del 4 %. | Sobrecarga menor de traducción de direcciones virtuales. | Cero pérdida matemática en respuestas. |
+| **Decodificación especulativa** | Acelera la velocidad entre 1,5 y 2,5 veces sin alterar la salida. | Obliga a mantener dos modelos en memoria simultáneamente. | Distribución idéntica a la del modelo principal. |
 
-### Riesgos y Consideraciones
-* **Degradación no lineal (*Cliff Effect*):** La cuantización sub-4-bit puede causar colapsos repentinos en tareas complejas de razonamiento formal o generación de código fuente.
-* **El Muro de la Memoria (*Memory Wall*):** A pesar de los avances en memorias HBM3e, la tasa de transferencia de datos crece a un ritmo significativamente más lento que la potencia de cómputo de los aceleradores, manteniendo la decodificación como un problema de ancho de banda.
+### Riesgos y limitaciones técnicas
 
----
+- **Efecto acantilado (*cliff effect*):** Cuantizar por debajo de 4 bits suele provocar caídas repentinas en razonamiento formal, cálculo y código, aunque la gramática aparente fluidez.
+- **Muro de la memoria (*memory wall*):** La potencia de cómputo ha crecido mucho más rápido que el ancho de banda de las memorias HBM, manteniendo la generación secuencial atada a las transferencias de datos.
+- **Concentración de suministro:** Las memorias HBM3e y los empaquetados avanzados (como CoWoS de TSMC) están concentrados en muy pocos fabricantes, encareciendo la infraestructura global.
 
-## 5. Conceptos Relacionados
+## 5. Temas relacionados
 
-* **FlashAttention (1, 2 y 3):** Algoritmo de atención consciente de la memoria que ejecuta la softmax por bloques (*tiling*) dentro de la SRAM rápida de la GPU para evitar escrituras y lecturas redundantes en HBM.
-* **Grouped-Query Attention (GQA):** Arquitectura que agrupa múltiples cabezas de consulta para compartir una única cabeza de clave-valor, reduciendo el tamaño de la KV-Cache en un factor de hasta $8\times$.
-* **Paralelismo Tensorial y de Pipeline (TP/PP):** Técnicas de particionamiento de matrices de pesos entre múltiples GPUs (vía interconexiones NVLink/NVSwitch) para modelos que superan la capacidad de un solo dispositivo.
-* **Continuous Batching (Orca):** Programación a nivel de iteración que inserta nuevas secuencias en la fase de prefill tan pronto como una secuencia en decodificación finaliza, evitando pausas en el hardware.
+- **FlashAttention (v1, v2 y v3):** Algoritmo de Tri Dao (2022-2024) que calcula la atención por bloques en la memoria SRAM del chip, evitando transferencias lentas a la memoria principal.
+- **Grouped-Query Attention (GQA):** Arquitectura usada en modelos como Llama 3 donde varias cabezas de atención comparten claves y valores, reduciendo la KV-Cache hasta en 8 veces.
+- **Continuous Batching (Orca):** Técnica de planificación (2022) que inserta nuevas secuencias en el procesador apenas otra termina, evitando tiempos muertos en el hardware.
+- **Paralelismo tensorial y de canalización (*Pipeline*):** Métodos de particionado para repartir un modelo masivo entre múltiples GPUs conectadas por NVLink cuando este excede la capacidad de un chip.

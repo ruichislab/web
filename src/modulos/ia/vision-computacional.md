@@ -1,135 +1,97 @@
-# Visión Computacional: Redes Convolucionales, ResNet, Vision Transformers, YOLO y Segment Anything Model (SAM)
+# Visión computacional: cómo las máquinas aprenden a ver
 
-La **visión computacional** es la disciplina de la inteligencia artificial y el aprendizaje automático orientada a modelar la percepción visual algorítmica, permitiendo a los sistemas computacionales inferir representaciones semánticas y geométricas de alto nivel a partir de tensores de datos visuales. Su espectro metodológico abarca desde tareas discriminativas como la clasificación global de imágenes hasta la detección simultánea de objetos en tiempo real y la segmentación granular a nivel de píxel. Tras superar la fase clásica de descriptores geométricos artesanales, el campo experimentó una transformación paradigmática con las arquitecturas neuronales profundas y la reciente emergencia de modelos fundacionales basados en atención.
+Para una persona, reconocer una taza de café sobre una mesa es instantáneo. Los ojos captan la luz y el cerebro reconstruye formas, distancias y colores al momento. Para una computadora, una foto es solo una cuadrícula de números: miles o millones de píxeles con valores de color entre 0 y 255. La visión computacional es la rama de la inteligencia artificial que enseña a las máquinas a interpretar esos números para identificar qué objetos hay en una escena, dónde están y hacia dónde se mueven.
 
----
+> **En pocas palabras:** La visión computacional transforma matrices de números en percepción visual, permitiendo a las computadoras reconocer objetos, personas y movimientos en tiempo real.
 
-## 1. Origen e Intuición Fundamental
+## 1. De dónde viene y cómo se entiende fácil
 
-Durante décadas, la visión por computador se estructuró sobre descriptores artesanales como SIFT (*Scale-Invariant Feature Transform*), SURF y HOG (*Histogram of Oriented Gradients*). Aunque matemáticamente rigurosos ante transformaciones afines, presentaban una rigidez intrínseca ante oclusiones severas, variaciones lumínicas y deformaciones no rígidas.
+Pensemos en cómo aprende a mirar un niño. No analiza a un perro con una regla; primero detecta contrastes de luz y sombra, luego bordes y curvas, más adelante texturas como el pelaje, y finalmente la silueta completa.
 
-La base biológica de las arquitecturas contemporáneas proviene de las investigaciones de David Hubel y Torsten Wiesel (1959-1962) sobre la corteza visual primaria. Demostraron que el procesamiento retinotópico es jerárquico: células simples responden a gradientes de orientación y bordes locales, mientras que células complejas sintetizan estas respuestas para otorgar invarianza espacial. Este esquema inspiró el *Neocognitron* de Fukushima (1980) y la red LeNet-5 de Yann LeCun (1998).
+Durante décadas, se intentó programar esa visión a mano usando algoritmos como SIFT (*Scale-Invariant Feature Transform*, David Lowe, 1999) o HOG (*Histogram of Oriented Gradients*, Navneet Dalal y Bill Triggs, 2005). Aunque detectaban esquinas en laboratorio, fallaban si cambiaba la luz o si el objeto giraba levemente.
 
-En 2012, la victoria de AlexNet consolidó el aprendizaje de representaciones directamente desde píxeles brutos. La intuición de las Redes Neuronales Convolucionales (CNN) se apoya en dos sesgos inductivos cardinales:
-1. **Localidad espacial:** Los píxeles adyacentes presentan una correlación semántica superior a los distantes.
-2. **Equivarianza a la traslación:** Los patrones visuales conservan su identidad con independencia de su posición espacial, lo que legitima la compartición de parámetros mediante núcleos (*kernels*) deslizantes.
+La solución provino de la neurociencia. Entre 1959 y 1962, David Hubel y Torsten Wiesel descubrieron que las neuronas visuales de los mamíferos procesan la información en cascada jerárquica: células simples detectan líneas orientadas y células complejas combinan esas respuestas para abstraer contornos. Esta jerarquía inspiró el Neocognitron de Kunihiko Fukushima (1980) y la red LeNet-5 de Yann LeCun (1998) para leer números en cheques postales.
 
-Conforme las redes crecieron en profundidad, la saturación y degradación del gradiente se erigieron como barreras críticas, resueltas en 2015 por ResNet mediante atajos residuales. Posteriormente, la necesidad de sortear la restricción del campo receptivo local motivó la adopción de la autoatención en visión con los Vision Transformers (ViT, 2020), mientras que la inferencia en tiempo real y la segmentación interactiva generalizable se materializaron en modelos de referencia como YOLO y SAM.
+El cambio definitivo ocurrió en 2012. En la competencia ImageNet, Alex Krizhevsky, Ilya Sutskever y Geoffrey Hinton presentaron AlexNet. En vez de diseñar reglas a mano, entrenaron una red profunda con más de un millón de fotos usando procesadores gráficos (GPU). El algoritmo aprendió por sí solo qué rasgos buscar, redujo el error a casi la mitad y desató la era moderna del aprendizaje profundo.
 
----
+## 2. Cómo funciona por dentro
 
-## 2. Arquitectura, Mecánica o Formulación Matemática
+La visión moderna resuelve tareas complejas mediante cinco innovaciones clave:
 
-### 2.1 Convolución Discreta 2D y Dinámica Espacial
+### Redes Neuronales Convolucionales (CNN)
+Una red convolucional pasa un filtro matemático deslizante (*kernel*), habitualmente de 3×3 píxeles, por toda la imagen. Como una lupa que barre un lienzo, multiplica sus valores por los píxeles que cubre para resaltar patrones: bordes en las primeras capas, texturas en las intermedias y partes complejas en las finales. El tamaño de salida se calcula así:
 
-La operación de convolución discreta bidimensional (correlación cruzada) entre un tensor de entrada $I \in \mathbb{R}^{H \times W \times C_{in}}$ y un banco de filtros $K \in \mathbb{R}^{k_h \times k_w \times C_{in} \times C_{out}}$ para un canal de salida $c$ se define como:
-
-$$S(i, j, c) = b_c + \sum_{m=0}^{k_h-1} \sum_{n=0}^{k_w-1} \sum_{d=0}^{C_{in}-1} I(i \cdot s + m, j \cdot s + n, d) \cdot K(m, n, d, c)$$
-
-Donde $s$ denota el paso (*stride*) y $b_c$ el sesgo. La resolución espacial de salida con relleno (*padding*) $p$ se calcula mediante:
-
-$$O_h = \left\lfloor \frac{H - k_h + 2p}{s} \right\rfloor + 1, \quad O_w = \left\lfloor \frac{W - k_w + 2p}{s} \right\rfloor + 1$$
-
-### 2.2 Bloques Residuales y Flujo de Gradiente (ResNet)
-
-En lugar de ajustar una función subyacente $\mathcal{H}(\mathbf{x})$ con capas convolucionales apiladas, Kaiming He et al. (2015) parametrizaron la señal como un residuo: $\mathcal{F}(\mathbf{x}) = \mathcal{H}(\mathbf{x}) - \mathbf{x}$. La formulación del bloque residual resulta en:
-
-$$\mathbf{y} = \mathcal{F}(\mathbf{x}, \{W_i\}) + \mathbf{x}$$
-
-```
-Entrada x ---> [ Conv 3x3 + BatchNorm + ReLU ] ---> [ Conv 3x3 + BatchNorm ] ---> (+) ---> ReLU ---> Salida y
-      |                                                                            ^
-      +---------------------------- Conexión Identidad ----------------------------+
+```text
+Salida = piso((Entrada - Filtro + 2 × Relleno) / Avance) + 1
 ```
 
-Bajo retropropagación con función de pérdida $\mathcal{E}$, la derivada respecto a una activación intermedia $\mathbf{x}_l$ para una capa superior $L$ es:
+Donde el relleno (*padding*) añade ceros en los bordes y el avance (*stride*) define cuántos píxeles salta el filtro.
 
-$$\frac{\partial \mathcal{E}}{\partial \mathbf{x}_l} = \frac{\partial \mathcal{E}}{\partial \mathbf{x}_L} \left( \mathbf{I} + \frac{\partial}{\partial \mathbf{x}_l} \sum_{i=l}^{L-1} \mathcal{F}(\mathbf{x}_i, W_i) \right)$$
-
-La presencia del operador identidad $\mathbf{I}$ asegura una vía directa para la propagación del gradiente, evitando que se atenúe exponencialmente con la profundidad.
-
-### 2.3 Vision Transformers (ViT)
-
-El Vision Transformer (Dosovitskiy et al., 2020) abandona el sesgo convolucional procesando la imagen como una secuencia unidimensional de parches planos.
-* **Tokenización:** Una imagen $\mathbf{x} \in \mathbb{R}^{H \times W \times C}$ se particiona en $N = \frac{HW}{P^2}$ parches de dimensión $P \times P$.
-* **Proyección e incrustación:** Cada parche se proyecta a dimensión latente $D$ mediante la matriz $E \in \mathbb{R}^{(P^2 C) \times D}$, incorporando un vector de clase $\mathbf{x}_{class}$ y términos de posición $\mathbf{E}_{pos}$:
-  $$\mathbf{z}_0 = [\mathbf{x}_{class}; \, \mathbf{x}_p^1 E; \dots; \, \mathbf{x}_p^N E] + \mathbf{E}_{pos}$$
-* **Autoatención Multi-Cabezal (MSA):**
-  $$\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{Q K^T}{\sqrt{d_k}}\right) V$$
-Esto confiere un campo receptivo global instantáneo con costo computacional $\mathcal{O}(N^2)$.
-
-### 2.4 Detección en Tiempo Real: YOLO (*You Only Look Once*)
-
-YOLO (Redmon et al., 2016) reformuló la detección multiobjeto: en lugar de generar propuestas de región iterativas (familia R-CNN), estructura el problema como una regresión directa en una sola pasada de red.
-* Divide la imagen en una cuadrícula $S \times S$.
-* Cada celda predice simultáneamente coordenadas delimitadoras relativas $(t_x, t_y, t_w, t_h)$, confianza objetual $P(\text{Objeto})$ y probabilidades condicionales de clase $P(\text{Clase}_c | \text{Objeto})$.
-* El entrenamiento emplea pérdidas compuestas basadas en métricas IoU continuas (CIoU) y filtrado de colisiones espaciales mediante supresión de no máximos (NMS) en tiempo real.
-
-### 2.5 Segmentación Fundacional: SAM (*Segment Anything Model*)
-
-SAM (Kirillov et al., 2023) desacopla la percepción visual profunda del procesamiento de instrucciones en tiempo real:
-* **Image Encoder:** Un ViT pesado genera representaciones densas de la imagen una única vez.
-* **Prompt Encoder:** Transforma puntos, cajas delimitadoras o máscaras en incrustaciones de atención dispersas.
-* **Mask Decoder:** Capas ligeras de atención cruzada fusionan las características del prompt y de la imagen para producir múltiples hipótesis de segmentación e índices IoU en sub-50 ms.
+### ResNet y las conexiones de atajo (2015)
+Al apilar muchas capas surgía el desvanecimiento del gradiente: el error matemático se diluía al retroceder durante el entrenamiento. Kaiming He y Microsoft Research lo resolvieron con ResNet (*Residual Networks*), sumando la entrada original a la salida de cada bloque (`y = F(x) + x`):
 
 ```python
 import torch
 import torch.nn as nn
 
-class ResidualBlock(nn.Module):
-    """Implementación canónica de un bloque residual con conexión de atajo."""
-    def __init__(self, in_channels: int, out_channels: int, stride: int = 1):
+class BloqueResidual(nn.Module):
+    def __init__(self, canales: int):
         super().__init__()
-        self.conv_path = nn.Sequential(
-            nn.Conv2d(in_channels, out_channels, kernel_size=3, stride=stride, padding=1, bias=False),
-            nn.BatchNorm2d(out_channels),
+        self.conv = nn.Sequential(
+            nn.Conv2d(canales, canales, 3, padding=1, bias=False),
+            nn.BatchNorm2d(canales),
             nn.ReLU(inplace=True),
-            nn.Conv2d(out_channels, out_channels, kernel_size=3, stride=1, padding=1, bias=False),
-            nn.BatchNorm2d(out_channels)
+            nn.Conv2d(canales, canales, 3, padding=1, bias=False),
+            nn.BatchNorm2d(canales)
         )
-        self.shortcut = nn.Sequential()
-        if stride != 1 or in_channels != out_channels:
-            self.shortcut = nn.Sequential(
-                nn.Conv2d(in_channels, out_channels, kernel_size=1, stride=stride, bias=False),
-                nn.BatchNorm2d(out_channels)
-            )
         self.relu = nn.ReLU(inplace=True)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-        return self.relu(self.conv_path(x) + self.shortcut(x))
+        return self.relu(self.conv(x) + x)
 ```
 
----
+Si una capa no aporta nada, la red fija sus pesos en cero y deja pasar la señal intacta, lo que permitió entrenar redes estables de más de 100 capas.
 
-## 3. Casos de Uso y Aplicaciones Reales
+### Vision Transformers o ViT (2020)
+Adaptados por Alexey Dosovitskiy y Google Research, los ViT dividen la imagen en parches cuadrados (ej. 16×16 píxeles) y los tratan como palabras mediante autoatención global:
 
-* **Vehículos Autónomos y Robótica Móvil:** Localización ultrarrápida de obstáculos y peatones con arquitecturas YOLO, combinadas con segmentación de carril y superficies transitables.
-* **Diagnóstico Médico por Imágenes:** Detección de lesiones patológicas en radiografías y resonancias magnéticas, así como segmentación asistida de núcleos celulares en patología digital con SAM.
-* **Control de Calidad Industrial:** Inspección micrométrica automatizada en líneas de fabricación de obleas de semiconductores mediante CNNs optimizadas.
-* **Observación Satelital y Teledetección:** Cartografía de cobertura vegetal, estimación de estrés hídrico y análisis de catástrofes con Vision Transformers multiespectrales.
+```text
+Atención(Q, K, V) = softmax((Q × Kᵀ) / √d) × V
+```
 
----
+Cada parche calcula atención con todos los demás a la vez, captando relaciones lejanas sin limitarse a píxeles vecinos.
 
-## 4. Ventajas, Limitaciones y Riesgos
+### YOLO: detección en una sola pasada (2015-2016)
+Antes de YOLO (*You Only Look Once*, Joseph Redmon et al.), ubicar objetos exigía evaluar cientos de regiones por separado. YOLO predice cajas delimitadoras y clases en una sola pasada, superando los 45 cuadros por segundo en video en vivo.
 
-| Paradigma / Modelo | Fortalezas Principales | Limitaciones Técnicas | Caso Óptimo de Aplicación |
+### SAM: segmentar cualquier objeto (2023)
+Presentado por Meta AI en 2023, SAM (*Segment Anything Model*) divide el recorte visual en dos: un codificador pesado que analiza la imagen una sola vez y un decodificador interactivo muy rápido que delimita cualquier silueta píxel por píxel en menos de 50 milisegundos tras recibir un clic o recuadro.
+
+## 3. Dónde se usa hoy en la vida real
+
+- **Medicina asistida:** Detección de retinopatía en fondos de ojo, localización de nódulos y delimitación de tumores en biopsias.
+- **Vehículos autónomos:** Cámaras con YOLO para rastrear peatones, ciclistas y carriles a más de 60 cuadros por segundo.
+- **Inspección industrial:** Control de calidad en fábricas para detectar fallas micrométricas en circuitos y envases.
+- **Agricultura de precisión:** Drones con Vision Transformers para identificar malezas y optimizar fertilizantes en cultivos.
+
+## 4. Qué hace bien, qué falla y qué riesgos tiene
+
+| Enfoque / Modelo | Lo que hace bien | Dónde falla | Aplicación ideal |
 | :--- | :--- | :--- | :--- |
-| **CNN Clásicas** | Fuerte sesgo inductivo local; gran eficiencia muestral en datasets pequeños. | Campo receptivo local limitado; rigidez ante deformaciones afines globales. | Inferencia en hardware perimetral (*edge*) y microcontroladores. |
-| **ResNet** | Mitiga el desvanecimiento del gradiente; posibilita arquitecturas ultra profundas. | Alto consumo de memoria para activaciones durante el entrenamiento. | Red de extracción de características base (*backbone*) multipropósito. |
-| **Vision Transformers (ViT)** | Captura de dependencias globales sin sesgo de proximidad; alta escalabilidad. | Complejidad cuadrática $\mathcal{O}(N^2)$; alta exigencia de datos previos. | Modelos fundacionales masivos y percepción multimodal. |
-| **YOLO** | Velocidad de inferencia sobresaliente en una sola pasada (>60 FPS). | Dificultad histórica ante agrupaciones densas de objetos diminutos. | Detección de objetos en video y sistemas embebidos de tiempo real. |
-| **SAM** | Gran capacidad *zero-shot*; interactividad flexible con diversos prompts. | Codificador de imagen computacionalmente pesado; sin etiquetas semánticas nativas. | Segmentación interactiva, anotación de datos y recorte biomédico. |
+| **CNN tradicionales** | Eficientes con pocas fotos y bajo cómputo. | Campo visual limitado a su entorno inmediato. | Sensores y móviles sencillos. |
+| **ResNet** | Entrena redes muy profundas sin inestabilidad. | Alto consumo de memoria en entrenamiento. | Columna vertebral (*backbone*) general. |
+| **Vision Transformers** | Captura relaciones globales entre zonas distantes. | Costo cuadrático; exige muchos datos. | Modelos fundacionales y multimodalidad. |
+| **YOLO** | Inferencia ultrarrápida en tiempo real en una pasada. | Puede omitir objetos diminutos o agrupados. | Cámaras viales, drones y robótica. |
+| **SAM** | Recorta cualquier objeto de forma interactiva. | Codificador inicial pesado; no clasifica clases. | Anotación de datos y edición fotográfica. |
 
-### Riesgos y Consideraciones Críticas
-* **Vulnerabilidad Adversaria:** Susceptibilidad a perturbaciones imperceptibles en píxeles que desvían erróneamente clasificaciones críticas en seguridad.
-* **Sesgo Algorítmico:** Disparidades de rendimiento en reconocimiento facial debidas a bases de datos subrepresentadas.
-* **Vigilancia y Privacidad:** Riesgos derivados del monitoreo visual biométrico masivo no consentido.
+### Riesgos y consideraciones críticas
+- **Ataques adversarios:** Pequeñas alteraciones en píxeles específicos pueden engañar a una red para que confunda una señal de alto con una de velocidad.
+- **Sesgos demográficos:** Entrenar sistemas faciales con datos poco diversos genera mayores errores en personas de piel oscura y en mujeres.
+- **Vigilancia biométrica:** El rastreo facial sin consentimiento en espacios públicos amenaza la privacidad; por ello, el Reglamento Europeo de Inteligencia Artificial (2024) prohíbe su uso biométrico indiscriminado en tiempo real en lugares públicos.
 
----
+## 5. Temas relacionados
 
-## 5. Conceptos Relacionados
-
-* **Aprendizaje Profundo (Deep Learning):** Paradigma jerárquico base sobre el que operan los extractores convolucionales y basados en atención.
-* **Mecanismos de Atención y Transformers:** Principio matemático de ponderación de secuencias extrapolado exitosamente de NLP a visión.
-* **Aprendizaje Autosupervisado (Self-Supervised Learning):** Esquemas como MAE y DINO que posibilitan el entrenamiento de modelos de visión sin etiquetas manuales.
-* **Modelos de Difusión:** Sistemas generativos condicionales que integran encoders visuales para la síntesis de imágenes.
+- **Modelos Multimodales (VLM):** Redes como GPT-4o o Gemini que unen visión y lenguaje para razonar sobre imágenes.
+- **Modelos de Difusión:** Algoritmos generativos (Stable Diffusion, Midjourney) que producen imágenes a partir de texto.
+- **Aprendizaje Autosupervisado (DINO, MAE):** Métodos que entrenan redes ocultando partes de la imagen para que las reconstruyan sin etiquetas humanas.
+- **Segmentación Semántica e Instanciada:** Técnicas para clasificar escenas píxel por píxel o distinguir cada objeto individual.

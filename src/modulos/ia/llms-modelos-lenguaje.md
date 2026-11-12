@@ -1,135 +1,110 @@
-# Grandes Modelos de Lenguaje (LLMs): Tokenización BPE, Pre-entrenamiento Autoregresivo, Decodificación y Capacidades Emergentes
+# Grandes Modelos de Lenguaje (LLMs)
 
-Los **Grandes Modelos de Lenguaje** (*Large Language Models* o LLMs) son redes neuronales profundas basadas en la arquitectura Transformer, parametrizadas con miles de millones de coeficientes y entrenadas sobre vastos corpus textuales mediante objetivos autorregresivos. Matemáticamente, modelan la distribución de probabilidad conjunta de secuencias discretas de símbolos (*tokens*). Al optimizar la predicción secuencial a escala masiva, comprimen inductivamente la sintaxis, semántica, pragmática y conocimiento estructurado del lenguaje humano, consolidándose como modelos fundacionales multipropósito en la inteligencia artificial contemporánea.
+Los grandes modelos de lenguaje (conocidos comúnmente como LLMs, por sus siglas en inglés *Large Language Models*) son sistemas informáticos avanzados diseñados para comprender, resumir, traducir y generar texto con fluidez. En lugar de consultar respuestas prefijadas en una base de datos estática, estos programas analizan inmensos volúmenes de lecturas digitalizadas y operan prediciendo, paso a paso, cuál es la siguiente pieza de texto más probable según todo lo escrito hasta ese momento.
 
----
-
-## 1. Origen e Intuición Fundamental
-
-El origen de los LLMs se remonta al modelado estadístico tradicional mediante $n$-gramas, restringido por la suposición de Markov y la maldición de la dimensionalidad ante la dispersión léxica. La transición hacia representaciones distribuidas continuas (*word embeddings*) y redes recurrentes (RNN, LSTM) permitió capturar dependencias contextuales densas, pero se vio limitada por el desvanecimiento del gradiente y el cuello de botella computacional del procesamiento secuencial.
-
-En 2017, la introducción de la arquitectura Transformer (*Attention Is All You Need*) superó la recurrencia mediante la **autoatención** (*self-attention*), posibilitando la paralelización masiva en clústeres de GPU/TPU. Modelos pioneros como GPT (*Generative Pre-trained Transformer*, 2018) demostraron que la tarea auto-supervisada de predecir el siguiente token constituye un mecanismo de compresión universal: predecir con exactitud el siguiente fragmento textual exige inducir tácitamente hechos fácticos, reglas gramaticales y patrones de inferencia lógica.
-
-Esta intuición fue formalizada mediante las **leyes de escalamiento empíricas** (*Scaling Laws*, Kaplan et al., 2020; Hoffmann et al., 2022 / Chinchilla), las cuales demostraron que la pérdida de entropía cruzada disminuye según leyes de potencia predecibles frente al escalamiento conjunto de parámetros ($N$), tokens de entrenamiento ($D$) y cómputo total en FLOPs ($C$):
-
-$$L(N, D) = \frac{A}{N^\alpha} + \frac{B}{D^\beta} + L_0$$
-
-Donde $L_0$ representa el límite teórico de entropía irreducible del lenguaje natural, y $\alpha, \beta, A, B$ son constantes empíricas.
+> **En pocas palabras:** Un gran modelo de lenguaje es un sistema informático que aprende leyendo bibliotecas enteras para comunicarse calculando qué palabra encaja mejor a continuación.
 
 ---
 
-## 2. Arquitectura, Mecánica o Formulación Matemática
+## 1. De dónde viene y cómo se entiende fácil
 
-El ciclo técnico fundamental de un LLM comprende tres fases algorítmicas cardinales: tokenización subléxica, pre-entrenamiento autorregresivo causal y decodificación estocástica en inferencia.
+El funcionamiento de un LLM se asemeja al texto predictivo del teclado de un teléfono móvil. Cuando alguien teclea «Buenas...», la pantalla sugiere «tardes» o «noches». Un LLM parte de ese principio, pero a una escala monumental: en lugar de mirar solo las dos últimas palabras, examina miles de términos a la vez para determinar qué fragmento encaja a continuación. Para acertar con precisión si debe completar un código informático, redactar un contrato o continuar una explicación científica, el modelo asimila de forma indirecta reglas gramaticales, relaciones lógicas y conocimientos del mundo.
 
-### A. Tokenización: Byte Pair Encoding (BPE)
+Durante décadas, la lingüística computacional utilizó modelos estadísticos de n-gramas, formulados a partir de los trabajos de Claude Shannon en 1948. Estos sistemas contaban con qué frecuencia aparecían juntas ciertas palabras en archivos impresos. Su gran limitación era la rigidez: ante cualquier frase nueva, el cálculo fallaba por falta de coincidencias exactas. En 2003, Yoshua Bengio y su equipo introdujeron los primeros modelos neuronales de lenguaje, asignando a cada palabra coordenadas numéricas continuas (*word embeddings*). En la década de 2010, las redes recurrentes (RNN) y las unidades de memoria LSTM (creadas por Sepp Hochreiter y Jürgen Schmidhuber en 1997) permitieron procesar oraciones más largas, aunque su lectura secuencial palabra por palabra impedía aprovechar el cálculo paralelo en tarjetas gráficas (GPU) y diluía el contexto en textos extensos.
 
-Los LLMs operan sobre un vocabulario discreto predeterminado $\mathcal{V}$ de subpalabras (habitualmente de 32.000 a 128.000 unidades). La tokenización a nivel de palabra completa sufre de términos fuera de vocabulario (*Out-Of-Vocabulary*, OOV), mientras que la tokenización por caracteres individuales satura la memoria cuadrática del mecanismo de atención.
+El salto definitivo llegó en 2017 con la arquitectura Transformer (*Attention Is All You Need*, Vaswani et al.), que sustituyó la recurrencia por el mecanismo de autoatención para analizar todas las palabras de un texto en paralelo. En 2018, OpenAI presentó GPT-1 (*Generative Pre-trained Transformer*), demostrando que predecir el siguiente token sobre millones de lecturas crea una base versátil para resolver múltiples tareas lingüísticas. Pronto se formalizaron las leyes de escalado (*Scaling Laws*): Jared Kaplan y su equipo demostraron en 2020 que la precisión del modelo mejora de forma predecible según leyes de potencias al aumentar el número de parámetros, los datos y el cómputo. En 2022, el estudio del modelo Chinchilla (Hoffmann et al., DeepMind) demostró que para optimizar el rendimiento, los datos de lectura y el tamaño del modelo deben crecer a la par, requiriendo unas 20 fichas de texto por cada parámetro entrenado.
 
-El algoritmo **Byte Pair Encoding (BPE)** resuelve esta dicotomía: comienza con un vocabulario base de caracteres individuales (o bytes UTF-8) y fusiona iterativamente los pares de símbolos contiguos más frecuentes en el corpus:
+---
+
+## 2. Cómo funciona por dentro
+
+El ciclo técnico de un LLM se divide en tres etapas: tokenización del texto, preentrenamiento autorregresivo y decodificación en inferencia.
+
+```text
+Texto original --> Tokenización (BPE) --> Bloques Transformer --> Logits y Softmax --> Muestreo --> Respuesta generada
+```
+
+### 1. Tokenización mediante Byte Pair Encoding (BPE)
+Las redes neuronales procesan números, no letras. Si asignáramos un número a cada palabra, el vocabulario sería inmanejable; si usáramos letras sueltas, las secuencias serían demasiado largas. La solución estándar es dividir el texto en subpalabras con el algoritmo *Byte Pair Encoding* (BPE), creado por Philip Gage en 1994 y adaptado al procesamiento de lenguaje en 2016 por Rico Sennrich et al. BPE analiza el texto y fusiona repetidamente los pares de caracteres más frecuentes:
 
 ```python
 from collections import Counter
 
-def merge_bpe_step(corpus_vocab: dict[tuple[str, ...], int]) -> dict[tuple[str, ...], int]:
-    """Identifica el par contiguo más frecuente y lo fusiona en un nuevo token."""
-    pairs = Counter()
-    for word_tokens, freq in corpus_vocab.items():
-        for i in range(len(word_tokens) - 1):
-            pairs[word_tokens[i], word_tokens[i + 1]] += freq
-    if not pairs:
-        return corpus_vocab
-    best_pair = pairs.most_common(1)[0][0]
-    
-    new_vocab = {}
-    bigram = " ".join(best_pair)
-    merged = "".join(best_pair)
-    for word_tokens, freq in corpus_vocab.items():
-        w_str = " ".join(word_tokens).replace(bigram, merged)
-        new_vocab[tuple(w_str.split())] = freq
-    return new_vocab
+def unir_par_frecuente(vocabulario):
+    """Localiza el par contiguo más repetido y lo fusiona en un token nuevo."""
+    pares = Counter()
+    for tokens, freq in vocabulario.items():
+        for i in range(len(tokens) - 1):
+            pares[(tokens[i], tokens[i + 1])] += freq
+    if not pares:
+        return vocabulario
+    mejor_par = pares.most_common(1)[0][0]
+    nuevo_vocab = {}
+    patron = " ".join(mejor_par)
+    fusionado = "".join(mejor_par)
+    for tokens, freq in vocabulario.items():
+        nuevo_texto = " ".join(tokens).replace(patron, fusionado)
+        nuevo_vocab[tuple(nuevo_texto.split())] = freq
+    return nuevo_vocab
 ```
 
-En implementaciones modernas a nivel de bytes (*byte-level BPE*, como en GPT-4 o LLaMA), la base son los 256 bytes elementales, lo que asegura una representación universal para cualquier texto binario sin tokens desconocidos.
+En modelos como GPT-4 o LLaMA, se utiliza la variante a nivel de bytes (*byte-level BPE*), que parte de los 256 bytes elementales de UTF-8. Esto permite procesar cualquier idioma, código o símbolo sin producir errores de palabras desconocidas. En promedio, un token equivale a cuatro caracteres o a tres cuartas partes de una palabra en español.
 
-### B. Pre-entrenamiento Autoregresivo (Causal Language Modeling)
+### 2. Preentrenamiento autorregresivo
+Una vez tokenizado el texto, la red se entrena de forma autorregresiva: predice el siguiente token basándose exclusivamente en los anteriores. Una máscara de atención triangular oculta los tokens futuros para evitar atajos indebidos durante el cálculo en paralelo. La probabilidad conjunta de una frase de T tokens se calcula como el producto de sus probabilidades sucesivas:
 
-Dado un corpus expresado como una secuencia de tokens $X = (x_1, x_2, \dots, x_T)$, el objetivo de modelado causal de lenguaje (*Causal Language Modeling*, CLM) consiste en maximizar la verosimilitud de la secuencia factorizada mediante la regla de la cadena:
-
-$$P(X) = \prod_{t=1}^T P(x_t \mid x_1, \dots, x_{t-1}; \theta)$$
-
-En cada paso $t$, el Transformer proyecta el estado contextual oculto $h_t \in \mathbb{R}^d$ hacia el espacio de logits $z_t \in \mathbb{R}^{|\mathcal{V}|}$ mediante una matriz de desempaquetado $W_u$:
-
-$$z_t = W_u h_t + b_u$$
-
-La distribución sobre el siguiente token se obtiene mediante la normalización *softmax*:
-
-$$P(x_{t+1} = v \mid x_{\le t}) = \frac{\exp(z_{t, v})}{\sum_{j \in \mathcal{V}} \exp(z_{t, j})}$$
-
-La optimización de parámetros $\theta$ se realiza minimizando la entropía cruzada promedio:
-
-$$\mathcal{L}_{\text{CLM}}(\theta) = -\frac{1}{T} \sum_{t=1}^T \log P_\theta(x_t \mid x_{< t})$$
-
-Para procesar secuencias en paralelo durante el entrenamiento sin violar la causalidad temporal, se introduce una máscara triangular estricta en el cálculo de atención: $\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{Q K^T}{\sqrt{d_k}} + M\right) V$, donde $M_{i,j} = -\infty$ para $j > i$.
-
-### C. Estrategias de Decodificación: Temperatura, Top-$k$ y Top-$p$ (Nucleus)
-
-Durante la inferencia, la generación puramente determinista (*greedy search*) produce patrones repetitivos. Se emplean estrategias estocásticas calibradas:
-
-- **Temperatura ($T > 0$):** Escala los logits previos al softmax ($z_i / T$). Valores bajos concentran la masa de probabilidad en los tokens de mayor rango; valores altos aplanan la distribución aumentando la variabilidad léxica.
-- **Top-$k$:** Restringe la selección a los $k$ candidatos más probables.
-- **Top-$p$ (Nucleus Sampling):** Selecciona el conjunto dinámico más pequeño de tokens $V^{(p)}$ cuya probabilidad acumulada alcanza el umbral $p \in (0, 1]$: $\sum_{i \in V^{(p)}} P(x = i) \ge p$.
-
-```python
-import torch
-import torch.nn.functional as F
-
-def sample_next_token(logits: torch.Tensor, temperature: float = 0.7, top_p: float = 0.9) -> int:
-    """Escala logits por temperatura y filtra por probabilidad acumulada Top-p."""
-    probs = F.softmax(logits / max(temperature, 1e-5), dim=-1)
-    sorted_probs, sorted_indices = torch.sort(probs, descending=True)
-    cumulative_probs = torch.cumsum(sorted_probs, dim=-1)
-
-    # Enmascarar tokens que exceden el umbral p preservando el primero
-    remove_mask = cumulative_probs > top_p
-    remove_mask[..., 1:] = remove_mask[..., :-1].clone()
-    remove_mask[..., 0] = False
-
-    sorted_probs[remove_mask] = 0.0
-    filtered_probs = sorted_probs / torch.sum(sorted_probs, dim=-1, keepdim=True)
-    selected_idx = torch.multinomial(filtered_probs, num_samples=1)
-    return sorted_indices[selected_idx].item()
+```text
+P(token_1, ..., token_T) = P(token_1) × P(token_2 | token_1) × ... × P(token_T | token_1, ..., token_{T-1})
 ```
 
-### D. Capacidades Emergentes
+En la salida del Transformer, el modelo emite puntuaciones crudas (*logits*) para cada token del vocabulario (entre 32.000 y 128.000 términos). La función softmax convierte esas puntuaciones en porcentajes de probabilidad que suman 1:
 
-Al superar umbrales críticos de escala computacional ($>10^{22}$ FLOPs) y parámetros, surgen **capacidades emergentes**: propiedades no observables en modelos reducidos. Entre ellas destacan el **aprendizaje en contexto** (*In-Context Learning*, resolver tareas a partir de ejemplos en el prompt sin ajustar pesos), el **razonamiento en cadena de pensamiento** (*Chain-of-Thought*) y la habilidad para interpretar y traducir código formal.
+```text
+Probabilidad(token_i) = exp(logit_i) ÷ ∑ exp(logit_j)
+```
+
+Mediante una función de pérdida de entropía cruzada y el optimizador AdamW, los pesos del modelo se ajustan gradualmente para aumentar la probabilidad del término correcto.
+
+### 3. Decodificación y muestreo
+Elegir siempre la palabra con mayor probabilidad (*greedy search*) produce repeticiones y textos monótonos. Para equilibrar coherencia y variedad, se emplean tres parámetros de muestreo:
+
+- **Temperatura:** Factor divisor positivo aplicado a los logits antes de la función softmax. Valores bajos (como 0.2) concentran la probabilidad en las opciones principales, ideal para programación o matemáticas. Valores altos (como 0.8) aplanan la distribución, fomentando la creatividad léxica.
+- **Top-k:** Filtra la selección a los k candidatos más probables (por ejemplo, los 40 primeros), descartando términos inverosímiles (Angela Fan et al., 2018).
+- **Top-p (muestreo de núcleo):** Selecciona el conjunto más reducido de tokens cuya probabilidad acumulada alcanza el umbral p, típicamente 0.90 (Ari Holtzman et al., 2019). Si una palabra es muy predecible, la lista de opciones se reduce de inmediato; si el contexto es abierto, se amplía.
 
 ---
 
-## 3. Casos de Uso y Aplicaciones Reales
+## 3. Dónde se usa hoy en la vida real
 
-1. **Ingeniería de Software:** Asistencia interactiva, autocompletado sintáctico, síntesis de pruebas de software y traducción entre lenguajes de programación.
-2. **Agentes Autónomos y Uso de Herramientas:** Planificación jerárquica (*ReAct*), invocación de funciones externas (APIs, motores SQL) y navegación web contextualizada.
-3. **Generación Aumentada por Recuperación (RAG):** Integración con bases de datos vectoriales para la consulta documental en derecho, medicina y finanzas, reduciendo alucinaciones factuales.
-4. **Biología Computacional y Química:** Modelado de secuencias biológicas (aminoácidos, SMILES) para predicción de plegamiento proteico y diseño molecular.
+- **Ingeniería de software:** Asistentes de programación (como GitHub Copilot, Cursor o Claude Code) que sugieren funciones, escriben pruebas unitarias y traducen código entre lenguajes.
+- **Búsqueda empresarial y RAG:** Sistemas de Generación Aumentada por Recuperación que consultan reglamentos legales, historiales médicos o manuales corporativos para responder con fuentes contrastadas.
+- **Atención al usuario y traducción:** Asistentes multilingües capaces de gestionar consultas operativas, resumir reuniones y adaptar textos a registros formales específicos.
+- **Biología computacional:** Modelos adaptados a secuencias moleculares (como ESM de Meta) que interpretan aminoácidos como tokens para predecir el plegamiento de proteínas y diseñar nuevos fármacos.
+- **Agentes autónomos:** Modelos integrados con herramientas externas para consultar bases de datos SQL, ejecutar llamadas a APIs y coordinar tareas digitales complejas sin supervisión paso a paso.
 
 ---
 
-## 4. Ventajas, Limitaciones y Riesgos
+## 4. Qué hace bien, qué falla y qué riesgos tiene
 
-| Dimensión | Ventajas Clave | Limitaciones Técnicas | Riesgos Críticos |
+| Dimensión | Qué hace bien | Dónde falla o se limita | Riesgo principal |
 | :--- | :--- | :--- | :--- |
-| **Capacidad y Flexibilidad** | Generalización *zero-shot* y comprensión profunda de estructuras sintácticas variadas. | Coste de atención cuadrático o lineal respecto a la longitud del contexto; límites de memoria de trabajo. | Inyección de directivas (*prompt injection*) y extracción de datos confidenciales. |
-| **Rendimiento e Inferencia** | Generación natural coherente; aceleración con cuantización (FP8/INT4) y decodificación especulativa. | Elevada huella de VRAM para la caché KV (*Key-Value*); coste energético masivo en entrenamiento. | Centralización del poder de cómputo en grandes proveedores tecnológicos. |
-| **Calidad Epistémica** | Integración y síntesis de grandes volúmenes de conocimiento multidisciplinar. | Alucinaciones estocásticas: formulación de aseveraciones formalmente erróneas con alta convicción. | Proliferación automatizada de desinformación creíble a gran escala. |
-| **Alineamiento y Gobernanza** | Adaptabilidad conductual mediante técnicas post-entrenamiento (SFT, RLHF, DPO). | Imposibilidad teórica de garantizar un comportamiento libre de fallos bajo cualquier distribución de entrada. | Perpetuación de sesgos algorítmicos reflejados en el corpus de pre-entrenamiento. |
+| **Capacidad expresiva** | Redacción fluida, síntesis ágil y adaptación a múltiples registros lingüísticos. | Falta de sentido común físico; no verifica la verdad de sus afirmaciones por sí mismo. | Difusión masiva de desinformación convincente pero falsa. |
+| **Razonamiento formal** | Descomposición de problemas paso a paso (*Chain-of-Thought*) y traducción lógica. | Vulnerabilidad ante cambios sutiles en las premisas y fallos en aritmética elemental. | Inclusión inadvertida de vulnerabilidades de seguridad en código de software. |
+| **Eficiencia operativa** | Versatilidad multitarea con un único modelo base sin necesidad de programar cada función. | Alto consumo de memoria VRAM para almacenar el historial de claves y valores (*KV cache*). | Concentración tecnológica en un número reducido de proveedores de computación e infraestructura. |
+| **Seguridad y control** | Asimilación de directrices éticas y rechazo de peticiones peligrosas mediante RLHF y DPO. | Imposibilidad matemática de garantizar respuestas seguras ante cualquier entrada imprevista. | Vulnerabilidad ante inyecciones de instrucciones (*prompt injection*) que eluden los filtros. |
+
+### Limitaciones críticas y riesgos prácticos
+
+- **Alucinaciones factuales:** Los LLMs optimizan la verosimilitud estadística del lenguaje, no la veracidad objetiva. Por tanto, pueden generar datos falsos con tono de certeza si no cuentan con mecanismos de verificación externa.
+- **Sobrecarga de memoria de contexto (*KV Cache*):** A medida que la conversación se amplía, retener en la memoria de la GPU las representaciones previas eleva considerablemente el coste computacional por consulta.
+- **Ataques por inyección de instrucciones:** Al procesar las directivas del sistema y el texto del usuario en el mismo canal, un atacante puede camuflar órdenes para alterar el comportamiento del modelo y extraer información reservada.
 
 ---
 
-## 5. Conceptos Relacionados
+## 5. Temas relacionados
 
-- **Arquitectura Transformer y Autoatención:** Mecanismo subyacente de proyecciones lineales Query, Key, Value y atención multi-cabeza.
-- **Alineamiento mediante RLHF y DPO:** Métodos de aprendizaje por refuerzo y optimización de preferencias directas para alinear modelos con la intención humana.
-- **Generación Aumentada por Recuperación (RAG):** Paradigma que enlaza modelos generativos con sistemas de recuperación de información semántica densa.
-- **Leyes de Escalamiento Neuronal (*Scaling Laws*):** Principios que gobiernan el rendimiento predictivo en función del tamaño del modelo, datos y cómputo invertido.
+- **Arquitectura Transformer y Autoatención:** El diseño neuronal que habilitó el procesamiento masivo de secuencias en paralelo.
+- **Fine-Tuning y Adaptación Eficiente (LoRA):** Técnicas para especializar modelos de lenguaje optimizando solo una fracción de sus parámetros.
+- **Generación Aumentada por Recuperación (RAG):** Método que vincula los modelos generativos con bases documentales externas para sustentar sus respuestas.
+- **Ingeniería de Prompts (*Prompt Engineering*):** Buenas prácticas de diseño de instrucciones para obtener respuestas precisas y estructuradas.
+- **Alineamiento y Seguridad en IA:** Metodologías como RLHF y DPO para ajustar las respuestas del modelo a normas éticas y de utilidad humana.
