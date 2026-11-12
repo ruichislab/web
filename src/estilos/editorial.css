@@ -4,6 +4,14 @@
 /* ==========================================================================
    0. RESET TIPOGRÁFICO Y CONTENEDOR MAESTRO
    ========================================================================== */
+html, body {
+  overflow-x: clip;
+  max-width: 100%;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
 
 /* Anular la imposición de color oro global de main.css para encabezados */
 h1, h2, h3, h4, h5, h6 {
@@ -169,6 +177,59 @@ body.theme-paper .header-cyber {
   justify-content: space-between;
   align-items: center;
   gap: 1.5rem;
+  position: relative;
+}
+
+.mobile-nav-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border-radius: var(--border-radius-sm);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-color);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  flex-shrink: 0;
+}
+
+body.theme-paper .mobile-nav-toggle {
+  background: rgba(0, 0, 0, 0.04);
+  border-color: rgba(24, 24, 27, 0.18);
+}
+
+.mobile-nav-toggle:hover {
+  border-color: var(--primary-color);
+  background: rgba(212, 175, 55, 0.12);
+}
+
+.hamburger-line {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background: var(--text-primary);
+  border-radius: 2px;
+  transition: transform 0.25s ease, opacity 0.2s ease;
+}
+
+body.theme-paper .hamburger-line {
+  background: #18181B;
+}
+
+.mobile-nav-toggle[aria-expanded="true"] .hamburger-line:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.mobile-nav-toggle[aria-expanded="true"] .hamburger-line:nth-child(2) {
+  opacity: 0;
+}
+
+.mobile-nav-toggle[aria-expanded="true"] .hamburger-line:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
 }
 
 .brand-identity {
@@ -925,7 +986,7 @@ body.theme-paper .catalog-search-input {
    ========================================================================== */
 .books-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(480px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(440px, 100%), 1fr));
   gap: 2.25rem;
 }
 
@@ -2701,20 +2762,97 @@ body.theme-paper .footer-section p {
 }
 
 /* ==========================================================================
-   14. RESPONSIVE DESIGN (TABLETS & MÓVILES)
+   14. DISEÑO ADAPTATIVO DE ALTA PRECISIÓN (TABLETS & MÓVILES)
    ========================================================================== */
-@media (max-width: 1024px) {
+@media (max-width: 1100px) {
+  .container {
+    padding: 0 1.25rem;
+  }
+
   .hero-editorial-grid {
     grid-template-columns: 1fr;
-    gap: 3rem;
+    gap: 2.5rem;
   }
 
   .books-grid {
     grid-template-columns: 1fr;
+    gap: 1.75rem;
   }
 
   .about-pillars-grid {
     grid-template-columns: 1fr;
+  }
+
+  .sopa-workspace,
+  .sudoku-workspace,
+  .cripto-workspace {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .sopa-board-frame,
+  .sudoku-board-frame {
+    max-width: 520px;
+    margin: 0 auto;
+    width: 100%;
+  }
+}
+
+@media (max-width: 960px) {
+  .mobile-nav-toggle {
+    display: inline-flex;
+  }
+
+  .nav-editorial {
+    display: none;
+    position: absolute;
+    top: calc(100% + 0.9rem);
+    left: 0;
+    right: 0;
+    background: rgba(11, 15, 25, 0.98);
+    backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-lg);
+    padding: 1rem;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+    z-index: 999;
+  }
+
+  body.theme-paper .nav-editorial {
+    background: rgba(250, 246, 238, 0.98);
+    box-shadow: 0 16px 40px rgba(24, 24, 27, 0.16);
+  }
+
+  .nav-editorial.nav-open {
+    display: block;
+    animation: slideDownNav 0.2s ease-out;
+  }
+
+  @keyframes slideDownNav {
+    from {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .nav-editorial .nav-list {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.4rem;
+  }
+
+  .nav-editorial .nav-link {
+    width: 100%;
+    justify-content: space-between;
+    padding: 0.78rem 1rem;
+    font-size: 0.9rem;
+    min-height: 44px;
+    border-radius: var(--border-radius-sm);
   }
 
   .hero-disciplines-row {
@@ -2723,9 +2861,8 @@ body.theme-paper .footer-section p {
 }
 
 @media (max-width: 840px) {
-  .sopa-workspace,
-  .sudoku-workspace {
-    grid-template-columns: 1fr;
+  .topbar-tagline {
+    display: none;
   }
 
   .footer-content {
@@ -2733,29 +2870,96 @@ body.theme-paper .footer-section p {
     gap: 1.75rem;
   }
 
-  .header-editorial-inner {
-    flex-direction: column;
-    align-items: flex-start;
+  /* Teclado numérico de Sudoku estilo NYT: fila única de 9 botones debajo del tablero */
+  .sudoku-numpad {
+    grid-template-columns: repeat(9, 1fr);
+    gap: 0.35rem;
   }
 
-  .nav-editorial .nav-list {
-    flex-wrap: wrap;
-    gap: 0.4rem;
+  .numpad-btn {
+    padding: 0.55rem 0.2rem;
+    min-height: 52px;
+  }
+
+  .numpad-digit {
+    font-size: 1.15rem;
+  }
+
+  .numpad-rem {
+    font-size: 0.62rem;
+  }
+
+  /* Tarjetas del Hub de Juegos compactas para mantener el tablero a la vista */
+  .gym-hub-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.65rem;
+    margin-bottom: 1.35rem;
+  }
+
+  .gym-hub-card {
+    padding: 0.9rem 0.85rem;
+  }
+
+  .hub-card-desc,
+  .hub-card-tags {
+    display: none;
+  }
+
+  .hub-card-title {
+    font-size: 0.95rem;
+    margin-bottom: 0;
   }
 }
 
 @media (max-width: 640px) {
+  .container {
+    padding: 0 1rem;
+  }
+
+  .editorial-topbar {
+    padding: 0.45rem 0;
+  }
+
+  .editorial-topbar .container {
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  .topbar-link[data-nav-section="gimnasio-mental"] {
+    display: none;
+  }
+
+  .editorial-section {
+    padding: 3.25rem 0;
+  }
+
   .hero-editorial {
-    padding: 3rem 0;
+    padding: 2.5rem 0;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .hero-actions .btn-editorial {
+    width: 100%;
+    justify-content: center;
+    min-height: 46px;
+  }
+
+  .hero-showcase-box {
+    padding: 1.35rem;
   }
 
   .showcase-main {
     grid-template-columns: 1fr;
     text-align: center;
+    gap: 1.25rem;
   }
 
   .showcase-cover-wrap {
-    max-width: 165px;
+    max-width: 155px;
     margin: 0 auto;
   }
 
@@ -2763,13 +2967,47 @@ body.theme-paper .footer-section p {
     justify-content: center;
   }
 
+  .showcase-thumbs {
+    justify-content: center;
+  }
+
+  /* Controles del catálogo adaptables */
+  .catalog-controls {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.85rem;
+  }
+
+  .filter-pills {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding-bottom: 0.25rem;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .filter-pill {
+    flex-shrink: 0;
+    min-height: 40px;
+  }
+
+  .catalog-search-wrap {
+    width: 100%;
+    max-width: none;
+  }
+
+  .book-card {
+    padding: 1.35rem;
+  }
+
   .book-card-columns {
     grid-template-columns: 1fr;
     text-align: center;
+    gap: 1.35rem;
   }
 
   .book-cover-frame {
     margin: 0 auto;
+    max-width: 165px;
   }
 
   .book-badges-row,
@@ -2781,16 +3019,211 @@ body.theme-paper .footer-section p {
     flex-direction: column;
   }
 
+  .book-card-actions .btn-book-detail,
+  .book-card-actions .btn-book-amazon {
+    width: 100%;
+    justify-content: center;
+    min-height: 44px;
+  }
+
+  /* Gimnasio Mental móvil */
+  .gym-performance-bar {
+    padding: 0.85rem 1rem;
+    gap: 0.85rem;
+  }
+
+  .gym-perf-stats {
+    width: 100%;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+
+  .gym-perf-controls {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+  }
+
+  .btn-perf-tool {
+    justify-content: center;
+    min-height: 42px;
+  }
+
+  .gimnasio-shell {
+    padding: 1rem;
+    border-radius: var(--border-radius-lg);
+  }
+
+  #gimnasio-mental-app.zen-mode {
+    padding: 1rem;
+  }
+
+  .gym-hub-grid {
+    gap: 0.45rem;
+  }
+
+  .gym-hub-card {
+    padding: 0.7rem 0.5rem;
+    text-align: center;
+  }
+
+  .hub-card-header {
+    flex-direction: column-reverse;
+    gap: 0.25rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .hub-card-badge {
+    display: none;
+  }
+
+  .hub-card-title {
+    font-size: 0.78rem;
+    line-height: 1.2;
+  }
+
+  .gimnasio-toolbar {
+    padding: 0.75rem;
+    gap: 0.65rem;
+  }
+
+  .toolbar-group {
+    width: 100%;
+    gap: 0.45rem;
+  }
+
+  .puzzle-select {
+    width: 100%;
+    min-height: 42px;
+  }
+
+  .btn-puzzle-tool {
+    padding: 0.45rem 0.65rem;
+    font-size: 0.76rem;
+    min-height: 38px;
+    flex: 1 1 auto;
+    justify-content: center;
+  }
+
+  .sopa-live-preview-pill {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .sopa-board-frame,
+  .sudoku-board-frame {
+    padding: 0.5rem;
+  }
+
+  .sopa-grid {
+    gap: 2px;
+  }
+
   .sopa-word-list {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.45rem;
+  }
+
+  .sopa-word-chip {
+    padding: 0.38rem 0.5rem;
+    font-size: 0.7rem;
+  }
+
+  .cripto-board-frame {
+    padding: 1rem;
+  }
+
+  .cripto-board-slots {
+    gap: 0.9rem 0.6rem;
+    padding: 0.75rem 0 1.25rem;
+    min-height: 130px;
+  }
+
+  .cripto-slot {
+    width: 26px;
+    height: 44px;
+  }
+
+  .cripto-slot .slot-letter {
+    font-size: 1.2rem;
+    height: 28px;
+  }
+
+  .btn-keyboard-key {
+    min-width: 30px;
+    height: 38px;
+    font-size: 0.85rem;
+    padding: 0 0.35rem;
+  }
+
+  /* Estudio & Modales */
+  .about-studio-card {
+    padding: 1.5rem;
+  }
+
+  .about-studio-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.85rem;
+  }
+
+  .editorial-modal-dialog {
+    padding: 1.35rem;
+    margin: 0.75rem;
   }
 
   .modal-book-layout {
     grid-template-columns: 1fr;
+    gap: 1.25rem;
   }
 
   .modal-cover-col {
-    max-width: 200px;
+    max-width: 180px;
     margin: 0 auto;
+  }
+}
+
+@media (max-width: 420px) {
+  .brand-titles .logo-text {
+    font-size: 1.12rem;
+  }
+
+  .brand-titles .logo-subtitle {
+    font-size: 0.58rem;
+    letter-spacing: 0.06em;
+  }
+
+  .sopa-word-list {
+    grid-template-columns: 1fr;
+  }
+
+  .sudoku-numpad {
+    gap: 0.25rem;
+  }
+
+  .numpad-btn {
+    min-height: 46px;
+    padding: 0.4rem 0.1rem;
+  }
+
+  .numpad-digit {
+    font-size: 1rem;
+  }
+
+  .cripto-slot {
+    width: 22px;
+    height: 38px;
+  }
+
+  .cripto-slot .slot-letter {
+    font-size: 1.05rem;
+    height: 24px;
+  }
+
+  .btn-keyboard-key {
+    min-width: 26px;
+    height: 35px;
+    font-size: 0.8rem;
   }
 }
