@@ -223,8 +223,8 @@ function renderCatalogBooks(libros) {
   grid.innerHTML = filtrados
     .map(book => {
       const asinPillHtml = book.asin
-        ? `<span class="book-asin-badge" title="ASIN verificado en Amazon">ASIN: ${book.asin}${book.asinSecundario ? ` / ${book.asinSecundario}` : ''}</span>`
-        : `<span class="book-asin-badge">${book.badgeEspecial || 'EDICIÓN KDP'}</span>`;
+        ? `<span class="book-asin-badge" title="Código ASIN en Amazon">ASIN: ${book.asin}${book.asinSecundario ? ` / ${book.asinSecundario}` : ''}</span>`
+        : `<span class="book-asin-badge">${book.badgeEspecial || 'EDICIÓN INDEPENDIENTE'}</span>`;
 
       return `
       <article class="book-card" data-book-id="${book.id}">
@@ -330,7 +330,7 @@ function openBookModal(bookId) {
       </div>
 
       <div class="modal-info-col">
-        <span class="section-kicker">${book.categoriaLabel} • ${book.badgeEspecial || 'EDICIÓN OFICIAL'}</span>
+        <span class="section-kicker">${book.categoriaLabel} • ${book.badgeEspecial || 'EDICIÓN INDEPENDIENTE'}</span>
         <h2 id="modal-book-title" style="font-family:var(--font-heading);font-size:1.7rem;color:var(--text-primary);margin-bottom:0.35rem;line-height:1.2;">
           ${book.titulo}
         </h2>
@@ -356,7 +356,7 @@ function openBookModal(bookId) {
 
         <div style="display:flex;gap:0.75rem;flex-wrap:wrap;margin-top:1.35rem;">
           <a href="${book.amazonUrl}" target="_blank" rel="noopener noreferrer" class="btn-editorial primary" style="padding:0.65rem 1.25rem;font-size:0.86rem;">
-            🛒 Ver en Amazon KDP ↗
+            🛒 Ver en Amazon ↗
           </a>
           ${secondAmazonHtml}
           ${gameActionHtml}
@@ -408,7 +408,7 @@ function openPrivacyPolicyModal() {
       const rendered = typeof marked !== 'undefined' ? marked.parse(md) : `<pre>${md}</pre>`;
       body.innerHTML = `
         <div style="max-width:720px;margin:0 auto;">
-          <span class="section-kicker">DOCUMENTO OFICIAL DE TRANSPARENCIA</span>
+          <span class="section-kicker">POLÍTICA DE PRIVACIDAD</span>
           <div style="line-height:1.75;color:var(--text-secondary);">
             ${rendered}
           </div>

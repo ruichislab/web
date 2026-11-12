@@ -1,12 +1,12 @@
 // src/js/catalogo-datos.js
-// Catálogo Oficial Verificado — Ruichis Lab (Amazon KDP)
+// Catálogo de Publicaciones — Ruichis Lab
 
 window.RUICHIS_CATALOGO = {
   editorialInfo: {
     nombre: "Ruichis Lab",
     lema: "Productividad Asimétrica & Colección Letras y Retos",
     ciudad: "Bogotá, Colombia",
-    distribucion: "Amazon KDP (Kindle eBook & Tapa Blanda)",
+    distribucion: "Amazon (Kindle eBook & Tapa Blanda)",
     amazonAuthorSearch: "https://www.amazon.com/s?k=Ruichis+Lab"
   },
 
@@ -38,7 +38,7 @@ window.RUICHIS_CATALOGO = {
         "Arquitectura de bloques de foco profundo de 120 minutos sin residuo atencional.",
         "Apalancamiento asimétrico mediante automatización, plantillas modulares y flujos de IA.",
         "Eliminación sistemática del 'teatro de la productividad' y la fricción operativa.",
-        "Edición oficial en Español disponible en Amazon (ASIN: B0HD2MY2HN)."
+        "Edición en Español disponible en Amazon (ASIN: B0HD2MY2HN)."
       ],
       extractoTitulo: "Capítulo 1: La Mentira Lineal del Tiempo",
       extracto: "«El trabajador promedio no está agotado por la complejidad de sus ideas, sino por la fricción de su entorno. Cada notificación, cada cambio de contexto y cada pestaña abierta cobra un impuesto neurobiológico que llamamos residuo de atención. La productividad asimétrica no consiste en correr más rápido dentro del laberinto; consiste en diseñar una catapulta fuera de él.»"
@@ -64,7 +64,7 @@ window.RUICHIS_CATALOGO = {
       asin: "B0HJ42QFCV",
       amazonUrl: "https://www.amazon.com/dp/B0HJ42QFCV",
       juegoRelacionado: { tipo: "sudoku", dificultad: "dificil" },
-      sinopsis: "The official English edition of Ruichis Lab's manifesto on cognitive leverage. Discover how high-output engineers, writers, and creators replace linear grind with asymmetric execution systems, cognitive isolation protocols, and autonomous workflows.",
+      sinopsis: "The English edition of Ruichis Lab's manifesto on cognitive leverage. Discover how high-output engineers, writers, and creators replace linear grind with asymmetric execution systems, cognitive isolation protocols, and autonomous workflows.",
       caracteristicas: [
         "Full English edition crafted for global professionals, builders, and independent creators.",
         "Includes the 2-Hour Deep Execution Protocol and Asymmetric Leverage Matrix.",
@@ -92,7 +92,7 @@ window.RUICHIS_CATALOGO = {
       portadaWrap: "src/assets/covers/100-sopas-cultura-wrap.jpg",
       destacado: true,
       badgeEspecial: "VOLUMEN I • 1.200 PALABRAS",
-      asin: "VOL-1-CULTURA",
+      asin: null,
       amazonUrl: "https://www.amazon.com/s?k=100+Grandes+Sopas+de+Letras+de+Cultura+General+Ruichis+Lab",
       juegoRelacionado: { tipo: "sopa", tema: "cultura_historia" },
       sinopsis: "Desafía tu mente y amplía tu vocabulario con 100 tableros temáticos cuidadosamente diseñados en 8 direcciones. Desde las grandes civilizaciones de la historia y los hitos de la ciencia hasta el arte universal, la geografía del mundo y las corrientes filosóficas.",
@@ -124,7 +124,7 @@ window.RUICHIS_CATALOGO = {
       portadaWrap: "src/assets/covers/100-sopas-biologia-wrap.jpg",
       destacado: true,
       badgeEspecial: "VOLUMEN II • CIENCIAS BIOLÓGICAS",
-      asin: "VOL-2-BIOLOGIA",
+      asin: null,
       amazonUrl: "https://www.amazon.com/s?k=100+Grandes+Sopas+de+Letras+de+Biologia+Ruichis+Lab",
       juegoRelacionado: { tipo: "sopa", tema: "biologia_celula" },
       sinopsis: "Explora los fundamentos de las ciencias de la vida mientras ejercitas tu agilidad mental. El Volumen II de la Colección Letras y Retos reúne 1.200 términos esenciales de biología celular, genética molecular, botánica, zoología, ecología y evolución.",
