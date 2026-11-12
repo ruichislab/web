@@ -413,6 +413,14 @@
           this.switchGame(target);
           GymAudio.click();
         });
+        btn.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            const target = btn.getAttribute("data-game-tab");
+            this.switchGame(target);
+            GymAudio.click();
+          }
+        });
       });
     }
 
@@ -420,7 +428,9 @@
       this.activeGame = gameType;
 
       document.querySelectorAll("[data-game-tab]").forEach(btn => {
-        btn.classList.toggle("active", btn.getAttribute("data-game-tab") === gameType);
+        const isActive = btn.getAttribute("data-game-tab") === gameType;
+        btn.classList.toggle("active", isActive);
+        btn.setAttribute("aria-selected", isActive ? "true" : "false");
       });
 
       const sopaPanel = document.getElementById("panel-juego-sopa");
@@ -1021,6 +1031,7 @@
         `🏆 ¡FELICITACIONES! Has completado el reto en <strong>${mins}m ${secs}s</strong>.`,
         "success"
       );
+      this.lanzarConfetiEn(".sopa-board-frame");
     }
 
     // =========================================================================
@@ -1989,11 +2000,11 @@
           : "Has completado las 81 celdas correctamente.";
       }
       if (overlay) overlay.hidden = false;
-      this.lanzarConfetiSudoku();
+      this.lanzarConfetiEn(".sudoku-board-frame");
     }
 
-    lanzarConfetiSudoku() {
-      const frame = document.querySelector(".sudoku-board-frame");
+    lanzarConfetiEn(selector = ".sudoku-board-frame") {
+      const frame = document.querySelector(selector);
       if (!frame) return;
       const colors = ["#D4AF37", "#38BDF8", "#10B981", "#F59E0B", "#F43F5E"];
       for (let i = 0; i < 28; i++) {
@@ -2312,6 +2323,7 @@
           «<em>${data.frase}</em>» — <strong>${data.autor}</strong> (${data.libro}).
         `;
       }
+      this.lanzarConfetiEn(".cripto-board-card");
     }
 
     // =========================================================================

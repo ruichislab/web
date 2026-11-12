@@ -3492,6 +3492,34 @@ body.theme-paper .stats-best-row {
   animation: confettiFall 1.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
 }
 
+.sopa-board-frame,
+.cripto-board-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.skip-to-content {
+  position: fixed;
+  top: -100px;
+  left: 1rem;
+  z-index: 9999;
+  padding: 0.65rem 1.1rem;
+  background: var(--primary-color);
+  color: #0B0F19;
+  font-weight: 800;
+  font-size: 0.86rem;
+  border-radius: 8px;
+  text-decoration: none;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  transition: top 0.15s ease;
+}
+
+.skip-to-content:focus-visible {
+  top: 1rem;
+  outline: 2px solid #FFFFFF;
+}
+
+
 
 
 
