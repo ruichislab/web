@@ -188,11 +188,13 @@
               <span class="puzzle-stat-pill" id="sudoku-best-pill" title="Tu mejor tiempo en este nivel">🏆 Mejor: <span id="sudoku-best-time">--:--</span></span>
               <span class="puzzle-stat-pill" title="Celdas completadas">📊 <span id="sudoku-progress-counter">35 / 81</span></span>
               <span class="puzzle-stat-pill" id="sudoku-mistakes-pill" title="Errores cometidos">❌ Errores: <span id="sudoku-mistakes-count">0</span></span>
+              <button type="button" class="btn-puzzle-tool" id="btn-sudoku-lives-mode" aria-pressed="false" title="Activar reto competitivo con máximo 3 errores">❤️ 3 Vidas: OFF</button>
+              <button type="button" class="btn-puzzle-tool" id="btn-sudoku-stats" title="Ver tus estadísticas y récords de Sudoku">📈 Estadísticas</button>
               <button type="button" class="btn-puzzle-tool" id="btn-sudoku-notas" aria-pressed="false" title="Modo Notas de Lápiz (Tecla N)">✏️ Notas (Lápiz)</button>
               <button type="button" class="btn-puzzle-tool" id="btn-sudoku-autocandidatos" title="Calcular candidatos válidos para todas las celdas vacías">✨ Auto-Candidatos</button>
               <button type="button" class="btn-puzzle-tool" id="btn-sudoku-deshacer" title="Deshacer última jugada">↩️ Deshacer</button>
               <button type="button" class="btn-puzzle-tool" id="btn-sudoku-borrar" title="Borrar celda seleccionada">🧹 Borrar</button>
-              <button type="button" class="btn-puzzle-tool" id="btn-sudoku-pista" title="Revelar celda correcta">💡 Pista</button>
+              <button type="button" class="btn-puzzle-tool" id="btn-sudoku-pista" title="Pista lógica explicada paso a paso">💡 Pista Lógica</button>
               <button type="button" class="btn-puzzle-tool" id="btn-sudoku-verificar" title="Comprobar si hay errores">✔️ Verificar</button>
               <button type="button" class="btn-puzzle-tool" id="btn-sudoku-nuevo" title="Generar nuevo Sudoku">🔄 Nuevo</button>
               <button type="button" class="btn-puzzle-tool" id="btn-sudoku-imprimir" title="Imprimir hoja de Sudoku">🖨️ Imprimir</button>
@@ -214,6 +216,18 @@
                   <p>El cronómetro está detenido y el tablero oculto para proteger tu concentración.</p>
                   <div class="victory-actions">
                     <button type="button" class="btn-hero-primary" id="btn-sudoku-resume">▶️ Reanudar Partida</button>
+                  </div>
+                </div>
+              </div>
+
+              <div id="sudoku-gameover-overlay" class="puzzle-victory-overlay" hidden aria-live="polite">
+                <div class="puzzle-victory-card">
+                  <div class="victory-trophy">💔</div>
+                  <h3>Límite de 3 Errores Alcanzado</h3>
+                  <p>El modo competitivo 3 Vidas ha terminado esta ronda. ¿Reintentas el mismo tablero o pruebas uno nuevo?</p>
+                  <div class="victory-actions">
+                    <button type="button" class="btn-hero-primary" id="btn-sudoku-retry-same">🔁 Reintentar Mismo Tablero</button>
+                    <button type="button" class="btn-puzzle-tool" id="btn-sudoku-gameover-new">🔄 Nuevo Sudoku</button>
                   </div>
                 </div>
               </div>
@@ -242,6 +256,31 @@
                     <button type="button" class="btn-hero-primary" id="btn-sudoku-victory-share">📤 Copiar Resultado</button>
                     <button type="button" class="btn-puzzle-tool" id="btn-sudoku-victory-new">🔄 Jugar Nuevo Sudoku</button>
                     <button type="button" class="btn-puzzle-tool" id="btn-sudoku-victory-view">👁️ Ver Tablero</button>
+                  </div>
+                </div>
+              </div>
+
+              <div id="sudoku-stats-overlay" class="puzzle-victory-overlay" hidden aria-live="polite">
+                <div class="puzzle-victory-card sudoku-stats-card">
+                  <div class="victory-trophy">📈</div>
+                  <h3>Tus Estadísticas de Sudoku</h3>
+                  <div class="victory-stats-row">
+                    <div class="victory-stat">
+                      <span class="victory-stat-label">RESUELTOS</span>
+                      <strong id="stats-sudoku-won">0</strong>
+                    </div>
+                    <div class="victory-stat">
+                      <span class="victory-stat-label">PERFECTOS</span>
+                      <strong id="stats-sudoku-perfect">0</strong>
+                    </div>
+                    <div class="victory-stat">
+                      <span class="victory-stat-label">RETOS DÍA</span>
+                      <strong id="stats-sudoku-daily">0</strong>
+                    </div>
+                  </div>
+                  <div class="stats-best-list" id="stats-sudoku-best-list"></div>
+                  <div class="victory-actions" style="margin-top:1rem;">
+                    <button type="button" class="btn-hero-primary" id="btn-sudoku-stats-close">Cerrar</button>
                   </div>
                 </div>
               </div>
