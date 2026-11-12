@@ -17,22 +17,47 @@
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "WebApplication",
-    "name": "Gimnasio Mental Ruichis Lab — Sudoku Maestro y Sopas de Letras Online Gratis",
-    "url": "https://ruichislab.com/#gimnasio-mental",
-    "applicationCategory": "GameApplication",
-    "operatingSystem": "Web",
-    "inLanguage": "es",
-    "offers": {
-      "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "USD"
-    },
-    "publisher": {
-      "@type": "Organization",
-      "name": "Ruichis Lab",
-      "url": "https://ruichislab.com/"
-    }
+    "@graph": [
+      {
+        "@type": "WebApplication",
+        "name": "Gimnasio Mental Ruichis Lab — Sudoku Maestro y Sopas de Letras Online Gratis",
+        "url": "https://ruichislab.com/#gimnasio-mental",
+        "applicationCategory": "GameApplication",
+        "operatingSystem": "Web",
+        "inLanguage": "es",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "Ruichis Lab",
+          "url": "https://ruichislab.com/"
+        }
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "¿El Sudoku Maestro tiene anuncios o requiere registro?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. El Sudoku Maestro 9x9 y las Sopas de Letras Pro de Ruichis Lab son 100% gratis, sin anuncios y sin crear cuenta."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "¿Puedo jugar al Sudoku y Sopas de Letras sin internet?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Sí, al instalar la PWA o visitarla una vez, queda guardada en caché offline para jugar sin conexión."
+            }
+          }
+        ]
+      }
+    ]
   }
   </script>
 </head>

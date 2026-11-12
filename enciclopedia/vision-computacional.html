@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Visión Computacional: De CNNs a ViT y YOLO — Enciclopedia IA | Ruichis Lab</title>
+  <meta name="description" content="Cómo las máquinas reconocen objetos, rostros y escenas médicas usando convoluciones, Vision Transformers, detección en vivo (YOLO) y segmentación.">
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+  <link rel="canonical" href="https://ruichislab.com/enciclopedia/vision-computacional.html">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Ruichis Lab">
+  <meta property="og:title" content="Visión Computacional: De CNNs a ViT y YOLO — Enciclopedia IA | Ruichis Lab">
+  <meta property="og:description" content="Cómo las máquinas reconocen objetos, rostros y escenas médicas usando convoluciones, Vision Transformers, detección en vivo (YOLO) y segmentación.">
+  <meta property="og:url" content="https://ruichislab.com/enciclopedia/vision-computacional.html">
+  <meta property="og:image" content="https://ruichislab.com/src/assets/covers/productividad-asimetrica-es.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Visión Computacional: De CNNs a ViT y YOLO | Ruichis Lab">
+  <meta name="twitter:description" content="Cómo las máquinas reconocen objetos, rostros y escenas médicas usando convoluciones, Vision Transformers, detección en vivo (YOLO) y segmentación.">
+  <link rel="stylesheet" href="../src/estilos/editorial.css">
+  <script type="application/ld+json">
+  {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "TechArticle",
+      "headline": "Visión Computacional: De CNNs a ViT y YOLO",
+      "description": "Cómo las máquinas reconocen objetos, rostros y escenas médicas usando convoluciones, Vision Transformers, detección en vivo (YOLO) y segmentación.",
+      "inLanguage": "es",
+      "dateModified": "2026-11-12",
+      "author": {
+        "@type": "Organization",
+        "name": "Ruichis Lab",
+        "url": "https://ruichislab.com/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Ruichis Lab",
+        "url": "https://ruichislab.com/"
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://ruichislab.com/enciclopedia/vision-computacional.html"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Inicio",
+          "item": "https://ruichislab.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Enciclopedia IA",
+          "item": "https://ruichislab.com/pages/enciclopedia.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Visión Computacional: De CNNs a ViT y YOLO",
+          "item": "https://ruichislab.com/enciclopedia/vision-computacional.html"
+        }
+      ]
+    }
+  ]
+}
+  </script>
+</head>
+<body>
+  <header style="border-bottom:1px solid rgba(212,175,55,0.25);padding:1rem 1.5rem;">
+    <div style="max-width:860px;margin:0 auto;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:0.75rem;">
+      <a href="../" style="font-weight:800;letter-spacing:0.08em;text-decoration:none;color:#D4AF37;">RUICHIS LAB</a>
+      <nav style="display:flex;gap:1rem;font-size:0.9rem;">
+        <a href="../pages/enciclopedia.html">Índice Enciclopedia (30)</a>
+        <a href="../#enciclopedia-ia">Lector Interactivo</a>
+        <a href="../#gimnasio-mental">Sudoku y Sopas Gratis</a>
+      </nav>
+    </div>
+  </header>
+  <main class="container" style="max-width:860px;margin:2.5rem auto;padding:0 1.5rem 3rem;line-height:1.75;">
+    <p style="font-size:0.8rem;letter-spacing:0.12em;text-transform:uppercase;color:#D4AF37;font-weight:700;">
+      🧠 undefined • NIVEL: INTERMEDIO • LECTURA: undefined
+    </p>
+    <article>
+      <h1>Visión computacional: cómo las máquinas aprenden a ver</h1>
+<p>Para una persona, reconocer una taza de café sobre una mesa es instantáneo. Los ojos captan la luz y el cerebro reconstruye formas, distancias y colores al momento. Para una computadora, una foto es solo una cuadrícula de números: miles o millones de píxeles con valores de color entre 0 y 255. La visión computacional es la rama de la inteligencia artificial que enseña a las máquinas a interpretar esos números para identificar qué objetos hay en una escena, dónde están y hacia dónde se mueven.</p>
+<blockquote style="border-left:3px solid #D4AF37;padding:0.75rem 1rem;margin:1.25rem 0;background:rgba(212,175,55,0.08);border-radius:0 8px 8px 0;"><strong>En pocas palabras:</strong> La visión computacional transforma matrices de números en percepción visual, permitiendo a las computadoras reconocer objetos, personas y movimientos en tiempo real.</blockquote>
+<h2>1. De dónde viene y cómo se entiende fácil</h2>
+<p>Pensemos en cómo aprende a mirar un niño. No analiza a un perro con una regla; primero detecta contrastes de luz y sombra, luego bordes y curvas, más adelante texturas como el pelaje, y finalmente la silueta completa.</p>
+<p>Durante décadas, se intentó programar esa visión a mano usando algoritmos como SIFT (<em>Scale-Invariant Feature Transform</em>, David Lowe, 1999) o HOG (<em>Histogram of Oriented Gradients</em>, Navneet Dalal y Bill Triggs, 2005). Aunque detectaban esquinas en laboratorio, fallaban si cambiaba la luz o si el objeto giraba levemente.</p>
+<p>La solución provino de la neurociencia. Entre 1959 y 1962, David Hubel y Torsten Wiesel descubrieron que las neuronas visuales de los mamíferos procesan la información en cascada jerárquica: células simples detectan líneas orientadas y células complejas combinan esas respuestas para abstraer contornos. Esta jerarquía inspiró el Neocognitron de Kunihiko Fukushima (1980) y la red LeNet-5 de Yann LeCun (1998) para leer números en cheques postales.</p>
+<p>El cambio definitivo ocurrió en 2012. En la competencia ImageNet, Alex Krizhevsky, Ilya Sutskever y Geoffrey Hinton presentaron AlexNet. En vez de diseñar reglas a mano, entrenaron una red profunda con más de un millón de fotos usando procesadores gráficos (GPU). El algoritmo aprendió por sí solo qué rasgos buscar, redujo el error a casi la mitad y desató la era moderna del aprendizaje profundo.</p>
+<h2>2. Cómo funciona por dentro</h2>
+<p>La visión moderna resuelve tareas complejas mediante cinco innovaciones clave:</p>
+<h3>Redes Neuronales Convolucionales (CNN)</h3>
+<p>Una red convolucional pasa un filtro matemático deslizante (<em>kernel</em>), habitualmente de 3×3 píxeles, por toda la imagen. Como una lupa que barre un lienzo, multiplica sus valores por los píxeles que cubre para resaltar patrones: bordes en las primeras capas, texturas en las intermedias y partes complejas en las finales. El tamaño de salida se calcula así:</p>
+<pre style="padding:1rem;border-radius:8px;overflow-x:auto;background:#111827;color:#E5E7EB;"><code class="language-text">Salida = piso((Entrada - Filtro + 2 × Relleno) / Avance) + 1</code></pre>
+<p>Donde el relleno (<em>padding</em>) añade ceros en los bordes y el avance (<em>stride</em>) define cuántos píxeles salta el filtro.</p>
+<h3>ResNet y las conexiones de atajo (2015)</h3>
+<p>Al apilar muchas capas surgía el desvanecimiento del gradiente: el error matemático se diluía al retroceder durante el entrenamiento. Kaiming He y Microsoft Research lo resolvieron con ResNet (<em>Residual Networks</em>), sumando la entrada original a la salida de cada bloque (<code>y = F(x) + x</code>):</p>
+<pre style="padding:1rem;border-radius:8px;overflow-x:auto;background:#111827;color:#E5E7EB;"><code class="language-python">import torch
+import torch.nn as nn
+
+class BloqueResidual(nn.Module):
+    def __init__(self, canales: int):
+        super().__init__()
+        self.conv = nn.Sequential(
+            nn.Conv2d(canales, canales, 3, padding=1, bias=False),
+            nn.BatchNorm2d(canales),
+            nn.ReLU(inplace=True),
+            nn.Conv2d(canales, canales, 3, padding=1, bias=False),
+            nn.BatchNorm2d(canales)
+        )
+        self.relu = nn.ReLU(inplace=True)
+
+    def forward(self, x: torch.Tensor) -&gt; torch.Tensor:
+        return self.relu(self.conv(x) + x)</code></pre>
+<p>Si una capa no aporta nada, la red fija sus pesos en cero y deja pasar la señal intacta, lo que permitió entrenar redes estables de más de 100 capas.</p>
+<h3>Vision Transformers o ViT (2020)</h3>
+<p>Adaptados por Alexey Dosovitskiy y Google Research, los ViT dividen la imagen en parches cuadrados (ej. 16×16 píxeles) y los tratan como palabras mediante autoatención global:</p>
+<pre style="padding:1rem;border-radius:8px;overflow-x:auto;background:#111827;color:#E5E7EB;"><code class="language-text">Atención(Q, K, V) = softmax((Q × Kᵀ) / √d) × V</code></pre>
+<p>Cada parche calcula atención con todos los demás a la vez, captando relaciones lejanas sin limitarse a píxeles vecinos.</p>
+<h3>YOLO: detección en una sola pasada (2015-2016)</h3>
+<p>Antes de YOLO (<em>You Only Look Once</em>, Joseph Redmon et al.), ubicar objetos exigía evaluar cientos de regiones por separado. YOLO predice cajas delimitadoras y clases en una sola pasada, superando los 45 cuadros por segundo en video en vivo.</p>
+<h3>SAM: segmentar cualquier objeto (2023)</h3>
+<p>Presentado por Meta AI en 2023, SAM (<em>Segment Anything Model</em>) divide el recorte visual en dos: un codificador pesado que analiza la imagen una sola vez y un decodificador interactivo muy rápido que delimita cualquier silueta píxel por píxel en menos de 50 milisegundos tras recibir un clic o recuadro.</p>
+<h2>3. Dónde se usa hoy en la vida real</h2>
+<ul>
+<li><strong>Medicina asistida:</strong> Detección de retinopatía en fondos de ojo, localización de nódulos y delimitación de tumores en biopsias.</li>
+<li><strong>Vehículos autónomos:</strong> Cámaras con YOLO para rastrear peatones, ciclistas y carriles a más de 60 cuadros por segundo.</li>
+<li><strong>Inspección industrial:</strong> Control de calidad en fábricas para detectar fallas micrométricas en circuitos y envases.</li>
+<li><strong>Agricultura de precisión:</strong> Drones con Vision Transformers para identificar malezas y optimizar fertilizantes en cultivos.</li>
+</ul>
+<h2>4. Qué hace bien, qué falla y qué riesgos tiene</h2>
+<div style="overflow-x:auto;margin:1.25rem 0;"><table style="width:100%;border-collapse:collapse;"><thead><tr><th style="text-align:left;padding:0.6rem;border-bottom:2px solid #D4AF37;">Enfoque / Modelo</th><th style="text-align:left;padding:0.6rem;border-bottom:2px solid #D4AF37;">Lo que hace bien</th><th style="text-align:left;padding:0.6rem;border-bottom:2px solid #D4AF37;">Dónde falla</th><th style="text-align:left;padding:0.6rem;border-bottom:2px solid #D4AF37;">Aplicación ideal</th></tr></thead><tbody><tr><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);"><strong>CNN tradicionales</strong></td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Eficientes con pocas fotos y bajo cómputo.</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Campo visual limitado a su entorno inmediato.</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Sensores y móviles sencillos.</td></tr><tr><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);"><strong>ResNet</strong></td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Entrena redes muy profundas sin inestabilidad.</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Alto consumo de memoria en entrenamiento.</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Columna vertebral (<em>backbone</em>) general.</td></tr><tr><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);"><strong>Vision Transformers</strong></td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Captura relaciones globales entre zonas distantes.</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Costo cuadrático; exige muchos datos.</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Modelos fundacionales y multimodalidad.</td></tr><tr><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);"><strong>YOLO</strong></td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Inferencia ultrarrápida en tiempo real en una pasada.</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Puede omitir objetos diminutos o agrupados.</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Cámaras viales, drones y robótica.</td></tr><tr><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);"><strong>SAM</strong></td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Recorta cualquier objeto de forma interactiva.</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Codificador inicial pesado; no clasifica clases.</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Anotación de datos y edición fotográfica.</td></tr></tbody></table></div>
+<h3>Riesgos y consideraciones críticas</h3>
+<ul>
+<li><strong>Ataques adversarios:</strong> Pequeñas alteraciones en píxeles específicos pueden engañar a una red para que confunda una señal de alto con una de velocidad.</li>
+<li><strong>Sesgos demográficos:</strong> Entrenar sistemas faciales con datos poco diversos genera mayores errores en personas de piel oscura y en mujeres.</li>
+<li><strong>Vigilancia biométrica:</strong> El rastreo facial sin consentimiento en espacios públicos amenaza la privacidad; por ello, el Reglamento Europeo de Inteligencia Artificial (2024) prohíbe su uso biométrico indiscriminado en tiempo real en lugares públicos.</li>
+</ul>
+<h2>5. Temas relacionados</h2>
+<ul>
+<li><strong>Modelos Multimodales (VLM):</strong> Redes como GPT-4o o Gemini que unen visión y lenguaje para razonar sobre imágenes.</li>
+<li><strong>Modelos de Difusión:</strong> Algoritmos generativos (Stable Diffusion, Midjourney) que producen imágenes a partir de texto.</li>
+<li><strong>Aprendizaje Autosupervisado (DINO, MAE):</strong> Métodos que entrenan redes ocultando partes de la imagen para que las reconstruyan sin etiquetas humanas.</li>
+<li><strong>Segmentación Semántica e Instanciada:</strong> Técnicas para clasificar escenas píxel por píxel o distinguir cada objeto individual.</li>
+</ul>
+    </article>
+    <section style="margin-top:2.5rem;padding-top:1.5rem;border-top:1px solid rgba(212,175,55,0.25);"><h2>Seguir explorando en la Enciclopedia IA</h2><ul><li><a href="modelos-difusion.html">🎨 Modelos de Difusión y Creación de Imágenes</a> — Cómo se crean imágenes realistas quitando ruido paso a paso: difusión latente, VAEs, ControlNet y Flow Matching explicados sin rodeos.</li>
+<li><a href="ia-multimodal.html">🌐 IA Multimodal: Texto, Imagen, Audio y Acción</a> — Modelos que entienden y generan varios formatos a la vez: alineación CLIP, asistentes de voz-visión en vivo y modelos para robots (VLA).</li>
+<li><a href="ia-en-medicina-salud.html">🩺 IA en Medicina, Diagnóstico y Fármacos</a> — Cómo ayuda la IA a médicos e investigadores: lectura de radiografías, predicción de proteínas con AlphaFold y ensayos clínicos más rápidos.</li></ul></section>
+    <p style="margin-top:2rem;">
+      <a href="../#enciclopedia-ia" class="btn-hero-primary" style="display:inline-block;padding:0.85rem 1.5rem;text-decoration:none;">📚 Abrir en el Lector Interactivo de Ruichis Lab →</a>
+    </p>
+  </main>
+</body>
+</html>

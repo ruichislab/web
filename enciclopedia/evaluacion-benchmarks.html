@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cómo Se Evalúa la IA y Qué Miden los Tests — Enciclopedia IA | Ruichis Lab</title>
+  <meta name="description" content="Qué significan MMLU, HumanEval o SWE-bench, cómo se detecta si un modelo hizo trampa memorizando el examen y el uso de jueces automáticos.">
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+  <link rel="canonical" href="https://ruichislab.com/enciclopedia/evaluacion-benchmarks.html">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Ruichis Lab">
+  <meta property="og:title" content="Cómo Se Evalúa la IA y Qué Miden los Tests — Enciclopedia IA | Ruichis Lab">
+  <meta property="og:description" content="Qué significan MMLU, HumanEval o SWE-bench, cómo se detecta si un modelo hizo trampa memorizando el examen y el uso de jueces automáticos.">
+  <meta property="og:url" content="https://ruichislab.com/enciclopedia/evaluacion-benchmarks.html">
+  <meta property="og:image" content="https://ruichislab.com/src/assets/covers/productividad-asimetrica-es.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Cómo Se Evalúa la IA y Qué Miden los Tests | Ruichis Lab">
+  <meta name="twitter:description" content="Qué significan MMLU, HumanEval o SWE-bench, cómo se detecta si un modelo hizo trampa memorizando el examen y el uso de jueces automáticos.">
+  <link rel="stylesheet" href="../src/estilos/editorial.css">
+  <script type="application/ld+json">
+  {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "TechArticle",
+      "headline": "Cómo Se Evalúa la IA y Qué Miden los Tests",
+      "description": "Qué significan MMLU, HumanEval o SWE-bench, cómo se detecta si un modelo hizo trampa memorizando el examen y el uso de jueces automáticos.",
+      "inLanguage": "es",
+      "dateModified": "2026-11-12",
+      "author": {
+        "@type": "Organization",
+        "name": "Ruichis Lab",
+        "url": "https://ruichislab.com/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Ruichis Lab",
+        "url": "https://ruichislab.com/"
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://ruichislab.com/enciclopedia/evaluacion-benchmarks.html"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Inicio",
+          "item": "https://ruichislab.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Enciclopedia IA",
+          "item": "https://ruichislab.com/pages/enciclopedia.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Cómo Se Evalúa la IA y Qué Miden los Tests",
+          "item": "https://ruichislab.com/enciclopedia/evaluacion-benchmarks.html"
+        }
+      ]
+    }
+  ]
+}
+  </script>
+</head>
+<body>
+  <header style="border-bottom:1px solid rgba(212,175,55,0.25);padding:1rem 1.5rem;">
+    <div style="max-width:860px;margin:0 auto;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:0.75rem;">
+      <a href="../" style="font-weight:800;letter-spacing:0.08em;text-decoration:none;color:#D4AF37;">RUICHIS LAB</a>
+      <nav style="display:flex;gap:1rem;font-size:0.9rem;">
+        <a href="../pages/enciclopedia.html">Índice Enciclopedia (30)</a>
+        <a href="../#enciclopedia-ia">Lector Interactivo</a>
+        <a href="../#gimnasio-mental">Sudoku y Sopas Gratis</a>
+      </nav>
+    </div>
+  </header>
+  <main class="container" style="max-width:860px;margin:2.5rem auto;padding:0 1.5rem 3rem;line-height:1.75;">
+    <p style="font-size:0.8rem;letter-spacing:0.12em;text-transform:uppercase;color:#D4AF37;font-weight:700;">
+      🧠 undefined • NIVEL: INTERMEDIO • LECTURA: undefined
+    </p>
+    <article>
+      <h1>Evaluación de Modelos y Benchmarks en Inteligencia Artificial</h1>
+<p>Saber si un sistema de inteligencia artificial realmente entiende una tarea o si solo está improvisando con soltura es uno de los mayores desafíos técnicos de la computación moderna. Medir el rendimiento de un modelo de lenguaje va mucho más allá de contar aciertos en un cuestionario escolar: implica poner a prueba su lógica en situaciones imprevistas, comprobar si su código compila sin fallos y verificar que no invente datos peligrosos cuando interactúa con personas reales.</p>
+<blockquote style="border-left:3px solid #D4AF37;padding:0.75rem 1rem;margin:1.25rem 0;background:rgba(212,175,55,0.08);border-radius:0 8px 8px 0;"><strong>En pocas palabras:</strong> Evaluar una inteligencia artificial consiste en someterla a exámenes teóricos, retos prácticos de programación y duelos a ciegas para medir si de verdad razona y resuelve problemas o si simplemente memorizó respuestas de internet.</blockquote>
+<hr style="border:none;border-top:1px solid rgba(212,175,55,0.25);margin:2rem 0;">
+<h2>1. De dónde viene y cómo se entiende fácil</h2>
+<p>Imagina que necesitas contratar a un mecánico automotriz. Si únicamente le haces un examen escrito de diez preguntas de opción múltiple que cualquiera puede encontrar resueltas en Google, es muy probable que obtenga una puntuación perfecta tras memorizar las respuestas la noche anterior. Sin embargo, eso no garantiza que sepa reparar una caja de cambios rota en un taller real. Para comprobar su verdadera destreza, debes llevarlo frente a un motor averiado, darle herramientas y observar si identifica el fallo y hace funcionar el coche.</p>
+<p>La evaluación de modelos de lenguaje recorrió un camino muy similar. En 2002, un equipo de investigadores de IBM liderado por Kishore Papineni presentó BLEU (<em>Bilingual Evaluation Understudy</em>) para calificar traducciones automáticas. Dos años después, en 2004, Chin-Yew Lin introdujo ROUGE (<em>Recall-Oriented Understudy for Gisting Evaluation</em>) para calificar resúmenes de texto. Ambas herramientas medían la coincidencia exacta de palabras entre el texto generado por la máquina y una respuesta de referencia escrita por una persona. Si el modelo empleaba un sinónimo válido que no figuraba en la plantilla, el sistema lo penalizaba como si fuera un error grave.</p>
+<p>Cuando aparecieron los modelos masivos basados en la arquitectura Transformer (presentada en 2017 por Ashish Vaswani y su equipo en Google), las máquinas dejaron de limitarse a traducir frases sueltas. Empezaron a redactar contratos, diagnosticar código y argumentar ideas complejas. Para medir estas nuevas habilidades, la comunidad científica creó colecciones estandarizadas de pruebas llamadas <em>benchmarks</em>. En 2020, Dan Hendrycks y un equipo de investigadores de la Universidad de California en Berkeley lanzaron MMLU (<em>Massive Multitask Language Understanding</em>), una batería de miles de preguntas de opción múltiple repartidas en 57 materias académicas, desde filosofía moral hasta cálculo avanzado.</p>
+<p>Muy pronto se hizo evidente un problema clásico anunciado en 1975 por el economista británico Charles Goodhart: cuando una métrica se convierte en la meta, deja de ser una buena métrica. Al entrenar a los modelos con miles de millones de páginas web, muchos textos de evaluación terminaron dentro del material de estudio (un fenómeno llamado contaminación de datos). Los modelos obtenían calificaciones sobresalientes no porque supieran razonar, sino porque ya habían leído el examen durante su entrenamiento. Esta limitación impulsó el desarrollo de pruebas interactivas donde la memoria ya no basta: escribir código que compile y pase pruebas unitarias o competir en duelos ciegos ante usuarios reales.</p>
+<hr style="border:none;border-top:1px solid rgba(212,175,55,0.25);margin:2rem 0;">
+<h2>2. Cómo funciona por dentro</h2>
+<p>Para evaluar un modelo moderno de manera rigurosa se combinan cinco metodologías complementarias:</p>
+<h3>A. Métricas intrínsecas: entropía cruzada y perplejidad</h3>
+<p>Durante el entrenamiento, el modelo predice la siguiente palabra en una secuencia de texto. La entropía cruzada mide el error promedio de esas predicciones estadísticas. Si tomamos el exponente natural de ese error, obtenemos la perplejidad (PPL):</p>
+<pre style="padding:1rem;border-radius:8px;overflow-x:auto;background:#111827;color:#E5E7EB;"><code class="language-text">Entropía cruzada media: L = - (1 / N) × ∑ log(P(token_i | tokens_anteriores))
+Perplejidad:           PPL = exp(L)</code></pre>
+<p>La perplejidad representa cuántas palabras alternativas igualmente probables baraja el modelo en promedio ante cada paso. Una perplejidad de 8 significa que el modelo duda entre unas 8 opciones viables; cuanto menor sea el número, mayor es su certeza estadística. Conviene aclarar que no se puede comparar directamente la perplejidad de dos modelos que usen vocabularios o tokenizadores distintos, pues quien divide el texto en fragmentos más pequeños obtiene una ventaja matemática artificial.</p>
+<h3>B. Pruebas de ejecución y la métrica pass@k</h3>
+<p>En tareas de programación, mirar si el texto parece correcto no sirve: el código debe ejecutarse y superar pruebas reales. En julio de 2021, Mark Chen y el equipo de OpenAI presentaron el conjunto de datos HumanEval junto con la métrica pass@k. Para medir si un modelo programa bien sin depender de un golpe de suerte, se le pide generar varias soluciones independientes (n) para un mismo problema y se calcula la probabilidad estadística de que al menos una solución correcta aparezca al elegir una muestra de tamaño k:</p>
+<pre style="padding:1rem;border-radius:8px;overflow-x:auto;background:#111827;color:#E5E7EB;"><code class="language-text">pass@k = 1 - [ C(n - c, k) ÷ C(n, k) ]</code></pre>
+<p>Donde n representa las soluciones generadas, c es cuántas pasaron todas las pruebas unitarias y C(a, b) representa el coeficiente binomial o combinatorio.</p>
+<pre style="padding:1rem;border-radius:8px;overflow-x:auto;background:#111827;color:#E5E7EB;"><code class="language-python">from math import comb
+
+def pass_at_k(n: int, c: int, k: int) -&gt; float:
+    &quot;&quot;&quot;Calcula la probabilidad insesgada de que al menos una solución sea válida.&quot;&quot;&quot;
+    if n - c &lt; k:
+        return 1.0
+    return 1.0 - (comb(n - c, k) / comb(n, k))
+
+# Ejemplo: 20 programas generados, 4 superaron las pruebas unitarias
+# Evaluamos la probabilidad de éxito tomando solo 1 intento (pass@1)
+print(f&quot;pass@1: {pass_at_k(n=20, c=4, k=1):.2%}&quot;)  # Resultado: 20.00%</code></pre>
+<h3>C. Entornos agénticos: SWE-bench y GPQA</h3>
+<p>Para evitar que los modelos aprueben por pura memorización, en 2023 surgieron dos pruebas de referencia:</p>
+<ul>
+<li>*<em>GPQA (</em>Graduate-Level Google-Proof Q&amp;A<em>):</em>* Diseñado por David Rein y colaboradores con preguntas escritas por especialistas con doctorado en biología, física y química. Su dificultad es tan alta que personas con acceso libre a internet tardan más de media hora en responder una sola pregunta si no son expertas en la materia.</li>
+<li>*<em>SWE-bench (</em>Software Engineering Benchmark<em>):</em>* Creado por Carlos E. Jimenez y su equipo en Princeton en octubre de 2023. Pone al modelo frente a incidencias reales de repositorios populares de código abierto en GitHub (como Django o SymPy). El agente de inteligencia artificial debe leer miles de líneas del proyecto, editar los archivos adecuados y lograr que las pruebas de regresión pasen con éxito dentro de un contenedor aislado.</li>
+</ul>
+<h3>D. Votación a ciegas y el modelo Bradley-Terry (Chatbot Arena)</h3>
+<p>En mayo de 2023, la organización LMSYS (integrada por investigadores de UC Berkeley, UCSD y CMU) lanzó Chatbot Arena. Dos modelos desconocidos responden en paralelo la misma consulta de un usuario humano, quien vota cuál respuesta fue superior sin saber quién la escribió. A partir de cientos de miles de duelos, se infiere una puntuación de habilidad mediante el modelo de Bradley-Terry (desarrollado en 1952), que sirve de base para el sistema de puntuación Elo ideado por Arpad Elo en 1960 para el ajedrez:</p>
+<pre style="padding:1rem;border-radius:8px;overflow-x:auto;background:#111827;color:#E5E7EB;"><code class="language-text">Probabilidad de que el Modelo A supere al Modelo B:
+P(A &gt; B) = 1 ÷ (1 + 10^((Elo_B - Elo_A) ÷ 400))</code></pre>
+<p>Una diferencia favorable de 200 puntos Elo equivale a una probabilidad de victoria de aproximadamente 76% para el modelo mejor clasificado.</p>
+<h3>E. Árbitros automatizados (LLM-as-a-Judge)</h3>
+<p>Para no depender exclusivamente de anotadores humanos lentos y costosos, en 2023 Lianmin Zheng y sus colegas propusieron utilizar un modelo avanzado como juez de otros modelos. Aunque agiliza las evaluaciones a gran escala, este enfoque introduce sesgos sistemáticos documentados: tiende a preferir respuestas excesivamente largas y estructuradas con adornos visuales (sesgo de verbosidad), favorece la primera respuesta que lee (sesgo de posición) y califica con mayor benevolencia a modelos de su propia familia técnica.</p>
+<hr style="border:none;border-top:1px solid rgba(212,175,55,0.25);margin:2rem 0;">
+<h2>3. Dónde se usa hoy en la vida real</h2>
+<ul>
+<li><strong>Control de calidad continuo en despliegues corporativos:</strong> Empresas que integran modelos de lenguaje en servicios bancarios o plataformas médicas ejecutan bancos de pruebas automatizados antes de actualizar sus sistemas, verificando que una nueva versión no pierda precisión en tareas críticas ni cometa regresiones.</li>
+<li>*<em>Enrutamiento inteligente de consultas (</em>Model Routing<em>):</em>* Plataformas de servicios digitales usan las puntuaciones de benchmarks para dirigir cada mensaje del usuario al modelo adecuado: si la pregunta es un saludo cotidiano se envía a un modelo compacto y económico; si exige razonamiento matemático o edición de software, se deriva a un modelo de frontera más potente.</li>
+<li>*<em>Auditorías de seguridad y resistencia a ataques (</em>Red Teaming<em>):</em>* Equipos de ciberseguridad someten a los sistemas a baterías de ataques adversarios para medir su capacidad de rechazar solicitudes peligrosas, como la generación de código malicioso o la filtración de datos confidenciales.</li>
+<li><strong>Cumplimiento de regulaciones internacionales:</strong> Con la entrada en vigor de normativas como la Ley de Inteligencia Artificial de la Unión Europea (aprobada en 2024), las compañías que desarrollan modelos de propósito general con alto impacto están obligadas a documentar evaluaciones estandarizadas de capacidades, ciberseguridad y riesgos sistémicos.</li>
+</ul>
+<hr style="border:none;border-top:1px solid rgba(212,175,55,0.25);margin:2rem 0;">
+<h2>4. Qué hace bien, qué falla y qué riesgos tiene</h2>
+<div style="overflow-x:auto;margin:1.25rem 0;"><table style="width:100%;border-collapse:collapse;"><thead><tr><th style="text-align:left;padding:0.6rem;border-bottom:2px solid #D4AF37;">Metodología de evaluación</th><th style="text-align:left;padding:0.6rem;border-bottom:2px solid #D4AF37;">Qué mide con precisión</th><th style="text-align:left;padding:0.6rem;border-bottom:2px solid #D4AF37;">Dónde tropieza</th><th style="text-align:left;padding:0.6rem;border-bottom:2px solid #D4AF37;">Riesgo principal</th></tr></thead><tbody><tr><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);"><strong>Perplejidad interna</strong></td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Certeza estadística y compresión del lenguaje en entrenamiento.</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">No evalúa seguimiento de instrucciones ni lógica factual.</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Comparación engañosa entre modelos con tokenizadores distintos.</td></tr><tr><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);"><strong>Exámenes estáticos (MMLU, GPQA)</strong></td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Amplitud de conocimiento temático y conceptos formales.</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Susceptibles a respuestas por descarte o adivinanza fortuita.</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);"><strong>Contaminación de datos:</strong> memorización de las preguntas durante el preentrenamiento.</td></tr><tr><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);"><strong>Pruebas de código (HumanEval, SWE-bench)</strong></td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Funcionamiento real y verificación objetiva mediante tests unitarios.</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Costosas de ejecutar y lentas en entornos aislados.</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Sobreajuste a trucos sintácticos o fallos por dependencias externas.</td></tr><tr><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);"><strong>Duelos a ciegas (Chatbot Arena)</strong></td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Preferencia de usuarios reales en conversaciones libres.</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Voto subjetivo; premia respuestas complacientes y extensas.</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Manipulación coordinada de votos (<em>brigading</em>) y baja cobertura técnica profunda.</td></tr><tr><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);"><strong>Jueces automáticos (LLM-as-a-Judge)</strong></td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Análisis cualitativo rápido y escalable con justificación.</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Afectado por sesgos de longitud, posición y autorreferencia.</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Bucle cerrado de modelos premiando sus propios errores de razonamiento.</td></tr></tbody></table></div>
+<hr style="border:none;border-top:1px solid rgba(212,175,55,0.25);margin:2rem 0;">
+<h2>5. Temas relacionados</h2>
+<ul>
+<li><strong>Alineación por preferencias humanas (RLHF y DPO):</strong> Métodos de entrenamiento diseñados para ajustar el comportamiento del modelo a partir de los juicios recopilados en evaluaciones comparativas.</li>
+<li><strong>Estrategias de decodificación:</strong> Parámetros como temperatura y muestreo probabilístico que modifican directamente la creatividad o el determinismo en los exámenes.</li>
+<li><strong>Contaminación de datos y fuga de conjuntos de prueba:</strong> Técnicas de auditoría y filtrado para evitar que el material de evaluación se filtre en el corpus de preentrenamiento.</li>
+<li>*<em>Razonamiento guiado (</em>Chain-of-Thought<em>):</em>* Estrategia que pide al modelo desglosar su razonamiento paso a paso, elevando sustancialmente su rendimiento en problemas complejos.</li>
+<li><strong>Evaluación de seguridad y pruebas adversarias:</strong> Protocolos diseñados para medir la vulnerabilidad de un sistema ante intentos deliberados de engaño o manipulación.</li>
+</ul>
+    </article>
+    <section style="margin-top:2.5rem;padding-top:1.5rem;border-top:1px solid rgba(212,175,55,0.25);"><h2>Seguir explorando en la Enciclopedia IA</h2><ul><li><a href="rag-generacion-aumentada.html">📚 RAG: Conectar la IA a Tus Documentos</a> — Cómo hacer que un modelo responda usando tus propios PDFs o bases de datos actualizadas en lugar de adivinar o alucinar información.</li>
+<li><a href="alineamiento-seguridad.html">🛡️ Seguridad, Alineamiento e Interpretabilidad</a> — Cómo abrir la «caja negra» de los modelos con Sparse Autoencoders, hacer pruebas de ataque (Red Teaming) y frenar inyecciones de prompt.</li>
+<li><a href="datos-entrenamiento-calidad.html">🗄️ Datos de Entrenamiento y Datos Sintéticos</a> — Por qué la calidad de los datos importa más que la cantidad: limpieza, eliminación de duplicados, datos sintéticos y el riesgo de colapso de modelo.</li></ul></section>
+    <p style="margin-top:2rem;">
+      <a href="../#enciclopedia-ia" class="btn-hero-primary" style="display:inline-block;padding:0.85rem 1.5rem;text-decoration:none;">📚 Abrir en el Lector Interactivo de Ruichis Lab →</a>
+    </p>
+  </main>
+</body>
+</html>

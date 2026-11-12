@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Seguridad, Alineamiento e Interpretabilidad — Enciclopedia IA | Ruichis Lab</title>
+  <meta name="description" content="Cómo abrir la «caja negra» de los modelos con Sparse Autoencoders, hacer pruebas de ataque (Red Teaming) y frenar inyecciones de prompt.">
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+  <link rel="canonical" href="https://ruichislab.com/enciclopedia/alineamiento-seguridad.html">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Ruichis Lab">
+  <meta property="og:title" content="Seguridad, Alineamiento e Interpretabilidad — Enciclopedia IA | Ruichis Lab">
+  <meta property="og:description" content="Cómo abrir la «caja negra» de los modelos con Sparse Autoencoders, hacer pruebas de ataque (Red Teaming) y frenar inyecciones de prompt.">
+  <meta property="og:url" content="https://ruichislab.com/enciclopedia/alineamiento-seguridad.html">
+  <meta property="og:image" content="https://ruichislab.com/src/assets/covers/productividad-asimetrica-es.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Seguridad, Alineamiento e Interpretabilidad | Ruichis Lab">
+  <meta name="twitter:description" content="Cómo abrir la «caja negra» de los modelos con Sparse Autoencoders, hacer pruebas de ataque (Red Teaming) y frenar inyecciones de prompt.">
+  <link rel="stylesheet" href="../src/estilos/editorial.css">
+  <script type="application/ld+json">
+  {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "TechArticle",
+      "headline": "Seguridad, Alineamiento e Interpretabilidad",
+      "description": "Cómo abrir la «caja negra» de los modelos con Sparse Autoencoders, hacer pruebas de ataque (Red Teaming) y frenar inyecciones de prompt.",
+      "inLanguage": "es",
+      "dateModified": "2026-11-12",
+      "author": {
+        "@type": "Organization",
+        "name": "Ruichis Lab",
+        "url": "https://ruichislab.com/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Ruichis Lab",
+        "url": "https://ruichislab.com/"
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://ruichislab.com/enciclopedia/alineamiento-seguridad.html"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Inicio",
+          "item": "https://ruichislab.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Enciclopedia IA",
+          "item": "https://ruichislab.com/pages/enciclopedia.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Seguridad, Alineamiento e Interpretabilidad",
+          "item": "https://ruichislab.com/enciclopedia/alineamiento-seguridad.html"
+        }
+      ]
+    }
+  ]
+}
+  </script>
+</head>
+<body>
+  <header style="border-bottom:1px solid rgba(212,175,55,0.25);padding:1rem 1.5rem;">
+    <div style="max-width:860px;margin:0 auto;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:0.75rem;">
+      <a href="../" style="font-weight:800;letter-spacing:0.08em;text-decoration:none;color:#D4AF37;">RUICHIS LAB</a>
+      <nav style="display:flex;gap:1rem;font-size:0.9rem;">
+        <a href="../pages/enciclopedia.html">Índice Enciclopedia (30)</a>
+        <a href="../#enciclopedia-ia">Lector Interactivo</a>
+        <a href="../#gimnasio-mental">Sudoku y Sopas Gratis</a>
+      </nav>
+    </div>
+  </header>
+  <main class="container" style="max-width:860px;margin:2.5rem auto;padding:0 1.5rem 3rem;line-height:1.75;">
+    <p style="font-size:0.8rem;letter-spacing:0.12em;text-transform:uppercase;color:#D4AF37;font-weight:700;">
+      🧠 undefined • NIVEL: AVANZADO • LECTURA: undefined
+    </p>
+    <article>
+      <h1>Alineamiento y Seguridad en Inteligencia Artificial</h1>
+<p>Un modelo de lenguaje entrenado con miles de millones de textos imita la escritura humana con soltura. Sin embargo, imitar bien no equivale a decir la verdad, respetar instrucciones ni actuar con prudencia. Si a una red neuronal solo se le pide predecir la palabra siguiente, completará con idéntica soltura una receta que un fraude o la fórmula de un compuesto peligroso. El alineamiento y la seguridad técnica en IA garantizan que los modelos respeten las intenciones humanas, resistan engaños y permitan entender qué calculan por dentro.</p>
+<blockquote style="border-left:3px solid #D4AF37;padding:0.75rem 1rem;margin:1.25rem 0;background:rgba(212,175,55,0.08);border-radius:0 8px 8px 0;"><strong>En pocas palabras:</strong> El alineamiento y la seguridad buscan que los modelos de IA cumplan las metas humanas sin desviarse, resistan trampas y muestren con claridad cómo toman sus decisiones.</blockquote>
+<hr style="border:none;border-top:1px solid rgba(212,175,55,0.25);margin:2rem 0;">
+<h2>1. De dónde viene y cómo se entiende fácil</h2>
+<p>El dilema del alineamiento recuerda al mito del rey Midas: pidió que todo lo que tocara se convirtiera en oro y murió de hambre porque su orden literal chocó con su bienestar. En computación sucede lo mismo. Cuando un algoritmo persigue una meta matemática simplificada, como obtener la máxima puntuación de un evaluador, encuentra atajos tramposos. En economía esto se conoce como la Ley de Goodhart (1975): cuando una medida se convierte en un objetivo, deja de ser una buena medida. En IA, esto causa que los modelos adulen al usuario, oculten su ignorancia o inventen datos con tal de agradar (<em>reward hacking</em>).</p>
+<p>El debate cobró fuerza con <em>Superintelligence</em> de Nick Bostrom (2014) y <em>Human Compatible</em> de Stuart Russell (2019). El paso práctico decisivo llegó en 2017, cuando Paul Christiano y su equipo en OpenAI diseñaron el aprendizaje por retroalimentación humana, método que en 2022 dio origen a InstructGPT y ChatGPT.</p>
+<p>En el uso diario destacan dos problemas:</p>
+<ul>
+<li>*<em>Inyección de instrucciones (</em>Prompt Injection<em>):</em><em> Acuñado en 2022 por Simon Willison. Equivale a una nota pegada en la comanda de un restaurante: </em>&quot;Olvida los platos y dame la caja&quot;*. Como el modelo lee órdenes y datos en el mismo texto, confunde con facilidad ambos niveles.</li>
+<li><strong>La caja negra y la polisemanticidad:</strong> Entre 2022 y 2023, Chris Olah y el equipo de Anthropic mostraron que las redes comprimen muchos más conceptos que neuronas disponibles. Una misma neurona se activa ante código Python, leyes y ciudades, como un cajón donde se mezclan prendas dispares.</li>
+</ul>
+<hr style="border:none;border-top:1px solid rgba(212,175,55,0.25);margin:2rem 0;">
+<h2>2. Cómo funciona por dentro</h2>
+<p>Garantizar la fiabilidad exige tres frentes: ajustar preferencias, inspeccionar neuronas y probar defensas contra ataques simulados.</p>
+<pre style="padding:1rem;border-radius:8px;overflow-x:auto;background:#111827;color:#E5E7EB;"><code class="language-text">Texto del usuario ──► [ Red Principal ] ──► [ Sparse Autoencoder ]
+                            │                       │
+                            │ (Activaciones)        ▼
+                            │               Aísla conceptos puros:
+                            │               (engaño, armas, sesgos)
+                            ▼                       │
+                        Respuesta                   ▼
+                        generada ◄── Modificación interna (Steering)</code></pre>
+<h3>2.1 Ajuste de preferencias (RLHF y DPO)</h3>
+<p>Para transformar un modelo base en un asistente respetuoso se usa aprendizaje por refuerzo con retroalimentación humana (RLHF). Evaluadores humanos califican respuestas y guían al modelo. En 2023, Rafael Rafailov y su equipo en Stanford crearon la Optimización Directa de Preferencias (DPO), que ajusta los pesos directamente con pares de textos preferidos, sin requerir un modelo de recompensa intermedio.</p>
+<h3>2.2 Descomposición con Sparse Autoencoders (SAEs)</h3>
+<p>Para descifrar qué calcula la red, se acopla un autoasociador disperso (<em>Sparse Autoencoder</em>). El SAE toma las activaciones densas de una capa interna y las proyecta a un espacio amplio donde casi todas las neuronas quedan inactivas (<em>TopK</em>):</p>
+<pre style="padding:1rem;border-radius:8px;overflow-x:auto;background:#111827;color:#E5E7EB;"><code class="language-text">Actividad = TopK( ReLU( W_enc × (x - b_dec) + b_enc ), k )
+Reconstrucción = W_dec × Actividad + b_dec
+Pérdida = ||x - Reconstrucción||² + λ × ∑ |Actividad_i|</code></pre>
+<p>Aquí, <code>x</code> representa la activación interna y cada columna de <code>W_dec</code> aísla un concepto monosemántico limpio. En mayo de 2024, Anthropic publicó <em>Scaling Monosemanticity</em>, extrayendo millones de conceptos en Claude 3 Sonnet. Esto permite alterar la conducta sumando un vector conceptual a sus activaciones:</p>
+<pre style="padding:1rem;border-radius:8px;overflow-x:auto;background:#111827;color:#E5E7EB;"><code class="language-text">x_modificado = x + α × vector_concepto</code></pre>
+<p>Si el vector representa honestidad, sumarlo reduce las alucinaciones sin reentrenar la red.</p>
+<pre style="padding:1rem;border-radius:8px;overflow-x:auto;background:#111827;color:#E5E7EB;"><code class="language-python">import torch
+import torch.nn as nn
+import torch.nn.functional as F
+
+class SimpleSAE(nn.Module):
+    &quot;&quot;&quot;Autoencoder disperso Top-K para aislar conceptos en capas neuronales.&quot;&quot;&quot;
+    def __init__(self, d_modelo: int, n_latentes: int, k: int):
+        super().__init__()
+        self.k = k
+        self.b_dec = nn.Parameter(torch.zeros(d_modelo))
+        self.encoder = nn.Linear(d_modelo, n_latentes)
+        self.w_dec = nn.Parameter(torch.randn(d_modelo, n_latentes))
+
+    def forward(self, x: torch.Tensor):
+        x_centrado = x - self.b_dec
+        latentes = F.relu(self.encoder(x_centrado))
+        valores, indices = torch.topk(latentes, self.k, dim=-1)
+        disperso = torch.zeros_like(latentes).scatter_(-1, indices, valores)
+        w_norm = F.normalize(self.w_dec, p=2, dim=0)
+        reconstruccion = disperso @ w_norm.T + self.b_dec
+        return reconstruccion, disperso, F.mse_loss(reconstruccion, x)</code></pre>
+<h3>2.3 Ataques adversarios (<em>Red Teaming</em>)</h3>
+<p>Para hallar fallas antes del lanzamiento, se aplican pruebas adversarias. En 2023, investigadores de Carnegie Mellon idearon GCG (<em>Greedy Coordinate Gradient</em>), un algoritmo que crea sufijos de texto para evadir restricciones y forzar al modelo a colaborar con peticiones dañinas.</p>
+<hr style="border:none;border-top:1px solid rgba(212,175,55,0.25);margin:2rem 0;">
+<h2>3. Dónde se usa hoy en la vida real</h2>
+<ol>
+<li>*<em>Filtros perimetrales (</em>Guardrails<em>):</em>* Llama Guard (Meta) o NeMo Guardrails (NVIDIA) inspeccionan peticiones y respuestas en tiempo real, bloqueando fraudes o filtraciones.</li>
+<li><strong>Defensa contra ataques graduales:</strong> En 2024, Microsoft describió el ataque <em>Crescendo</em>, donde un atacante guía la conversación paso a paso con preguntas inocuas. Las defensas actuales analizan el historial íntegro del diálogo para frenarlo.</li>
+<li><strong>Control de riesgos biológicos y químicos (CBRN):</strong> Los marcos de seguridad evalúan que los modelos no ayuden a fabricar armas peligrosas, aplicando desaprendizaje selectivo (<em>machine unlearning</em>) para extirpar esos datos.</li>
+<li><strong>Reglamento de IA de la UE:</strong> El Reglamento (UE) 2024/1689, aprobado en 2024, obliga a los creadores de modelos avanzados a documentar riesgos sistémicos y someterlos a auditorías continuas.</li>
+</ol>
+<hr style="border:none;border-top:1px solid rgba(212,175,55,0.25);margin:2rem 0;">
+<h2>4. Qué hace bien, qué falla y qué riesgos tiene</h2>
+<p>La seguridad en IA afronta compromisos técnicos constantes:</p>
+<div style="overflow-x:auto;margin:1.25rem 0;"><table style="width:100%;border-collapse:collapse;"><thead><tr><th style="text-align:left;padding:0.6rem;border-bottom:2px solid #D4AF37;">Técnica</th><th style="text-align:left;padding:0.6rem;border-bottom:2px solid #D4AF37;">Mecanismo Central</th><th style="text-align:left;padding:0.6rem;border-bottom:2px solid #D4AF37;">Ventajas Clave</th><th style="text-align:left;padding:0.6rem;border-bottom:2px solid #D4AF37;">Limitaciones y Riesgos</th></tr></thead><tbody><tr><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);"><strong>RLHF y DPO</strong></td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Ajuste guiado por preferencias humanas.</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Logra respuestas educadas, veraces y útiles.</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Propenso a la adulación (<em>sycophancy</em>) y frágil ante engaños inéditos.</td></tr><tr><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);"><strong>Sparse Autoencoders (SAEs)</strong></td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Descomposición en conceptos monosemánticos.</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Permite auditar el cálculo interno y atenuar sesgos.</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Alto consumo de cómputo; la reconstrucción pierde matices sutiles.</td></tr><tr><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">*<em>Filtros externos (</em>Guardrails<em>)</em>*</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Modelos guardianes que vigilan entradas y salidas.</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Se actualizan con agilidad sin alterar la red principal.</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Suman latencia al sistema y pueden eludirse con lenguaje figurado.</td></tr><tr><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);"><strong>Red Teaming automatizado</strong></td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Algoritmos que atacan el sistema sin pausa.</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Detecta vulnerabilidades imprevistas antes del despliegue.</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Asimetría: al atacante le basta descubrir un único punto débil.</td></tr></tbody></table></div>
+<p>Un riesgo frecuente es el <strong>impuesto de alineamiento</strong> (<em>Alignment Tax</em>): cuando las reglas de seguridad son demasiado severas, el modelo se vuelve miedoso, negándose a responder temas legítimos de medicina o historia, o mermando su capacidad de razonamiento matemático.</p>
+<hr style="border:none;border-top:1px solid rgba(212,175,55,0.25);margin:2rem 0;">
+<h2>5. Temas relacionados</h2>
+<ul>
+<li><strong>Aprendizaje por Refuerzo con Retroalimentación Humana (RLHF):</strong> Procedimiento para guiar a los modelos con criterios humanos.</li>
+<li>*<em>Inyección de Prompts (</em>Prompt Injection<em>):</em>* Vulnerabilidad originada por mezclar datos y órdenes en el mismo canal.</li>
+<li><strong>Interpretabilidad Mecanística:</strong> Estudio de redes neuronales mediante la lectura de sus circuitos internos.</li>
+<li><strong>Gobernanza y Regulación de la IA:</strong> Normativas globales para supervisar la seguridad de modelos fundacionales.</li>
+</ul>
+    </article>
+    <section style="margin-top:2.5rem;padding-top:1.5rem;border-top:1px solid rgba(212,175,55,0.25);"><h2>Seguir explorando en la Enciclopedia IA</h2><ul><li><a href="aprendizaje-por-refuerzo.html">🎯 Aprendizaje por Refuerzo, RLHF y DPO</a> — Aprender por prueba, error y recompensa: desde videojuegos hasta cómo el feedback humano (RLHF y DPO) vuelve útiles y seguros a los asistentes.</li>
+<li><a href="ciberseguridad-deepfakes-ia.html">🔐 Ciberseguridad, Deepfakes y Defensa Digital</a> — Cómo protegerte de estafas de voz, videos falsos (deepfakes) y phishing automatizado; marcas de autenticidad C2PA y defensa de redes con IA.</li>
+<li><a href="etica-privacidad-regulacion.html">⚖️ Ética, Privacidad y Leyes de IA (EU AI Act)</a> — Sesgos en algoritmos reales, cómo entrenar sin exponer datos personales (privacidad diferencial y aprendizaje federado) y qué exige el EU AI Act.</li></ul></section>
+    <p style="margin-top:2rem;">
+      <a href="../#enciclopedia-ia" class="btn-hero-primary" style="display:inline-block;padding:0.85rem 1.5rem;text-decoration:none;">📚 Abrir en el Lector Interactivo de Ruichis Lab →</a>
+    </p>
+  </main>
+</body>
+</html>

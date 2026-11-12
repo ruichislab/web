@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modelos de Difusión y Creación de Imágenes — Enciclopedia IA | Ruichis Lab</title>
+  <meta name="description" content="Cómo se crean imágenes realistas quitando ruido paso a paso: difusión latente, VAEs, ControlNet y Flow Matching explicados sin rodeos.">
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+  <link rel="canonical" href="https://ruichislab.com/enciclopedia/modelos-difusion.html">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Ruichis Lab">
+  <meta property="og:title" content="Modelos de Difusión y Creación de Imágenes — Enciclopedia IA | Ruichis Lab">
+  <meta property="og:description" content="Cómo se crean imágenes realistas quitando ruido paso a paso: difusión latente, VAEs, ControlNet y Flow Matching explicados sin rodeos.">
+  <meta property="og:url" content="https://ruichislab.com/enciclopedia/modelos-difusion.html">
+  <meta property="og:image" content="https://ruichislab.com/src/assets/covers/productividad-asimetrica-es.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Modelos de Difusión y Creación de Imágenes | Ruichis Lab">
+  <meta name="twitter:description" content="Cómo se crean imágenes realistas quitando ruido paso a paso: difusión latente, VAEs, ControlNet y Flow Matching explicados sin rodeos.">
+  <link rel="stylesheet" href="../src/estilos/editorial.css">
+  <script type="application/ld+json">
+  {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "TechArticle",
+      "headline": "Modelos de Difusión y Creación de Imágenes",
+      "description": "Cómo se crean imágenes realistas quitando ruido paso a paso: difusión latente, VAEs, ControlNet y Flow Matching explicados sin rodeos.",
+      "inLanguage": "es",
+      "dateModified": "2026-11-12",
+      "author": {
+        "@type": "Organization",
+        "name": "Ruichis Lab",
+        "url": "https://ruichislab.com/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Ruichis Lab",
+        "url": "https://ruichislab.com/"
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://ruichislab.com/enciclopedia/modelos-difusion.html"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Inicio",
+          "item": "https://ruichislab.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Enciclopedia IA",
+          "item": "https://ruichislab.com/pages/enciclopedia.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Modelos de Difusión y Creación de Imágenes",
+          "item": "https://ruichislab.com/enciclopedia/modelos-difusion.html"
+        }
+      ]
+    }
+  ]
+}
+  </script>
+</head>
+<body>
+  <header style="border-bottom:1px solid rgba(212,175,55,0.25);padding:1rem 1.5rem;">
+    <div style="max-width:860px;margin:0 auto;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:0.75rem;">
+      <a href="../" style="font-weight:800;letter-spacing:0.08em;text-decoration:none;color:#D4AF37;">RUICHIS LAB</a>
+      <nav style="display:flex;gap:1rem;font-size:0.9rem;">
+        <a href="../pages/enciclopedia.html">Índice Enciclopedia (30)</a>
+        <a href="../#enciclopedia-ia">Lector Interactivo</a>
+        <a href="../#gimnasio-mental">Sudoku y Sopas Gratis</a>
+      </nav>
+    </div>
+  </header>
+  <main class="container" style="max-width:860px;margin:2.5rem auto;padding:0 1.5rem 3rem;line-height:1.75;">
+    <p style="font-size:0.8rem;letter-spacing:0.12em;text-transform:uppercase;color:#D4AF37;font-weight:700;">
+      🧠 undefined • NIVEL: AVANZADO • LECTURA: undefined
+    </p>
+    <article>
+      <h1>Modelos de Difusión: Cómo la IA Aprende a Crear Imágenes Limpiando Ruido</h1>
+<p>Durante años, generar imágenes con inteligencia artificial provocaba distorsiones o rostros borrosos. Los modelos de difusión transformaron este campo al convertirse en el motor de herramientas como Midjourney, Stable Diffusion o DALL-E, además de abrir aplicaciones pioneras en biología molecular y medicina.</p>
+<blockquote style="border-left:3px solid #D4AF37;padding:0.75rem 1rem;margin:1.25rem 0;background:rgba(212,175,55,0.08);border-radius:0 8px 8px 0;"><strong>En pocas palabras:</strong> Un modelo de difusión genera imágenes, audio o estructuras moleculares aprendiendo a quitar ruido paso a paso: parte de un patrón caótico de estática y lo limpia de forma gradual hasta descubrir una figura nítida y coherente con las instrucciones del usuario.</blockquote>
+<hr style="border:none;border-top:1px solid rgba(212,175,55,0.25);margin:2rem 0;">
+<h2>1. De dónde viene y cómo se entiende fácil</h2>
+<p>Para comprender la difusión, conviene imaginar un vaso de agua pura al que cae una gota de tinta china. En pocos segundos, el choque aleatorio entre moléculas disuelve la forma inicial hasta teñir el agua uniformemente. Destruir la estructura original es sencillo y obedece a las leyes del desorden natural. En cambio, lograr que ese líquido turbio separe espontáneamente cada partícula de tinta para reconstituir la gota intacta parecería magia.</p>
+<p>Los modelos de difusión logran precisamente esa reconstrucción inversa:</p>
+<ol>
+<li>Toman una imagen real y le inyectan estática digital (ruido matemático) en cientos de pasos hasta dejarla irreconocible.</li>
+<li>Entrenan una red neuronal para que aprenda a restar la pequeña dosis de ruido aplicada en cada paso intermedio.</li>
+<li>Al generar una imagen nueva, la red parte de ruido puro y, guiada por un texto, ejecuta la limpieza en reversa hasta revelar una escena ordenada.</li>
+</ol>
+<p>La idea nació en 2015, cuando Jascha Sohl-Dickstein y su equipo en Stanford y Berkeley propusieron aplicar la termodinámica de no equilibrio al aprendizaje automático. En 2020, Jonathan Ho, Ajay Jain y Pieter Abbeel formalizaron en NeurIPS los Modelos Probabilísticos de Difusión con Eliminación de Ruido (<em>Denoising Diffusion Probabilistic Models</em> o DDPM). Demostraron que este método superaba a las Redes Generativas Antagónicas (GAN), evitando el &quot;colapso de modos&quot;, donde una red se estanca generando siempre el mismo patrón repetitivo.</p>
+<p>En 2022, Robin Rombach, Patrick Esser y el equipo de Björn Ommer introdujeron los Modelos de Difusión Latente (<em>Latent Diffusion Models</em> o LDM). Al comprimir imágenes con un Autoencoder Variacional (VAE) antes de procesarlas, redujeron drásticamente el consumo de memoria, permitiendo que la difusión funcionara en tarjetas gráficas domésticas con el primer Stable Diffusion.</p>
+<hr style="border:none;border-top:1px solid rgba(212,175,55,0.25);margin:2rem 0;">
+<h2>2. Cómo funciona por dentro</h2>
+<p>El ciclo generativo consta de dos fases matemáticas y mecanismos de control que orientan el resultado:</p>
+<h3>El proceso hacia adelante (ensuciar los datos)</h3>
+<p>Dada una imagen x(0), se agrega ruido gaussiano a lo largo de T pasos. Gracias a la distribución normal, no se requiere calcular cada etapa una por una; se accede directamente a cualquier momento t con una fórmula cerrada:</p>
+<pre style="padding:1rem;border-radius:8px;overflow-x:auto;background:#111827;color:#E5E7EB;"><code class="language-text">x(t) = √(ᾱ(t)) × x(0) + √(1 - ᾱ(t)) × ε</code></pre>
+<p>Donde <code>ε</code> es ruido aleatorio puro y <code>ᾱ(t)</code> es un coeficiente que decrece con el tiempo hasta que la imagen original desaparece por completo.</p>
+<h3>El proceso inverso (limpieza guiada)</h3>
+<p>La red neuronal recibe la imagen ruidosa <code>x(t)</code> y el índice de tiempo <code>t</code>. En lugar de intentar dibujar la imagen final en un solo salto, predice únicamente el componente de ruido <code>ε</code> presente en ese instante:</p>
+<pre style="padding:1rem;border-radius:8px;overflow-x:auto;background:#111827;color:#E5E7EB;"><code class="language-text">Pérdida = Promedio || ε - ε_θ(x(t), t) ||²</code></pre>
+<p>Al restar el ruido estimado <code>ε_θ</code>, la imagen recupera nitidez paso a paso.</p>
+<h3>Classifier-Free Guidance (CFG)</h3>
+<p>Propuesta por Jonathan Ho y Tim Salimans en 2021, esta técnica guía la generación con texto sin requerir clasificadores externos. La red evalúa la predicción con el texto del usuario y sin él, combinándolas con una escala <code>s</code>:</p>
+<pre style="padding:1rem;border-radius:8px;overflow-x:auto;background:#111827;color:#E5E7EB;"><code class="language-text">Ruido_final = Ruido_sin_texto + s × (Ruido_con_texto - Ruido_sin_texto)</code></pre>
+<p>Un valor de <code>s</code> moderado (entre 5 y 8) garantiza que el resultado respete la descripción sin saturar colores ni añadir artefactos.</p>
+<h3>Flow Matching y Diffusion Transformers (DiT)</h3>
+<p>Modelos modernos como Stable Diffusion 3 o Flux (creado en 2024 por Black Forest Labs) sustituyen las redes convolucionales por bloques Transformer (DiT, propuestos por William Peebles y Saining Xie en 2023) y adoptan <strong>Flow Matching</strong>. En vez de seguir trayectorias curvas aleatorias, Flow Matching traza un camino rectilíneo directo entre ruido e imagen limpia, completando el proceso en apenas 4 a 15 pasos.</p>
+<pre style="padding:1rem;border-radius:8px;overflow-x:auto;background:#111827;color:#E5E7EB;"><code class="language-python">import torch
+
+@torch.no_grad()
+def paso_euler_flujo(modelo, z_t, t, dt, cond_texto, sin_texto, escala_cfg=7.0):
+    &quot;&quot;&quot;Avanza un paso rectilíneo (Flow Matching) con guía CFG.&quot;&quot;&quot;
+    z_doble = torch.cat([z_t, z_t], dim=0)
+    t_doble = torch.cat([t, t], dim=0)
+    cond_doble = torch.cat([cond_texto, sin_texto], dim=0)
+
+    v_pred = modelo(z_doble, t_doble, cond_doble)
+    v_cond, v_incond = v_pred.chunk(2, dim=0)
+    v_guiado = v_incond + escala_cfg * (v_cond - v_incond)
+
+    return z_t + v_guiado * dt</code></pre>
+<hr style="border:none;border-top:1px solid rgba(212,175,55,0.25);margin:2rem 0;">
+<h2>3. Dónde se usa hoy en la vida real</h2>
+<ul>
+<li><strong>Diseño de fármacos:</strong> La herramienta <strong>RFdiffusion</strong>, creada en 2023 por el laboratorio de David Baker en la Universidad de Washington (Premio Nobel de Química 2024), utiliza difusión molecular tridimensional para diseñar nuevas proteínas terapéuticas contra virus y tumores.</li>
+<li><strong>Industria visual:</strong> Plataformas como Midjourney, Adobe Firefly y Flux generan ilustraciones, fondos y texturas 3D en minutos para preproducción artística.</li>
+<li><strong>Robótica:</strong> Con <em>Diffusion Policy</em> (Columbia y Stanford, 2023), brazos robóticos aprenden tareas continuas como manipular objetos frágiles o doblar ropa.</li>
+<li><strong>Imagen médica:</strong> Reconstruye resonancias magnéticas de alta resolución a partir de escaneos rápidos, reduciendo el tiempo de permanencia del paciente en el resonador.</li>
+<li><strong>Vídeo generativo:</strong> Modelos como Sora (OpenAI) y Runway Gen-3 extienden la difusión a secuencias temporales de fotogramas coordinados.</li>
+</ul>
+<hr style="border:none;border-top:1px solid rgba(212,175,55,0.25);margin:2rem 0;">
+<h2>4. Qué hace bien, qué falla y qué riesgos tiene</h2>
+<h3>Comparativa de modelos generativos</h3>
+<div style="overflow-x:auto;margin:1.25rem 0;"><table style="width:100%;border-collapse:collapse;"><thead><tr><th style="text-align:left;padding:0.6rem;border-bottom:2px solid #D4AF37;">Enfoque</th><th style="text-align:left;padding:0.6rem;border-bottom:2px solid #D4AF37;">Estabilidad</th><th style="text-align:left;padding:0.6rem;border-bottom:2px solid #D4AF37;">Diversidad</th><th style="text-align:left;padding:0.6rem;border-bottom:2px solid #D4AF37;">Calidad visual</th><th style="text-align:left;padding:0.6rem;border-bottom:2px solid #D4AF37;">Pasos típicos</th><th style="text-align:left;padding:0.6rem;border-bottom:2px solid #D4AF37;">Control guiado</th></tr></thead><tbody><tr><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);"><strong>GAN (Antagónicas)</strong></td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Frágil</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Media (colapso)</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Muy alta</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">1 paso</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Moderado</td></tr><tr><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);"><strong>VAE Tradicional</strong></td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Muy alta</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Completa</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Media (borrosa)</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">1 paso</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Bajo</td></tr><tr><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);"><strong>DDPM (Píxeles)</strong></td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Muy alta</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Completa</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Sobresaliente</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">250 a 1.000</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Medio</td></tr><tr><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);"><strong>Difusión Latente (LDM)</strong></td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Muy alta</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Completa</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Sobresaliente</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">20 a 50</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Muy alto (ControlNet)</td></tr><tr><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);"><strong>Flow Matching + DiT</strong></td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Óptima</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Completa</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Fotorrealista</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">4 a 15</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Sobresaliente</td></tr></tbody></table></div>
+<h3>Retos y riesgos éticos</h3>
+<ol>
+<li><strong>Gasto energético:</strong> Aunque se redujeron los pasos, procesar modelos con miles de millones de parámetros requiere hardware potente y genera un consumo eléctrico notable.</li>
+<li><strong>Falta de sentido común físico:</strong> La red ignora leyes como la gravedad o la biomecánica, lo que explica errores en manos, sombras o reflejos imposibles.</li>
+<li><strong>Propiedad intelectual:</strong> La repetición de imágenes en los datos de entrenamiento puede inducir memorización involuntaria de obras con derechos reservados.</li>
+<li><strong>Desinformación:</strong> La calidad fotográfica facilita engaños. Por ello, la Ley de IA de la UE (2024) y el estándar C2PA exigen marcas de agua criptográficas y trazabilidad obligatoria.</li>
+</ol>
+<hr style="border:none;border-top:1px solid rgba(212,175,55,0.25);margin:2rem 0;">
+<h2>5. Temas relacionados</h2>
+<ul>
+<li><strong>Autoencoders Variacionales (VAE):</strong> Comprimen imágenes al espacio latente para abaratar el cálculo de difusión.</li>
+<li><strong>Redes Generativas Antagónicas (GAN):</strong> Método generativo en un solo paso, útil en tareas de baja latencia.</li>
+<li><strong>ControlNet:</strong> Técnica que inyecta restricciones geométricas rígidas (bocetos o posturas) al modelo sin reentrenarlo.</li>
+<li><strong>Estándar C2PA:</strong> Protocolo de certificación criptográfica para verificar el origen legítimo de contenidos digitales.</li>
+</ul>
+    </article>
+    <section style="margin-top:2.5rem;padding-top:1.5rem;border-top:1px solid rgba(212,175,55,0.25);"><h2>Seguir explorando en la Enciclopedia IA</h2><ul><li><a href="vision-computacional.html">👁️ Visión Computacional: De CNNs a ViT y YOLO</a> — Cómo las máquinas reconocen objetos, rostros y escenas médicas usando convoluciones, Vision Transformers, detección en vivo (YOLO) y segmentación.</li>
+<li><a href="video-generativo-simulacion.html">🎬 Video Generativo y Simulación Temporal</a> — Por qué generar video es mucho más difícil que crear fotos: coherencia entre cuadros, física visual y el costo energético de renderizar tiempo.</li>
+<li><a href="ia-multimodal.html">🌐 IA Multimodal: Texto, Imagen, Audio y Acción</a> — Modelos que entienden y generan varios formatos a la vez: alineación CLIP, asistentes de voz-visión en vivo y modelos para robots (VLA).</li></ul></section>
+    <p style="margin-top:2rem;">
+      <a href="../#enciclopedia-ia" class="btn-hero-primary" style="display:inline-block;padding:0.85rem 1.5rem;text-decoration:none;">📚 Abrir en el Lector Interactivo de Ruichis Lab →</a>
+    </p>
+  </main>
+</body>
+</html>
