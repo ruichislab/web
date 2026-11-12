@@ -1,144 +1,139 @@
-# Fine-Tuning y Adaptación Eficiente de Parámetros (PEFT): Full Fine-Tuning vs. LoRA, QLoRA, SFT y Fusión de Adaptadores
+# Fine-Tuning y LoRA: Cómo Adaptar Modelos de IA sin Gastar una Fortuna
 
-El **Ajuste Fino** (*Fine-Tuning*) constituye la metodología central para especializar modelos fundacionales en tareas, estilos y dominios específicos. En la era de los Modelos de Lenguaje Masivos (*Large Language Models*, LLMs) con decenas o cientos de miles de millones de parámetros, el ajuste completo de pesos (*Full Fine-Tuning*, FFT) impone requerimientos computacionales que saturan la memoria gráfica (VRAM). Para superar este límite surgieron las técnicas de **Adaptación Eficiente de Parámetros** (*Parameter-Efficient Fine-Tuning*, PEFT), destacando **LoRA** (*Low-Rank Adaptation*) y **QLoRA** (*Quantized LoRA*). Estos métodos permiten adaptar modelos masivos optimizando únicamente una fracción diminuta de parámetros adicionales (< 1%), preservando los pesos base intactos y permitiendo su fusión directa en inferencia sin penalización de latencia.
+Entrenar un modelo de inteligencia artificial desde cero cuesta millones de dólares y semanas de supercomputación. Por eso, en la práctica se recurre al ajuste fino (*fine-tuning*): se toma un modelo base que ya domina el lenguaje o las imágenes y se le enseña una tarea concreta. Sin embargo, cuando los modelos alcanzaron decenas de miles de millones de parámetros, ajustar todos sus pesos a la vez chocó contra un muro: consumía cantidades colosales de memoria gráfica (VRAM) que solo los gigantes tecnológicos podían costear.
 
----
+Para democratizar este proceso nació la adaptación eficiente de parámetros (*Parameter-Efficient Fine-Tuning* o PEFT). Dentro de este enfoque destacan **LoRA** (*Low-Rank Adaptation*) y su variante comprimida **QLoRA**, técnicas que adaptan modelos punteros modificando menos del 1% de sus parámetros sin mermar su calidad.
 
-## 1. Origen e Intuición Fundamental
-
-### El Colapso de Memoria en Full Fine-Tuning
-En el entrenamiento supervisado (*Supervised Fine-Tuning*, SFT) tradicional, optimizar una red exige almacenar pesos, gradientes y estados del optimizador. Bajo AdamW en precisión mixta (FP16/BF16, 2 bytes), la memoria estática por parámetro escala drásticamente:
-
-1. **Pesos del modelo:** 2 bytes.
-2. **Gradientes:** 2 bytes.
-3. **Estados del optimizador (AdamW):** 8 bytes (primer y segundo momento en FP32).
-4. **Copia maestra en FP32:** 4 bytes.
-
-Esto suma de **16 a 20 bytes por parámetro**. Sin contar activaciones transitorias ni longitud de contexto, un modelo de 70B parámetros requiere más de 1,2 TB de VRAM distribuida, exigiendo clústeres empresariales de GPUs A100/H100 inaccesibles para la mayoría de entornos.
-
-### La Hipótesis de la Dimensión Intrínseca
-En 2020, investigaciones sobre la geometría de pérdidas en redes neuronales (Aghajanyan et al.) demostraron que las actualizaciones efectivas durante el ajuste fino residen en un subespacio de dimensionalidad intrínseca notablemente baja. Los modelos preentrenados están sobreparametrizados: la matriz de actualización $\Delta W$ exhibe valores singulares que decaen con rapidez, concentrando la información útil en pocos grados de libertad.
-
-En 2021, Edward Hu et al. propusieron **LoRA**: congelar la matriz preentrenada $W_0$ y descomponer $\Delta W$ en dos matrices de bajo rango. En 2023, Tim Dettmers et al. introdujeron **QLoRA**, combinando cuantización a 4 bits del modelo base con adaptadores LoRA, democratizando el entrenamiento de modelos masivos en GPUs comerciales.
+> **En pocas palabras:** LoRA funciona como añadir notas adhesivas con instrucciones específicas a una enciclopedia ya impresa, logrando que el modelo aprenda nuevas tareas sin necesidad de reescribir ni reimprimir sus miles de millones de páginas originales.
 
 ---
 
-## 2. Arquitectura, Mecánica o Formulación Matemática
+## 1. De dónde viene y cómo se entiende fácil
 
-### Formulación Matemática de LoRA
-Dada una capa lineal preentrenada con matriz $W_0 \in \mathbb{R}^{d \times k}$ y entrada $x \in \mathbb{R}^{b \times d}$, la transformación original calcula:
+Imagine que contrata a un traductor con veinte años de experiencia. Si necesita que redacte contratos bajo las leyes de un país concreto, no le enseña a hablar desde la infancia: le entrega una guía breve con la terminología jurídica local.
 
-$$h_0 = x W_0$$
+El método clásico, llamado ajuste completo (*Full Fine-Tuning* o FFT), intentaba reeducar a todo el modelo. Al actualizar cada parámetro durante el entrenamiento supervisado (*Supervised Fine-Tuning* o SFT) con el optimizador AdamW en precisión estándar de 16 bits (FP16 o BF16, 2 bytes por número), la memoria necesaria por parámetro se dispara:
+- **Pesos originales del modelo:** 2 bytes.
+- **Gradientes del error:** 2 bytes.
+- **Momentos del optimizador AdamW (en 32 bits):** 8 bytes.
+- **Copia maestra en 32 bits:** 4 bytes.
 
-En lugar de actualizar $W_0$ directamente ($W = W_0 + \Delta W$), LoRA factoriza la matriz de actualización $\Delta W \in \mathbb{R}^{d \times k}$ como el producto de dos matrices de rango reducido:
+El total alcanza **16 bytes por parámetro**. Para un modelo de 70.000 millones de parámetros (70B), el ajuste completo supera los 1.100 gigabytes (GB) de VRAM solo para alojar los pesos y el optimizador, exigiendo clústeres de tarjetas Nvidia A100 o H100 inaccesibles para equipos independientes.
 
-$$\Delta W = B \cdot A$$
+### La hipótesis que abrió el camino
+En diciembre de 2020, Armen Aghajanyan y su equipo en Meta formularon la **hipótesis de la dimensión intrínseca**. Probaron que las adaptaciones que necesita un modelo preentrenado no requieren alterar todo su volumen de parámetros: las soluciones útiles se concentran en un subespacio geométrico diminuto.
 
-donde:
-- $A \in \mathbb{R}^{r \times k}$
-- $B \in \mathbb{R}^{d \times r}$
-- El hiperparámetro de rango satisface $r \ll \min(d, k)$ (típicamente $r \in \{4, 8, 16, 32, 64\}$).
+Con esa base teórica, Edward Hu y su equipo en Microsoft Research presentaron **LoRA** en junio de 2021: congelar el modelo base intacto y capturar el aprendizaje nuevo mediante dos matrices auxiliares muy estrechas. En mayo de 2023, Tim Dettmers y colaboradores en la Universidad de Washington publicaron **QLoRA**, reduciendo el modelo base a 4 bits para permitir ajustar un modelo de 70B en una única estación de trabajo con 48 GB de VRAM.
 
-La salida de la capa combinada es:
+---
 
-$$h = x W_0 + \frac{\alpha}{r} (x A^T) B^T$$
+## 2. Cómo funciona por dentro
 
-*(o en formulación vectorial columna: $h = W_0 x + \frac{\alpha}{r} B A x$)*.
+### El truco del rango reducido
+Las redes neuronales procesan información multiplicando datos por matrices de pesos. Si una matriz lineal original W₀ mide 4.096 × 4.096 números, contiene 16,7 millones de parámetros.
 
-#### Inicialización y Factor de Escala ($\alpha$)
-- **Inicialización:** $A$ se inicializa mediante una distribución gaussiana aleatoria $\mathcal{N}(0, \sigma^2)$ (o Kaiming normal), y $B$ se inicializa en **ceros** ($B = 0$). Al inicio del entrenamiento ($t = 0$):
-  $$\Delta W = B \cdot A = 0 \cdot A = 0$$
-  El modelo parte exactamente del comportamiento original sin alterar las representaciones aprendidas.
-- **Factor de Escala $\frac{\alpha}{r}$:** El escalar constante $\alpha$ modula la magnitud del gradiente adaptativo. Al normalizar por $\frac{\alpha}{r}$, cambiar el rango $r$ no desestabiliza la tasa de aprendizaje (*learning rate*). Convencionalmente se utiliza $\alpha = 2r$ o $\alpha = r$.
+En vez de calcular una matriz de actualización completa ΔW (delta W) de 16,7 millones de números, LoRA descompone el cambio en el producto de dos matrices delgadas, B y A, mediante un valor pequeño llamado **rango** (r, comúnmente 8, 16 o 32):
 
-### Innovaciones Algorítmicas de QLoRA
-QLoRA reduce la huella de memoria en un 65% adicional mediante tres mecanismos:
+```text
+ΔW = B × A
+```
 
-1. **Cuantización NormalFloat4 (NF4):** Tipo de datos óptimo para variables con distribución normal $\mathcal{N}(0, \sigma^2)$, asignando igual densidad de probabilidad a cada uno de sus 16 niveles cuantizados.
-2. **Cuantización Doble (*Double Quantization*):** Cuantiza las constantes de escala de la primera cuantización, reduciendo el sobrecoste de metadatos de 0,5 a 0,127 bits por parámetro.
-3. **Optimizadores Paginados (*Paged Optimizers*):** Gestiona transferencias automáticas de memoria del optimizador entre VRAM y memoria RAM de CPU vía CUDA Unified Memory durante picos de contexto, previniendo errores de falta de memoria (*OOM*).
+Si elegimos r = 16:
+- La matriz **A** tiene tamaño 16 × 4.096 (65.536 números).
+- La matriz **B** tiene tamaño 4.096 × 16 (65.536 números).
 
-### Fusión de Adaptadores (*Weight Merging*)
-Al finalizar el entrenamiento, gracias a la linealidad de la transformación, los pesos del adaptador pueden fusionarse analíticamente en la matriz base:
+Al multiplicarse, B × A reconstruye la dimensión original de 4.096 × 4.096, pero el entrenamiento solo calcula gradientes para 131.072 parámetros en lugar de 16,7 millones: un ahorro superior al 99% en esa capa.
 
-$$W_{\text{final}} = W_0 + \frac{\alpha}{r} (B \cdot A)$$
+### La fórmula del paso hacia adelante
+Cuando entran datos (x) a la capa, el modelo suma la salida original congelada y la corrección de bajo rango:
 
-Esta suma directa genera un único conjunto de pesos equivalente. En producción, el modelo se despliega sin ramas paralelas ni latencia adicional de inferencia.
+```text
+salida = x × W₀ + (α ÷ r) × (x × Aᵀ × Bᵀ)
+```
 
-### Implementación en PyTorch
+Donde:
+- **x:** vector de datos de entrada.
+- **W₀:** pesos preentrenados congelados.
+- **Aᵀ y Bᵀ:** matrices adaptadoras transpuestas que aprenden la tarea.
+- **Factor de escala (α ÷ r):** la constante alfa (α) estabiliza el entrenamiento si cambiamos el valor del rango r.
+
+Para no distorsionar el modelo al inicio, A se inicializa con números aleatorios pequeños y B se llena de **ceros**. Al comenzar, B × A es cero y el modelo arranca comportándose de forma idéntica al original.
+
+### Fusión sin penalización de velocidad
+Al terminar el entrenamiento, los pesos adaptadores se suman directamente a la matriz base:
+
+```text
+W_final = W₀ + (α ÷ r) × (B × A)
+```
+
+Esta **fusión de pesos** (*weight merging*) genera un archivo de modelo estándar. En producción, responde a la misma velocidad del modelo original, con cero latencia añadida.
+
+### Qué añade QLoRA
+QLoRA reduce aún más el consumo mediante tres innovaciones:
+1. **Tipo de datos NormalFloat4 (NF4):** comprime los pesos base a 4 bits adaptándose a su distribución normal en campana, perdiendo mucha menos precisión que la cuantización uniforme.
+2. **Doble cuantización:** comprime las constantes de escala del primer paso, ahorrando 0,37 bits por parámetro.
+3. **Paginación de memoria:** traslada picos de memoria del optimizador a la RAM del sistema vía CUDA para evitar errores de memoria agotada (*Out of Memory*).
 
 ```python
 import torch
 import torch.nn as nn
-import math
 
-class LoRALinear(nn.Module):
+class CapaLoRA(nn.Module):
     """Capa lineal con adaptación de bajo rango (LoRA)."""
-    def __init__(self, in_features: int, out_features: int, r: int = 16, lora_alpha: float = 32.0):
+    def __init__(self, entrada: int, salida: int, r: int = 16, alfa: float = 32.0):
         super().__init__()
-        self.r = r
-        self.scaling = lora_alpha / r
+        self.escala = alfa / r
+        self.lineal = nn.Linear(entrada, salida, bias=False)
+        self.lineal.weight.requires_grad = False  # Congela la capa base
         
-        # Capa densa original congelada
-        self.linear = nn.Linear(in_features, out_features, bias=False)
-        self.linear.weight.requires_grad = False
-        
-        # Matrices de adaptación de bajo rango
-        self.lora_A = nn.Parameter(torch.empty(r, in_features))
-        self.lora_B = nn.Parameter(torch.zeros(out_features, r))
-        
-        nn.init.kaiming_uniform_(self.lora_A, a=math.sqrt(5))
-        nn.init.zeros_(self.lora_B)
-        self.merged = False
+        self.lora_A = nn.Parameter(torch.randn(r, entrada) * 0.01)
+        self.lora_B = nn.Parameter(torch.zeros(salida, r))
+        self.fusionado = False
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-        if self.merged:
-            return self.linear(x)
-        base = self.linear(x)
-        lora = (x @ self.lora_A.t()) @ self.lora_B.t() * self.scaling
-        return base + lora
+        if self.fusionado:
+            return self.lineal(x)
+        return self.lineal(x) + ((x @ self.lora_A.t()) @ self.lora_B.t()) * self.escala
 
-    def merge_weights(self):
-        """Fusiona los pesos de LoRA en la matriz principal para inferencia."""
-        if not self.merged:
-            self.linear.weight.data += (self.lora_B @ self.lora_A) * self.scaling
-            self.merged = True
+    def fusionar(self):
+        """Suma el adaptador a la base para inferencia rápida."""
+        if not self.fusionado:
+            self.lineal.weight.data += (self.lora_B @ self.lora_A) * self.escala
+            self.fusionado = True
 ```
 
 ---
 
-## 3. Casos de Uso y Aplicaciones Reales
+## 3. Dónde se usa hoy en la vida real
 
-1. **Ajuste Fino de Instrucciones (SFT Conversacional):** Modelos preentrenados como LLaMA o Mistral se especializan para responder instrucciones directas mediante adaptadores LoRA entrenados sobre diálogos estructurados (formatos Alpaca o ChatML).
-2. **Especialización Vertical de Dominio:** En medicina (informes clínicos, codificación CIE), derecho (revisión de contratos) y finanzas, donde se requiere dominar taxonomías técnicas complejas sin destruir las competencias lingüísticas generales.
-3. **Servicio Multitarea Multinquilino (*Multi-Tenant Serving*):** Plataformas como vLLM o LoRAX alojan un único modelo base (ej. 70B) en VRAM y conmutan dinámicamente adaptadores específicos por petición de cliente (20–100 MB cada uno), disminuyendo drásticamente los costes operacionales.
-4. **Personalización en Modelos de Difusión:** En síntesis visual (Stable Diffusion XL, Flux), LoRA permite incorporar personajes, estilos visuales y conceptos propietarios sin alterar los bloques troncales del modelo generativo.
-
----
-
-## 4. Ventajas, Limitaciones y Riesgos
-
-### Comparativa de Técnicas de Adaptación
-
-| Dimensión | Full Fine-Tuning (FFT) | LoRA | QLoRA | Prefix / Prompt Tuning |
-| :--- | :--- | :--- | :--- | :--- |
-| **Parámetros Entrenables** | 100% | 0,05% – 1,0% | 0,05% – 1,0% | < 0,1% (tokens virtuales) |
-| **Precisión de Base** | 16 bits (FP16/BF16) | 16 bits (FP16/BF16) | 4 bits (NF4) | 16 bits (FP16/BF16) |
-| **VRAM Modelo 70B** | > 1.200 GB | ~160–200 GB | ~48–55 GB | ~150 GB |
-| **Latencia Inferencia** | Nativa | Nativa (tras fusión) | Nativa (tras fusión) | Sobrecarga de longitud |
-| **Olvido Catastrófico** | Alto riesgo | Mínimo ($W_0$ congelado) | Mínimo ($W_0$ congelado) | Mínimo |
-| **Peso del Checkpoint** | 100% (~140 GB) | ~50–200 MB | ~50–200 MB | < 10 MB |
-
-### Limitaciones y Consideraciones
-- **Incorporación de Conocimiento Fáctico Masivo:** LoRA sobresale ajustando estilo, formato y alineamiento. Cuando se requiere incorporar grandes volúmenes de conocimiento nuevo inexistente en el preentrenamiento, el rango acotado $r$ genera un cuello de botella expresivo frente al preentrenamiento continuo o a sistemas RAG.
-- **Interferencia en Mezcla de Adaptadores:** La combinación directa de múltiples adaptadores LoRA (vía *SLERP*, *TIES* o promedios ponderados) puede generar interferencia destructiva en los subespacios de atención, demandando validación empírica.
-- **Coste de Descuantización en QLoRA:** El desempaquetado de NF4 a BF16/FP16 durante los pasos de propagación introduce una penalización en tiempo de entrenamiento (20–35% más lento que LoRA FP16 puro).
+- **Modelos de conversación e instrucciones:** transforma modelos abiertos como LLaMA, Mistral o Qwen en asistentes específicos mediante conjuntos de datos de preguntas y respuestas.
+- **Especialización técnica vertical:** entrena modelos en medicina (informes diagnósticos) o derecho (análisis contractual) sin borrar su fluidez lingüística general.
+- **Servicio compartido eficiente (*multi-tenant*):** herramientas como vLLM y LoRAX mantienen un solo modelo base grande en VRAM y conmutan adaptadores ligeros (50 a 100 MB) según el usuario, recortando costes operativos en más del 80%.
+- **Generación de imágenes y estilos artísticos:** en generadores como Stable Diffusion o Flux, los creadores comparten adaptadores LoRA muy compactos para plasmar personajes o estilos visuales concretos.
 
 ---
 
-## 5. Conceptos Relacionados
+## 4. Qué hace bien, qué falla y qué riesgos tiene
 
-- **Modelos de Lenguaje Masivos (LLMs) y Transformers:** Arquitectura neuronal cuyos módulos de atención y capas lineales actúan como objetivo de adaptación en LoRA.
-- **Cuantización de Redes Neuronales (GPTQ, AWQ, GGUF):** Técnicas de compresión para inferencia complementarias a la cuantización NF4 de entrenamiento.
-- **Alineamiento de Modelos (RLHF y DPO):** Métodos de alineamiento con preferencias humanas comúnmente ejecutados sobre adaptadores LoRA.
-- **Generación Aumentada por Recuperación (RAG):** Arquitectura sinérgica que provee información factual actualizada sin modificar los pesos del modelo.
+| Criterio | Ajuste Completo (FFT) | LoRA | QLoRA |
+| :--- | :--- | :--- | :--- |
+| **Parámetros entrenados** | 100% | 0,05% al 1% | 0,05% al 1% |
+| **Precisión del modelo base** | 16 bits (FP16/BF16) | 16 bits (FP16/BF16) | 4 bits (NF4) |
+| **VRAM requerida (modelo 70B)** | > 1.100 GB | 160 a 200 GB | 48 a 55 GB |
+| **Velocidad al responder** | Nativa | Nativa (tras fusionar) | Nativa (tras fusionar) |
+| **Riesgo de olvido catastrófico** | Alto | Mínimo (base fija) | Mínimo (base fija) |
+| **Tamaño del archivo resultante** | ~140 GB | 50 a 200 MB | 50 a 200 MB |
+
+### Limitaciones y riesgos prácticos
+- **Aprender destrezas frente a memorizar datos:** LoRA destaca ajustando estilo, formato y razonamiento. Si se pretende memorizar miles de documentos nuevos no presentes en el preentrenamiento, conviene complementarlo con Generación Aumentada por Recuperación (RAG).
+- **Sobrecarga de tiempo en QLoRA:** descomprimir pesos de 4 a 16 bits en cada iteración hace que el entrenamiento en QLoRA tome entre un 20% y un 35% más de tiempo que con LoRA estándar en 16 bits.
+- **Interferencias al fusionar adaptadores:** combinar varios adaptadores LoRA mediante promedios ponderados puede generar conflictos si modificaron los mismos circuitos neuronales para tareas incompatibles.
+
+---
+
+## 5. Temas relacionados
+
+- **Modelos de Lenguaje Masivos (LLMs) y Transformers:** la arquitectura modular sobre la que se conectan los adaptadores LoRA.
+- **Generación Aumentada por Recuperación (RAG):** método complementario que aporta datos externos actualizados sin modificar los parámetros del modelo.
+- **Cuantización para Inferencia (AWQ, GPTQ, GGUF):** técnicas para comprimir modelos terminados y ejecutarlos en equipos de consumo.
+- **Alineamiento con Preferencias Humanas (DPO y RLHF):** métodos de optimización de respuestas comúnmente aplicados mediante adaptadores LoRA.

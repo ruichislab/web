@@ -1,96 +1,113 @@
-# Ética, Gobernanza y Privacidad en Inteligencia Artificial
+# Ética, Privacidad y Regulación en Inteligencia Artificial
 
-La convergencia entre ética algorítmica, privacidad computacional y gobernanza regulatoria define el estándar contemporáneo para el ciclo de vida de la Inteligencia Artificial (IA). Lejos de concebirse como limitaciones accesorias, los principios de equidad estadística (*fairness*), privacidad formal (*differential privacy*), descentralización de datos (*federated learning*), trazabilidad de propiedad intelectual y cumplimiento legal vinculante (como el Reglamento Europeo de IA o *EU AI Act*) constituyen propiedades intrínsecas del diseño de sistemas fiables. Su propósito es garantizar que los modelos matemáticos no perpetúen sesgos históricos, no vulneren el secreto individual ni operen al margen del marco democrático internacional.
+La inteligencia artificial ha pasado del laboratorio a influir directamente en la sociedad: determina quién recibe un préstamo bancario, qué aspirantes superan un proceso de contratación o qué turnos se asignan en urgencias médicas. Cuando un modelo comete errores o hereda prejuicios del pasado, el impacto no es teórico: perjudica a personas reales. Diseñar sistemas fiables exige mucho más que maximizar su porcentaje de aciertos; requiere impedir la discriminación injusta, proteger los datos íntimos y definir normas legales claras cuando la tecnología falla.
 
-## 1. Origen e Intuición Fundamental
+> **En pocas palabras:** La ética y la regulación en inteligencia artificial garantizan que los algoritmos tomen decisiones justas sin discriminar a colectivos vulnerables, respeten el secreto de nuestros datos personales y respondan ante la ley cuando cometen errores perjudiciales.
 
-Durante las primeras fases de adopción del aprendizaje automático, el éxito de un modelo se juzgó exclusivamente mediante métricas escalares agregadas como la precisión (*accuracy*), el error cuadrático medio ($MSE$) o el $AUC$. Este enfoque asumía que optimizar el ajuste empírico producía automáticamente decisiones justas y seguras.
+---
 
-No obstante, los datos de entrenamiento reflejan las desigualdades estructurales y sesgos cognitivos presentes en su recolección:
-1. **Sesgo histórico y de muestreo**: Los datos reflejan distribuciones del pasado donde determinados colectivos sufrieron exclusión o trato discriminatorio sistemático (p. ej., en concesión de créditos o evaluaciones penales).
-2. **Correlaciones espurias y variables proxy**: Aunque se eliminen identificadores directos (género o etnia), las redes neuronales profundas correlacionan variables aparentemente neutrales (como el código postal o historial de consumo) reconstruyendo dichos atributos sensibles.
+## 1. De dónde viene y cómo se entiende fácil
 
-Simultáneamente, la concentración masiva de datos en servidores corporativos aumentó la vulnerabilidad frente a ataques de inferencia y extracción de información (*membership inference*). En 2006, Cynthia Dwork formalizó la **Privacidad Diferencial**, garantizando límites matemáticos demostrables a la información que una salida algorítmica puede revelar sobre un individuo. Posteriormente, en 2017, McMahan et al. (Google) introdujeron el **Aprendizaje Federado**, desacoplando el entrenamiento del modelo de la necesidad de centralizar los datos en bruto.
+Imagina un tribunal que revisa miles de sentencias del último siglo para enseñar a una computadora a fijar fianzas judiciales. Si durante ese siglo ciertos colectivos sufrieron arrestos desproporcionados por los mismos delitos, el sistema no aprenderá justicia, sino a replicar la discriminación histórica con apariencia de rigor matemático.
 
-El auge de los Modelos de Lenguaje de Gran Escala (LLM) y la IA generativa intensificó las controversias sobre derechos de autor, catalizando la transición desde guías éticas voluntarias hacia regulaciones vinculantes y sancionadoras a nivel global.
+Durante décadas, la informática evaluó los modelos fijándose solo en el porcentaje global de aciertos (la precisión o *accuracy*). Si un sistema acertaba el 95 % de las veces, se daba por bueno. Sin embargo, en la década de 2010 se comprobó que los fallos no eran aleatorios, sino que castigaban sistemáticamente a minorías desfavorecidas. En 2016, una investigación periodística de ProPublica sobre el algoritmo penal COMPAS en Estados Unidos demostró que clasificaba erróneamente a los acusados negros como futuros reincidentes casi el doble de veces que a los blancos con antecedentes idénticos.
 
-## 2. Arquitectura, Mecánica o Formulación Matemática
+Ocultar variables sensibles (como raza o género) tampoco resuelve el problema. Las redes neuronales identifican con facilidad variables indirectas (*proxies*): a partir del código postal, las compras habituales o el tipo de empleo, el algoritmo reconstruye con fidelidad los atributos protegidos que se intentaban omitir.
 
-El tratamiento formal de estos problemas se articula en tres dominios complementarios: auditoría de equidad, mecanismos de privacidad formal y protocolos de optimización distribuida.
+Al mismo tiempo surgió una alerta crítica de privacidad. Centralizar millones de historiales clínicos en servidores corporativos facilitaba ataques de inferencia (*membership inference*), donde un intruso puede averiguar si una persona concreta padece una enfermedad analizando las respuestas del modelo. Para impedirlo, la investigadora Cynthia Dwork y sus colegas formularon en 2006 la **Privacidad Diferencial**, estableciendo garantías matemáticas demostrables de anonimato. Más tarde, en 2017, H. Brendan McMahan y su equipo en Google introdujeron el **Aprendizaje Federado**, demostrando que es posible entrenar redes neuronales sin extraer los datos crudos del dispositivo del usuario.
 
-### Métricas de Equidad Algorítmica (*Fairness Metrics*)
+Las recomendaciones voluntarias se mostraron insuficientes para frenar abusos. Por ello, la Unión Europea aprobó en 2024 el **Reglamento Europeo de Inteligencia Artificial** (*EU AI Act*, Reglamento UE 2024/1689), el primer estándar normativo vinculante del mundo para auditar y sancionar el mal uso algorítmico.
 
-Sean $X \in \mathbb{R}^d$ el vector de características, $Y \in \{0, 1\}$ la etiqueta real, $\hat{Y} \in \{0, 1\}$ la predicción del modelo y $A \in \{0, 1\}$ un atributo protegido sensible.
+---
 
-1. **Paridad Demográfica (*Demographic Parity*)**: La tasa de selección debe ser independiente del grupo protegido:
-   $$P(\hat{Y} = 1 \mid A = 0) = P(\hat{Y} = 1 \mid A = 1)$$
-2. **Igualdad de Oportunidades (*Equal Opportunity*)**: La tasa de verdaderos positivos debe ser idéntica entre ambos colectivos:
-   $$P(\hat{Y} = 1 \mid A = 0, Y = 1) = P(\hat{Y} = 1 \mid A = 1, Y = 1)$$
+## 2. Cómo funciona por dentro
 
-### Privacidad Diferencial ($\epsilon, \delta$-DP)
+El control técnico de la inteligencia artificial descansa sobre tres pilares: la auditoría de equidad, la inyección formal de ruido y el entrenamiento descentralizado.
 
-Un algoritmo estocástico $\mathcal{M}$ satisface $(\epsilon, \delta)$-Privacidad Diferencial si para cualesquiera dos bases de datos vecinas $D$ y $D'$ que difieren en un único registro ($\|D - D'\|_1 = 1$), y para todo conjunto de resultados $S \subseteq \text{Range}(\mathcal{M})$:
+### 1. Métricas de equidad algorítmica (*Fairness*)
 
-$$P(\mathcal{M}(D) \in S) \le e^{\epsilon} P(\mathcal{M}(D') \in S) + \delta$$
+Definir qué es un resultado justo depende del criterio adoptado:
+- **Paridad demográfica (*Demographic Parity*):** Exige que el algoritmo seleccione la misma proporción de candidatos de cada grupo, con independencia de las diferencias de partida.
+- **Igualdad de oportunidades (*Equal Opportunity*):** Formulada por Moritz Hardt, Eric Price y Nathan Srebro en 2016, exige que las personas cualificadas para un beneficio (Y = 1) tengan la misma probabilidad de ser aceptadas, sin importar su grupo de pertenencia (A = 0 o A = 1):
 
-Donde $\epsilon > 0$ representa el presupuesto de privacidad (a menor valor, mayor confidencialidad) y $\delta \ge 0$ la tolerancia residual de fallo.
+```text
+P(Predicción = 1 | Grupo = 0, Real = 1) = P(Predicción = 1 | Grupo = 1, Real = 1)
+```
 
-Para una función determinista $f(D) \in \mathbb{R}^k$ con sensibilidad $L_1$ definida como $\Delta f = \max_{D, D'} \|f(D) - f(D')\|_1$, el **Mecanismo de Laplace** perturba la salida sumando ruido calibrado:
+En 2016, Jon Kleinberg, Sendhil Mullainathan y Manish Raghavan demostraron el **teorema de imposibilidad de la equidad**: salvo en escenarios ideales donde todos los grupos presentan idéntica tasa base o el modelo no comete ningún fallo, resulta matemáticamente imposible cumplir a la vez con todas las nociones formales de justicia. La elección de una métrica es siempre una decisión moral y legal.
 
-$$\mathcal{M}_{Lap}(D) = f(D) + \text{Lap}\left(0, \frac{\Delta f}{\epsilon}\right)$$
+### 2. Privacidad Diferencial (ε, δ-DP)
+
+La Privacidad Diferencial funciona como un velo probabilístico: garantiza que la salida de un análisis estadístico sobre un grupo apenas varíe si los datos de una persona concreta se añaden o se eliminan de la muestra.
+
+Un algoritmo M satisface (ε, δ)-Privacidad Diferencial si para cualesquiera dos bases de datos vecinas D y D' que difieren en un solo individuo, y para todo resultado posible S:
+
+```text
+P( M(D) ∈ S ) ≤ exp(ε) × P( M(D') ∈ S ) + δ
+```
+
+- **Épsilon (ε):** Presupuesto de privacidad. A menor valor, mayor anonimato (y más ruido añadido), pero menor exactitud en el resultado.
+- **Delta (δ):** Margen de error residual de fuga de datos, fijado habitualmente en valores insignificantes.
+
+Para proteger recuentos confidenciales, el **Mecanismo de Laplace** suma ruido estadístico proporcional a la sensibilidad del cálculo (el cambio máximo que un único individuo puede provocar en el total):
 
 ```python
 import numpy as np
 
-def mecanismo_laplace(valor_real: float, sensibilidad: float, epsilon: float) -> float:
-    """Añade ruido Laplaciano calibrado para garantizar epsilon-Privacidad Diferencial."""
+def contar_con_privacidad(conteo_real: int, epsilon: float = 0.5) -> float:
+    """Añade ruido de Laplace para garantizar privacidad diferencial."""
+    sensibilidad = 1.0  # Un único individuo modifica el recuento como máximo en 1
     escala = sensibilidad / epsilon
     ruido = np.random.laplace(loc=0.0, scale=escala)
-    return valor_real + ruido
+    return conteo_real + ruido
 
-# Ejemplo: Conteo agregado de diagnósticos confidenciales (sensibilidad = 1)
-total_real = 250
-conteo_privado = mecanismo_laplace(total_real, sensibilidad=1.0, epsilon=0.5)
+# Ejemplo: 350 personas con una condición médica confidencial
+recuento_protegido = contar_con_privacidad(conteo_real=350, epsilon=0.5)
 ```
 
-### Aprendizaje Federado (*Federated Averaging - FedAvg*)
+### 3. Aprendizaje Federado (*FedAvg*)
 
-En lugar de transferir conjuntos de datos privados $D_k$ a un servidor central, $K$ nodos locales calculan gradientes en sus propios dispositivos. En cada ronda de comunicación $t$, el orquestador central difunde los pesos globales $w_t$; los clientes seleccionados actualizan localmente sus modelos $w_{t+1}^k$ minimizando su pérdida empírica, y el servidor consolida la agregación ponderada:
+En lugar de subir historiales o mensajes a un servidor central, el modelo viaja a los teléfonos u ordenadores locales. Cada equipo entrena la red con sus propios datos y devuelve únicamente las modificaciones de los pesos numéricos. El servidor central agrega estas mejoras mediante el algoritmo *FedAvg*:
 
-$$w_{t+1} = \sum_{k=1}^K \frac{n_k}{n} w_{t+1}^k \quad \text{con} \quad n = \sum_{k=1}^K n_k$$
+```text
+w_{t+1} = ∑ [ (n_k ÷ n) × w_{t+1}^k ]
+```
 
-### Propiedad Intelectual y Trazabilidad
+Donde `w_{t+1}` representa el modelo global actualizado, `w_{t+1}^k` los pesos calculados por el participante `k`, y `n_k ÷ n` la proporción de datos aportada por ese nodo frente al total.
 
-Para responder a reclamaciones por derechos de autor en IA generativa se emplean:
-- **Funciones de Influencia (*Influence Functions*)**: Calculadas a través de la matriz Hessiana inversa ($H^{-1}_{\theta}$), cuantifican la contribución exacta de un ejemplo de entrenamiento específico sobre las predicciones finales.
-- **Marcado de Agua Estadístico (*Watermarking*)**: Modifica de forma imperceptible la distribución de *logits* en LLMs para favorecer una lista restringida de tokens, verificable mediante pruebas z-score.
+---
 
-## 3. Casos de Uso y Aplicaciones Reales
+## 3. Dónde se usa hoy en la vida real
 
-- **Consorcios Hospitalarios y Diagnóstico Colaborativo**: Redes sanitarias internacionales entrenan modelos de detección oncológica mediante Federated Learning combinado con Privacidad Diferencial (DP-FedAvg). Las historias clínicas nunca salen del hospital, asegurando el cumplimiento simultáneo de RGPD (Europa) y HIPAA (EE. UU.).
-- **Scoring Crediticio y Finanzas Responsables**: Entidades bancarias aplican penalizaciones de equidad algorítmica para evitar el descarte sistemático de colectivos desfavorecidos, auditando las decisiones mediante SHAP (*Shapley Additive Explanations*).
-- **Procesos de Selección en RRHH**: Filtros automáticos de talento integran entrenamiento adversarial para eliminar correlaciones entre cualificaciones técnicas y variables demográficas.
-- **Implementación del EU AI Act**: El marco europeo instaura un estándar mundial basado en cuatro niveles de riesgo:
-  1. *Inaceptable* (prohibido): Puntuación social ciudadana, biometría en tiempo real en espacios públicos.
-  2. *Alto Riesgo* (salud, infraestructuras, empleo, justicia): Exige gobernanza estricta de datos, trazabilidad técnica, explicabilidad y supervisión humana (*human-in-the-loop*).
-  3. *Modelos Fundacionales / GPAI*: Obliga a revelar resúmenes de datos con derechos de autor y evaluar riesgos sistémicos para arquitecturas con cómputo superior a $10^{25}$ FLOPs.
+1. **Teclados inteligentes y dispositivos móviles:** Los sistemas de predicción de texto de Google (Android) y Apple (iOS) aprenden palabras nuevas mediante aprendizaje federado y privacidad diferencial local. Los mensajes personales nunca abandonan el teléfono.
+2. **Medicina colaborativa internacional:** Hospitales de distintos países entrenan modelos conjuntos para detectar enfermedades raras en imágenes médicas sin transferir historiales de pacientes, cumpliendo en paralelo el RGPD europeo y la ley HIPAA estadounidense.
+3. **Estadísticas oficiales de población:** La Oficina del Censo de Estados Unidos aplicó privacidad diferencial en el censo de 2020 para publicar informes detallados sin riesgo de que atacantes deduzcan ingresos o etnias de familias cruzando tablas públicas.
+4. **Niveles de riesgo del EU AI Act:** El marco europeo estructura los sistemas en cuatro categorías:
+   - *Inaceptable (prohibido):* Puntuación social ciudadana (*social scoring*) y vigilancia biométrica masiva en tiempo real en espacios públicos.
+   - *Alto riesgo (empleo, banca, sanidad, justicia):* Exige auditorías de sesgo en los datos, documentación técnica y supervisión humana obligatoria.
+   - *Transparencia específica:* Obligación de avisar al usuario si interactúa con un chatbot o consume imágenes generadas por IA (*deepfakes*).
+   - *Modelos fundacionales (GPAI):* Sistemas con un gasto computacional acumulado superior a 10²⁵ FLOPs deben evaluar riesgos sistémicos y declarar obras protegidas por derechos de autor.
 
-## 4. Ventajas, Limitaciones y Riesgos
+---
 
-| Enfoque / Mecanismo | Principales Ventajas | Limitaciones Técnicas | Riesgos Críticos |
+## 4. Qué hace bien, qué falla y qué riesgos tiene
+
+| Mecanismo / Enfoque | Principales Ventajas | Limitaciones Técnicas | Riesgos Críticos |
 | :--- | :--- | :--- | :--- |
-| **Privacidad Diferencial (DP)** | Garantías matemáticas inviolables ante cualquier atacante arbitrario. | Deterioro de la exactitud predictiva (*trade-off* privacidad-utilidad); ajuste delicado de $\epsilon$. | Riesgo residual por fuga de metadatos o parametrización deficiente de $\epsilon$. |
-| **Aprendizaje Federado (FL)** | Privacidad local de datos crudos; reducción sustancial del tráfico de red. | Cuello de botella en ancho de banda; divergencia por datos no-IID (heterogéneos). | Ataques de envenenamiento de modelo (*model poisoning*) e inversión de gradientes. |
-| **Métricas de Equidad (Fairness)** | Mitigación formal de discriminación y cumplimiento de estándares éticos. | Teoremas de incompatibilidad: no es factible satisfacer todas las métricas a la vez. | Reducción de la precisión global o aparición de discriminación inversa. |
-| **EU AI Act y Marcos Legales** | Certeza jurídica armonizada y defensa efectiva de derechos fundamentales. | Alto coste de conformidad para startups; riesgo de desfase ante la innovación. | Deslocalización de desarrollos (*regulatory arbitrage*) hacia jurisdicciones laxas. |
+| **Privacidad Diferencial** | Respaldo matemático demostrable frente a cualquier atacante informático. | Reduce la precisión si se exige un épsilon muy estricto (*trade-off* utilidad-privacidad). | El ruido puede borrar patrones en colectivos minoritarios con pocos registros. |
+| **Aprendizaje Federado** | Los datos originales no salen del dispositivo o servidor del usuario. | Elevado consumo de batería y saturación de la red por rondas de sincronización. | Vulnerable a envenenamiento del modelo (*model poisoning*) e inversión de gradientes. |
+| **Métricas de Equidad** | Detectan y mitigan sesgos históricos en contrataciones y créditos. | Los teoremas de imposibilidad impiden satisfacer todas las métricas al unísono. | Riesgo de discriminación inversa si el ajuste no se calibra con criterio sociológico. |
+| **Regulación (EU AI Act)** | Proporciona certidumbre legal y defiende los derechos fundamentales. | Alto coste de cumplimiento para pequeñas empresas y riesgo de frenar la innovación. | Arbitraje regulatorio: traslado de centros de desarrollo a países sin leyes vinculantes. |
 
-### El Dilema Privacidad-Equidad-Rendimiento
+### El conflicto oculto entre privacidad y equidad
 
-Cualquier intervención técnica introduce compromisos estructurales. Inyectar ruido para salvaguardar la privacidad diferencial puede degradar desproporcionadamente la precisión en subgrupos minoritarios con pocas muestras, amplificando indirectamente el sesgo si no se aplican algoritmos de compensación específicos.
+Añadir ruido estadístico para blindar la privacidad diferencial puede perjudicar sin querer a las minorías. Si una base médica tiene un 98 % de datos de un grupo y solo un 2 % de otro, el ruido afectará poco al grupo mayoritario, pero puede destruir la señal del grupo minoritario, multiplicando sus errores de diagnóstico. Por ello, ambas dimensiones deben auditarse de forma coordinada.
 
-## 5. Conceptos Relacionados
+---
 
-- **Machine Learning**: Fundamentos del entrenamiento estadístico sobre el cual operan las restricciones de sesgo y privacidad.
-- **Deep Learning**: Redes neuronales de alta complejidad paramétrica cuya condición de caja negra exige auditorías regulatorias rigurosas.
-- **Explicabilidad e Interpretabilidad (XAI)**: Metodologías (LIME, SHAP) requeridas legalmente para desentrañar el razonamiento interno de los modelos de alto riesgo.
-- **Ciberseguridad en IA**: Estudio de ataques de extracción, inversión y manipulación adversarial que complementa la defensa de la privacidad diferencial.
+## 5. Temas relacionados
+
+- **Machine Learning:** Fundamentos del entrenamiento estadístico sobre el que se imponen los límites de privacidad y justicia.
+- **Deep Learning:** Redes neuronales de alta complejidad cuyo carácter opaco exige auditorías de sesgo periódicas.
+- **Explicabilidad e Interpretabilidad (XAI):** Métodos como SHAP o LIME que permiten justificar ante los reguladores por qué un algoritmo tomó una decisión concreta.
+- **Alineamiento y Seguridad de la IA:** Técnicas destinadas a asegurar que los modelos avanzados respeten los valores humanos y las normas éticas fijadas por la sociedad.

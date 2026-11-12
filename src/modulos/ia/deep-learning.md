@@ -1,98 +1,105 @@
-# Deep Learning: Fundamentos, Dinámica de Optimización y Leyes de Escalamiento
+# Deep Learning: Cómo las Máquinas Aprenden por Capas
 
-El **Deep Learning** (Aprendizaje Profundo) es el paradigma contemporáneo del aprendizaje automático fundamentado en la composición de múltiples capas de procesamiento no lineal para modelar distribuciones complejas en espacios de alta dimensionalidad. A diferencia de los enfoques estadísticos clásicos basados en la ingeniería manual de atributos (*feature engineering*), el aprendizaje profundo implementa una extracción de representaciones de extremo a extremo (*end-to-end representation learning*). En este marco, una función paramétrica altamente dimensionada transforma secuencialmente datos sensoriales no estructurados —como tensores de píxeles, señales acústicas o secuencias discretas de tokens— en variedades latentes (*latent manifolds*) donde la separación semántica y las relaciones causales resultan lineales o computacionalmente tratables.
+> **En pocas palabras:** El Deep Learning (aprendizaje profundo) organiza millones de operaciones matemáticas sencillas en capas apiladas, de modo que cada nivel extrae conceptos más abstractos a partir del anterior, igual que nuestra vista pasa de detectar bordes y sombras a reconocer rostros completos.
 
----
-
-## 1. Origen e Intuición Fundamental
-
-El origen del aprendizaje profundo responde a una interrogante teórica crucial: ¿por qué construir redes con decenas o cientos de capas en lugar de entrenar una red superficial sumamente ancha? El **Teorema de Aproximación Universal** (Cybenko, 1989; Hornik, 1991) demostró formalmente que un perceptrón multicapa con una única capa oculta y no linealidades acotadas puede aproximar cualquier función continua en un subconjunto compacto de $\mathbb{R}^n$ con un error arbitrariamente pequeño. No obstante, este teorema es un resultado existencial que no acota la complejidad muestral ni la cantidad de neuronas requeridas: en redes superficiales, aproximar funciones con variaciones intrincadas exige un número de neuronas que escala exponencialmente con la dimensión de entrada ($\mathcal{O}(2^n)$), volviendo el aprendizaje intratable.
-
-La intuición fundamental de la profundidad reside en la **composicionalidad jerárquica**. El mundo físico y el lenguaje natural poseen estructuras modulares: los átomos forman moléculas, las líneas componen bordes y texturas, las texturas forman geometrías canónicas, y estas constituyen entidades semánticas complejas. Las arquitecturas profundas factorizan computacionalmente esta jerarquía mediante composiciones sucesivas $f(x) = f_L(f_{L-1}(\dots f_1(x)))$. Cada capa $l$ proyecta la información hacia un espacio donde la complejidad representacional se multiplica exponencialmente con la profundidad lineal, requiriendo un número de parámetros que escala de forma polinomial. Esta eficiencia composicional permite a las redes profundas romper parcialmente la "maldición de la dimensionalidad" (*curse of dimensionality*) en distribuciones naturales.
+Cuando un sistema tradicional de aprendizaje automático intenta distinguir entre la radiografía de un pulmón sano y una con neumonía, un ingeniero humano debe indicarle primero qué medir: el brillo promedio de ciertas zonas, el contraste de los bordes o la textura del tejido. El **Deep Learning** (aprendizaje profundo) elimina esa programación manual de pistas. En lugar de que una persona diseñe las reglas de inspección, la máquina recibe miles de imágenes con su diagnóstico correcto y descubre por sí misma qué patrones visuales importan, organizándolos en una escalera de complejidad creciente.
 
 ---
 
-## 2. Arquitectura, Mecánica o Formulación Matemática
+## 1. De dónde viene y cómo se entiende fácil
 
-El entrenamiento estable de modelos profundos requirió superar barreras fundamentales de optimización: el desvanecimiento y la explosión de gradientes (*vanishing/exploding gradients*), el desplazamiento de covariables y la inestabilidad en espacios no convexos. El estándar de ingeniería actual se sostiene sobre cuatro pilares matemáticos y algorítmicos:
+La pregunta que dio origen al aprendizaje profundo es sencilla: ¿por qué apilar decenas o cientos de capas de cálculo en lugar de construir una sola capa gigantesca?
 
-### A. Conexiones Residuales (Skip Connections)
-En redes profundas estándar, la señal de error se diluye durante la retropropagación al multiplicarse reiteradamente por matrices de pesos jacobianas. Introducidas formalmente en la arquitectura ResNet (He et al., 2016), las **conexiones residuales** reformulan el mapeo subyacente $\mathcal{H}(x)$. En vez de forzar a los bloques apilados a ajustar directamente $\mathcal{H}(x)$, se les instruye parametrizar el residuo $\mathcal{F}(x) = \mathcal{H}(x) - x$, resultando en la formulación de paso hacia adelante:
+En 1989 y 1991, los matemáticos George Cybenko y Kurt Hornik demostraron el **Teorema de Aproximación Universal**: en teoría, una red neuronal con una única capa intermedia suficientemente ancha puede imitar cualquier función matemática continua. Sin embargo, ese resultado teórico escondía una trampa práctica: para problemas complejos del mundo real, esa única capa necesitaría una cantidad astronómica de neuronas, creciendo de forma exponencial hasta volverse imposible de entrenar en cualquier ordenador.
 
-$$y = \mathcal{F}(x, \{W_i\}) + x$$
+La naturaleza y el lenguaje funcionan por jerarquías, y ahí reside la ventaja de la profundidad. Piensa en cómo lees esta página: primero tus ojos detectan trazos curvos y rectos; luego tu cerebro agrupa esos trazos en letras; las letras forman palabras; las palabras construyen frases con significado. Una línea de montaje dividida en estaciones especializadas trabaja mucho mejor que un único operario intentando fabricar un automóvil entero desde cero.
 
-Al calcular el gradiente de la función de coste $\mathcal{E}$ respecto a la activación en una capa intermedia $l$ frente a una capa posterior $L$, la regla de la cadena produce:
+En inteligencia artificial, cada capa de una red profunda actúa como una estación de esa línea de montaje:
 
-$$\frac{\partial \mathcal{E}}{\partial x_l} = \frac{\partial \mathcal{E}}{\partial x_L} \frac{\partial x_L}{\partial x_l} = \frac{\partial \mathcal{E}}{\partial x_L} \left( \mathbf{I} + \frac{\partial}{\partial x_l} \sum_{i=l}^{L-1} \mathcal{F}_i(x_i, \mathcal{W}_i) \right)$$
+* **Primeras capas:** detectan elementos simples (líneas diagonales, cambios de color, frecuencias de sonido).
+* **Capas intermedias:** combinan esos trazos para reconocer piezas con forma (ojos, ruedas, sílabas).
+* **Capas finales:** ensamblan esas piezas para tomar una decisión global ("es un peatón cruzando", "esta frase expresa duda").
 
-El término de identidad $\mathbf{I}$ asegura que el gradiente $\frac{\partial \mathcal{E}}{\partial x_L}$ se propague directamente hacia las capas iniciales sin atenuación multiplicativa, independientemente de la profundidad de la red, eliminando el colapso del flujo de gradiente.
+Aunque el concepto teórico existía desde los años ochenta, el aprendizaje profundo despegó en 2012 cuando Alex Krizhevsky, Ilya Sutskever y Geoffrey Hinton entrenaron **AlexNet** usando tarjetas gráficas (GPU, procesadores diseñados originalmente para videojuegos) y redujeron casi a la mitad el error en el gran concurso visual ImageNet. Desde entonces, la combinación de datos masivos, GPUs y arquitecturas profundas transformó por completo la informática.
 
-### B. Técnicas de Normalización: BatchNorm vs. LayerNorm
-La escala de las activaciones intermedias fluctúa drásticamente durante el descenso de gradiente. Las técnicas de normalización preservan la varianza y la media en magnitudes controladas, suavizando el paisaje de pérdidas (*loss surface*):
+---
 
-*   **Batch Normalization (BatchNorm):** Normaliza cada dimensión de característica $k$ a través del eje del mini-lote $B$:
-    $$\hat{x}^{(k)} = \frac{x^{(k)} - \mu_B^{(k)}}{\sqrt{\sigma_B^{2(k)} + \epsilon}}, \quad y^{(k)} = \gamma^{(k)} \hat{x}^{(k)} + \beta^{(k)}$$
-    donde $\gamma$ y $\beta$ son parámetros aprendibles de escala y desplazamiento. Si bien BatchNorm estabilizó las Redes Convolucionales (CNNs), introduce dependencias indeseadas entre los ejemplos del lote y se degrada cuando el tamaño de lote es pequeño o variable.
-*   **Layer Normalization (LayerNorm):** Propuesta por Ba, Kiros y Hinton (2016), normaliza a lo largo del canal o dimensión oculta $H$ para cada muestra individual de manera independiente:
-    $$\mu_L = \frac{1}{H} \sum_{i=1}^H x_i, \quad \sigma_L^2 = \frac{1}{H} \sum_{i=1}^H (x_i - \mu_L)^2, \quad y_i = \gamma \frac{x_i - \mu_L}{\sqrt{\sigma_L^2 + \epsilon}} + \beta$$
-    LayerNorm es invariantemente estable respecto al tamaño del lote y resulta el estándar indiscutido en secuencias temporales, Transformers y Grandes Modelos de Lenguaje (LLMs).
+## 2. Cómo funciona por dentro
 
-### C. Optimización Adaptativa: AdamW
-Los optimizadores basados en momentos aceleran la convergencia en paisajes con curvaturas mal condicionadas. Adam calcula estimaciones exponenciales móviles del gradiente ($\hat{m}_t$) y del cuadrado del gradiente ($\hat{v}_t$). Sin embargo, Loshchilov y Hutter (2017/2019) descubrieron que la implementación tradicional de regularización $L_2$ en Adam no es matemáticamente equivalente al decaimiento de peso (*weight decay*), pues la penalización se escala de forma errónea por $\frac{1}{\sqrt{\hat{v}_t} + \epsilon}$. 
+Entrenar redes con decenas o cientos de capas trajo un problema grave en los primeros intentos: al corregir los errores desde la salida hacia atrás (mediante **retropropagación**, el algoritmo que reparte la culpa del fallo entre todas las neuronas), la señal de ajuste se iba debilitando al multiplicarse capa tras capa hasta volverse casi cero (*desvanecimiento del gradiente*), o bien crecía sin control (*explosión del gradiente*).
 
-**AdamW** desacopla formalmente el decaimiento de peso de la actualización del momento adaptativo:
+La ingeniería moderna resolvió este bloqueo gracias a cuatro piezas clave:
 
-```python
-# Actualización canónica de parámetros en AdamW
-# g_t: gradiente en paso t, alpha: tasa de aprendizaje, lambda_wd: peso de decaimiento
-m_t = beta1 * m_prev + (1 - beta1) * g_t
-v_t = beta2 * v_prev + (1 - beta2) * (g_t ** 2)
+### A. Conexiones residuales (autopistas de información)
+En 2015, Kaiming He y su equipo presentaron **ResNet**, una arquitectura que introdujo las **conexiones residuales** (*skip connections*). La idea es muy intuitiva: en lugar de obligar a cada bloque de neuronas a reconstruir toda la señal desde cero, se le permite sumar directamente la entrada original al resultado de la capa:
 
-m_hat = m_t / (1 - beta1 ** t)
-v_hat = v_t / (1 - beta2 ** t)
-
-# Desacoplamiento explícito: el gradiente adaptativo y el peso decaen en paralelo
-theta_t = theta_prev - alpha * (m_hat / (torch.sqrt(v_hat) + eps)) - alpha * lambda_wd * theta_prev
+```text
+salida = transformacion(entrada) + entrada
 ```
 
-Esta corrección previene que los parámetros asociados a gradientes frecuentes o de gran magnitud reciban una regularización residual reducida, garantizando una capacidad de generalización superior.
+Si una capa intermedia aún no aporta nada útil al principio del entrenamiento, la señal y el error pueden viajar sin obstáculos por ese atajo directo. Gracias a este principio fue posible entrenar redes de más de cien capas de forma estable.
 
-### D. Leyes de Escalamiento y Criterio de Chinchilla
-El rendimiento de los modelos autorregresivos profundos no crece caóticamente, sino mediante leyes de potencias empíricas y predecibles. Kaplan et al. (OpenAI, 2020) sugirieron inicialmente que el cómputo de entrenamiento debía invertirse predominantemente en aumentar el número de parámetros del modelo ($N$) por encima de la cantidad de tokens de texto ($D$).
+### B. Normalización de señales (mantener los números en rango)
+Mientras una red aprende, los números que circulan entre capas pueden dispararse hacia valores enormes o encogerse hacia cero, desestabilizando el ajuste de pesos. Para evitarlo se usan capas de normalización que reescalan las señales para que mantengan una media cercana a cero y una dispersión controlada:
 
-Sin embargo, Hoffmann et al. (DeepMind, 2022) demostraron en su estudio de **Chinchilla** que los modelos anteriores estaban severamente subentrenados en datos. Considerando un presupuesto de cómputo expresado en operaciones de punto flotante ($C \approx 6ND$), el escalamiento óptimo en el sentido de Pareto exige que los parámetros $N$ y los tokens de entrenamiento $D$ crezcan en igual proporción:
+* **BatchNorm** (Sergey Ioffe y Christian Szegedy, 2015): compara y normaliza cada característica usando el promedio del grupo de ejemplos (*mini-lote*) que se procesa en ese instante. Funciona muy bien en visión por ordenador, pero depende del tamaño del grupo.
+* **LayerNorm** (Jimmy Lei Ba, Jamie Ryan Kiros y Geoffrey Hinton, 2016): normaliza los valores dentro de cada ejemplo individual a lo largo de sus neuronas, sin depender de otros ejemplos del lote. Es el estándar en modelos de lenguaje y Transformers.
 
-$$N \propto C^{a}, \quad D \propto C^{b}, \quad \text{donde } a \approx 0.50 \quad \text{y} \quad b \approx 0.50$$
+### C. Optimizadores adaptativos (AdamW)
+Ajustar millones de parámetros requiere decidir cuánto cambiar cada peso tras cada error. El optimizador **Adam** (Diederik Kingma y Jimmy Ba, 2014) recuerda la dirección reciente de los ajustes (el *momento*) y adapta el tamaño del paso según cuánto ha variado cada parámetro. En 2017, Ilya Loshchilov y Frank Hutter propusieron **AdamW**, que separa limpiamente la penalización por pesos demasiado grandes (*weight decay*) del paso adaptativo, evitando que la red memorice ruido en lugar de aprender reglas generales:
 
-Para un aumento de 10 veces en el presupuesto de cómputo, tanto el tamaño de la red como el volumen de tokens deben incrementarse en aproximadamente $\sqrt{10} \approx 3.16\times$. Este principio redefinió la frontera del entrenamiento moderno, demostrando que arquitecturas más compactas pero expuestas a volúmenes masivos de datos superan en rendimiento e inferencia a redes sobredimensionadas con datos insuficientes.
+```python
+# Paso conceptual de actualización en AdamW (simplificado)
+# g: error actual (gradiente) | lr: tasa de aprendizaje | wd: penalización de peso
+momento = 0.9 * momento + 0.1 * g
+escala = 0.999 * escala + 0.001 * (g ** 2)
+
+paso_adaptativo = momento / ((escala ** 0.5) + 1e-8)
+peso = peso - lr * paso_adaptativo - lr * wd * peso
+```
+
+### D. Leyes de escalamiento y regla de Chinchilla
+En 2020, investigadores de OpenAI observaron que el error de los modelos de lenguaje disminuye de forma predecible al aumentar tres ingredientes: tamaño del modelo, cantidad de datos y capacidad de cómputo. Dos años después, Jordan Hoffmann y su equipo en DeepMind (2022) demostraron con el estudio **Chinchilla** que muchos modelos gigantes estaban desaprovechados porque tenían demasiados parámetros pero pocos textos de entrenamiento.
+
+Para un presupuesto de cómputo medido en operaciones matemáticas (`C ≈ 6 × N × D`, donde `N` es el número de parámetros y `D` la cantidad de tokens o fragmentos de texto):
+
+```text
+Regla de Chinchilla para entrenamiento óptimo:
+Si multiplicas el presupuesto de cómputo por 10,
+conviene multiplicar por ~3,16 el tamaño del modelo (N)
+y multiplicar también por ~3,16 la cantidad de datos (D).
+```
+
+Es decir, un modelo más compacto pero entrenado con muchos más datos de calidad suele rendir mejor y costar menos de operar que un gigante entrenado a medias.
 
 ---
 
-## 3. Casos de Uso y Aplicaciones Reales
+## 3. Dónde se usa hoy en la vida real
 
-*   **Modelos de Frontera y Razonamiento Multimodal:** Arquitecturas tipo *Decoder-Only Transformer* (como las familias Llama, GPT y Claude) procesan miles de millones de tokens de lenguaje, código y audio, facilitando síntesis contextual, razonamiento matemático e inferencia lógica cero-disparos (*zero-shot*).
-*   **Sistemas de Percepción y Conducción Autónoma:** Redes convolucionales profundas combinadas con mecanismos de atención espacial extraen mapas de ocupación tridimensional en tiempo real, rastreando trayectorias dinámicas de vehículos y peatones en condiciones meteorológicas adversas.
-*   **Modelado Estructural en Bioquímica y Ciencia:** Modelos como AlphaFold (DeepMind) resuelven el problema del plegamiento proteico tridimensional a partir de secuencias primarias de aminoácidos mediante bloques evoformer y módulos de refinamiento geométrico equivariante.
-*   **Generación de Medios Sintéticos y Simulación Física:** Modelos de difusión latente y redes antagónicas operan sobre variedades de alta dimensionalidad para renderizar imágenes fotorrealistas, simular dinámicas de fluidos y acelerar pruebas aerodinámicas en ingeniería aeroespacial.
+* **Asistentes de texto y código:** Modelos basados en aprendizaje profundo y arquitectura Transformer redactan documentos, resumen expedientes, traducen idiomas y ayudan a programar software en segundos.
+* **Diagnóstico médico por imagen:** Redes profundas analizan mamografías, tomografías y retinografías para señalar lesiones milimétricas que podrían pasar desapercibidas tras una jornada larga de guardia.
+* **Biología estructural:** El sistema **AlphaFold 2** (DeepMind, 2020) predijo la forma tridimensional de millones de proteínas a partir de su secuencia genética, un avance reconocido con el Premio Nobel de Química en 2024 para Demis Hassabis y John Jumper.
+* **Conducción asistida y robótica:** Cámaras y sensores procesados por redes profundas identifican carriles, señales de tráfico, peatones y obstáculos en milisegundos.
+* **Audio, voz y creación visual:** Sistemas de transcripción automática como Whisper, traductores de voz en tiempo real y generadores de imágenes operan íntegramente sobre capas profundas.
 
 ---
 
-## 4. Ventajas, Limitaciones y Riesgos
+## 4. Qué hace bien, qué falla y qué riesgos tiene
 
-El aprendizaje profundo ha desplazado a los métodos paramétricos tradicionales gracias a su capacidad de generalización sin precedentes, pero introduce fricciones computacionales, científicas y operativas severas:
-
-| Dimensión | Ventajas y Capacidades Críticas | Limitaciones y Riesgos Operativos |
+| Aspecto | Qué hace bien | Qué falla o qué riesgos tiene |
 | :--- | :--- | :--- |
-| **Representación** | Extracción autónoma de características invariantes; modelado jerárquico de variedades no lineales complejas. | Naturaleza de "caja negra" (*black box*); dificultad para verificar causalidad formal e interpretabilidad mecanicista. |
-| **Optimización** | Convergencia eficiente mediante retropropagación, conexiones residuales y optimizadores desacoplados como AdamW. | Vulnerabilidad a mínimos locales no generalizables, atajos de aprendizaje (*shortcut learning*) y alucinaciones. |
-| **Escalabilidad** | Mejora de rendimiento consistente según leyes de potencia precisas (Chinchilla) al expandir datos y FLOPs. | Coste de entrenamiento energético e infraestructural de orden multimillonario; rendimientos decrecientes en datos limpios. |
-| **Robustez** | Fuerte resistencia al ruido distribuido en grandes volúmenes de datos empíricos del mundo real. | Susceptibilidad a ataques adversarios sutiles (*adversarial perturbations*) y deriva de distribución (*distribution shift*). |
+| **Aprendizaje de patrones** | Descubre reglas ocultas en imágenes, audio o texto sin que nadie las programe a mano. | Funciona como una "caja negra": es difícil explicar con certeza por qué tomó una decisión concreta. |
+| **Rendimiento con escala** | Mejora de forma constante cuando se le dan más datos limpios y más cómputo. | Entrenar modelos grandes consume enormes cantidades de electricidad, agua para refrigeración y chips costosos. |
+| **Generalización** | Tolera ruido cotidiano como mala iluminación, acentos variados o faltas de ortografía. | Puede fallar ante ejemplos manipulados (*ataques adversarios*) o situaciones distintas a las vistas al entrenar. |
+| **Dependencia de datos** | Aprovecha millones de ejemplos reales sin requerir etiquetas en modelos auto-supervisados. | Si los datos históricos contienen sesgos o errores, la red los aprende y los amplifica a gran escala. |
+
+Un fallo frecuente en la práctica es el **aprendizaje por atajos** (*shortcut learning*): si todas las fotos de lobos en un conjunto de entrenamiento tienen nieve en el fondo y las de perros tienen césped, una red profunda puede volverse experta en detectar nieve en lugar de reconocer al animal. Auditar con datos variados y pruebas independientes sigue siendo obligatorio antes de usar cualquier modelo en decisiones sensibles.
 
 ---
 
-## 5. Conceptos Relacionados
+## 5. Temas relacionados
 
-*   **[Redes Neuronales Artificiales](file:///home/antigravity/web/src/modulos/ia/redes-neuronales.md):** Fundamento de conectividad sináptica, funciones de activación e inferencia directa sobre el que se estructuran las capas profundas.
-*   **[Machine Learning](file:///home/antigravity/web/src/modulos/ia/machine-learning.md):** Disciplina sombrilla que abarca la teoría del aprendizaje estadístico, optimización de funciones de coste y regularización.
-*   **Arquitectura Transformer y Mecanismos de Atención:** Paradigma que reemplazó a las recurrencias tradicionales, permitiendo la vectorización masiva y modelado de dependencias globales en secuencias extensas.
-*   **Técnicas de Regularización y Generalización:** Métodos complementarios como Dropout, Weight Decay desacoplado, Data Augmentation y Normalización Estocástica para contrarrestar el sobreajuste.
+* **[Redes Neuronales Artificiales](redes-neuronales.md):** Cómo funciona una neurona artificial individual, las funciones de activación y el entrenamiento básico.
+* **[Machine Learning](machine-learning.md):** El marco general del aprendizaje automático, desde modelos estadísticos clásicos hasta la evaluación de errores.
+* **[Arquitectura Transformer y Atención](transformers-atencion.md):** El diseño de capas profundas que revolucionó el procesamiento de texto, audio e imagen.
+* **[Hardware, GPU e Inferencia](hardware-gpu-inferencia.md):** Por qué las tarjetas gráficas y la cuantización permiten entrenar y ejecutar estos modelos.

@@ -1,135 +1,111 @@
-# Machine Learning: Fundamentos, Paradigmas de Aprendizaje y Mecánica Algorítmica
+# Machine Learning: Cómo Aprenden las Máquinas a Partir de Ejemplos
 
-El **Machine Learning (ML)** o Aprendizaje Automático es la disciplina de la inteligencia artificial orientada al desarrollo de algoritmos capaces de inferir relaciones funcionales subyacentes a partir de observaciones empíricas, optimizando su desempeño sin requerir reglas heurísticas programadas explícitamente. Formalizado bajo el marco del aprendizaje estadístico, el objetivo primordial del ML no es memorizar los datos de entrenamiento, sino alcanzar una sólida **generalización inductiva**: formular inferencias precisas ante instancias no observadas previamente provenientes de una distribución de datos subyacente.
+Durante décadas, programar una computadora equivalía a redactar un recetario: un especialista escribía instrucciones minuciosas paso a paso. La limitación surge ante tareas complejas de la vida diaria, como leer una radiografía o detectar transacciones bancarias fraudulentas: no existen reglas fijas que anticipen cada escenario posible.
 
----
+El aprendizaje automático o *Machine Learning* invierte esa lógica. En lugar de redactar reglas a mano, alimentamos al sistema con abundantes datos previos. Mediante optimización matemática y cálculo estadístico, el algoritmo identifica los patrones subyacentes y genera un modelo capaz de resolver con acierto situaciones nunca antes vistas.
 
-## 1. Origen e Intuición Fundamental
-
-El desarrollo conceptual del aprendizaje automático evolucionó desde los sistemas expertos hacia el paradigma inductivo. En 1959, Arthur Samuel definió este campo como aquel que permite a los ordenadores aprender sin programación explícita. Más adelante, Tom Mitchell (1997) formalizó la definición operacional estándar: *un programa aprende de la experiencia $E$ respecto a una tarea $T$ y una medida de desempeño $P$, si su desempeño en $T$, medido por $P$, mejora con la experiencia $E$*.
-
-### El Problema de Minimización del Riesgo Empírico
-Dado un conjunto de entrenamiento $D = \{(x_i, y_i)\}_{i=1}^n$ extraído de una distribución conjunta desconocida $P(X, Y)$, el objetivo es hallar una función $h \in \mathcal{H}$ que minimice el riesgo teórico o error de generalización:
-
-$$R(h) = \mathbb{E}_{(x, y) \sim P}[L(h(x), y)] = \int_{\mathcal{X} \times \mathcal{Y}} L(h(x), y) \, dP(x, y)$$
-
-donde $L(\cdot, \cdot)$ es la función de pérdida (*loss function*). Como $P(X, Y)$ es inaccesible, se aplica la **Minimización del Riesgo Empírico (ERM)** sobre la muestra observada:
-
-$$R_{\text{emp}}(h) = \frac{1}{n} \sum_{i=1}^n L(h(x_i), y_i)$$
-
-### El Dilema Sesgo-Varianza (Bias-Variance Tradeoff)
-Bajo una pérdida cuadrática con ruido estocástico irreducible $\epsilon \sim \mathcal{N}(0, \sigma^2)$, el error cuadrático esperado fuera de muestra para una nueva observación $x$ se descompone aditivamente en:
-
-$$\mathbb{E}[(y - \hat{f}(x))^2] = \underbrace{\left(\mathbb{E}[\hat{f}(x)] - f(x)\right)^2}_{\text{Sesgo}^2} + \underbrace{\mathbb{E}\left[\left(\hat{f}(x) - \mathbb{E}[\hat{f}(x)]\right)^2\right]}_{\text{Varianza}} + \underbrace{\sigma^2}_{\text{Ruido Irreducible}}$$
-
-* **Sesgo alto (Subajuste / Underfitting):** El modelo asume simplificaciones excesivas e ignora la estructura latente, generando errores altos tanto en entrenamiento como en prueba.
-* **Varianza alta (Sobreajuste / Overfitting):** El estimador captura el ruido aleatorio del conjunto de datos, logrando un error empírico nulo pero sufriendo una fuerte degradación ante datos nuevos.
+> **En pocas palabras:** El Machine Learning es la rama de la inteligencia artificial donde las computadoras analizan ejemplos pasados para descubrir patrones por su cuenta y tomar decisiones acertadas sobre datos nuevos.
 
 ---
 
-## 2. Arquitectura, Mecánica y Formulación Matemática
+## 1. De dónde viene y cómo se entiende fácil
 
-El aprendizaje automático se estructura principalmente en tres grandes paradigmas:
+Pensemos en cómo aprende una persona a reconocer un perro. Nadie le entrega un manual con medidas de hocicos u orejas. Durante la infancia observó perros en parques y fotografías, y cuando confundió un gato la corrigieron. Tras acumular ejemplos, su cerebro consolidó un patrón visual. Al ver una raza desconocida, sabe al instante que es un perro. El Machine Learning opera igual: sustituye la intuición biológica por cálculos matemáticos con matrices, probabilidades y funciones de error.
 
-### A. Aprendizaje Supervisado (Supervised Learning)
-Cada vector de entrada $x_i \in \mathbb{R}^d$ posee una etiqueta objetivo $y_i$. Se divide en:
-1. **Regresión:** La variable respuesta es continua ($y \in \mathbb{R}$). En *Regresión Lineal*, se busca $\hat{y} = w^T x + b$ minimizando el error cuadrático medio (MSE), incorporando regularizaciones norma $L_2$ (Ridge: $\lambda \|w\|_2^2$) o norma $L_1$ (Lasso: $\lambda \|w\|_1$) para estabilizar coeficientes.
-2. **Clasificación:** La variable respuesta es discreta ($y \in \{0, 1\}$ o multiclase). En *Regresión Logística*, se mapea la combinación lineal mediante la función sigmoide $\sigma(z) = \frac{1}{1 + e^{-z}}$, minimizando la entropía cruzada binaria:
-   $$\mathcal{L}(w) = -\frac{1}{n}\sum_{i=1}^n \left[ y_i \log(\hat{y}_i) + (1 - y_i)\log(1 - \hat{y}_i) \right]$$
+El término nació en 1959 con el informático Arthur Samuel en IBM. Samuel programó un sistema para jugar a las damas en una computadora IBM 704. En vez de codificar cada jugada, permitió que la máquina disputara miles de partidas contra sí misma, aprendiendo qué posiciones aumentaban las probabilidades de ganar hasta batir a jugadores experimentados.
 
-#### Árboles y Gradient Boosting (XGBoost)
-Los árboles de decisión particionan ortogonalmente el espacio de entrada optimizando impurezas como la entropía o el índice de Gini. **XGBoost (Extreme Gradient Boosting)** construye un ensamble aditivo de $K$ árboles $\hat{y}_i = \sum_{k=1}^K f_k(x_i)$ mediante una aproximación de Taylor de segundo orden sobre la función de pérdida regularizada:
+En 1997, Tom Mitchell formalizó la definición estándar del campo: un programa aprende de la experiencia (E) respecto a una tarea (T) evaluada por una medida de rendimiento (P), si su rendimiento en T mejora con la experiencia E. En un filtro de correo no deseado (*spam*), la tarea es clasificar mensajes entrantes, el rendimiento es el porcentaje de aciertos, y la experiencia son los correos analizados previamente.
 
-$$\mathcal{L}^{(t)} \approx \sum_{i=1}^n \left[ l(y_i, \hat{y}_i^{(t-1)}) + g_i f_t(x_i) + \frac{1}{2} h_i f_t^2(x_i) \right] + \gamma T + \frac{1}{2} \lambda \sum_{j=1}^T w_j^2$$
+### Aprender frente a memorizar
 
-donde $g_i$ y $h_i$ son los gradientes de primer y segundo orden respecto a la predicción previa, $T$ es el conteo de nodos hoja y $w_j$ sus ponderaciones.
+El fin del aprendizaje automático no es memorizar los datos de entrenamiento, sino generalizar ante casos desconocidos:
 
-### B. Aprendizaje No Supervisado (Unsupervised Learning)
-Opera sobre muestras sin etiquetar $D = \{x_i\}_{i=1}^n$ para descubrir agrupaciones naturales, densidades o variedades latentes:
-* **Clustering (K-Means):** Agrupa observaciones en $k$ conglomerados minimizando la suma de distancias euclidianas cuadradas a los centroides $\mu_j$:
-  $$J = \sum_{i=1}^n \sum_{j=1}^k r_{ij} \|x_i - \mu_j\|^2, \quad r_{ij} \in \{0, 1\}$$
-* **Reducción de Dimensionalidad (PCA):** Proyecta los datos hacia componentes ortogonales ordenados por varianza máxima a través de los autovectores de la covarianza $\Sigma = \frac{1}{n} X^T X$.
+- **Subajuste (alto sesgo):** El modelo es excesivamente simple y no capta la estructura real de los datos. Si estimamos el precio de una vivienda solo por el color de la puerta, fallará en cualquier prueba.
+- **Sobreajuste (alta varianza):** El modelo memoriza el ruido y particularidades accidentales de los datos conocidos. Equivale al estudiante que memoriza de carrerilla las preguntas de un simulacro: obtiene nota perfecta en el ensayo, pero suspende el examen real en cuanto cambian los ejercicios.
 
-### C. Aprendizaje Auto-Supervisado (Self-Supervised Learning - SSL)
-Supera el cuello de botella de la anotación humana extrayendo etiquetas artificiales a partir de la propia estructura de los datos crudos:
-* **Aprendizaje Contrastivo (e.g., SimCLR, MoCo):** Minimiza la distancia en el espacio latente entre transformaciones aumentadas de una misma muestra (pares positivos) y las separa de otras muestras mediante la pérdida InfoNCE:
-  $$\mathcal{L}_{\text{InfoNCE}} = -\log \frac{\exp(\text{sim}(z_i, z_j)/\tau)}{\sum_{k} \exp(\text{sim}(z_i, z_k)/\tau)}$$
-* **Modelado de Enmascaramiento:** Oculta porciones de una secuencia o imagen (ej. BERT, MAE) forzando a la red a predecir las regiones faltantes.
+---
 
-### D. Validación Cruzada (Cross-Validation) y Flujo de Trabajo
-Para evitar la filtración de información (*data leakage*), cualquier transformación estadística debe restringirse estrictamente al pliegue de entrenamiento durante la validación cruzada $k$-fold estratificada:
+## 2. Cómo funciona por dentro
+
+El aprendizaje automático se organiza en tres familias principales:
+
+### Aprendizaje supervisado
+Es el método más habitual en producción. Cada dato de entrada cuenta con una etiqueta conocida:
+1. **Regresión:** La respuesta es continua, como estimar la temperatura de mañana o el precio de un inmueble.
+2. **Clasificación:** La respuesta es una categoría discreta, como distinguir transacciones bancarias legítimas de fraudulentas.
+
+En una relación lineal, el modelo calcula una suma ponderada de las variables de entrada multiplicadas por pesos numéricos más un término de ajuste:
+
+```
+predicción = (peso₁ × dato₁) + (peso₂ × dato₂) + ajuste_base
+```
+
+Para clasificar entre dos opciones (regresión logística), esa combinación lineal pasa por una función sigmoide que comprime el resultado en una probabilidad entre 0 y 1:
+
+```
+probabilidad = 1 ÷ (1 + e^(-z))
+```
+
+En datos tabulares (bases de datos y hojas de cálculo), dominan los ensambles de árboles de decisión. Modelos como XGBoost, creado por Tianqi Chen y Carlos Guestrin en 2016, combinan árboles en secuencia donde cada nuevo árbol corrige los errores residuales del anterior.
+
+### Aprendizaje no supervisado
+Trabaja sobre datos sin etiquetar para descubrir patrones ocultos:
+- **Agrupamiento (*clustering*):** Métodos como K-Means segmentan perfiles de clientes calculando distancias matemáticas entre sus atributos.
+- **Reducción de dimensionalidad:** Algoritmos como PCA (Análisis de Componentes Principales, formulado por Karl Pearson en 1901) reducen cientos de variables correlacionadas a pocos ejes sin perder información clave.
+
+### Aprendizaje auto-supervisado
+Hace posible los grandes modelos de lenguaje modernos. El sistema toma datos sin clasificar, oculta fragmentos y aprende intentando predecir las partes faltantes a partir del contexto, prescindiendo del costoso etiquetado manual.
+
+### Validación cruzada y evaluación
+Para comprobar que el modelo generaliza bien, separamos rigurosamente los datos entre entrenamiento y prueba:
 
 ```python
-import numpy as np
-from sklearn.datasets import make_classification
-from sklearn.model_selection import StratifiedKFold
-from sklearn.preprocessing import StandardScaler
-from sklearn.metrics import roc_auc_score
-from xgboost import XGBClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score
 
-# 1. Generación de datos tabulares sintéticos
-X, y = make_classification(
-    n_samples=1000, n_features=20, n_informative=12,
-    n_classes=2, weights=[0.7, 0.3], random_state=42
+# 80% para entrenar y 20% para examinar sin contaminación
+X_entrena, X_prueba, y_entrena, y_prueba = train_test_split(
+    datos_x, etiquetas_y, test_size=0.20, random_state=42
 )
 
-# 2. Validación Cruzada Estratificada de 5 Pliegues
-skf = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
-auc_scores = []
+modelo = RandomForestClassifier(n_estimators=100, random_state=42)
+modelo.fit(X_entrena, y_entrena)
 
-for train_idx, val_idx in skf.split(X, y):
-    X_train, X_val = X[train_idx], X[val_idx]
-    y_train, y_val = y[train_idx], y[val_idx]
-    
-    # Escalado sin fuga de datos
-    scaler = StandardScaler()
-    X_train_s = scaler.fit_transform(X_train)
-    X_val_s = scaler.transform(X_val)
-    
-    # Ensamble XGBoost con regularización L2
-    model = XGBClassifier(
-        n_estimators=100, max_depth=4, learning_rate=0.05,
-        reg_lambda=1.5, subsample=0.8, eval_metric="logloss", random_state=42
-    )
-    model.fit(X_train_s, y_train)
-    
-    y_prob = model.predict_proba(X_val_s)[:, 1]
-    auc_scores.append(roc_auc_score(y_val, y_prob))
-
-print(f"ROC-AUC Promedio: {np.mean(auc_scores):.4f} (+/- {np.std(auc_scores):.4f})")
+predicciones = modelo.predict(X_prueba)
+print(f"Precisión: {accuracy_score(y_prueba, predicciones) * 100:.1f}%")
 ```
 
 ---
 
-## 3. Casos de Uso y Aplicaciones Reales
+## 3. Dónde se usa hoy en la vida real
 
-1. **Detección de Fraude en Tiempo Real:** Algoritmos como XGBoost y LightGBM analizan millones de transacciones bancarias instantáneas sobre datos tabulares desbalanceados, respondiendo en menos de 50 milisegundos con alta tasa de detección.
-2. **Genómica y Medicina de Precisión:** Métodos de clustering y reducción dimensional clasifican perfiles de expresión genética e identifican subtipos celulares, mientras modelos supervisados evalúan afinidades moleculares en el diseño farmacológico.
-3. **Motores de Recomendación y Retención:** Factorización matricial y técnicas de clustering segmentan dinámicamente audiencias masivas en servicios de streaming y comercio digital para predecir patrones de consumo y desuscripción.
-4. **Preentrenamiento de Modelos Fundacionales:** Modelos de lenguaje y visión por computadora aprovechan el aprendizaje auto-supervisado (SSL) para aprender representaciones universales a partir de grandes corpus no estructurados.
+- **Detección de fraude financiero:** Pasarelas de pago evalúan cada compra en menos de 50 milisegundos. Algoritmos basados en árboles analizan importes, geolocalización y hábitos del usuario para bloquear operaciones sospechosas en tiempo real.
+- **Motores de recomendación:** Plataformas digitales analizan patrones de consumo para sugerir productos o contenidos según afinidades compartidas entre millones de usuarios.
+- **Medicina y diagnóstico asistido:** Algoritmos entrenados con tomografías asisten a especialistas detectando anomalías tempranas, mientras modelos moleculares predicen qué compuestos químicos tienen mayor potencial farmacológico.
+- **Mantenimiento predictivo:** Sensores en turbinas y plantas industriales vigilan vibraciones y temperaturas para anticipar averías mecánicas antes de que detengan la producción.
 
 ---
 
-## 4. Ventajas, Limitaciones y Riesgos
+## 4. Qué hace bien, qué falla y qué riesgos tiene
 
-| Criterio | Aprendizaje Supervisado | Aprendizaje No Supervisado | Aprendizaje Auto-Supervisado |
+| Enfoque | Mayor fortaleza | Principal limitación | Riesgo crítico |
 | :--- | :--- | :--- | :--- |
-| **Dependencia de Etiquetas** | Crítica; costosa anotación humana | Nula; explora datos sin clasificar | Nula en preentrenamiento; mínima en downstream |
-| **Interpretabilidad** | Alta en lineales; moderada en ensambles | Moderada (geometría de clústeres) | Baja (espacios latentes abstractos) |
-| **Capacidad de Generalización** | Acotada al rango de etiquetas de prueba | Limitada a las densidades locales | Muy alta; extrae invarianzas semánticas |
-| **Costo Computacional** | Moderado a bajo en datos tabulares | Bajo a moderado | Muy elevado durante el preentrenamiento |
-| **Riesgo Principal** | Sobreajuste y sesgo de muestreo | Óptimos locales no representativos | Colapso de representaciones dimensionales |
+| **Supervisado** | Alta precisión con datos bien clasificados | Dependencia de costoso etiquetado humano | Reproduce sesgos históricos de los datos |
+| **No supervisado** | Descubre patrones sin guía humana | Validación subjetiva de los grupos | Encuentra agrupaciones ficticias por ruido |
+| **Auto-supervisado** | Escala sobre corpus masivos de datos crudos | Consumo computacional y energético extremo | Opacidad interna y dificultad de auditoría |
 
-### Riesgos Operativos y Éticos
-* **Deriva de Concepto (*Concept Drift*):** Cambios temporales en $P(Y|X)$ deterioran la precisión de modelos desplegados en entornos de producción si no cuentan con reentrenamiento programado.
-* **Sesgo Algorítmico y Discriminación:** Si los datos históricos contienen asimetrías sociales o muestreos sesgados, el algoritmo optimiza el error generalizando y perpetuando estas desigualdades.
-* **Cajas Negras y Robustez:** Los modelos complejos carecen con frecuencia de trazabilidad lógica directa y son vulnerables a pequeños ataques adversarios formulados para alterar sus salidas.
+### Riesgos operativos y éticos
+
+- **Deriva de datos (*concept drift*):** La realidad cambia constantemente. Un modelo de demanda comercial entrenado antes de 2020 perdió validez con la pandemia. Todo sistema en producción exige monitoreo continuo y reentrenamiento para no degradarse.
+- **Sesgo algorítmico:** Los algoritmos no son neutros por naturaleza; reflejan los sesgos de sus datos de origen. Si un sistema de contratación aprende de decisiones pasadas discriminatorias, amplificará esa inequidad bajo una apariencia de objetividad técnica.
+- **Opacidad de caja negra:** En modelos complejos es difícil rastrear el motivo exacto de una decisión individual. Normativas como la Ley de Inteligencia Artificial de la Unión Europea (aprobada en 2024) exigen explicabilidad, gobernanza de datos y supervisión humana en aplicaciones críticas.
 
 ---
 
-## 5. Conceptos Relacionados
+## 5. Temas relacionados
 
-* **Redes Neuronales y Deep Learning:** Extensión jerárquica no lineal del aprendizaje estadístico mediante apilamiento de capas diferenciables.
-* **Descenso de Gradiente y Optimización Convexa:** Algoritmos de cálculo diferencial que sustentan el ajuste paramétrico de los modelos.
-* **Teoría del Aprendizaje Estadístico y Dimensión VC:** Marco matemático que delimita formalmente la frontera entre sobreajuste y generalización.
-* **Aprendizaje por Refuerzo:** Paradigma interactivo basado en recompensas y castigos secuenciales guiado por un entorno dinámico.
+- **Deep Learning (Aprendizaje Profundo):** Subcampo del Machine Learning basado en redes neuronales profundas para visión artificial y procesamiento de lenguaje.
+- **Aprendizaje por Refuerzo:** Paradigma interactivo donde un agente aprende a tomar decisiones maximizando recompensas mediante ensayo y error en un entorno dinámico.
+- **Descenso de Gradiente:** Algoritmo de optimización que actualiza iterativamente los pesos del modelo para minimizar su error.
+- **Ingeniería de Características:** Proceso de seleccionar y transformar variables brutas para facilitar la extracción de patrones por parte del algoritmo.
