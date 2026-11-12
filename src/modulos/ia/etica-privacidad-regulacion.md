@@ -1,43 +1,43 @@
 # Ética, Gobernanza y Privacidad en Inteligencia Artificial
 
-La intersección entre ética, privacidad computacional y marcos regulatorios define el estándar contemporáneo para el diseño, entrenamiento y despliegue de sistemas de Inteligencia Artificial (IA). Lejos de concebirse como restricciones externas o accesorias, los principios de equidad estadística (*fairness*), privacidad formal (*differential privacy*), descentralización colaborativa (*federated learning*), trazabilidad de derechos de autor y cumplimiento normativo vinculante (como el Reglamento Europeo de IA o *EU AI Act*) constituyen propiedades intrínsecas de la ingeniería de software confiable. Su propósito es garantizar que los algoritmos de optimización matemática no perpetúen asimetrías históricas, no vulneren el secreto individual de las observaciones ni operen al margen del marco legal democrático internacional.
+La convergencia entre ética algorítmica, privacidad computacional y gobernanza regulatoria define el estándar contemporáneo para el ciclo de vida de la Inteligencia Artificial (IA). Lejos de concebirse como limitaciones accesorias, los principios de equidad estadística (*fairness*), privacidad formal (*differential privacy*), descentralización de datos (*federated learning*), trazabilidad de propiedad intelectual y cumplimiento legal vinculante (como el Reglamento Europeo de IA o *EU AI Act*) constituyen propiedades intrínsecas del diseño de sistemas fiables. Su propósito es garantizar que los modelos matemáticos no perpetúen sesgos históricos, no vulneren el secreto individual ni operen al margen del marco democrático internacional.
 
 ## 1. Origen e Intuición Fundamental
 
-Durante las primeras fases de adopción del aprendizaje automático comercial, el rendimiento de los modelos se evaluó casi exclusivamente mediante métricas escalares agregadas como la precisión (*accuracy*), el error cuadrático medio ($MSE$) o el área bajo la curva ROC ($AUC$). Este paradigma tecnocéntrico asumía que la maximización del ajuste empírico equivalía a una toma de decisiones óptima.
+Durante las primeras fases de adopción del aprendizaje automático, el éxito de un modelo se juzgó exclusivamente mediante métricas escalares agregadas como la precisión (*accuracy*), el error cuadrático medio ($MSE$) o el $AUC$. Este enfoque asumía que optimizar el ajuste empírico producía automáticamente decisiones justas y seguras.
 
-Sin embargo, los datos de entrenamiento reflejan inexorablemente las dinámicas sociales, desigualdades estructurales y sesgos cognitivos presentes en su recolección:
-1. **Sesgo histórico y de muestreo**: Los conjuntos de datos representan distribuciones pasadas donde ciertos colectivos estuvieron subrepresentados o sujetos a decisiones discriminatorias sistemáticas (por ejemplo, en concesión de créditos o evaluaciones penitenciarias).
-2. **Correlaciones espurias y variables latentes**: Aunque se excluyan atributos protegidos directos (como género, etnia o código postal), redes neuronales profundas con millones de parámetros son capaces de reconstruir variables protegidas a través de combinaciones no lineales de características aparentemente inocuas.
+No obstante, los datos de entrenamiento reflejan las desigualdades estructurales y sesgos cognitivos presentes en su recolección:
+1. **Sesgo histórico y de muestreo**: Los datos reflejan distribuciones del pasado donde determinados colectivos sufrieron exclusión o trato discriminatorio sistemático (p. ej., en concesión de créditos o evaluaciones penales).
+2. **Correlaciones espurias y variables proxy**: Aunque se eliminen identificadores directos (género o etnia), las redes neuronales profundas correlacionan variables aparentemente neutrales (como el código postal o historial de consumo) reconstruyendo dichos atributos sensibles.
 
-En paralelo, la recopilación centralizada masiva requerida para entrenar arquitecturas profundas generó vulnerabilidades severas frente a ciberataques de reconstrucción de datos (*data extraction* y *membership inference*). En 2006, Cynthia Dwork formalizó la **Privacidad Diferencial**, estableciendo un límite matemático riguroso a la información filtrada por cualquier cómputo estadístico. Años después, en 2017, investigadores de Google introdujeron el **Aprendizaje Federado**, desacoplando el entrenamiento del modelo de la necesidad de transferir datos confidenciales a un servidor central.
+Simultáneamente, la concentración masiva de datos en servidores corporativos aumentó la vulnerabilidad frente a ataques de inferencia y extracción de información (*membership inference*). En 2006, Cynthia Dwork formalizó la **Privacidad Diferencial**, garantizando límites matemáticos demostrables a la información que una salida algorítmica puede revelar sobre un individuo. Posteriormente, en 2017, McMahan et al. (Google) introdujeron el **Aprendizaje Federado**, desacoplando el entrenamiento del modelo de la necesidad de centralizar los datos en bruto.
 
-Finalmente, el auge de los Modelos de Lenguaje de Gran Escala (LLM) y la IA generativa visibilizó la apropiación indebida de propiedad intelectual y obras con derechos de autor, catalizando la transición desde autorregulaciones éticas voluntarias hacia regulaciones vinculantes y punitivas de alcance supranacional.
+El auge de los Modelos de Lenguaje de Gran Escala (LLM) y la IA generativa intensificó las controversias sobre derechos de autor, catalizando la transición desde guías éticas voluntarias hacia regulaciones vinculantes y sancionadoras a nivel global.
 
 ## 2. Arquitectura, Mecánica o Formulación Matemática
 
-El tratamiento formal de estos desafíos se fundamenta en marcos matemáticos específicos orientados a auditar sesgos, aislar la privacidad y entrenar modelos distribuidos.
+El tratamiento formal de estos problemas se articula en tres dominios complementarios: auditoría de equidad, mecanismos de privacidad formal y protocolos de optimización distribuida.
 
 ### Métricas de Equidad Algorítmica (*Fairness Metrics*)
 
-Sean $X \in \mathbb{R}^d$ el vector de características de entrada, $Y \in \{0, 1\}$ la etiqueta real, $\hat{Y} \in \{0, 1\}$ la predicción del modelo y $A \in \{0, 1\}$ un atributo protegido binario. Dos de los criterios formales más extendidos son:
+Sean $X \in \mathbb{R}^d$ el vector de características, $Y \in \{0, 1\}$ la etiqueta real, $\hat{Y} \in \{0, 1\}$ la predicción del modelo y $A \in \{0, 1\}$ un atributo protegido sensible.
 
-1. **Paridad Demográfica (*Demographic Parity*)**: Exige que la tasa de selección sea idéntica e independiente del grupo demográfico:
+1. **Paridad Demográfica (*Demographic Parity*)**: La tasa de selección debe ser independiente del grupo protegido:
    $$P(\hat{Y} = 1 \mid A = 0) = P(\hat{Y} = 1 \mid A = 1)$$
-2. **Igualdad de Oportunidades (*Equal Opportunity*)**: Garantiza que la tasa de verdaderos positivos sea equivalente entre grupos con respecto a la clase favorable:
+2. **Igualdad de Oportunidades (*Equal Opportunity*)**: La tasa de verdaderos positivos debe ser idéntica entre ambos colectivos:
    $$P(\hat{Y} = 1 \mid A = 0, Y = 1) = P(\hat{Y} = 1 \mid A = 1, Y = 1)$$
 
 ### Privacidad Diferencial ($\epsilon, \delta$-DP)
 
-Un algoritmo aleatorio $\mathcal{M}$ proporciona $(\epsilon, \delta)$-Privacidad Diferencial si para cualesquiera dos conjuntos de datos vecinos $D$ y $D'$ que difieran en un único individuo ($\|D - D'\|_1 = 1$), y para cualquier subconjunto de salidas $S \subseteq \text{Range}(\mathcal{M})$:
+Un algoritmo estocástico $\mathcal{M}$ satisface $(\epsilon, \delta)$-Privacidad Diferencial si para cualesquiera dos bases de datos vecinas $D$ y $D'$ que difieren en un único registro ($\|D - D'\|_1 = 1$), y para todo conjunto de resultados $S \subseteq \text{Range}(\mathcal{M})$:
 
 $$P(\mathcal{M}(D) \in S) \le e^{\epsilon} P(\mathcal{M}(D') \in S) + \delta$$
 
-Donde $\epsilon > 0$ es el presupuesto de privacidad (a menor $\epsilon$, mayor garantía de anonimato) y $\delta \ge 0$ representa la probabilidad de fallo catastrófico en la cota de privacidad.
+Donde $\epsilon > 0$ representa el presupuesto de privacidad (a menor valor, mayor confidencialidad) y $\delta \ge 0$ la tolerancia residual de fallo.
 
-Para una consulta determinista $f(D) \in \mathbb{R}^k$ con sensibilidad $L_1$ definida como $\Delta_1 f = \max_{D, D'} \|f(D) - f(D')\|_1$, el **Mecanismo de Laplace** introduce perturbación aditiva:
+Para una función determinista $f(D) \in \mathbb{R}^k$ con sensibilidad $L_1$ definida como $\Delta f = \max_{D, D'} \|f(D) - f(D')\|_1$, el **Mecanismo de Laplace** perturba la salida sumando ruido calibrado:
 
-$$\mathcal{M}_{Lap}(D) = f(D) + \text{Lap}\left(0, \frac{\Delta_1 f}{\epsilon}\right)$$
+$$\mathcal{M}_{Lap}(D) = f(D) + \text{Lap}\left(0, \frac{\Delta f}{\epsilon}\right)$$
 
 ```python
 import numpy as np
@@ -48,50 +48,49 @@ def mecanismo_laplace(valor_real: float, sensibilidad: float, epsilon: float) ->
     ruido = np.random.laplace(loc=0.0, scale=escala)
     return valor_real + ruido
 
-# Ejemplo: Conteo de pacientes con patología rara (sensibilidad = 1)
-conteo_real = 142
-epsilon_presupuesto = 0.5
-conteo_privado = mecanismo_laplace(conteo_real, sensibilidad=1.0, epsilon=epsilon_presupuesto)
+# Ejemplo: Conteo agregado de diagnósticos confidenciales (sensibilidad = 1)
+total_real = 250
+conteo_privado = mecanismo_laplace(total_real, sensibilidad=1.0, epsilon=0.5)
 ```
 
 ### Aprendizaje Federado (*Federated Averaging - FedAvg*)
 
-En lugar de almacenar $\bigcup_{k=1}^K D_k$ en un clúster central, $K$ dispositivos locales computan gradientes o actualizaciones de pesos sobre sus particiones privadas. En cada ronda de comunicación $t$, el servidor central distribuye el modelo global $w_t$; cada cliente seleccionado calcula localmente $w_{t+1}^k$ minimizando su función de pérdida empírica $F_k(w)$, y el servidor ejecuta la agregación ponderada por volumen muestral:
+En lugar de transferir conjuntos de datos privados $D_k$ a un servidor central, $K$ nodos locales calculan gradientes en sus propios dispositivos. En cada ronda de comunicación $t$, el orquestador central difunde los pesos globales $w_t$; los clientes seleccionados actualizan localmente sus modelos $w_{t+1}^k$ minimizando su pérdida empírica, y el servidor consolida la agregación ponderada:
 
-$$w_{t+1} = \sum_{k=1}^K \frac{n_k}{n} w_{t+1}^k \quad \text{donde} \quad n = \sum_{k=1}^K n_k$$
+$$w_{t+1} = \sum_{k=1}^K \frac{n_k}{n} w_{t+1}^k \quad \text{con} \quad n = \sum_{k=1}^K n_k$$
 
-### Trazabilidad y Propiedad Intelectual
+### Propiedad Intelectual y Trazabilidad
 
-La protección de derechos de autor en modelos fundacionales recurre a dos mecanismos técnicos prioritarios:
-- **Funciones de Influencia (*Influence Functions*)**: Basadas en la matriz Hessiana inversa del modelo $H^{-1}$, aproximan el impacto que un documento o imagen de entrenamiento específica $z$ tuvo sobre los parámetros finales $\theta$.
-- **Marcas de Agua Estadísticas (*Watermarking*)**: En modelos de lenguaje, manipulan de forma pseudoaleatoria los *logits* durante la inferencia para inducir una lista verde (*green-list*) de tokens detectables estadísticamente mediante pruebas de hipótesis z-score.
+Para responder a reclamaciones por derechos de autor en IA generativa se emplean:
+- **Funciones de Influencia (*Influence Functions*)**: Calculadas a través de la matriz Hessiana inversa ($H^{-1}_{\theta}$), cuantifican la contribución exacta de un ejemplo de entrenamiento específico sobre las predicciones finales.
+- **Marcado de Agua Estadístico (*Watermarking*)**: Modifica de forma imperceptible la distribución de *logits* en LLMs para favorecer una lista restringida de tokens, verificable mediante pruebas z-score.
 
 ## 3. Casos de Uso y Aplicaciones Reales
 
-- **Consorcios Hospitalarios y Biomedicina**: Redes hospitalarias internacionales colaboran en el entrenamiento de detectores de patologías oncológicas mediante Aprendizaje Federado acoplado con Privacidad Diferencial (DP-FedAvg). Las historias clínicas nunca abandonan los cortafuegos locales, cumpliendo simultáneamente normativas como HIPAA (EE. UU.) y RGPD (Europa).
-- **Finanzas y Puntuación Crediticia (*Credit Scoring*)**: Entidades bancarias aplican restricciones de optimización con paridad demográfica en modelos XGBoost y redes neuronales para evitar denegaciones discriminatorias a colectivos vulnerables, auditando la importancia de variables mediante Shapley Additive Explanations (SHAP).
-- **Recursos Humanos y Selección Automatizada**: Plataformas de cribado de currículos implementan algoritmos de regularización adversarial para desacoplar las representaciones latentes de los candidatos de atributos protegidos como edad y género.
-- **Implementación del EU AI Act**: El marco regulatorio europeo impone clasificaciones vinculantes por nivel de riesgo:
-  1. *Riesgo Inaceptable* (prohibición taxativa): Puntuación social (*social scoring*), biometría predictiva masiva en espacios públicos.
-  2. *Alto Riesgo* (salud, educación, empleo, justicia): Obligación estricta de auditorías de calidad de datos, documentación técnica, trazabilidad algorítmica y supervisión humana activa.
-  3. *Riesgo Específico y GPAI* (modelos fundacionales como GPT o Claude): Respeto de derechos de autor bajo la Directiva Europea, resúmenes transparentes de datos de entrenamiento y evaluación de riesgos sistémicos para arquitecturas con cómputo superior a $10^{25}$ FLOPs.
+- **Consorcios Hospitalarios y Diagnóstico Colaborativo**: Redes sanitarias internacionales entrenan modelos de detección oncológica mediante Federated Learning combinado con Privacidad Diferencial (DP-FedAvg). Las historias clínicas nunca salen del hospital, asegurando el cumplimiento simultáneo de RGPD (Europa) y HIPAA (EE. UU.).
+- **Scoring Crediticio y Finanzas Responsables**: Entidades bancarias aplican penalizaciones de equidad algorítmica para evitar el descarte sistemático de colectivos desfavorecidos, auditando las decisiones mediante SHAP (*Shapley Additive Explanations*).
+- **Procesos de Selección en RRHH**: Filtros automáticos de talento integran entrenamiento adversarial para eliminar correlaciones entre cualificaciones técnicas y variables demográficas.
+- **Implementación del EU AI Act**: El marco europeo instaura un estándar mundial basado en cuatro niveles de riesgo:
+  1. *Inaceptable* (prohibido): Puntuación social ciudadana, biometría en tiempo real en espacios públicos.
+  2. *Alto Riesgo* (salud, infraestructuras, empleo, justicia): Exige gobernanza estricta de datos, trazabilidad técnica, explicabilidad y supervisión humana (*human-in-the-loop*).
+  3. *Modelos Fundacionales / GPAI*: Obliga a revelar resúmenes de datos con derechos de autor y evaluar riesgos sistémicos para arquitecturas con cómputo superior a $10^{25}$ FLOPs.
 
 ## 4. Ventajas, Limitaciones y Riesgos
 
-| Mecanismo / Enfoque | Principales Ventajas | Limitaciones Técnicas | Riesgos Críticos |
+| Enfoque / Mecanismo | Principales Ventajas | Limitaciones Técnicas | Riesgos Críticos |
 | :--- | :--- | :--- | :--- |
-| **Privacidad Diferencial (DP)** | Garantías matemáticas demostrables; independencia de supuestos sobre atacantes. | Deterioro de la precisión (*trade-off* utilidad/privacidad); selección compleja de $\epsilon$. | Falsa sensación de seguridad si $\epsilon$ es laxo o hay filtración en metadatos. |
-| **Aprendizaje Federado (FL)** | Los datos crudos permanecen descentralizados; menor latencia y coste de transferencia. | Sobrecarga de comunicación en red; heterogeneidad estadística de datos (no-IID). | Ataques de inversión de gradiente y envenenamiento del modelo global (*data poisoning*). |
-| **Métricas de Equidad (Fairness)** | Detección formal y mitigación de sesgos históricos en inferencia. | Imposibilidad matemática de satisfacer múltiples definiciones de equidad a la vez. | Riesgo de discriminación inversa o pérdida de utilidad predictiva global. |
-| **EU AI Act y Gobernanza Legal** | Marco vinculante unificado; protección de derechos fundamentales y consumidores. | Carga burocrática elevada para pymes; desfase ante la velocidad de innovación. | Fragmentación regulatoria internacional (*efecto Bruselas* vs. desregulación). |
+| **Privacidad Diferencial (DP)** | Garantías matemáticas inviolables ante cualquier atacante arbitrario. | Deterioro de la exactitud predictiva (*trade-off* privacidad-utilidad); ajuste delicado de $\epsilon$. | Riesgo residual por fuga de metadatos o parametrización deficiente de $\epsilon$. |
+| **Aprendizaje Federado (FL)** | Privacidad local de datos crudos; reducción sustancial del tráfico de red. | Cuello de botella en ancho de banda; divergencia por datos no-IID (heterogéneos). | Ataques de envenenamiento de modelo (*model poisoning*) e inversión de gradientes. |
+| **Métricas de Equidad (Fairness)** | Mitigación formal de discriminación y cumplimiento de estándares éticos. | Teoremas de incompatibilidad: no es factible satisfacer todas las métricas a la vez. | Reducción de la precisión global o aparición de discriminación inversa. |
+| **EU AI Act y Marcos Legales** | Certeza jurídica armonizada y defensa efectiva de derechos fundamentales. | Alto coste de conformidad para startups; riesgo de desfase ante la innovación. | Deslocalización de desarrollos (*regulatory arbitrage*) hacia jurisdicciones laxas. |
 
-### El Trade-off Fundamental: Privacidad, Equidad y Utilidad
+### El Dilema Privacidad-Equidad-Rendimiento
 
-Existe un compromiso matemático insoslayable entre privacidad, equidad y rendimiento predictivo. La imposición de ruido diferencial o restricciones de paridad estadística reduce la información utilizable por la función objetivo, lo que puede degradar la exactitud en subgrupos minoritarios vulnerables si los datos no son tratados con calibración estocástica especializada.
+Cualquier intervención técnica introduce compromisos estructurales. Inyectar ruido para salvaguardar la privacidad diferencial puede degradar desproporcionadamente la precisión en subgrupos minoritarios con pocas muestras, amplificando indirectamente el sesgo si no se aplican algoritmos de compensación específicos.
 
 ## 5. Conceptos Relacionados
 
-- **Machine Learning**: Paradigma general de ajuste de modelos paramétricos mediante funciones de pérdida y descenso de gradiente.
-- **Deep Learning**: Redes neuronales profundas que exacerban la necesidad de auditoría ética debido a su naturaleza de caja negra y enorme ingesta de datos.
-- **Explicabilidad e Interpretabilidad (XAI)**: Técnicas de post-procesamiento (SHAP, LIME, Integrated Gradients) imprescindibles para certificar decisiones ante reguladores.
-- **Ciberseguridad y Ataques Adversarios**: Vectores de amenaza que comprometen la integridad de modelos federados y la confidencialidad de los datos de entrenamiento.
+- **Machine Learning**: Fundamentos del entrenamiento estadístico sobre el cual operan las restricciones de sesgo y privacidad.
+- **Deep Learning**: Redes neuronales de alta complejidad paramétrica cuya condición de caja negra exige auditorías regulatorias rigurosas.
+- **Explicabilidad e Interpretabilidad (XAI)**: Metodologías (LIME, SHAP) requeridas legalmente para desentrañar el razonamiento interno de los modelos de alto riesgo.
+- **Ciberseguridad en IA**: Estudio de ataques de extracción, inversión y manipulación adversarial que complementa la defensa de la privacidad diferencial.
