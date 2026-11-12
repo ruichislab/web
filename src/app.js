@@ -15,8 +15,8 @@ const ROUTE_SEO_META = {
     description: 'Ruichis Lab: Editorial independiente en Amazon (Productividad Asimétrica, Asymmetric Productivity, 100 Grandes Sopas de Letras) y Gimnasio Mental gratuito sin anuncios.'
   },
   'Gimnasio Mental': {
-    title: 'Sudoku Online Gratis sin Anuncios, Sopas de Letras y Criptogramas | Ruichis Lab',
-    description: 'Juega Sudoku Maestro gratis sin anuncios: Reto del Día, modo 3 Vidas, pistas lógicas, entrada rápida, Sopas de Letras en 8 direcciones y Criptogramas.'
+    title: 'Sudoku Online Gratis sin Anuncios y Sopas de Letras | Ruichis Lab',
+    description: 'Juega Sudoku Maestro y Sopas de Letras Pro gratis sin anuncios: Reto del Día, modo 3 Vidas, pistas lógicas, 5 categorías temáticas y modo impresión.'
   },
   'Enciclopedia IA': {
     title: 'Enciclopedia de Inteligencia Artificial | Ruichis Lab',
@@ -737,14 +737,14 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Cargar módulo inicial (soporte directo para #gimnasio-mental, #sudoku, #sopa, #criptograma)
+  // Cargar módulo inicial (soporte directo para #gimnasio-mental, #sudoku, #sopa)
   const initialHash = window.location.hash;
   if (initialHash === '#gimnasio-mental') {
     agente.navegarA('Gimnasio Mental');
     document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
     const gymNavLink = document.querySelector('.nav-link[data-modulo="Gimnasio Mental"]');
     if (gymNavLink) gymNavLink.classList.add('active');
-  } else if (initialHash === '#sudoku' || initialHash === '#sopa' || initialHash === '#criptograma') {
+  } else if (initialHash === '#sudoku' || initialHash === '#sopa') {
     openGimnasioMental(initialHash.slice(1));
   } else {
     agente.navegarA('Inicio');

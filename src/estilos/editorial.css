@@ -1388,10 +1388,10 @@ body.theme-paper #gimnasio-mental-app.zen-mode {
   background: #FAF6EE;
 }
 
-/* HUB DE 3 RETOS COGNITIVOS */
+/* HUB DE 2 RETOS COGNITIVOS */
 .gym-hub-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 1.25rem;
   margin-bottom: 2rem;
 }
@@ -1732,6 +1732,7 @@ body.theme-paper .sopa-live-preview-pill {
 }
 
 .sopa-board-frame {
+  position: relative;
   background: var(--background-primary);
   border: 2px solid var(--border-color);
   border-radius: var(--border-radius-lg);

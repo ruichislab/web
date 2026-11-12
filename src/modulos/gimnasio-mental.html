@@ -1,5 +1,5 @@
 <!-- src/modulos/gimnasio-mental.html -->
-<!-- Ruichis Lab — Página Dedicada del Gimnasio Mental (Sopa de Letras, Sudoku & Criptograma) -->
+<!-- Ruichis Lab — Página Dedicada del Gimnasio Mental (Sopas de Letras Pro & Sudoku Maestro) -->
 
 <div class="editorial-home-wrapper">
   <div class="gym-page-subnav">
@@ -53,18 +53,19 @@
       </div>
 
       <div class="gimnasio-shell" id="gimnasio-mental-app">
-        <!-- HUB CARDS SELECTORAS DE LOS 3 JUEGOS -->
+        <!-- HUB CARDS SELECTORAS DE LOS 2 JUEGOS -->
         <div class="gym-hub-grid" role="tablist">
           <div class="gym-hub-card active" data-game-tab="sopa" tabindex="0" role="tab" aria-selected="true">
             <div class="hub-card-header">
-              <span class="hub-card-badge">VOL. I &amp; II • RETO VERBAL</span>
+              <span class="hub-card-badge">VOL. I &amp; II • RETO VERBAL PRO</span>
               <span class="hub-card-icon">🔤</span>
             </div>
-            <h3 class="hub-card-title">Sopa de Letras Clásica</h3>
-            <p class="hub-card-desc">Búsqueda bidireccional en 8 sentidos con glosario educativo y píldoras vectoriales SVG.</p>
+            <h3 class="hub-card-title">Sopas de Letras Pro</h3>
+            <p class="hub-card-desc">Búsqueda en 8 sentidos con 3 tamaños de tablero, bancos dinámicos de +100 palabras, Sopa del Día y glosario educativo.</p>
             <div class="hub-card-tags">
               <span>8 Sentidos</span>
-              <span>12 Palabras</span>
+              <span>12×12 a 16×16</span>
+              <span>Sopa del Día 📅</span>
               <span>Glosario ℹ️</span>
             </div>
           </div>
@@ -75,34 +76,20 @@
               <span class="hub-card-icon">🔢</span>
             </div>
             <h3 class="hub-card-title">Sudoku Maestro</h3>
-            <p class="hub-card-desc">4 niveles con micro-grilla de notas a lápiz 3×3, auto-candidatos lógicos y tracking de errores.</p>
+            <p class="hub-card-desc">4 niveles + Reto del Día, notas a lápiz 3×3, pistas lógicas inteligentes, modo competitivo de 3 vidas y récords.</p>
             <div class="hub-card-tags">
               <span>Notas Lápiz</span>
-              <span>Auto-Candidatos</span>
-              <span>4 Dificultades</span>
-            </div>
-          </div>
-
-          <div class="gym-hub-card" data-game-tab="criptograma" tabindex="0" role="tab" aria-selected="false">
-            <div class="hub-card-header">
-              <span class="hub-card-badge">AFORISMOS &amp; FILOSOFÍA</span>
-              <span class="hub-card-icon">📜</span>
-            </div>
-            <h3 class="hub-card-title">Criptograma Asimétrico</h3>
-            <p class="hub-card-desc">Descifra citas y principios reales extraídos de <em>Productividad Asimétrica</em> y la <em>Colección Letras y Retos</em>.</p>
-            <div class="hub-card-tags">
-              <span>Deducción Verbal</span>
-              <span>Libros Reales</span>
-              <span>Teclado Táctil</span>
+              <span>Pistas Lógicas</span>
+              <span>Modo 3 Vidas</span>
             </div>
           </div>
         </div>
 
-        <!-- PANEL JUEGO 1: SOPA DE LETRAS -->
+        <!-- PANEL JUEGO 1: SOPA DE LETRAS PRO -->
         <div id="panel-juego-sopa">
           <div class="gimnasio-toolbar">
             <div class="toolbar-group">
-              <label for="sopa-tema-select" style="font-size:0.8rem;font-weight:700;color:var(--text-secondary);">Edición / Tema:</label>
+              <label for="sopa-tema-select" style="font-size:0.8rem;font-weight:700;color:var(--text-secondary);">Edición:</label>
               <select id="sopa-tema-select" class="puzzle-select">
                 <option value="cultura_historia">Vol. I: Cultura General — Historia y Civilizaciones</option>
                 <option value="cultura_arte">Vol. I: Cultura General — Arte, Literatura y Filosofía</option>
@@ -112,9 +99,17 @@
               </select>
             </div>
 
+            <div class="toolbar-group" role="group" aria-label="Tamaño y modo de Sopa de Letras">
+              <button type="button" class="btn-puzzle-tool" data-sopa-size="12" title="Tablero compacto 12×12 con 8 palabras">12×12 Normal</button>
+              <button type="button" class="btn-puzzle-tool active" data-sopa-size="14" title="Tablero estándar 14×14 con 10 palabras">14×14 Desafío</button>
+              <button type="button" class="btn-puzzle-tool" data-sopa-size="16" title="Tablero maestro 16×16 con 12 palabras">16×16 Experto</button>
+              <button type="button" class="btn-puzzle-tool" data-sopa-size="diario" title="Mismo tablero diario 14×14 para toda la comunidad">📅 Sopa del Día</button>
+            </div>
+
             <div class="toolbar-group">
               <span class="puzzle-stat-pill" title="Tiempo transcurrido">⏱️ <span id="sopa-timer">00:00</span></span>
-              <span class="puzzle-stat-pill" title="Palabras encontradas">🎯 <span id="sopa-found-counter">0 / 12</span></span>
+              <span class="puzzle-stat-pill" title="Mejor tiempo en este tamaño/modo">🏆 <span id="sopa-best-time">--:--</span></span>
+              <span class="puzzle-stat-pill" title="Palabras encontradas">🎯 <span id="sopa-found-counter">0 / 10</span></span>
               <button type="button" class="btn-puzzle-tool" id="btn-sopa-pista">💡 Pista</button>
               <button type="button" class="btn-puzzle-tool" id="btn-sopa-nueva">🔄 Nuevo</button>
               <button type="button" class="btn-puzzle-tool" id="btn-sopa-resolver">👁️ Solución</button>
@@ -139,12 +134,40 @@
                 <svg id="sopa-svg-overlay" class="sopa-svg-overlay" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"></svg>
                 <div id="sopa-grid-board" class="sopa-grid" aria-label="Tablero de Sopa de Letras"></div>
               </div>
+
+              <div id="sopa-victory-overlay" class="puzzle-victory-overlay" hidden aria-live="polite">
+                <div class="puzzle-victory-card">
+                  <div class="victory-trophy">🏆</div>
+                  <div id="sopa-victory-record-badge" class="victory-record-badge" hidden>✨ ¡NUEVO RÉCORD PERSONAL!</div>
+                  <h3>¡Sopa Completada!</h3>
+                  <p id="sopa-victory-subtitle">Has localizado todos los conceptos ocultos en la cuadrícula.</p>
+                  <div class="victory-stats-row">
+                    <div class="victory-stat">
+                      <span class="victory-stat-label">TIEMPO</span>
+                      <strong id="sopa-victory-time">00:00</strong>
+                    </div>
+                    <div class="victory-stat">
+                      <span class="victory-stat-label">PALABRAS</span>
+                      <strong id="sopa-victory-words">10 / 10</strong>
+                    </div>
+                    <div class="victory-stat">
+                      <span class="victory-stat-label">MODO</span>
+                      <strong id="sopa-victory-mode">14×14</strong>
+                    </div>
+                  </div>
+                  <div class="victory-actions">
+                    <button type="button" class="btn-hero-primary" id="btn-sopa-victory-share">📤 Copiar Resultado</button>
+                    <button type="button" class="btn-puzzle-tool" id="btn-sopa-victory-new">🔄 Nueva Sopa</button>
+                    <button type="button" class="btn-puzzle-tool" id="btn-sopa-victory-view">👁️ Ver Tablero</button>
+                  </div>
+                </div>
+              </div>
             </div>
 
             <div class="sopa-sidebar">
               <div class="sopa-words-panel">
                 <div style="display:flex;justify-content:space-between;align-items:center;">
-                  <strong style="font-family:var(--font-heading);font-size:1.08rem;">Palabras a Encontrar (12)</strong>
+                  <strong id="sopa-words-panel-title" style="font-family:var(--font-heading);font-size:1.08rem;">Palabras a Encontrar (10)</strong>
                   <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--primary-color);">8 SENTIDOS</span>
                 </div>
                 <p id="sopa-tema-descripcion" style="font-size:0.82rem;color:var(--text-muted);margin:0.35rem 0 0;"></p>
@@ -322,71 +345,6 @@
                 <div style="display:flex;gap:0.65rem;margin-top:0.35rem;flex-wrap:wrap;">
                   <a href="https://www.amazon.com/dp/B0HD2MY2HN" target="_blank" rel="noopener noreferrer" class="btn-book-amazon" style="flex:0 1 auto;padding:0.55rem 1rem;">
                     📚 Ver Productividad Asimétrica en Amazon ↗
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- PANEL JUEGO 3: CRIPTOGRAMA ASIMÉTRICO -->
-        <div id="panel-juego-criptograma" style="display:none;">
-          <div class="gimnasio-toolbar">
-            <div class="toolbar-group">
-              <span class="puzzle-stat-pill">📜 Sabiduría Editorial</span>
-              <span class="puzzle-stat-pill" id="cripto-book-ref">Ruichis Lab • Productividad Asimétrica</span>
-            </div>
-
-            <div class="toolbar-group">
-              <button type="button" class="btn-puzzle-tool" id="btn-cripto-pista" title="Revelar una letra oculta">💡 Pista (+Letra)</button>
-              <button type="button" class="btn-puzzle-tool" id="btn-cripto-verificar" title="Comprobar si hay letras erróneas">✔️ Verificar</button>
-              <button type="button" class="btn-puzzle-tool" id="btn-cripto-nuevo" title="Cargar otra cita editorial">🔄 Siguiente Cita</button>
-              <button type="button" class="btn-puzzle-tool" id="btn-cripto-imprimir" title="Imprimir hoja de criptograma">🖨️ Imprimir</button>
-            </div>
-          </div>
-
-          <div id="cripto-status-msg" class="puzzle-status-bar">
-            Selecciona una casilla y escribe la letra para descifrar el aforismo editorial.
-          </div>
-
-          <div class="cripto-workspace">
-            <div class="cripto-board-frame">
-              <div class="cripto-hint-card">
-                <div class="cripto-hint-header">
-                  <span class="hint-kicker">PISTA CONTEXTUAL</span>
-                  <span class="hint-badge">DEDUCCIÓN EDITORIAL</span>
-                </div>
-                <p id="cripto-hint-text" class="cripto-hint-text">
-                  Principio medular del libro insignia sobre apalancamiento atencional y bloques puros.
-                </p>
-              </div>
-
-              <!-- Casillas de letras y palabras -->
-              <div id="cripto-board-slots" class="cripto-board-slots" aria-label="Tablero de descifrado"></div>
-
-              <!-- Teclado virtual -->
-              <div class="cripto-keyboard-wrapper">
-                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.6rem;">
-                  <span style="font-size:0.75rem;font-weight:700;letter-spacing:0.06em;color:var(--text-muted);text-transform:uppercase;">Teclado de Descifrado (o usa tu teclado físico)</span>
-                  <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-muted);">FLECHAS / RETROCESO</span>
-                </div>
-                <div id="cripto-keyboard" class="cripto-keyboard"></div>
-              </div>
-            </div>
-
-            <div class="cripto-sidebar">
-              <div class="companion-book-callout">
-                <span class="section-kicker" style="margin:0;">LITERATURA EDITORIAL VINCULADA</span>
-                <h4>Productividad Asimétrica &amp; Colección Letras y Retos</h4>
-                <p>
-                  Cada criptograma es un principio extraído de nuestros títulos publicados en Amazon KDP. El ejercicio de descifrar agudiza el análisis reflexivo y la deducción lógica.
-                </p>
-                <div style="display:flex;flex-direction:column;gap:0.65rem;margin-top:0.75rem;">
-                  <a href="https://www.amazon.com/dp/B0HD2MY2HN" target="_blank" rel="noopener noreferrer" class="btn-book-amazon" style="padding:0.65rem 1rem;">
-                    📚 Productividad Asimétrica (ASIN: B0HD2MY2HN) ↗
-                  </a>
-                  <a href="https://www.amazon.com/s?k=100+Grandes+Sopas+de+Letras+de+Cultura+General+Ruichis+Lab" target="_blank" rel="noopener noreferrer" class="btn-book-amazon" style="padding:0.65rem 1rem;background:rgba(212,175,55,0.12);border-color:rgba(212,175,55,0.4);color:var(--primary-color);">
-                    🧩 Colección Letras y Retos en Amazon ↗
                   </a>
                 </div>
               </div>
