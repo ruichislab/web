@@ -240,7 +240,7 @@ function renderCatalogBooks(libros) {
     grid.innerHTML = `
       <div style="grid-column:1/-1;text-align:center;padding:3rem;background:var(--surface-card);border-radius:16px;border:1px solid var(--border-subtle);">
         <p style="margin:0 auto 1rem;font-size:1.05rem;color:var(--text-primary);">No se encontraron libros que coincidan con tu búsqueda.</p>
-        <button type="button" class="btn-editorial outline" id="btn-reset-catalog-filter">Ver los 5 Libros</button>
+        <button type="button" class="btn-editorial outline" id="btn-reset-catalog-filter">Ver los 4 Libros</button>
       </div>
     `;
     const resetBtn = document.getElementById('btn-reset-catalog-filter');
@@ -273,7 +273,7 @@ function renderCatalogBooks(libros) {
               <div class="book-cover-frame book-3d-stage" data-open-book="${book.id}" title="Ver vista previa, cubierta completa y extracto">
                 <div class="book-3d-spine"></div>
                 <span class="book-lang-pill">${book.idiomaBadge}</span>
-                <img src="${book.portada}" alt="Portada de ${book.titulo}" loading="lazy">
+                <img src="${book.portada}" alt="Portada de ${book.titulo}" loading="lazy" decoding="async">
               </div>
             </div>
             <div class="book-meta-col">
@@ -400,6 +400,14 @@ function openBookModal(bookId) {
           ${secondAmazonHtml}
           ${gameActionHtml}
         </div>
+
+        <div class="modal-book-nav">
+          <button type="button" class="btn-puzzle-tool" id="btn-modal-prev-book">← Libro Anterior</button>
+          <span style="font-family:var(--font-mono);font-size:0.74rem;color:var(--text-muted);">
+            ${catalogData.libros.findIndex(b => b.id === book.id) + 1} / ${catalogData.libros.length}
+          </span>
+          <button type="button" class="btn-puzzle-tool" id="btn-modal-next-book">Siguiente Libro →</button>
+        </div>
       </div>
     </div>
   `;
@@ -424,6 +432,23 @@ function openBookModal(bookId) {
     btnPlay.addEventListener('click', () => {
       closeBookModal();
       openGimnasioMental(book.juegoRelacionado.tipo, book.juegoRelacionado);
+    });
+  }
+
+  // Navegación entre libros del catálogo
+  const currentIdx = catalogData.libros.findIndex(b => b.id === book.id);
+  const prevBtn = document.getElementById('btn-modal-prev-book');
+  const nextBtn = document.getElementById('btn-modal-next-book');
+  if (prevBtn && currentIdx !== -1) {
+    prevBtn.addEventListener('click', () => {
+      const prevIdx = (currentIdx - 1 + catalogData.libros.length) % catalogData.libros.length;
+      openBookModal(catalogData.libros[prevIdx].id);
+    });
+  }
+  if (nextBtn && currentIdx !== -1) {
+    nextBtn.addEventListener('click', () => {
+      const nextIdx = (currentIdx + 1) % catalogData.libros.length;
+      openBookModal(catalogData.libros[nextIdx].id);
     });
   }
 
@@ -715,6 +740,28 @@ document.addEventListener('DOMContentLoaded', () => {
   // Si la URL incluye #privacy o ?privacy, abrir política de privacidad de Book Ranker
   if (window.location.hash === '#privacy' || window.location.search.includes('privacy')) {
     setTimeout(() => openPrivacyPolicyModal(), 300);
+  }
+
+  // Barra de progreso de lectura y botón Volver arriba
+  const progressBar = document.getElementById('reading-progress-bar');
+  const backToTopBtn = document.getElementById('btn-back-to-top');
+  const updateScrollUI = () => {
+    const scrollTop = window.scrollY || document.documentElement.scrollTop || 0;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    if (progressBar) {
+      const pct = docHeight > 0 ? Math.min(100, Math.max(0, (scrollTop / docHeight) * 100)) : 0;
+      progressBar.style.width = `${pct}%`;
+    }
+    if (backToTopBtn) {
+      backToTopBtn.classList.toggle('visible', scrollTop > 380);
+    }
+  };
+  window.addEventListener('scroll', updateScrollUI, { passive: true });
+  updateScrollUI();
+  if (backToTopBtn) {
+    backToTopBtn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
   }
 });
 
