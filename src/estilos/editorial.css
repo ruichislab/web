@@ -3252,3 +3252,155 @@ body.theme-paper .gym-page-subnav {
   flex-wrap: wrap;
 }
 
+/* ==========================================================================
+   SUDOKU: FEEDBACK DE ERRORES EN TIEMPO REAL Y OVERLAY DE VICTORIA
+   ========================================================================== */
+.puzzle-status-bar.warning {
+  border-left-color: #F43F5E;
+  background: rgba(244, 63, 94, 0.14);
+  color: var(--text-primary);
+}
+
+body.theme-paper .puzzle-status-bar.warning {
+  background: rgba(244, 63, 94, 0.1);
+  color: #881337;
+}
+
+.puzzle-stat-pill.has-error {
+  border-color: rgba(244, 63, 94, 0.65) !important;
+  background: rgba(244, 63, 94, 0.16) !important;
+  color: #FDA4AF !important;
+}
+
+body.theme-paper .puzzle-stat-pill.has-error {
+  color: #BE123C !important;
+}
+
+@keyframes sudokuErrorShake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-4px); }
+  40% { transform: translateX(4px); }
+  60% { transform: translateX(-3px); }
+  80% { transform: translateX(3px); }
+}
+
+@keyframes sudokuCorrectPop {
+  0% { transform: scale(0.88); }
+  55% { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+
+.sudoku-cell.error-shake {
+  animation: sudokuErrorShake 0.36s ease;
+}
+
+.sudoku-cell.correct-pop {
+  animation: sudokuCorrectPop 0.24s ease;
+}
+
+.puzzle-victory-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+  border-radius: var(--border-radius-lg);
+  background: rgba(9, 13, 24, 0.88);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  animation: fadeSlideUp 0.3s ease;
+}
+
+.puzzle-victory-overlay[hidden] {
+  display: none;
+}
+
+body.theme-paper .puzzle-victory-overlay {
+  background: rgba(250, 246, 238, 0.94);
+}
+
+.puzzle-victory-card {
+  width: 100%;
+  max-width: 360px;
+  text-align: center;
+  background: var(--surface-card, rgba(20, 28, 46, 0.96));
+  border: 1px solid rgba(212, 175, 55, 0.45);
+  border-radius: var(--border-radius-lg);
+  padding: 1.75rem 1.35rem;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+}
+
+body.theme-paper .puzzle-victory-card {
+  background: #FFFFFF;
+  border-color: rgba(154, 111, 11, 0.35);
+  box-shadow: 0 18px 42px rgba(24, 24, 27, 0.14);
+}
+
+.victory-trophy {
+  font-size: 2.75rem;
+  line-height: 1;
+  margin-bottom: 0.65rem;
+}
+
+.puzzle-victory-card h3 {
+  font-family: var(--font-heading);
+  font-size: 1.45rem;
+  color: var(--primary-color);
+  margin: 0 0 0.45rem;
+}
+
+.puzzle-victory-card p {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin: 0 0 1.15rem;
+  line-height: 1.45;
+}
+
+.victory-stats-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.victory-stat {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--border-radius-sm);
+  padding: 0.6rem 0.35rem;
+}
+
+body.theme-paper .victory-stat {
+  background: #FAF6EE;
+}
+
+.victory-stat-label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.64rem;
+  color: var(--text-muted);
+  letter-spacing: 0.06em;
+  margin-bottom: 0.2rem;
+}
+
+.victory-stat strong {
+  font-family: var(--font-mono);
+  font-size: 0.98rem;
+  color: var(--text-primary);
+}
+
+.victory-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.victory-actions .btn-hero-primary,
+.victory-actions .btn-puzzle-tool {
+  width: 100%;
+  justify-content: center;
+}
+
+

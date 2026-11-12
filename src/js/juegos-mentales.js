@@ -1072,6 +1072,19 @@
       const btnImprimir = document.getElementById("btn-sudoku-imprimir");
       if (btnImprimir) btnImprimir.addEventListener("click", () => this.imprimirPasatiempoActual("sudoku"));
 
+      const btnVictoryNew = document.getElementById("btn-sudoku-victory-new");
+      if (btnVictoryNew) btnVictoryNew.addEventListener("click", () => {
+        this.generarNuevoSudoku();
+        GymAudio.click();
+      });
+
+      const btnVictoryView = document.getElementById("btn-sudoku-victory-view");
+      if (btnVictoryView) btnVictoryView.addEventListener("click", () => {
+        const overlay = document.getElementById("sudoku-victory-overlay");
+        if (overlay) overlay.hidden = true;
+        GymAudio.click();
+      });
+
       // Teclado numérico virtual
       document.querySelectorAll("[data-sudoku-num]").forEach(btn => {
         btn.addEventListener("click", () => {
@@ -1112,6 +1125,16 @@
       this.sudokuSelected = { r: 0, c: 0 };
       this.sudokuMistakes = 0;
       this.sudokuCompleted = false;
+
+      const overlay = document.getElementById("sudoku-victory-overlay");
+      if (overlay) overlay.hidden = true;
+
+      this.actualizarContadorErroresSudoku();
+      const msg = document.getElementById("sudoku-status-msg");
+      if (msg) {
+        msg.className = "puzzle-status-bar";
+        msg.innerHTML = 'Selecciona una celda y usa el teclado numérico (1–9), activa <strong>✏️ Notas (Lápiz)</strong> o pulsa <strong>✨ Auto-Candidatos</strong> para desplegar todas las opciones lógicas.';
+      }
 
       this.iniciarTimerSudoku();
       this.renderSudokuGrid();
@@ -1224,6 +1247,44 @@
       }
 
       this.seleccionarCeldaSudoku(this.sudokuSelected.r, this.sudokuSelected.c);
+      this.actualizarConflictosSudoku();
+    }
+
+    actualizarContadorErroresSudoku() {
+      const countEl = document.getElementById("sudoku-mistakes-count");
+      const pillEl = document.getElementById("sudoku-mistakes-pill");
+      if (countEl) countEl.textContent = String(this.sudokuMistakes || 0);
+      if (pillEl) pillEl.classList.toggle("has-error", (this.sudokuMistakes || 0) > 0);
+    }
+
+    tieneConflictoReglaSudoku(r, c, val) {
+      if (val === 0) return false;
+      for (let i = 0; i < 9; i++) {
+        if (i !== c && this.sudokuBoard[r][i] === val) return true;
+        if (i !== r && this.sudokuBoard[i][c] === val) return true;
+      }
+      const br = Math.floor(r / 3) * 3;
+      const bc = Math.floor(c / 3) * 3;
+      for (let i = 0; i < 3; i++) {
+        for (let j = 0; j < 3; j++) {
+          const rr = br + i;
+          const cc = bc + j;
+          if ((rr !== r || cc !== c) && this.sudokuBoard[rr][cc] === val) return true;
+        }
+      }
+      return false;
+    }
+
+    actualizarConflictosSudoku() {
+      document.querySelectorAll(".sudoku-cell").forEach(cell => {
+        const r = parseInt(cell.getAttribute("data-r"), 10);
+        const c = parseInt(cell.getAttribute("data-c"), 10);
+        const val = this.sudokuBoard[r][c];
+        const isGiven = this.sudokuInitial[r][c] !== 0;
+
+        const isWrong = val !== 0 && !isGiven && (val !== this.sudokuSolution[r][c] || this.tieneConflictoReglaSudoku(r, c, val));
+        cell.classList.toggle("conflict", isWrong);
+      });
     }
 
     renderPencilNotesEnCelda(cellEl, r, c) {
@@ -1276,6 +1337,7 @@
     }
 
     ingresarNumeroSudoku(num) {
+      if (this.sudokuCompleted) return;
       const { r, c } = this.sudokuSelected;
       if (this.sudokuInitial[r][c] !== 0) {
         GymAudio.error();
@@ -1285,6 +1347,7 @@
       this.guardarEstadoHistorialSudoku();
 
       const cellEl = document.querySelector(`.sudoku-cell[data-r="${r}"][data-c="${c}"]`);
+      const msg = document.getElementById("sudoku-status-msg");
 
       if (this.sudokuNotesMode) {
         const notes = this.sudokuNotes[r][c];
@@ -1296,11 +1359,44 @@
       } else {
         this.sudokuBoard[r][c] = num;
         this.sudokuNotes[r][c].clear();
-        cellEl.textContent = num;
-        GymAudio.playTone(400 + num * 40, "sine", 0.05, 0.04);
-        this.limpiarNotasEnParesSudoku(r, c, num);
+        if (cellEl) cellEl.textContent = num;
+
+        const esIncorrecto = num !== this.sudokuSolution[r][c];
+        if (esIncorrecto) {
+          this.sudokuMistakes++;
+          this.actualizarContadorErroresSudoku();
+          GymAudio.error();
+
+          if (cellEl) {
+            cellEl.classList.remove("error-shake", "correct-pop");
+            void cellEl.offsetWidth;
+            cellEl.classList.add("error-shake");
+          }
+
+          if (msg) {
+            const hayConflicto = this.tieneConflictoReglaSudoku(r, c, num);
+            msg.className = "puzzle-status-bar warning";
+            msg.innerHTML = hayConflicto
+              ? `❌ El número <strong>${num}</strong> en (${r + 1}, ${c + 1}) repite un dígito en su fila, columna o bloque 3×3.`
+              : `❌ El número <strong>${num}</strong> no corresponde a la celda (${r + 1}, ${c + 1}). Puedes corregirlo o pulsar <strong>🧹 Borrar</strong>.`;
+          }
+        } else {
+          GymAudio.playTone(400 + num * 40, "sine", 0.05, 0.04);
+          if (cellEl) {
+            cellEl.classList.remove("error-shake", "correct-pop");
+            void cellEl.offsetWidth;
+            cellEl.classList.add("correct-pop");
+          }
+          this.limpiarNotasEnParesSudoku(r, c, num);
+
+          if (msg && msg.classList.contains("warning")) {
+            msg.className = "puzzle-status-bar";
+            msg.innerHTML = "✔️ Celda corregida. Sigue completando el tablero.";
+          }
+        }
       }
 
+      this.actualizarConflictosSudoku();
       this.actualizarProgresoYTecladoSudoku();
       this.seleccionarCeldaSudoku(r, c);
 
@@ -1333,6 +1429,7 @@
     }
 
     borrarCeldaActualSudoku() {
+      if (this.sudokuCompleted) return;
       const { r, c } = this.sudokuSelected;
       if (this.sudokuInitial[r][c] !== 0) return;
 
@@ -1341,9 +1438,13 @@
       this.sudokuNotes[r][c].clear();
 
       const cellEl = document.querySelector(`.sudoku-cell[data-r="${r}"][data-c="${c}"]`);
-      if (cellEl) cellEl.textContent = "";
+      if (cellEl) {
+        cellEl.textContent = "";
+        cellEl.classList.remove("conflict", "error-shake", "correct-pop");
+      }
 
       GymAudio.click();
+      this.actualizarConflictosSudoku();
       this.actualizarProgresoYTecladoSudoku();
       this.seleccionarCeldaSudoku(r, c);
     }
@@ -1358,11 +1459,12 @@
     }
 
     deshacerJugadaSudoku() {
-      if (this.sudokuHistory.length === 0) return;
+      if (this.sudokuCompleted || this.sudokuHistory.length === 0) return;
       const prev = this.sudokuHistory.pop();
       this.sudokuBoard = prev.board;
       this.sudokuNotes = prev.notes;
       this.renderSudokuGrid();
+      this.actualizarConflictosSudoku();
       this.actualizarProgresoYTecladoSudoku();
       GymAudio.click();
     }
@@ -1500,11 +1602,35 @@
 
       const mins = Math.floor(this.sudokuSeconds / 60);
       const secs = this.sudokuSeconds % 60;
+      const formattedTime = `${String(mins).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
+      const diffLabels = {
+        facil: "Fácil",
+        medio: "Medio",
+        dificil: "Difícil",
+        experto: "Experto"
+      };
+
       const msg = document.getElementById("sudoku-status-msg");
       if (msg) {
         msg.className = "puzzle-status-bar success";
-        msg.innerHTML = `🏆 ¡SUDOKU RESUELTO CON ÉXITO! Tiempo total: <strong>${mins}m ${secs}s</strong>.`;
+        msg.innerHTML = `🏆 ¡SUDOKU RESUELTO CON ÉXITO! Tiempo total: <strong>${mins}m ${secs}s</strong> • Errores: <strong>${this.sudokuMistakes}</strong>.`;
       }
+
+      const overlay = document.getElementById("sudoku-victory-overlay");
+      const timeEl = document.getElementById("sudoku-victory-time");
+      const mistakesEl = document.getElementById("sudoku-victory-mistakes");
+      const diffEl = document.getElementById("sudoku-victory-diff");
+      const subtitleEl = document.getElementById("sudoku-victory-subtitle");
+
+      if (timeEl) timeEl.textContent = formattedTime;
+      if (mistakesEl) mistakesEl.textContent = String(this.sudokuMistakes);
+      if (diffEl) diffEl.textContent = diffLabels[this.sudokuDifficulty] || "Medio";
+      if (subtitleEl) {
+        subtitleEl.textContent = this.sudokuMistakes === 0
+          ? "¡Partida perfecta sin un solo error! Precisión lógica absoluta."
+          : "Has completado las 81 celdas correctamente.";
+      }
+      if (overlay) overlay.hidden = false;
     }
 
     // =========================================================================
