@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Redes Neuronales y Backpropagation — Enciclopedia IA | Ruichis Lab</title>
+  <meta name="description" content="Cómo funcionan las neuronas artificiales, por qué se apilan en capas y cómo el algoritmo de retropropagación corrige sus errores paso a paso.">
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+  <link rel="canonical" href="https://ruichislab.com/enciclopedia/redes-neuronales.html">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Ruichis Lab">
+  <meta property="og:title" content="Redes Neuronales y Backpropagation — Enciclopedia IA | Ruichis Lab">
+  <meta property="og:description" content="Cómo funcionan las neuronas artificiales, por qué se apilan en capas y cómo el algoritmo de retropropagación corrige sus errores paso a paso.">
+  <meta property="og:url" content="https://ruichislab.com/enciclopedia/redes-neuronales.html">
+  <meta property="og:image" content="https://ruichislab.com/src/assets/covers/productividad-asimetrica-es.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Redes Neuronales y Backpropagation | Ruichis Lab">
+  <meta name="twitter:description" content="Cómo funcionan las neuronas artificiales, por qué se apilan en capas y cómo el algoritmo de retropropagación corrige sus errores paso a paso.">
+  <link rel="stylesheet" href="../src/estilos/editorial.css">
+  <script type="application/ld+json">
+  {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "TechArticle",
+      "headline": "Redes Neuronales y Backpropagation",
+      "description": "Cómo funcionan las neuronas artificiales, por qué se apilan en capas y cómo el algoritmo de retropropagación corrige sus errores paso a paso.",
+      "inLanguage": "es",
+      "dateModified": "2026-11-12",
+      "author": {
+        "@type": "Organization",
+        "name": "Ruichis Lab",
+        "url": "https://ruichislab.com/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Ruichis Lab",
+        "url": "https://ruichislab.com/"
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://ruichislab.com/enciclopedia/redes-neuronales.html"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Inicio",
+          "item": "https://ruichislab.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Enciclopedia IA",
+          "item": "https://ruichislab.com/pages/enciclopedia.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Redes Neuronales y Backpropagation",
+          "item": "https://ruichislab.com/enciclopedia/redes-neuronales.html"
+        }
+      ]
+    }
+  ]
+}
+  </script>
+</head>
+<body>
+  <header style="border-bottom:1px solid rgba(212,175,55,0.25);padding:1rem 1.5rem;">
+    <div style="max-width:860px;margin:0 auto;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:0.75rem;">
+      <a href="../" style="font-weight:800;letter-spacing:0.08em;text-decoration:none;color:#D4AF37;">RUICHIS LAB</a>
+      <nav style="display:flex;gap:1rem;font-size:0.9rem;">
+        <a href="../pages/enciclopedia.html">Índice Enciclopedia (30)</a>
+        <a href="../#enciclopedia-ia">Lector Interactivo</a>
+        <a href="../#gimnasio-mental">Sudoku y Sopas Gratis</a>
+      </nav>
+    </div>
+  </header>
+  <main class="container" style="max-width:860px;margin:2.5rem auto;padding:0 1.5rem 3rem;line-height:1.75;">
+    <p style="font-size:0.8rem;letter-spacing:0.12em;text-transform:uppercase;color:#D4AF37;font-weight:700;">
+      🧠 undefined • NIVEL: ESENCIAL • LECTURA: undefined
+    </p>
+    <article>
+      <h1>Redes Neuronales Artificiales: El Motor Matemático del Aprendizaje Automático</h1>
+<p>Las redes neuronales artificiales son sistemas de computación inspirados de forma libre en la arquitectura del cerebro biológico. Lejos de intentar clonar una célula viviente, construyen un circuito matemático organizado en capas sucesivas de pequeñas unidades de cálculo llamadas neuronas artificiales. Cada unidad recibe una serie de valores numéricos, pondera la importancia de cada dato multiplicándolo por un factor calibrable llamado peso, suma una compensación inicial conocida como sesgo y hace pasar el total por una compuerta matemática (la función de activación) que regula qué tan fuerte viaja la señal hacia la siguiente capa. Al encadenar decenas, miles o millones de estas unidades y corregir sus desvíos de manera iterativa frente a miles de ejemplos de práctica, la red descubre patrones ocultos y resuelve problemas complejos sin necesidad de que un programador defina reglas a mano.</p>
+<blockquote style="border-left:3px solid #D4AF37;padding:0.75rem 1rem;margin:1.25rem 0;background:rgba(212,175,55,0.08);border-radius:0 8px 8px 0;"><strong>En pocas palabras:</strong> Una red neuronal es un circuito de cálculo organizado en capas que aprende a clasificar datos y predecir resultados ajustando perillas numéricas cada vez que comete un error.</blockquote>
+<hr style="border:none;border-top:1px solid rgba(212,175,55,0.25);margin:2rem 0;">
+<h2>1. De dónde viene y cómo se entiende fácil</h2>
+<p>El concepto de computar mediante modelos inspirados en neuronas nació en 1943, cuando el neurofisiólogo Warren McCulloch y el lógico Walter Pitts diseñaron un modelo teórico elemental de neurona biológica: una compuerta binaria que sumaba estímulos y se encendía si superaba un umbral fijo.</p>
+<p>En 1958, el psicólogo Frank Rosenblatt dio un paso decisivo en el Laboratorio Aeronáutico de Cornell al presentar el <strong>Perceptrón</strong>. A diferencia del circuito rígido de 1943, el Perceptrón aprendía de la experiencia mediante pesos numéricos que se modificaban según el error cometido. Rosenblatt demostró el <em>Teorema de Convergencia del Perceptrón</em>, garantizando que el modelo hallaba una solución perfecta si los datos eran linealmente separables (es decir, divisibles mediante una línea recta o un plano plano).</p>
+<p>El entusiasmo decayó drásticamente en 1969. Marvin Minsky y Seymour Papert, figuras centrales del Laboratorio de Inteligencia Artificial del MIT, publicaron su célebre libro <em>Perceptrons</em>. En él probaron matemáticamente que una neurona simple era incapaz de resolver tareas no lineales tan básicas como la compuerta lógica XOR (el «o exclusivo», que responde verdadero si solo una opción es cierta, pero falso si ambas coinciden). Como en esa época no se disponía de un método eficaz para coordinar el entrenamiento en múltiples capas superpuestas, la disciplina se congeló durante más de una década en lo que la historia de la informática recuerda como el primer invierno de la inteligencia artificial.</p>
+<p>El renacer definitivo llegó en 1986. David Rumelhart, Geoffrey Hinton y Ronald Williams publicaron en la revista <em>Nature</em> la aplicación sistemática del algoritmo de <strong>retropropagación del error</strong> (<em>backpropagation</em>). Este avance resolvió el reto de Minsky y Papert al calcular matemáticamente cómo ajustar cada peso en las capas intermedias u ocultas. Poco después, George Cybenko (1989) y Kurt Hornik (1991) consolidaron los cimientos formales con el <strong>Teorema de Aproximación Universal</strong>: demostraron que una red con apenas una capa oculta y suficientes neuronas puede aproximar cualquier función matemática continua con el nivel de precisión deseado.</p>
+<h3>La analogía de la orquesta y la mesa de mezclas de audio</h3>
+<p>Para entender con nitidez cómo opera una red neuronal sin tropezar de entrada con el álgebra matricial, imagine la cabina de sonido de un teatro donde un estudiante de producción musical controla una gran mesa de mezclas:</p>
+<ol>
+<li><strong>Las pistas de entrada:</strong> Son los canales individuales que llegan desde los micrófonos de la banda (batería, bajo, guitarra, teclado y voz). En una red, representan los datos crudos, como los valores de color de cada píxel de una imagen o los datos de un formulario médico.</li>
+<li><strong>Los potenciómetros (pesos):</strong> Cada canal posee una perilla de volumen que atenúa o amplifica ese instrumento. Si el sonido de la guitarra ensucia la mezcla, el operador baja la perilla a cero; si la voz transmite el mensaje principal, eleva su volumen. En la red, los pesos determinan qué variables influyen con mayor fuerza en la predicción final.</li>
+<li><strong>El ajuste maestro de base (sesgo):</strong> Es un control de ganancia general independiente del sonido que entra. Permite asegurar que el sistema emita señal incluso si los micrófonos captan un volumen casi imperceptible.</li>
+<li><strong>El pedal de efectos (función de activación):</strong> La combinación ponderada de todos los canales pasa por un procesador de efectos. Este dispositivo decide si el sonido rompe en distorsión cuando supera cierta potencia, si se silencia el ruido de fondo o si pasa con una curva suave.</li>
+<li><strong>El ensayo guiado (retropropagación):</strong> El aprendiz produce una mezcla de prueba y el director de la orquesta la escucha frente a la partitura original. El director calcula la diferencia entre lo que sonó y lo que debía sonar (el error) y le indica al estudiante con exactitud qué perillas girar y cuánto para que en la siguiente pasada la armonía sea mucho más fiel.</li>
+</ol>
+<pre style="padding:1rem;border-radius:8px;overflow-x:auto;background:#111827;color:#E5E7EB;"><code class="language-text">Entradas          Ponderación          Suma y Sesgo          Activación        Salida
+ [ x₁ ] ──w₁───┐
+ [ x₂ ] ──w₂───┼──&gt; ( ∑ wᵢ × xᵢ ) + b ───────────────&gt; [ σ(z) ] ───&gt; ŷ (Predicción)
+ [ x₃ ] ──w₃───┘</code></pre>
+<hr style="border:none;border-top:1px solid rgba(212,175,55,0.25);margin:2rem 0;">
+<h2>2. Cómo funciona por dentro</h2>
+<p>El funcionamiento de una red neuronal se divide en dos fases continuas que se retroalimentan: el pase hacia adelante (<em>forward pass</em>), en el cual el sistema genera una predicción a partir de los datos, y el pase hacia atrás (<em>backward pass</em> o retropropagación), donde compara el resultado con la realidad y ajusta sus parámetros.</p>
+<h3>Transformación afín y no linealidad en cada capa</h3>
+<p>Si agrupamos las entradas en un vector numérico <code>x</code>, cada capa de la red aplica una transformación geométrica compuesta:</p>
+<pre style="padding:1rem;border-radius:8px;overflow-x:auto;background:#111827;color:#E5E7EB;"><code class="language-text">z = W × x + b
+a = σ(z)</code></pre>
+<p>En esta relación:</p>
+<ul>
+<li><code>W</code> es la matriz de pesos que conecta las neuronas de la capa previa con la actual.</li>
+<li><code>b</code> es el vector de sesgo que traslada la frontera de corte.</li>
+<li><code>z</code> representa la combinación lineal resultante.</li>
+<li><code>σ</code> es la función de activación no lineal, y <code>a</code> es la salida activada que viaja como entrada hacia la capa posterior.</li>
+</ul>
+<p>La inclusión de <code>σ</code> es el pilar de toda la arquitectura. Si una red omitiera las funciones de activación y limitara sus operaciones a sumas y multiplicaciones lineales, diez o cien capas consecutivas colapsarían matemáticamente en una sola matriz equivalente, dejando al sistema incapacitado para resolver problemas complejos o trazar fronteras de decisión curvas.</p>
+<p>Las funciones de activación más utilizadas en la práctica son:</p>
+<ol>
+<li><strong>Sigmoide:</strong> Mapea cualquier número a un intervalo suave entre 0 y 1 mediante la regla <code>σ(z) = 1 ÷ (1 + e⁻ᶻ)</code>. Aunque históricamente sirvió para representar probabilidades, hoy se evita en capas intermedias porque su derivada máxima es muy pequeña (<code>σ'(0) = 0.25</code>) y se satura en los extremos, lo que anula el flujo de aprendizaje en redes profundas (problema del desvanecimiento del gradiente).</li>
+<li><strong>ReLU (Unidad Lineal Rectificada):</strong> Popularizada en 2010 por Vinod Nair y Geoffrey Hinton, sustituyó a la sigmoide en la mayoría de tareas de visión y clasificación. Aplica una regla sumamente veloz: <code>ReLU(z) = max(0, z)</code>. Si el número es positivo, lo deja pasar idéntico; si es negativo, lo transforma en cero. Su derivada constante de 1 para valores positivos permite entrenar modelos muy profundos a gran velocidad, aunque corre el riesgo de inactivar neuronas de forma permanente si todas sus entradas se vuelven negativas (<em>dying ReLU</em>).</li>
+<li><strong>GELU (Unidad Lineal de Error Gaussiano):</strong> Propuesta en 2016 por Dan Hendrycks y Kevin Gimpel, pondera la entrada multiplicándola por la probabilidad acumulada de una distribución normal: <code>GELU(z) = z × P(X ≤ z)</code>. Al mantener una curvatura suave y permitir el paso controlado de valores negativos leves, se convirtió en el estándar de arquitecturas de procesamiento de lenguaje natural como BERT y la serie GPT.</li>
+<li><strong>Softmax:</strong> Diseñada para la capa final de modelos de clasificación multiclase. Transforma un conjunto de números reales arbitrarios en una distribución normalizada de probabilidades cuya suma equivale exactamente a 1:</li>
+</ol>
+<pre style="padding:1rem;border-radius:8px;overflow-x:auto;background:#111827;color:#E5E7EB;"><code class="language-text">Softmax(z)[i] = e^(z[i]) ÷ ∑ e^(z[j])</code></pre>
+<h3>Retropropagación y optimización por gradiente</h3>
+<p>Para medir el rendimiento de la red se define una <strong>función de costo o pérdida</strong>, como el error cuadrático medio en regresiones numéricas o la entropía cruzada en problemas de clasificación.</p>
+<p>La retropropagación calcula la derivada de ese error respecto a cada peso y sesgo mediante la regla de la cadena del análisis diferencial, viajando desde la última capa hacia la primera:</p>
+<pre style="padding:1rem;border-radius:8px;overflow-x:auto;background:#111827;color:#E5E7EB;"><code class="language-text">Capa de salida:    δ_salida = ŷ - y
+Capas ocultas:     δ_oculta = (W_siguienteᵀ × δ_siguiente) ⊙ σ'(z)
+Gradiente de peso: ∂L/∂W = δ × a_anteriorᵀ
+Gradiente de sesgo:∂L/∂b = δ</code></pre>
+<p>Una vez obtenidos los gradientes, un algoritmo de optimización (como el Descenso de Gradiente Estocástico o variantes avanzadas como Adam) actualiza los parámetros restando una fracción del gradiente proporcional a un valor denominado tasa de aprendizaje (<code>η</code>):</p>
+<pre style="padding:1rem;border-radius:8px;overflow-x:auto;background:#111827;color:#E5E7EB;"><code class="language-text">W_nuevo = W_actual - η × (∂L/∂W)
+b_nuevo = b_actual - η × (∂L/∂b)</code></pre>
+<h3>Implementación práctica en Python</h3>
+<p>El siguiente bloque de código ilustra cómo opera un perceptrón multicapa completo (dos capas, activación interna ReLU y salida sigmoide) para aprender la compuerta XOR utilizando exclusivamente la biblioteca NumPy:</p>
+<pre style="padding:1rem;border-radius:8px;overflow-x:auto;background:#111827;color:#E5E7EB;"><code class="language-python">import numpy as np
+
+class PerceptronMulticapa:
+    def __init__(self, n_entradas: int, n_ocultas: int, lr: float = 0.2):
+        self.lr = lr
+        # Inicialización de He para conservar la varianza con ReLU
+        self.W1 = np.random.randn(n_ocultas, n_entradas) * np.sqrt(2.0 / n_entradas)
+        self.b1 = np.zeros((n_ocultas, 1))
+        self.W2 = np.random.randn(1, n_ocultas) * np.sqrt(2.0 / n_ocultas)
+        self.b2 = np.zeros((1, 1))
+
+    def adelante(self, X: np.ndarray) -&gt; np.ndarray:
+        self.X = X
+        self.z1 = np.dot(self.W1, X) + self.b1
+        self.a1 = np.maximum(0.0, self.z1)  # Activación ReLU
+        self.z2 = np.dot(self.W2, self.a1) + self.b2
+        # Sigmoide con corte numérico para evitar desbordamientos
+        self.a2 = 1.0 / (1.0 + np.exp(-np.clip(self.z2, -250, 250)))
+        return self.a2
+
+    def retropropagar(self, Y: np.ndarray) -&gt; float:
+        n = Y.shape[1]
+        # Pérdida de entropía cruzada binaria
+        perdida = -np.mean(Y * np.log(self.a2 + 1e-12) + (1 - Y) * np.log(1 - self.a2 + 1e-12))
+
+        # Cálculo de gradientes con la regla de la cadena
+        delta2 = self.a2 - Y
+        dW2 = np.dot(delta2, self.a1.T) / n
+        db2 = np.sum(delta2, axis=1, keepdims=True) / n
+
+        delta1 = np.dot(self.W2.T, delta2) * (self.z1 &gt; 0)  # Derivada de ReLU
+        dW1 = np.dot(delta1, self.X.T) / n
+        db1 = np.sum(delta1, axis=1, keepdims=True) / n
+
+        # Actualización de pesos y sesgos
+        self.W2 -= self.lr * dW2
+        self.b2 -= self.lr * db2
+        self.W1 -= self.lr * dW1
+        self.b1 -= self.lr * db1
+        return float(perdida)
+
+# Entrenamiento de la función XOR (no separable con una sola línea)
+X = np.array([[0, 0, 1, 1],
+              [0, 1, 0, 1]])
+Y = np.array([[0, 1, 1, 0]])
+
+red = PerceptronMulticapa(n_entradas=2, n_ocultas=4, lr=0.5)
+for ciclo in range(2500):
+    red.adelante(X)
+    red.retropropagar(Y)
+
+predicciones = red.adelante(X)
+print(&quot;Salida final aprendida (esperado: [0, 1, 1, 0]):&quot;)
+print(np.round(predicciones, 3))</code></pre>
+<hr style="border:none;border-top:1px solid rgba(212,175,55,0.25);margin:2rem 0;">
+<h2>3. Dónde se usa hoy en la vida real</h2>
+<p>Las redes neuronales constituyen el motor informático invisible de la economía digital y la ciencia experimental contemporánea:</p>
+<ul>
+<li><strong>Prevención de fraudes y calificación crediticia:</strong> Los sistemas bancarios evalúan historiales de transacciones, geolocalizaciones y patrones de gasto mediante redes densas para rechazar operaciones sospechosas en fracciones de segundo.</li>
+<li><strong>Componentes de subred en Modelos de Lenguaje (LLMs):</strong> Aunque los modelos como GPT-4, Llama o Claude se articulan mediante atención, cada bloque de su estructura contiene capas neuronales densas (<em>feedforward networks</em>) que sintetizan el contexto semántico recuperado.</li>
+<li><strong>Diagnóstico por imagen médica:</strong> Redes convolucionales analizan resonancias magnéticas, tomografías axiales y radiografías de tórax, detectando nódulos tumorales tempranos con tasas de sensibilidad que complementan el criterio del especialista clínico.</li>
+<li><strong>Biología computacional y plegamiento de proteínas:</strong> Herramientas como AlphaFold emplean arquitecturas neuronales para predecir la estructura tridimensional de proteínas a partir de su código genético, reduciendo investigaciones de años a minutos en laboratorios farmacéuticos.</li>
+<li><strong>Redes Neuronales Informadas por la Física (PINNs):</strong> En aerodinámica, energía nuclear y meteorología, resuelven ecuaciones diferenciales incorporando principios de conservación de masa y energía en su cálculo de error para modelar fenómenos físicos con alta fidelidad.</li>
+</ul>
+<hr style="border:none;border-top:1px solid rgba(212,175,55,0.25);margin:2rem 0;">
+<h2>4. Qué hace bien, qué falla y qué riesgos tiene</h2>
+<div style="overflow-x:auto;margin:1.25rem 0;"><table style="width:100%;border-collapse:collapse;"><thead><tr><th style="text-align:left;padding:0.6rem;border-bottom:2px solid #D4AF37;">Dimensión</th><th style="text-align:left;padding:0.6rem;border-bottom:2px solid #D4AF37;">Fortalezas prácticas</th><th style="text-align:left;padding:0.6rem;border-bottom:2px solid #D4AF37;">Límites y puntos vulnerables</th></tr></thead><tbody><tr><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);"><strong>Capacidad de modelado</strong></td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Aprende relaciones matemáticas no lineales complejas sin intervención humana en el diseño de rasgos.</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Necesita grandes volúmenes de datos limpios; con pocas muestras cae en sobreajuste (<em>overfitting</em>).</td></tr><tr><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);"><strong>Eficiencia de ejecución</strong></td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Las operaciones matriciales se aceleran de forma masiva en hardware especializado (GPU y TPU).</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">El entrenamiento de redes gigantescas exige una inversión energética y computacional considerable.</td></tr><tr><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);"><strong>Interpretabilidad</strong></td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Extrae representaciones conceptuales jerárquicas y abstractas de gran riqueza.</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Comportamiento opaco («caja negra»); resulta muy complejo auditar el motivo exacto de una decisión puntual.</td></tr><tr><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);"><strong>Optimización</strong></td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">La retropropagación proporciona derivadas analíticas rigurosas en tiempo lineal.</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">El terreno de optimización es no convexo; el aprendizaje puede quedar atrapado en mesetas o mínimos locales.</td></tr></tbody></table></div>
+<h3>Principales riesgos y desafíos abiertos</h3>
+<ul>
+<li><strong>Sobreajuste memorístico:</strong> Si la capacidad de la red supera ampliamente la variedad de los datos de entrenamiento, memorizará casos aislados en lugar de aprender el principio subyacente, fallando ante situaciones nuevas.</li>
+<li><strong>Vulnerabilidad ante ataques adversarios:</strong> Pequeñas alteraciones numéricas imperceptibles añadidas a una imagen pueden provocar que una red clasifique un semáforo en rojo como una señal verde con una confianza matemática superior al 95%.</li>
+<li><strong>Sesgos históricos incorporados:</strong> Si los datos de entrenamiento reflejan desigualdades históricas en contratación, justicia o concesión de préstamos, la red automatizará y amplificará esas asimetrías presentándolas bajo una apariencia de neutralidad técnica.</li>
+</ul>
+<hr style="border:none;border-top:1px solid rgba(212,175,55,0.25);margin:2rem 0;">
+<h2>5. Temas relacionados</h2>
+<ul>
+<li><strong>Aprendizaje Profundo (Deep Learning):</strong> Evolución hacia redes con decenas o cientos de capas que procesan texto, audio y vídeo sin ingeniería previa.</li>
+<li><strong>Descenso de Gradiente y Optimizadores Modernos:</strong> Algoritmos como Adam y AdamW que adaptan la velocidad de aprendizaje para sortear valles y mesetas complejas.</li>
+<li><strong>Técnicas de Regularización (Dropout, Normalización y Weight Decay):</strong> Mecanismos matemáticos destinados a frenar la memorización y garantizar que el modelo generalice ante datos no vistos.</li>
+<li><strong>Redes Convolucionales (CNN) y Arquitecturas Transformer:</strong> Variantes arquitectónicas diseñadas para capturar invarianzas espaciales en imágenes y dependencias temporales en secuencias lingüísticas.</li>
+</ul>
+    </article>
+    <section style="margin-top:2.5rem;padding-top:1.5rem;border-top:1px solid rgba(212,175,55,0.25);"><h2>Seguir explorando en la Enciclopedia IA</h2><ul><li><a href="deep-learning.html">🔮 Deep Learning y Leyes de Escalamiento</a> — Por qué las redes profundas superaron a los métodos clásicos, qué hacen AdamW y las conexiones residuales, y cómo crece la calidad con más datos.</li>
+<li><a href="machine-learning.html">📈 Machine Learning: Cómo Aprenden las Máquinas</a> — Aprendizaje con ejemplos (supervisado), sin etiquetas (no supervisado) y auto-supervisado; cómo evitar que un modelo memorice en lugar de aprender.</li>
+<li><a href="transformers-atencion.html">⚡ Arquitectura Transformer y Auto-Atención</a> — El invento de 2017 que revolucionó la IA: cómo la auto-atención conecta palabras lejanas al instante y por qué reemplazó a las redes lentas anteriores.</li></ul></section>
+    <p style="margin-top:2rem;">
+      <a href="../#enciclopedia-ia" class="btn-hero-primary" style="display:inline-block;padding:0.85rem 1.5rem;text-decoration:none;">📚 Abrir en el Lector Interactivo de Ruichis Lab →</a>
+    </p>
+  </main>
+</body>
+</html>

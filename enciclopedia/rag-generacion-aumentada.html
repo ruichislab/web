@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RAG: Conectar la IA a Tus Documentos — Enciclopedia IA | Ruichis Lab</title>
+  <meta name="description" content="Cómo hacer que un modelo responda usando tus propios PDFs o bases de datos actualizadas en lugar de adivinar o alucinar información.">
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+  <link rel="canonical" href="https://ruichislab.com/enciclopedia/rag-generacion-aumentada.html">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Ruichis Lab">
+  <meta property="og:title" content="RAG: Conectar la IA a Tus Documentos — Enciclopedia IA | Ruichis Lab">
+  <meta property="og:description" content="Cómo hacer que un modelo responda usando tus propios PDFs o bases de datos actualizadas en lugar de adivinar o alucinar información.">
+  <meta property="og:url" content="https://ruichislab.com/enciclopedia/rag-generacion-aumentada.html">
+  <meta property="og:image" content="https://ruichislab.com/src/assets/covers/productividad-asimetrica-es.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="RAG: Conectar la IA a Tus Documentos | Ruichis Lab">
+  <meta name="twitter:description" content="Cómo hacer que un modelo responda usando tus propios PDFs o bases de datos actualizadas en lugar de adivinar o alucinar información.">
+  <link rel="stylesheet" href="../src/estilos/editorial.css">
+  <script type="application/ld+json">
+  {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "TechArticle",
+      "headline": "RAG: Conectar la IA a Tus Documentos",
+      "description": "Cómo hacer que un modelo responda usando tus propios PDFs o bases de datos actualizadas en lugar de adivinar o alucinar información.",
+      "inLanguage": "es",
+      "dateModified": "2026-11-12",
+      "author": {
+        "@type": "Organization",
+        "name": "Ruichis Lab",
+        "url": "https://ruichislab.com/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Ruichis Lab",
+        "url": "https://ruichislab.com/"
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://ruichislab.com/enciclopedia/rag-generacion-aumentada.html"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Inicio",
+          "item": "https://ruichislab.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Enciclopedia IA",
+          "item": "https://ruichislab.com/pages/enciclopedia.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "RAG: Conectar la IA a Tus Documentos",
+          "item": "https://ruichislab.com/enciclopedia/rag-generacion-aumentada.html"
+        }
+      ]
+    }
+  ]
+}
+  </script>
+</head>
+<body>
+  <header style="border-bottom:1px solid rgba(212,175,55,0.25);padding:1rem 1.5rem;">
+    <div style="max-width:860px;margin:0 auto;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:0.75rem;">
+      <a href="../" style="font-weight:800;letter-spacing:0.08em;text-decoration:none;color:#D4AF37;">RUICHIS LAB</a>
+      <nav style="display:flex;gap:1rem;font-size:0.9rem;">
+        <a href="../pages/enciclopedia.html">Índice Enciclopedia (30)</a>
+        <a href="../#enciclopedia-ia">Lector Interactivo</a>
+        <a href="../#gimnasio-mental">Sudoku y Sopas Gratis</a>
+      </nav>
+    </div>
+  </header>
+  <main class="container" style="max-width:860px;margin:2.5rem auto;padding:0 1.5rem 3rem;line-height:1.75;">
+    <p style="font-size:0.8rem;letter-spacing:0.12em;text-transform:uppercase;color:#D4AF37;font-weight:700;">
+      🧠 undefined • NIVEL: INTERMEDIO • LECTURA: undefined
+    </p>
+    <article>
+      <h1>RAG: Generación Aumentada por Recuperación</h1>
+<p>Un modelo de lenguaje grande (LLM, por sus siglas en inglés) redacta con notable fluidez y razona sobre problemas complejos, pero su conocimiento fáctico queda congelado el día en que termina su entrenamiento. Si una persona le pregunta por las ventas del último trimestre de una empresa, una directiva médica aprobada ayer o un manual confidencial, el modelo no tiene forma de saberlo: en el mejor de los casos admitirá su ignorancia; en el peor, inventará una respuesta convincente pero falsa (lo que en inteligencia artificial se conoce como alucinación).</p>
+<p>La Generación Aumentada por Recuperación (conocida universalmente por su sigla en inglés RAG, <em>Retrieval-Augmented Generation</em>) resuelve este problema uniendo dos piezas: un motor de búsqueda documental y un modelo generativo. En vez de exigirle al modelo que memorice toda la información en sus parámetros internos, el sistema busca los pasajes pertinentes en una base de datos externa y se los entrega como material de lectura antes de redactar la respuesta.</p>
+<blockquote style="border-left:3px solid #D4AF37;padding:0.75rem 1rem;margin:1.25rem 0;background:rgba(212,175,55,0.08);border-radius:0 8px 8px 0;"><strong>En pocas palabras:</strong> RAG equivale a permitir que un estudiante consulte apuntes y libros actualizados durante un examen en lugar de obligarlo a responder todo de memoria.</blockquote>
+<hr style="border:none;border-top:1px solid rgba(212,175,55,0.25);margin:2rem 0;">
+<h2>1. De dónde viene y cómo se entiende fácil</h2>
+<p>El concepto de RAG fue presentado formalmente a finales de 2020 por Patrick Lewis y su equipo en Facebook AI Research (FAIR), junto con el University College London y la Universidad de Nueva York, en el artículo de investigación <em>Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks</em>. Hasta ese momento, para incorporar información nueva a un modelo de lenguaje se recurría a dos caminos costosos: reentrenar la red desde cero o aplicarle un ajuste fino (<em>fine-tuning</em>). Ambos métodos exigían semanas de cómputo y corrían el riesgo de provocar <em>olvido catastrófico</em>, donde el modelo pierde destrezas previas al sobreescribir sus parámetros.</p>
+<p>Para entender la diferencia intuitiva, imaginemos a dos médicos en una guardia de hospital:</p>
+<ul>
+<li><strong>El médico que confía solo en su memoria:</strong> Se graduó hace tres años y atiende basándose únicamente en lo que recuerda de sus clases universitarias. Si aparece un fármaco nuevo o una directiva aprobada la semana pasada, intentará deducir una solución con lo que sabe, con el riesgo evidente de equivocarse o prescribir una dosis imprecisa.</li>
+<li><strong>El médico asistido por RAG:</strong> Cuenta con la misma formación y capacidad de razonamiento, pero ante un caso clínico difícil abre al instante las guías actualizadas del hospital, revisa la ficha del paciente y, con la evidencia en mano, prescribe el tratamiento exacto.</li>
+</ul>
+<p>RAG desacopla con claridad el razonamiento lingüístico (a cargo del LLM) del almacenamiento de los hechos (en una base de datos externa). Si una ley cambia, un producto se descontinúa o un empleado se incorpora al equipo, no hace falta reentrenar el modelo: basta con actualizar el archivo correspondiente en el almacén documental.</p>
+<hr style="border:none;border-top:1px solid rgba(212,175,55,0.25);margin:2rem 0;">
+<h2>2. Cómo funciona por dentro</h2>
+<p>Un sistema RAG en producción procesa cada consulta mediante un canal de cuatro fases consecutivas:</p>
+<pre style="padding:1rem;border-radius:8px;overflow-x:auto;background:#111827;color:#E5E7EB;"><code class="language-text">[ Documentos fuente ] ──► [ Segmentación (Chunking) ]
+                                    │
+          ┌─────────────────────────┴────────────────────────┐
+          ▼                                                  ▼
+   [ Índice BM25 (Léxico) ]                       [ Índice Vectorial (Embeddings) ]
+          │                                                  │
+          └─────────────────────────┬────────────────────────┘
+                                    ▼
+                       [ Fusión de Rangos (RRF) ]
+                                    │
+                                    ▼
+                      [ Reordenador (Cross-Encoder) ]
+                                    │ (Top 3-5 fragmentos)
+                                    ▼
+                         [ LLM Generador ] ──► [ Respuesta con citas ]</code></pre>
+<h3>Paso 1: Segmentación documental (Chunking)</h3>
+<p>Un manual extenso no puede enviarse entero al buscador ni a la ventana de contexto del modelo sin diluir los datos críticos. El texto se divide en bloques manejables (habitualmente de 200 a 500 palabras). Para asegurar que ninguna idea quede cortada a la mitad, se aplica un solapamiento del 10% al 20% entre bloques contiguos.</p>
+<h3>Paso 2: Búsqueda híbrida (BM25 + Embeddings)</h3>
+<p>La búsqueda semántica tradicional transforma el texto en vectores numéricos (<em>embeddings</em>) para medir afinidad conceptual:</p>
+<pre style="padding:1rem;border-radius:8px;overflow-x:auto;background:#111827;color:#E5E7EB;"><code class="language-text">Similitud coseno = (vector_A · vector_B) ÷ (||vector_A|| × ||vector_B||)</code></pre>
+<p>Esto permite relacionar &quot;dolor de cabeza&quot; con &quot;cefalea&quot;, pero falla al buscar códigos de error, números de contrato o nombres propios poco comunes. Por ello, los sistemas modernos combinan vectores con el algoritmo léxico BM25, desarrollado por Stephen Robertson y Karen Spärck Jones en los años 90. BM25 premia la coincidencia exacta de términos clave ponderando la frecuencia de las palabras y la extensión del texto:</p>
+<pre style="padding:1rem;border-radius:8px;overflow-x:auto;background:#111827;color:#E5E7EB;"><code class="language-text">Puntaje BM25 = ∑ [ IDF(palabra_i) × (frecuencia × (k1 + 1)) ÷ (frecuencia + k1 × (1 - b + b × (longitud_doc ÷ longitud_promedio))) ]</code></pre>
+<p>Para fusionar ambas listas sin que las diferencias de escala distorsionen la selección, se utiliza la Fusión por Rangos Recíprocos (RRF, introducida por Cormack, Clarke y Büttcher en 2009):</p>
+<pre style="padding:1rem;border-radius:8px;overflow-x:auto;background:#111827;color:#E5E7EB;"><code class="language-python">def fusion_rrf(ranking_denso: list[str], ranking_lexico: list[str], k: int = 60) -&gt; list[tuple[str, float]]:
+    &quot;&quot;&quot;Combina listas densas y léxicas sumando el inverso de sus posiciones relativas.&quot;&quot;&quot;
+    puntajes: dict[str, float] = {}
+    for pos, doc_id in enumerate(ranking_denso):
+        puntajes[doc_id] = puntajes.get(doc_id, 0.0) + 1.0 / (k + pos + 1)
+    for pos, doc_id in enumerate(ranking_lexico):
+        puntajes[doc_id] = puntajes.get(doc_id, 0.0) + 1.0 / (k + pos + 1)
+    return sorted(puntajes.items(), key=lambda elem: elem[1], reverse=True)</code></pre>
+<h3>Paso 3: Reordenamiento contextual (Reranking)</h3>
+<p>Los modelos bi-encoder generan vectores separados para la consulta y los documentos muy rápido, pero sacrifican sutilezas sintácticas. Un modelo clasificador cruzado (<em>Cross-Encoder</em>) toma los 30 o 50 mejores pasajes y evalúa la consulta y el fragmento juntos en una sola pasada de atención profunda, filtrando los 3 a 5 fragmentos más determinantes para el prompt final.</p>
+<h3>Paso 4: De fragmentos aislados a redes con GraphRAG</h3>
+<p>Cuando la consulta exige sintetizar un archivo completo (por ejemplo: <em>&quot;¿Cuáles son las vulnerabilidades recurrentes en las auditorías de los últimos tres años?&quot;</em>), el RAG tradicional falla porque solo extrae fragmentos sueltos. En 2024, Microsoft Research presentó <strong>GraphRAG</strong>: extrae entidades y relaciones para construir un grafo de conocimiento, agrupa las entidades en comunidades temáticas mediante el algoritmo Leiden y genera resúmenes jerárquicos. De este modo, el sistema responde tanto preguntas puntuales de detalle como consultas de síntesis global.</p>
+<hr style="border:none;border-top:1px solid rgba(212,175,55,0.25);margin:2rem 0;">
+<h2>3. Dónde se usa hoy en la vida real</h2>
+<ul>
+<li><strong>Soporte técnico y atención al cliente:</strong> Asistentes conectados a repositorios vivos en Notion o Jira. Si una política comercial cambia hoy, el sistema responde con la nueva directiva de inmediato sin reentrenar.</li>
+<li><strong>Auditoría jurídica y fiscal:</strong> Despachos legales que analizan contratos, sentencias y códigos procesales. El sistema destaca la cláusula específica, compara antecedentes y cita el folio y párrafo original exacto.</li>
+<li><strong>Medicina basada en evidencia:</strong> Plataformas clínicas que indexan publicaciones de PubMed y vademécums. El personal médico consulta interacciones farmacológicas y recibe recomendaciones respaldadas por bibliografía primaria auditable.</li>
+<li><strong>Ingeniería de software:</strong> Asistentes de desarrollo que indexan repositorios privados y especificaciones de arquitectura para guiar al equipo con código y convenciones reales de su propia organización.</li>
+</ul>
+<hr style="border:none;border-top:1px solid rgba(212,175,55,0.25);margin:2rem 0;">
+<h2>4. Qué hace bien, qué falla y qué riesgos tiene</h2>
+<div style="overflow-x:auto;margin:1.25rem 0;"><table style="width:100%;border-collapse:collapse;"><thead><tr><th style="text-align:left;padding:0.6rem;border-bottom:2px solid #D4AF37;">Criterio</th><th style="text-align:left;padding:0.6rem;border-bottom:2px solid #D4AF37;">RAG Híbrido + Reordenador</th><th style="text-align:left;padding:0.6rem;border-bottom:2px solid #D4AF37;">GraphRAG</th><th style="text-align:left;padding:0.6rem;border-bottom:2px solid #D4AF37;">Ajuste Fino (<em>Fine-Tuning</em>)</th><th style="text-align:left;padding:0.6rem;border-bottom:2px solid #D4AF37;">LLM Aislado</th></tr></thead><tbody><tr><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);"><strong>Actualización de datos</strong></td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Instantánea (añadir o quitar archivos)</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Rápida (recalcular grafo)</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Muy costosa y lenta</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Imposible sin entrenar</td></tr><tr><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);"><strong>Trazabilidad y citas</strong></td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Exactas (enlace al fragmento original)</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Altas (citas a entidades y resúmenes)</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Nula (caja negra paramétrica)</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Nula (suele inventar fuentes)</td></tr><tr><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);"><strong>Precisión en términos exactos</strong></td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Sobresaliente (gracias a BM25)</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Alta (nodos léxicos)</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Regular</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Baja</td></tr><tr><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);"><strong>Síntesis global del corpus</strong></td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Limitada (recupera fragmentos sueltos)</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Sobresaliente (resúmenes jerárquicos)</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Regular</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Regular</td></tr><tr><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);"><strong>Riesgo de alucinación</strong></td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Muy bajo</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Mínimo</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Moderado a alto</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Alto</td></tr></tbody></table></div>
+<h3>Limitaciones y riesgos prácticos:</h3>
+<ul>
+<li>*<em>Pérdida en el medio (</em>Lost in the Middle<em>):</em>* Si el recuperador introduce fragmentos irrelevantes o contradictorios, el modelo puede pasar por alto el dato clave si queda situado en el centro de un contexto extenso.</li>
+<li><strong>Latencia acumulada:</strong> Consultar índices, calcular similitudes y reordenar candidatos añade milisegundos valiosos antes de emitir la primera palabra (<em>Time-to-First-Token</em>).</li>
+<li><strong>Inyección indirecta de instrucciones:</strong> Si un atacante introduce texto malicioso en un documento indexado (como una directiva oculta para revelar secretos), el recuperador podría enviarlo al modelo y alterar su comportamiento.</li>
+</ul>
+<hr style="border:none;border-top:1px solid rgba(212,175,55,0.25);margin:2rem 0;">
+<h2>5. Temas relacionados</h2>
+<ul>
+<li><strong>Bases de datos vectoriales:</strong> Motores optimizados para almacenar y consultar vectores mediante algoritmos de grafos navegables como HNSW.</li>
+<li>*<em>Incrustaciones (</em>embeddings<em>) y Cross-Encoders:</em>* Redes basadas en Transformers especializadas en mapeo semántico y puntuación de relevancia cruzada.</li>
+<li><strong>Grafos de conocimiento:</strong> Estructuras formadas por nodos (conceptos) y aristas (relaciones), base operativa de GraphRAG.</li>
+<li><strong>Ajuste fino con LoRA / QLoRA:</strong> Técnicas complementarias para adaptar el tono o formato de salida, mientras RAG suministra los hechos verificables.</li>
+</ul>
+    </article>
+    <section style="margin-top:2.5rem;padding-top:1.5rem;border-top:1px solid rgba(212,175,55,0.25);"><h2>Seguir explorando en la Enciclopedia IA</h2><ul><li><a href="embeddings-espacios-vectoriales.html">🧭 Embeddings y Búsqueda por Significado</a> — Cómo la IA convierte palabras, frases o fotos en coordenadas numéricas para encontrar ideas parecidas aunque no usen las mismas palabras.</li>
+<li><a href="agentes-autonomos.html">🕵️ Agentes Autónomos, Herramientas y MCP</a> — Cuando la IA deja de solo responder y empieza a actuar: planificar pasos, usar calculadoras o APIs, conectarse por MCP y colaborar entre agentes.</li>
+<li><a href="evaluacion-benchmarks.html">📊 Cómo Se Evalúa la IA y Qué Miden los Tests</a> — Qué significan MMLU, HumanEval o SWE-bench, cómo se detecta si un modelo hizo trampa memorizando el examen y el uso de jueces automáticos.</li></ul></section>
+    <p style="margin-top:2rem;">
+      <a href="../#enciclopedia-ia" class="btn-hero-primary" style="display:inline-block;padding:0.85rem 1.5rem;text-decoration:none;">📚 Abrir en el Lector Interactivo de Ruichis Lab →</a>
+    </p>
+  </main>
+</body>
+</html>

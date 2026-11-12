@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hardware de IA, GPUs y Cuantización — Enciclopedia IA | Ruichis Lab</title>
+  <meta name="description" content="Por qué la IA necesita GPUs y TPUs, qué es la cuantización (FP8, INT4, GGUF) y cómo KV-Cache y PagedAttention aceleran las respuestas.">
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+  <link rel="canonical" href="https://ruichislab.com/enciclopedia/hardware-gpu-inferencia.html">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Ruichis Lab">
+  <meta property="og:title" content="Hardware de IA, GPUs y Cuantización — Enciclopedia IA | Ruichis Lab">
+  <meta property="og:description" content="Por qué la IA necesita GPUs y TPUs, qué es la cuantización (FP8, INT4, GGUF) y cómo KV-Cache y PagedAttention aceleran las respuestas.">
+  <meta property="og:url" content="https://ruichislab.com/enciclopedia/hardware-gpu-inferencia.html">
+  <meta property="og:image" content="https://ruichislab.com/src/assets/covers/productividad-asimetrica-es.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Hardware de IA, GPUs y Cuantización | Ruichis Lab">
+  <meta name="twitter:description" content="Por qué la IA necesita GPUs y TPUs, qué es la cuantización (FP8, INT4, GGUF) y cómo KV-Cache y PagedAttention aceleran las respuestas.">
+  <link rel="stylesheet" href="../src/estilos/editorial.css">
+  <script type="application/ld+json">
+  {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "TechArticle",
+      "headline": "Hardware de IA, GPUs y Cuantización",
+      "description": "Por qué la IA necesita GPUs y TPUs, qué es la cuantización (FP8, INT4, GGUF) y cómo KV-Cache y PagedAttention aceleran las respuestas.",
+      "inLanguage": "es",
+      "dateModified": "2026-11-12",
+      "author": {
+        "@type": "Organization",
+        "name": "Ruichis Lab",
+        "url": "https://ruichislab.com/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Ruichis Lab",
+        "url": "https://ruichislab.com/"
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://ruichislab.com/enciclopedia/hardware-gpu-inferencia.html"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Inicio",
+          "item": "https://ruichislab.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Enciclopedia IA",
+          "item": "https://ruichislab.com/pages/enciclopedia.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Hardware de IA, GPUs y Cuantización",
+          "item": "https://ruichislab.com/enciclopedia/hardware-gpu-inferencia.html"
+        }
+      ]
+    }
+  ]
+}
+  </script>
+</head>
+<body>
+  <header style="border-bottom:1px solid rgba(212,175,55,0.25);padding:1rem 1.5rem;">
+    <div style="max-width:860px;margin:0 auto;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:0.75rem;">
+      <a href="../" style="font-weight:800;letter-spacing:0.08em;text-decoration:none;color:#D4AF37;">RUICHIS LAB</a>
+      <nav style="display:flex;gap:1rem;font-size:0.9rem;">
+        <a href="../pages/enciclopedia.html">Índice Enciclopedia (30)</a>
+        <a href="../#enciclopedia-ia">Lector Interactivo</a>
+        <a href="../#gimnasio-mental">Sudoku y Sopas Gratis</a>
+      </nav>
+    </div>
+  </header>
+  <main class="container" style="max-width:860px;margin:2.5rem auto;padding:0 1.5rem 3rem;line-height:1.75;">
+    <p style="font-size:0.8rem;letter-spacing:0.12em;text-transform:uppercase;color:#D4AF37;font-weight:700;">
+      🧠 undefined • NIVEL: AVANZADO • LECTURA: undefined
+    </p>
+    <article>
+      <h1>Hardware de IA e inferencia eficiente: cómo ejecutar modelos a escala</h1>
+<p>Entrenar un modelo de lenguaje masivo como ChatGPT o Claude exige semanas de cálculo para aprender patrones a partir de billones de palabras. Pero cuando ese entrenamiento concluye, comienza el reto operativo: la inferencia. La inferencia es el proceso en el que el modelo ya entrenado atiende la consulta de un usuario y calcula la respuesta palabra a palabra (token por token). Al procesar millones de consultas simultáneas, el consumo eléctrico y la saturación de los servidores se disparan. La inferencia eficiente reúne las técnicas de microarquitectura y software que permiten a estos modelos responder en milisegundos con menor memoria y consumo energético.</p>
+<blockquote style="border-left:3px solid #D4AF37;padding:0.75rem 1rem;margin:1.25rem 0;background:rgba(212,175,55,0.08);border-radius:0 8px 8px 0;"><strong>En pocas palabras:</strong> La inferencia eficiente combina procesadores especializados y compresión matemática para que los modelos de inteligencia artificial respondan rápido sin colapsar los centros de datos ni disparar la factura eléctrica.</blockquote>
+<h2>1. De dónde viene y cómo se entiende fácil</h2>
+<p>El cuello de botella de la inferencia se comprende con una analogía en una cocina:</p>
+<p>Imagina un cocinero hiperrápido picando ingredientes en su mesa de trabajo. Si tiene los alimentos a mano, prepara platos al instante. Pero si para cada rodaja debe cruzar una nave de cincuenta metros, abrir una cámara frigorífica, coger una pieza y volver, su velocidad real ya no depende de lo rápido que mueva el cuchillo, sino del tiempo perdido yendo a la despensa.</p>
+<p>En computación, este fenómeno se describe con el <strong>Modelo Roofline</strong> (Williams, Waterman y Patterson, UC Berkeley 2009). Todo procesador tiene dos techos físicos:</p>
+<ol>
+<li>*<em>Límite de cómputo (</em>compute-bound<em>):</em>* Los núcleos calculan a máxima capacidad con datos ya cargados en sus registros. Su techo lo marca la cantidad de operaciones por segundo (FLOP/s).</li>
+<li>*<em>Límite de memoria (</em>memory-bound<em>):</em>* Los núcleos pasan casi todo el tiempo desocupados esperando a que los datos viajen desde la memoria principal a través del bus de comunicación.</li>
+</ol>
+<p>La inferencia de modelos de lenguaje opera en dos etapas:</p>
+<ul>
+<li>*<em>Fase de lectura (</em>prefill<em>):</em><em> Procesa la pregunta del usuario en paralelo. Al recibir todas las palabras juntas, satura la capacidad matemática del procesador (</em>compute-bound*).</li>
+<li>*<em>Fase de generación (</em>decode<em>):</em><em> Genera la respuesta palabra tras palabra de forma secuencial. Para calcular un solo token nuevo, el chip debe transferir desde la memoria decenas de gigabytes de parámetros, realizar una operación matemática mínima y repetir el ciclo para la siguiente palabra. Aquí el sistema está asfixiado por el ancho de banda (</em>memory-bound*).</li>
+</ul>
+<h2>2. Cómo funciona por dentro</h2>
+<p>La inferencia eficiente optimiza cuatro áreas: diseño de aceleradores, compresión numérica, gestión de memoria y generación especulativa.</p>
+<h3>Aceleradores: Tensor Cores y matrices sistólicas</h3>
+<p>Las GPU integran miles de núcleos en paralelo. Desde la arquitectura Volta (2017), NVIDIA incluye <strong>Tensor Cores</strong>: circuitos diseñados para ejecutar operaciones matriciales FMA (<em>Fused Multiply-Add</em>) en un solo ciclo:</p>
+<pre style="padding:1rem;border-radius:8px;overflow-x:auto;background:#111827;color:#E5E7EB;"><code class="language-text">D = (A × B) + C</code></pre>
+<p>Las entradas A y B se leen en precisión reducida (FP16 o FP8), mientras que el acumulador C mantiene 32 bits (FP32) para evitar errores de redondeo.</p>
+<p>Por su parte, las TPU de Google (2017) adoptan una <strong>matriz sistólica</strong> (Kung y Leiserson, 1978). Los datos fluyen rítmicamente entre celdas contiguas —como el pulso cardíaco—, multiplicándose por los parámetros fijos en la malla. Esto evita lecturas y escrituras continuas en memoria y ahorra gran cantidad de energía.</p>
+<h3>Cuantización: FP8, AWQ e INT4</h3>
+<p>Cada parámetro de una red neuronal suele guardarse en coma flotante de 16 bits (dos bytes). Un modelo de 70.000 millones de parámetros (70B) requiere unos 140 gigabytes de memoria gráfica (VRAM) solo para cargarse. La cuantización proyecta estos valores continuos a enteros discretos:</p>
+<pre style="padding:1rem;border-radius:8px;overflow-x:auto;background:#111827;color:#E5E7EB;"><code class="language-text">x_cuantizado = clip(redondeo(x ÷ Escala) + Punto_Cero, min_entero, max_entero)
+x_reconstruido = Escala × (x_cuantizado - Punto_Cero)</code></pre>
+<ul>
+<li><strong>FP8 (8 bits):</strong> Estándar en GPUs modernas (NVIDIA H100 y Blackwell). Su formato E4M3 ofrece inferencia precisa, reduciendo el tráfico de datos a la mitad frente a FP16.</li>
+<li>*<em>AWQ (</em>Activation-aware Weight Quantization<em>, MIT 2023):</em>* Demostró que apenas el 1 % de los canales de activación concentra la información crítica. AWQ protege ese 1 % y comprime el 99 % restante a enteros de 4 bits (INT4), reduciendo el tamaño a una cuarta parte con mínima pérdida semántica.</li>
+<li><strong>Formato GGUF:</strong> Creado por Georgi Gerganov en <em>llama.cpp</em> (2023), permite repartir capas del modelo entre la VRAM de la GPU y la RAM del sistema en ordenadores personales.</li>
+</ul>
+<h3>PagedAttention y decodificación especulativa</h3>
+<p>Para no recalcular palabras previas, el modelo guarda sus estados intermedios en una memoria llamada <strong>KV-Cache</strong> (<em>Key-Value Cache</em>). Reservar espacio contiguo por adelantado desperdiciaba entre el 60 % y el 80 % de la VRAM por fragmentación. En 2023, investigadores de UC Berkeley crearon <strong>PagedAttention</strong> (núcleo de vLLM), que fragmenta la KV-Cache en pequeños bloques virtuales no contiguos asignados bajo demanda, reduciendo el desperdicio a menos del 4 % y triplicando los usuarios simultáneos.</p>
+<p>Por otro lado, la <strong>decodificación especulativa</strong> desacopla la generación usando un modelo borrador pequeño y veloz que propone una ráfaga de K tokens candidatos. El modelo principal los valida en paralelo en una sola pasada con probabilidad:</p>
+<pre style="padding:1rem;border-radius:8px;overflow-x:auto;background:#111827;color:#E5E7EB;"><code class="language-text">Probabilidad de aceptación = min(1, P_principal(token) ÷ P_borrador(token))</code></pre>
+<p>Si el modelo principal rechaza un token, lo sustituye por una muestra corregida y descarta los siguientes, conservando con exactitud la calidad matemática original y acelerando la generación de 1,5 a 2,5 veces.</p>
+<h2>3. Dónde se usa hoy en la vida real</h2>
+<ul>
+<li><strong>Servidores en la nube:</strong> Motores como vLLM, TensorRT-LLM y TGI despachan millones de consultas por hora en clusters de GPUs H100 y B200 para plataformas como ChatGPT o Claude.</li>
+<li><strong>Inferencia local en ordenadores:</strong> Ollama, LM Studio y <em>llama.cpp</em> ejecutan modelos cuantizados en GGUF sobre chips Apple Silicon (M1 a M4) y tarjetas domésticas con total privacidad sin enviar datos a la red.</li>
+<li><strong>Asistentes de audio en directo:</strong> Servicios donde la respuesta debe tardar menos de 50 milisegundos combinan AWQ a 4 bits con decodificación especulativa para mantener diálogos fluidos.</li>
+</ul>
+<h2>4. Qué hace bien, qué falla y qué riesgos tiene</h2>
+<div style="overflow-x:auto;margin:1.25rem 0;"><table style="width:100%;border-collapse:collapse;"><thead><tr><th style="text-align:left;padding:0.6rem;border-bottom:2px solid #D4AF37;">Dimensión</th><th style="text-align:left;padding:0.6rem;border-bottom:2px solid #D4AF37;">Beneficio principal</th><th style="text-align:left;padding:0.6rem;border-bottom:2px solid #D4AF37;">Limitación técnica</th><th style="text-align:left;padding:0.6rem;border-bottom:2px solid #D4AF37;">Impacto en calidad</th></tr></thead><tbody><tr><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);"><strong>Tensor Cores / Matriz sistólica</strong></td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Aceleración masiva de cálculo con bajo consumo.</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Rendimiento subóptimo con un usuario en generación secuencial.</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Exacto; cálculo numérico sin distorsión.</td></tr><tr><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);"><strong>Cuantización FP8 / INT4 (AWQ)</strong></td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Reduce el uso de VRAM en 50 % a 75 % y alivia el bus.</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Exige calibración previa y núcleos de software optimizados.</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Casi imperceptible en 8 y 4 bits; riesgo bajo 3 bits.</td></tr><tr><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);"><strong>Formato GGUF</strong></td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Reparte el modelo entre GPU y RAM del sistema.</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">La velocidad cae si gran parte corre en la RAM de la CPU.</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Idéntico a la compresión elegida.</td></tr><tr><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);"><strong>PagedAttention</strong></td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Reduce el desperdicio en KV-Cache a menos del 4 %.</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Sobrecarga menor de traducción de direcciones virtuales.</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Cero pérdida matemática en respuestas.</td></tr><tr><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);"><strong>Decodificación especulativa</strong></td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Acelera la velocidad entre 1,5 y 2,5 veces sin alterar la salida.</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Obliga a mantener dos modelos en memoria simultáneamente.</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Distribución idéntica a la del modelo principal.</td></tr></tbody></table></div>
+<h3>Riesgos y limitaciones técnicas</h3>
+<ul>
+<li>*<em>Efecto acantilado (</em>cliff effect<em>):</em>* Cuantizar por debajo de 4 bits suele provocar caídas repentinas en razonamiento formal, cálculo y código, aunque la gramática aparente fluidez.</li>
+<li>*<em>Muro de la memoria (</em>memory wall<em>):</em>* La potencia de cómputo ha crecido mucho más rápido que el ancho de banda de las memorias HBM, manteniendo la generación secuencial atada a las transferencias de datos.</li>
+<li><strong>Concentración de suministro:</strong> Las memorias HBM3e y los empaquetados avanzados (como CoWoS de TSMC) están concentrados en muy pocos fabricantes, encareciendo la infraestructura global.</li>
+</ul>
+<h2>5. Temas relacionados</h2>
+<ul>
+<li><strong>FlashAttention (v1, v2 y v3):</strong> Algoritmo de Tri Dao (2022-2024) que calcula la atención por bloques en la memoria SRAM del chip, evitando transferencias lentas a la memoria principal.</li>
+<li><strong>Grouped-Query Attention (GQA):</strong> Arquitectura usada en modelos como Llama 3 donde varias cabezas de atención comparten claves y valores, reduciendo la KV-Cache hasta en 8 veces.</li>
+<li><strong>Continuous Batching (Orca):</strong> Técnica de planificación (2022) que inserta nuevas secuencias en el procesador apenas otra termina, evitando tiempos muertos en el hardware.</li>
+<li>*<em>Paralelismo tensorial y de canalización (</em>Pipeline<em>):</em>* Métodos de particionado para repartir un modelo masivo entre múltiples GPUs conectadas por NVLink cuando este excede la capacidad de un chip.</li>
+</ul>
+    </article>
+    <section style="margin-top:2.5rem;padding-top:1.5rem;border-top:1px solid rgba(212,175,55,0.25);"><h2>Seguir explorando en la Enciclopedia IA</h2><ul><li><a href="ia-open-source-local.html">🏠 IA Open-Source y Modelos Locales en Tu PC</a> — Diferencia entre pesos abiertos y código abierto, modelos como Llama, Mistral o Qwen, y cómo correr IA gratis y privada sin internet en tu equipo.</li>
+<li><a href="deep-learning.html">🔮 Deep Learning y Leyes de Escalamiento</a> — Por qué las redes profundas superaron a los métodos clásicos, qué hacen AdamW y las conexiones residuales, y cómo crece la calidad con más datos.</li>
+<li><a href="transformers-atencion.html">⚡ Arquitectura Transformer y Auto-Atención</a> — El invento de 2017 que revolucionó la IA: cómo la auto-atención conecta palabras lejanas al instante y por qué reemplazó a las redes lentas anteriores.</li></ul></section>
+    <p style="margin-top:2rem;">
+      <a href="../#enciclopedia-ia" class="btn-hero-primary" style="display:inline-block;padding:0.85rem 1.5rem;text-decoration:none;">📚 Abrir en el Lector Interactivo de Ruichis Lab →</a>
+    </p>
+  </main>
+</body>
+</html>

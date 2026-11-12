@@ -38,8 +38,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-  <!-- Librería para convertir Markdown a HTML -->
-  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <!-- Librería para convertir Markdown a HTML (diferida para no bloquear FCP/LCP) -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js" defer></script>
 
   <!-- Datos Estructurados JSON-LD (Schema.org @graph) -->
   <script type="application/ld+json">
@@ -120,7 +120,7 @@
             "author": { "@id": "https://ruichislab.com/#organization" },
             "publisher": { "@id": "https://ruichislab.com/#organization" },
             "url": "https://www.amazon.com/s?k=100+Grandes+Sopas+de+Letras+de+Cultura+General+Ruichis+Lab",
-            "image": "https://ruichislab.com/src/assets/covers/sopa-cultura-general-vol1.jpg"
+            "image": "https://ruichislab.com/src/assets/covers/100-sopas-cultura-general.jpg"
           },
           {
             "@type": "Book",
@@ -130,7 +130,45 @@
             "author": { "@id": "https://ruichislab.com/#organization" },
             "publisher": { "@id": "https://ruichislab.com/#organization" },
             "url": "https://www.amazon.com/s?k=100+Grandes+Sopas+de+Letras+de+Biologia+Ruichis+Lab",
-            "image": "https://ruichislab.com/src/assets/covers/sopa-biologia-vol2.jpg"
+            "image": "https://ruichislab.com/src/assets/covers/100-sopas-biologia.jpg"
+          }
+        ]
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://ruichislab.com/#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "¿El Sudoku y las Sopas de Letras de Ruichis Lab son gratis y sin anuncios?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Sí. Todo el Gimnasio Mental de Ruichis Lab (Sudoku Maestro 9x9 con Reto del Día y Sopas de Letras Pro en 8 direcciones) es 100% gratuito, sin publicidad ni registro obligatorio."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "¿Se puede jugar sin conexión a internet e instalar como app?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Sí. Ruichis Lab funciona como Aplicación Web Progresiva (PWA) con Service Worker offline: puedes instalarla en Android, iOS o escritorio y jugar sin conexión."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "¿Qué incluye la Enciclopedia Universal de Inteligencia Artificial?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Incluye 30 monografías verificadas y explicadas en lenguaje claro para cualquier persona, cubriendo desde Machine Learning, Redes Neuronales y Transformers hasta RAG, Agentes Autónomos, Medicina, Robótica y Seguridad Digital."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "¿Dónde se pueden adquirir los libros de Ruichis Lab?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Todos los títulos de Ruichis Lab (Productividad Asimétrica, Asymmetric Productivity y la colección 100 Grandes Sopas de Letras) están disponibles en Amazon en formatos Kindle eBook y Tapa Blanda."
+            }
           }
         ]
       }
@@ -220,10 +258,17 @@
     </div>
   </header>
 
-  <!-- CONTENEDOR PRINCIPAL EDITORIAL (SECCIONES FULL-WIDTH) -->
+  <!-- CONTENEDOR PRINCIPAL EDITORIAL (PRE-RENDER SEMÁNTICO + HIDRATACIÓN SPA) -->
   <main id="main" class="main-editorial">
     <div class="content-wrapper">
-      <!-- Se hidrata dinámicamente desde src/modulos/inicio.html / src/app.js -->
+      <section class="container" style="padding:3rem 1.5rem;">
+        <h1>Ruichis Lab: Libros en Amazon, Gimnasio Mental Gratis y Enciclopedia Universal de IA</h1>
+        <p>Editorial independiente enfocada en el foco profundo y el entrenamiento cognitivo sin anuncios. Explora nuestras publicaciones en Amazon (<em>Productividad Asimétrica</em>, <em>Asymmetric Productivity</em>, <em>100 Grandes Sopas de Letras de Cultura General</em> y <em>100 Grandes Sopas de Letras de Biología</em>), entrena tu mente con <strong>Sudoku Maestro</strong> y <strong>Sopas de Letras Pro</strong>, o aprende en nuestra <strong>Enciclopedia Universal de Inteligencia Artificial</strong> con 30 monografías verificadas.</p>
+        <p>
+          <a href="pages/gimnasio-mental.html">Jugar Sudoku Maestro y Sopas de Letras Gratis</a> •
+          <a href="pages/enciclopedia.html">Explorar Enciclopedia Universal de IA (30 Monografías)</a>
+        </p>
+      </section>
     </div>
   </main>
 
@@ -248,8 +293,9 @@
         <div class="footer-section">
           <h3>PUBLICACIONES &amp; JUEGOS</h3>
           <p><a href="#catalogo-libros" data-nav-section="catalogo-libros">📚 Catálogo de Libros</a></p>
-          <p><a href="#" data-open-game="sopa">🔤 Sopa de Letras Pro (8 Direcciones)</a></p>
-          <p><a href="#" data-open-game="sudoku">🔢 Sudoku Maestro 9×9 Gratis</a></p>
+          <p><a href="pages/gimnasio-mental.html" data-open-game="sopa">🔤 Sopa de Letras Pro (8 Direcciones)</a></p>
+          <p><a href="pages/gimnasio-mental.html" data-open-game="sudoku">🔢 Sudoku Maestro 9×9 Gratis</a></p>
+          <p><a href="pages/enciclopedia.html" data-modulo="Enciclopedia IA">🧠 Enciclopedia Universal de IA (30 Monografías)</a></p>
           <p><a href="#acerca-de" data-nav-section="acerca-de">💡 Acerca de Ruichis Lab</a></p>
           <p><a href="src/privacy.md" target="_blank" rel="noopener">🛡️ Política de Privacidad (RuichisLab Book Ranker)</a></p>
         </div>
@@ -286,6 +332,7 @@
   <script src="src/js/juegos-mentales.js"></script>
   <script src="src/js/enciclopedia-datos.js"></script>
   <script src="src/js/enciclopedia.js"></script>
+  <script src="src/js/seo-dynamic.js"></script>
   <script src="src/agenteModular.js"></script>
   <script src="src/app.js"></script>
 </body>

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fine-Tuning, LoRA y QLoRA — Enciclopedia IA | Ruichis Lab</title>
+  <meta name="description" content="Cómo especializar un modelo existente en una tarea concreta sin gastar millones: ajuste completo frente a adaptadores ligeros LoRA y QLoRA.">
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+  <link rel="canonical" href="https://ruichislab.com/enciclopedia/fine-tuning-lora.html">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Ruichis Lab">
+  <meta property="og:title" content="Fine-Tuning, LoRA y QLoRA — Enciclopedia IA | Ruichis Lab">
+  <meta property="og:description" content="Cómo especializar un modelo existente en una tarea concreta sin gastar millones: ajuste completo frente a adaptadores ligeros LoRA y QLoRA.">
+  <meta property="og:url" content="https://ruichislab.com/enciclopedia/fine-tuning-lora.html">
+  <meta property="og:image" content="https://ruichislab.com/src/assets/covers/productividad-asimetrica-es.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Fine-Tuning, LoRA y QLoRA | Ruichis Lab">
+  <meta name="twitter:description" content="Cómo especializar un modelo existente en una tarea concreta sin gastar millones: ajuste completo frente a adaptadores ligeros LoRA y QLoRA.">
+  <link rel="stylesheet" href="../src/estilos/editorial.css">
+  <script type="application/ld+json">
+  {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "TechArticle",
+      "headline": "Fine-Tuning, LoRA y QLoRA",
+      "description": "Cómo especializar un modelo existente en una tarea concreta sin gastar millones: ajuste completo frente a adaptadores ligeros LoRA y QLoRA.",
+      "inLanguage": "es",
+      "dateModified": "2026-11-12",
+      "author": {
+        "@type": "Organization",
+        "name": "Ruichis Lab",
+        "url": "https://ruichislab.com/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Ruichis Lab",
+        "url": "https://ruichislab.com/"
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://ruichislab.com/enciclopedia/fine-tuning-lora.html"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Inicio",
+          "item": "https://ruichislab.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Enciclopedia IA",
+          "item": "https://ruichislab.com/pages/enciclopedia.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Fine-Tuning, LoRA y QLoRA",
+          "item": "https://ruichislab.com/enciclopedia/fine-tuning-lora.html"
+        }
+      ]
+    }
+  ]
+}
+  </script>
+</head>
+<body>
+  <header style="border-bottom:1px solid rgba(212,175,55,0.25);padding:1rem 1.5rem;">
+    <div style="max-width:860px;margin:0 auto;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:0.75rem;">
+      <a href="../" style="font-weight:800;letter-spacing:0.08em;text-decoration:none;color:#D4AF37;">RUICHIS LAB</a>
+      <nav style="display:flex;gap:1rem;font-size:0.9rem;">
+        <a href="../pages/enciclopedia.html">Índice Enciclopedia (30)</a>
+        <a href="../#enciclopedia-ia">Lector Interactivo</a>
+        <a href="../#gimnasio-mental">Sudoku y Sopas Gratis</a>
+      </nav>
+    </div>
+  </header>
+  <main class="container" style="max-width:860px;margin:2.5rem auto;padding:0 1.5rem 3rem;line-height:1.75;">
+    <p style="font-size:0.8rem;letter-spacing:0.12em;text-transform:uppercase;color:#D4AF37;font-weight:700;">
+      🧠 undefined • NIVEL: AVANZADO • LECTURA: undefined
+    </p>
+    <article>
+      <h1>Fine-Tuning y LoRA: Cómo Adaptar Modelos de IA sin Gastar una Fortuna</h1>
+<p>Entrenar un modelo de inteligencia artificial desde cero cuesta millones de dólares y semanas de supercomputación. Por eso, en la práctica se recurre al ajuste fino (<em>fine-tuning</em>): se toma un modelo base que ya domina el lenguaje o las imágenes y se le enseña una tarea concreta. Sin embargo, cuando los modelos alcanzaron decenas de miles de millones de parámetros, ajustar todos sus pesos a la vez chocó contra un muro: consumía cantidades colosales de memoria gráfica (VRAM) que solo los gigantes tecnológicos podían costear.</p>
+<p>Para democratizar este proceso nació la adaptación eficiente de parámetros (<em>Parameter-Efficient Fine-Tuning</em> o PEFT). Dentro de este enfoque destacan <strong>LoRA</strong> (<em>Low-Rank Adaptation</em>) y su variante comprimida <strong>QLoRA</strong>, técnicas que adaptan modelos punteros modificando menos del 1% de sus parámetros sin mermar su calidad.</p>
+<blockquote style="border-left:3px solid #D4AF37;padding:0.75rem 1rem;margin:1.25rem 0;background:rgba(212,175,55,0.08);border-radius:0 8px 8px 0;"><strong>En pocas palabras:</strong> LoRA funciona como añadir notas adhesivas con instrucciones específicas a una enciclopedia ya impresa, logrando que el modelo aprenda nuevas tareas sin necesidad de reescribir ni reimprimir sus miles de millones de páginas originales.</blockquote>
+<hr style="border:none;border-top:1px solid rgba(212,175,55,0.25);margin:2rem 0;">
+<h2>1. De dónde viene y cómo se entiende fácil</h2>
+<p>Imagine que contrata a un traductor con veinte años de experiencia. Si necesita que redacte contratos bajo las leyes de un país concreto, no le enseña a hablar desde la infancia: le entrega una guía breve con la terminología jurídica local.</p>
+<p>El método clásico, llamado ajuste completo (<em>Full Fine-Tuning</em> o FFT), intentaba reeducar a todo el modelo. Al actualizar cada parámetro durante el entrenamiento supervisado (<em>Supervised Fine-Tuning</em> o SFT) con el optimizador AdamW en precisión estándar de 16 bits (FP16 o BF16, 2 bytes por número), la memoria necesaria por parámetro se dispara:</p>
+<ul>
+<li><strong>Pesos originales del modelo:</strong> 2 bytes.</li>
+<li><strong>Gradientes del error:</strong> 2 bytes.</li>
+<li><strong>Momentos del optimizador AdamW (en 32 bits):</strong> 8 bytes.</li>
+<li><strong>Copia maestra en 32 bits:</strong> 4 bytes.</li>
+</ul>
+<p>El total alcanza <strong>16 bytes por parámetro</strong>. Para un modelo de 70.000 millones de parámetros (70B), el ajuste completo supera los 1.100 gigabytes (GB) de VRAM solo para alojar los pesos y el optimizador, exigiendo clústeres de tarjetas Nvidia A100 o H100 inaccesibles para equipos independientes.</p>
+<h3>La hipótesis que abrió el camino</h3>
+<p>En diciembre de 2020, Armen Aghajanyan y su equipo en Meta formularon la <strong>hipótesis de la dimensión intrínseca</strong>. Probaron que las adaptaciones que necesita un modelo preentrenado no requieren alterar todo su volumen de parámetros: las soluciones útiles se concentran en un subespacio geométrico diminuto.</p>
+<p>Con esa base teórica, Edward Hu y su equipo en Microsoft Research presentaron <strong>LoRA</strong> en junio de 2021: congelar el modelo base intacto y capturar el aprendizaje nuevo mediante dos matrices auxiliares muy estrechas. En mayo de 2023, Tim Dettmers y colaboradores en la Universidad de Washington publicaron <strong>QLoRA</strong>, reduciendo el modelo base a 4 bits para permitir ajustar un modelo de 70B en una única estación de trabajo con 48 GB de VRAM.</p>
+<hr style="border:none;border-top:1px solid rgba(212,175,55,0.25);margin:2rem 0;">
+<h2>2. Cómo funciona por dentro</h2>
+<h3>El truco del rango reducido</h3>
+<p>Las redes neuronales procesan información multiplicando datos por matrices de pesos. Si una matriz lineal original W₀ mide 4.096 × 4.096 números, contiene 16,7 millones de parámetros.</p>
+<p>En vez de calcular una matriz de actualización completa ΔW (delta W) de 16,7 millones de números, LoRA descompone el cambio en el producto de dos matrices delgadas, B y A, mediante un valor pequeño llamado <strong>rango</strong> (r, comúnmente 8, 16 o 32):</p>
+<pre style="padding:1rem;border-radius:8px;overflow-x:auto;background:#111827;color:#E5E7EB;"><code class="language-text">ΔW = B × A</code></pre>
+<p>Si elegimos r = 16:</p>
+<ul>
+<li>La matriz <strong>A</strong> tiene tamaño 16 × 4.096 (65.536 números).</li>
+<li>La matriz <strong>B</strong> tiene tamaño 4.096 × 16 (65.536 números).</li>
+</ul>
+<p>Al multiplicarse, B × A reconstruye la dimensión original de 4.096 × 4.096, pero el entrenamiento solo calcula gradientes para 131.072 parámetros en lugar de 16,7 millones: un ahorro superior al 99% en esa capa.</p>
+<h3>La fórmula del paso hacia adelante</h3>
+<p>Cuando entran datos (x) a la capa, el modelo suma la salida original congelada y la corrección de bajo rango:</p>
+<pre style="padding:1rem;border-radius:8px;overflow-x:auto;background:#111827;color:#E5E7EB;"><code class="language-text">salida = x × W₀ + (α ÷ r) × (x × Aᵀ × Bᵀ)</code></pre>
+<p>Donde:</p>
+<ul>
+<li><strong>x:</strong> vector de datos de entrada.</li>
+<li><strong>W₀:</strong> pesos preentrenados congelados.</li>
+<li><strong>Aᵀ y Bᵀ:</strong> matrices adaptadoras transpuestas que aprenden la tarea.</li>
+<li><strong>Factor de escala (α ÷ r):</strong> la constante alfa (α) estabiliza el entrenamiento si cambiamos el valor del rango r.</li>
+</ul>
+<p>Para no distorsionar el modelo al inicio, A se inicializa con números aleatorios pequeños y B se llena de <strong>ceros</strong>. Al comenzar, B × A es cero y el modelo arranca comportándose de forma idéntica al original.</p>
+<h3>Fusión sin penalización de velocidad</h3>
+<p>Al terminar el entrenamiento, los pesos adaptadores se suman directamente a la matriz base:</p>
+<pre style="padding:1rem;border-radius:8px;overflow-x:auto;background:#111827;color:#E5E7EB;"><code class="language-text">W_final = W₀ + (α ÷ r) × (B × A)</code></pre>
+<p>Esta <strong>fusión de pesos</strong> (<em>weight merging</em>) genera un archivo de modelo estándar. En producción, responde a la misma velocidad del modelo original, con cero latencia añadida.</p>
+<h3>Qué añade QLoRA</h3>
+<p>QLoRA reduce aún más el consumo mediante tres innovaciones:</p>
+<ol>
+<li><strong>Tipo de datos NormalFloat4 (NF4):</strong> comprime los pesos base a 4 bits adaptándose a su distribución normal en campana, perdiendo mucha menos precisión que la cuantización uniforme.</li>
+<li><strong>Doble cuantización:</strong> comprime las constantes de escala del primer paso, ahorrando 0,37 bits por parámetro.</li>
+<li><strong>Paginación de memoria:</strong> traslada picos de memoria del optimizador a la RAM del sistema vía CUDA para evitar errores de memoria agotada (<em>Out of Memory</em>).</li>
+</ol>
+<pre style="padding:1rem;border-radius:8px;overflow-x:auto;background:#111827;color:#E5E7EB;"><code class="language-python">import torch
+import torch.nn as nn
+
+class CapaLoRA(nn.Module):
+    &quot;&quot;&quot;Capa lineal con adaptación de bajo rango (LoRA).&quot;&quot;&quot;
+    def __init__(self, entrada: int, salida: int, r: int = 16, alfa: float = 32.0):
+        super().__init__()
+        self.escala = alfa / r
+        self.lineal = nn.Linear(entrada, salida, bias=False)
+        self.lineal.weight.requires_grad = False  # Congela la capa base
+        
+        self.lora_A = nn.Parameter(torch.randn(r, entrada) * 0.01)
+        self.lora_B = nn.Parameter(torch.zeros(salida, r))
+        self.fusionado = False
+
+    def forward(self, x: torch.Tensor) -&gt; torch.Tensor:
+        if self.fusionado:
+            return self.lineal(x)
+        return self.lineal(x) + ((x @ self.lora_A.t()) @ self.lora_B.t()) * self.escala
+
+    def fusionar(self):
+        &quot;&quot;&quot;Suma el adaptador a la base para inferencia rápida.&quot;&quot;&quot;
+        if not self.fusionado:
+            self.lineal.weight.data += (self.lora_B @ self.lora_A) * self.escala
+            self.fusionado = True</code></pre>
+<hr style="border:none;border-top:1px solid rgba(212,175,55,0.25);margin:2rem 0;">
+<h2>3. Dónde se usa hoy en la vida real</h2>
+<ul>
+<li><strong>Modelos de conversación e instrucciones:</strong> transforma modelos abiertos como LLaMA, Mistral o Qwen en asistentes específicos mediante conjuntos de datos de preguntas y respuestas.</li>
+<li><strong>Especialización técnica vertical:</strong> entrena modelos en medicina (informes diagnósticos) o derecho (análisis contractual) sin borrar su fluidez lingüística general.</li>
+<li>*<em>Servicio compartido eficiente (</em>multi-tenant<em>):</em>* herramientas como vLLM y LoRAX mantienen un solo modelo base grande en VRAM y conmutan adaptadores ligeros (50 a 100 MB) según el usuario, recortando costes operativos en más del 80%.</li>
+<li><strong>Generación de imágenes y estilos artísticos:</strong> en generadores como Stable Diffusion o Flux, los creadores comparten adaptadores LoRA muy compactos para plasmar personajes o estilos visuales concretos.</li>
+</ul>
+<hr style="border:none;border-top:1px solid rgba(212,175,55,0.25);margin:2rem 0;">
+<h2>4. Qué hace bien, qué falla y qué riesgos tiene</h2>
+<div style="overflow-x:auto;margin:1.25rem 0;"><table style="width:100%;border-collapse:collapse;"><thead><tr><th style="text-align:left;padding:0.6rem;border-bottom:2px solid #D4AF37;">Criterio</th><th style="text-align:left;padding:0.6rem;border-bottom:2px solid #D4AF37;">Ajuste Completo (FFT)</th><th style="text-align:left;padding:0.6rem;border-bottom:2px solid #D4AF37;">LoRA</th><th style="text-align:left;padding:0.6rem;border-bottom:2px solid #D4AF37;">QLoRA</th></tr></thead><tbody><tr><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);"><strong>Parámetros entrenados</strong></td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">100%</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">0,05% al 1%</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">0,05% al 1%</td></tr><tr><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);"><strong>Precisión del modelo base</strong></td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">16 bits (FP16/BF16)</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">16 bits (FP16/BF16)</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">4 bits (NF4)</td></tr><tr><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);"><strong>VRAM requerida (modelo 70B)</strong></td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">&gt; 1.100 GB</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">160 a 200 GB</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">48 a 55 GB</td></tr><tr><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);"><strong>Velocidad al responder</strong></td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Nativa</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Nativa (tras fusionar)</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Nativa (tras fusionar)</td></tr><tr><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);"><strong>Riesgo de olvido catastrófico</strong></td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Alto</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Mínimo (base fija)</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Mínimo (base fija)</td></tr><tr><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);"><strong>Tamaño del archivo resultante</strong></td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">~140 GB</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">50 a 200 MB</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">50 a 200 MB</td></tr></tbody></table></div>
+<h3>Limitaciones y riesgos prácticos</h3>
+<ul>
+<li><strong>Aprender destrezas frente a memorizar datos:</strong> LoRA destaca ajustando estilo, formato y razonamiento. Si se pretende memorizar miles de documentos nuevos no presentes en el preentrenamiento, conviene complementarlo con Generación Aumentada por Recuperación (RAG).</li>
+<li><strong>Sobrecarga de tiempo en QLoRA:</strong> descomprimir pesos de 4 a 16 bits en cada iteración hace que el entrenamiento en QLoRA tome entre un 20% y un 35% más de tiempo que con LoRA estándar en 16 bits.</li>
+<li><strong>Interferencias al fusionar adaptadores:</strong> combinar varios adaptadores LoRA mediante promedios ponderados puede generar conflictos si modificaron los mismos circuitos neuronales para tareas incompatibles.</li>
+</ul>
+<hr style="border:none;border-top:1px solid rgba(212,175,55,0.25);margin:2rem 0;">
+<h2>5. Temas relacionados</h2>
+<ul>
+<li><strong>Modelos de Lenguaje Masivos (LLMs) y Transformers:</strong> la arquitectura modular sobre la que se conectan los adaptadores LoRA.</li>
+<li><strong>Generación Aumentada por Recuperación (RAG):</strong> método complementario que aporta datos externos actualizados sin modificar los parámetros del modelo.</li>
+<li><strong>Cuantización para Inferencia (AWQ, GPTQ, GGUF):</strong> técnicas para comprimir modelos terminados y ejecutarlos en equipos de consumo.</li>
+<li><strong>Alineamiento con Preferencias Humanas (DPO y RLHF):</strong> métodos de optimización de respuestas comúnmente aplicados mediante adaptadores LoRA.</li>
+</ul>
+    </article>
+    <section style="margin-top:2.5rem;padding-top:1.5rem;border-top:1px solid rgba(212,175,55,0.25);"><h2>Seguir explorando en la Enciclopedia IA</h2><ul><li><a href="llms-modelos-lenguaje.html">💬 Grandes Modelos de Lenguaje (LLMs)</a> — Cómo leen y escriben los modelos de lenguaje dividiendo texto en tokens, prediciendo la siguiente palabra y ajustando creatividad con temperatura.</li>
+<li><a href="ia-open-source-local.html">🏠 IA Open-Source y Modelos Locales en Tu PC</a> — Diferencia entre pesos abiertos y código abierto, modelos como Llama, Mistral o Qwen, y cómo correr IA gratis y privada sin internet en tu equipo.</li>
+<li><a href="hardware-gpu-inferencia.html">🖥️ Hardware de IA, GPUs y Cuantización</a> — Por qué la IA necesita GPUs y TPUs, qué es la cuantización (FP8, INT4, GGUF) y cómo KV-Cache y PagedAttention aceleran las respuestas.</li></ul></section>
+    <p style="margin-top:2rem;">
+      <a href="../#enciclopedia-ia" class="btn-hero-primary" style="display:inline-block;padding:0.85rem 1.5rem;text-decoration:none;">📚 Abrir en el Lector Interactivo de Ruichis Lab →</a>
+    </p>
+  </main>
+</body>
+</html>

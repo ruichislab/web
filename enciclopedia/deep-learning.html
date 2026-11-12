@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Deep Learning y Leyes de Escalamiento — Enciclopedia IA | Ruichis Lab</title>
+  <meta name="description" content="Por qué las redes profundas superaron a los métodos clásicos, qué hacen AdamW y las conexiones residuales, y cómo crece la calidad con más datos.">
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+  <link rel="canonical" href="https://ruichislab.com/enciclopedia/deep-learning.html">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Ruichis Lab">
+  <meta property="og:title" content="Deep Learning y Leyes de Escalamiento — Enciclopedia IA | Ruichis Lab">
+  <meta property="og:description" content="Por qué las redes profundas superaron a los métodos clásicos, qué hacen AdamW y las conexiones residuales, y cómo crece la calidad con más datos.">
+  <meta property="og:url" content="https://ruichislab.com/enciclopedia/deep-learning.html">
+  <meta property="og:image" content="https://ruichislab.com/src/assets/covers/productividad-asimetrica-es.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Deep Learning y Leyes de Escalamiento | Ruichis Lab">
+  <meta name="twitter:description" content="Por qué las redes profundas superaron a los métodos clásicos, qué hacen AdamW y las conexiones residuales, y cómo crece la calidad con más datos.">
+  <link rel="stylesheet" href="../src/estilos/editorial.css">
+  <script type="application/ld+json">
+  {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "TechArticle",
+      "headline": "Deep Learning y Leyes de Escalamiento",
+      "description": "Por qué las redes profundas superaron a los métodos clásicos, qué hacen AdamW y las conexiones residuales, y cómo crece la calidad con más datos.",
+      "inLanguage": "es",
+      "dateModified": "2026-11-12",
+      "author": {
+        "@type": "Organization",
+        "name": "Ruichis Lab",
+        "url": "https://ruichislab.com/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Ruichis Lab",
+        "url": "https://ruichislab.com/"
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://ruichislab.com/enciclopedia/deep-learning.html"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Inicio",
+          "item": "https://ruichislab.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Enciclopedia IA",
+          "item": "https://ruichislab.com/pages/enciclopedia.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Deep Learning y Leyes de Escalamiento",
+          "item": "https://ruichislab.com/enciclopedia/deep-learning.html"
+        }
+      ]
+    }
+  ]
+}
+  </script>
+</head>
+<body>
+  <header style="border-bottom:1px solid rgba(212,175,55,0.25);padding:1rem 1.5rem;">
+    <div style="max-width:860px;margin:0 auto;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:0.75rem;">
+      <a href="../" style="font-weight:800;letter-spacing:0.08em;text-decoration:none;color:#D4AF37;">RUICHIS LAB</a>
+      <nav style="display:flex;gap:1rem;font-size:0.9rem;">
+        <a href="../pages/enciclopedia.html">Índice Enciclopedia (30)</a>
+        <a href="../#enciclopedia-ia">Lector Interactivo</a>
+        <a href="../#gimnasio-mental">Sudoku y Sopas Gratis</a>
+      </nav>
+    </div>
+  </header>
+  <main class="container" style="max-width:860px;margin:2.5rem auto;padding:0 1.5rem 3rem;line-height:1.75;">
+    <p style="font-size:0.8rem;letter-spacing:0.12em;text-transform:uppercase;color:#D4AF37;font-weight:700;">
+      🧠 undefined • NIVEL: INTERMEDIO • LECTURA: undefined
+    </p>
+    <article>
+      <h1>Deep Learning: Cómo las Máquinas Aprenden por Capas</h1>
+<blockquote style="border-left:3px solid #D4AF37;padding:0.75rem 1rem;margin:1.25rem 0;background:rgba(212,175,55,0.08);border-radius:0 8px 8px 0;"><strong>En pocas palabras:</strong> El Deep Learning (aprendizaje profundo) organiza millones de operaciones matemáticas sencillas en capas apiladas, de modo que cada nivel extrae conceptos más abstractos a partir del anterior, igual que nuestra vista pasa de detectar bordes y sombras a reconocer rostros completos.</blockquote>
+<p>Cuando un sistema tradicional de aprendizaje automático intenta distinguir entre la radiografía de un pulmón sano y una con neumonía, un ingeniero humano debe indicarle primero qué medir: el brillo promedio de ciertas zonas, el contraste de los bordes o la textura del tejido. El <strong>Deep Learning</strong> (aprendizaje profundo) elimina esa programación manual de pistas. En lugar de que una persona diseñe las reglas de inspección, la máquina recibe miles de imágenes con su diagnóstico correcto y descubre por sí misma qué patrones visuales importan, organizándolos en una escalera de complejidad creciente.</p>
+<hr style="border:none;border-top:1px solid rgba(212,175,55,0.25);margin:2rem 0;">
+<h2>1. De dónde viene y cómo se entiende fácil</h2>
+<p>La pregunta que dio origen al aprendizaje profundo es sencilla: ¿por qué apilar decenas o cientos de capas de cálculo en lugar de construir una sola capa gigantesca?</p>
+<p>En 1989 y 1991, los matemáticos George Cybenko y Kurt Hornik demostraron el <strong>Teorema de Aproximación Universal</strong>: en teoría, una red neuronal con una única capa intermedia suficientemente ancha puede imitar cualquier función matemática continua. Sin embargo, ese resultado teórico escondía una trampa práctica: para problemas complejos del mundo real, esa única capa necesitaría una cantidad astronómica de neuronas, creciendo de forma exponencial hasta volverse imposible de entrenar en cualquier ordenador.</p>
+<p>La naturaleza y el lenguaje funcionan por jerarquías, y ahí reside la ventaja de la profundidad. Piensa en cómo lees esta página: primero tus ojos detectan trazos curvos y rectos; luego tu cerebro agrupa esos trazos en letras; las letras forman palabras; las palabras construyen frases con significado. Una línea de montaje dividida en estaciones especializadas trabaja mucho mejor que un único operario intentando fabricar un automóvil entero desde cero.</p>
+<p>En inteligencia artificial, cada capa de una red profunda actúa como una estación de esa línea de montaje:</p>
+<ul>
+<li><strong>Primeras capas:</strong> detectan elementos simples (líneas diagonales, cambios de color, frecuencias de sonido).</li>
+<li><strong>Capas intermedias:</strong> combinan esos trazos para reconocer piezas con forma (ojos, ruedas, sílabas).</li>
+<li><strong>Capas finales:</strong> ensamblan esas piezas para tomar una decisión global (&quot;es un peatón cruzando&quot;, &quot;esta frase expresa duda&quot;).</li>
+</ul>
+<p>Aunque el concepto teórico existía desde los años ochenta, el aprendizaje profundo despegó en 2012 cuando Alex Krizhevsky, Ilya Sutskever y Geoffrey Hinton entrenaron <strong>AlexNet</strong> usando tarjetas gráficas (GPU, procesadores diseñados originalmente para videojuegos) y redujeron casi a la mitad el error en el gran concurso visual ImageNet. Desde entonces, la combinación de datos masivos, GPUs y arquitecturas profundas transformó por completo la informática.</p>
+<hr style="border:none;border-top:1px solid rgba(212,175,55,0.25);margin:2rem 0;">
+<h2>2. Cómo funciona por dentro</h2>
+<p>Entrenar redes con decenas o cientos de capas trajo un problema grave en los primeros intentos: al corregir los errores desde la salida hacia atrás (mediante <strong>retropropagación</strong>, el algoritmo que reparte la culpa del fallo entre todas las neuronas), la señal de ajuste se iba debilitando al multiplicarse capa tras capa hasta volverse casi cero (<em>desvanecimiento del gradiente</em>), o bien crecía sin control (<em>explosión del gradiente</em>).</p>
+<p>La ingeniería moderna resolvió este bloqueo gracias a cuatro piezas clave:</p>
+<h3>A. Conexiones residuales (autopistas de información)</h3>
+<p>En 2015, Kaiming He y su equipo presentaron <strong>ResNet</strong>, una arquitectura que introdujo las <strong>conexiones residuales</strong> (<em>skip connections</em>). La idea es muy intuitiva: en lugar de obligar a cada bloque de neuronas a reconstruir toda la señal desde cero, se le permite sumar directamente la entrada original al resultado de la capa:</p>
+<pre style="padding:1rem;border-radius:8px;overflow-x:auto;background:#111827;color:#E5E7EB;"><code class="language-text">salida = transformacion(entrada) + entrada</code></pre>
+<p>Si una capa intermedia aún no aporta nada útil al principio del entrenamiento, la señal y el error pueden viajar sin obstáculos por ese atajo directo. Gracias a este principio fue posible entrenar redes de más de cien capas de forma estable.</p>
+<h3>B. Normalización de señales (mantener los números en rango)</h3>
+<p>Mientras una red aprende, los números que circulan entre capas pueden dispararse hacia valores enormes o encogerse hacia cero, desestabilizando el ajuste de pesos. Para evitarlo se usan capas de normalización que reescalan las señales para que mantengan una media cercana a cero y una dispersión controlada:</p>
+<ul>
+<li><strong>BatchNorm</strong> (Sergey Ioffe y Christian Szegedy, 2015): compara y normaliza cada característica usando el promedio del grupo de ejemplos (<em>mini-lote</em>) que se procesa en ese instante. Funciona muy bien en visión por ordenador, pero depende del tamaño del grupo.</li>
+<li><strong>LayerNorm</strong> (Jimmy Lei Ba, Jamie Ryan Kiros y Geoffrey Hinton, 2016): normaliza los valores dentro de cada ejemplo individual a lo largo de sus neuronas, sin depender de otros ejemplos del lote. Es el estándar en modelos de lenguaje y Transformers.</li>
+</ul>
+<h3>C. Optimizadores adaptativos (AdamW)</h3>
+<p>Ajustar millones de parámetros requiere decidir cuánto cambiar cada peso tras cada error. El optimizador <strong>Adam</strong> (Diederik Kingma y Jimmy Ba, 2014) recuerda la dirección reciente de los ajustes (el <em>momento</em>) y adapta el tamaño del paso según cuánto ha variado cada parámetro. En 2017, Ilya Loshchilov y Frank Hutter propusieron <strong>AdamW</strong>, que separa limpiamente la penalización por pesos demasiado grandes (<em>weight decay</em>) del paso adaptativo, evitando que la red memorice ruido en lugar de aprender reglas generales:</p>
+<pre style="padding:1rem;border-radius:8px;overflow-x:auto;background:#111827;color:#E5E7EB;"><code class="language-python"># Paso conceptual de actualización en AdamW (simplificado)
+# g: error actual (gradiente) | lr: tasa de aprendizaje | wd: penalización de peso
+momento = 0.9 * momento + 0.1 * g
+escala = 0.999 * escala + 0.001 * (g ** 2)
+
+paso_adaptativo = momento / ((escala ** 0.5) + 1e-8)
+peso = peso - lr * paso_adaptativo - lr * wd * peso</code></pre>
+<h3>D. Leyes de escalamiento y regla de Chinchilla</h3>
+<p>En 2020, investigadores de OpenAI observaron que el error de los modelos de lenguaje disminuye de forma predecible al aumentar tres ingredientes: tamaño del modelo, cantidad de datos y capacidad de cómputo. Dos años después, Jordan Hoffmann y su equipo en DeepMind (2022) demostraron con el estudio <strong>Chinchilla</strong> que muchos modelos gigantes estaban desaprovechados porque tenían demasiados parámetros pero pocos textos de entrenamiento.</p>
+<p>Para un presupuesto de cómputo medido en operaciones matemáticas (<code>C ≈ 6 × N × D</code>, donde <code>N</code> es el número de parámetros y <code>D</code> la cantidad de tokens o fragmentos de texto):</p>
+<pre style="padding:1rem;border-radius:8px;overflow-x:auto;background:#111827;color:#E5E7EB;"><code class="language-text">Regla de Chinchilla para entrenamiento óptimo:
+Si multiplicas el presupuesto de cómputo por 10,
+conviene multiplicar por ~3,16 el tamaño del modelo (N)
+y multiplicar también por ~3,16 la cantidad de datos (D).</code></pre>
+<p>Es decir, un modelo más compacto pero entrenado con muchos más datos de calidad suele rendir mejor y costar menos de operar que un gigante entrenado a medias.</p>
+<hr style="border:none;border-top:1px solid rgba(212,175,55,0.25);margin:2rem 0;">
+<h2>3. Dónde se usa hoy en la vida real</h2>
+<ul>
+<li><strong>Asistentes de texto y código:</strong> Modelos basados en aprendizaje profundo y arquitectura Transformer redactan documentos, resumen expedientes, traducen idiomas y ayudan a programar software en segundos.</li>
+<li><strong>Diagnóstico médico por imagen:</strong> Redes profundas analizan mamografías, tomografías y retinografías para señalar lesiones milimétricas que podrían pasar desapercibidas tras una jornada larga de guardia.</li>
+<li><strong>Biología estructural:</strong> El sistema <strong>AlphaFold 2</strong> (DeepMind, 2020) predijo la forma tridimensional de millones de proteínas a partir de su secuencia genética, un avance reconocido con el Premio Nobel de Química en 2024 para Demis Hassabis y John Jumper.</li>
+<li><strong>Conducción asistida y robótica:</strong> Cámaras y sensores procesados por redes profundas identifican carriles, señales de tráfico, peatones y obstáculos en milisegundos.</li>
+<li><strong>Audio, voz y creación visual:</strong> Sistemas de transcripción automática como Whisper, traductores de voz en tiempo real y generadores de imágenes operan íntegramente sobre capas profundas.</li>
+</ul>
+<hr style="border:none;border-top:1px solid rgba(212,175,55,0.25);margin:2rem 0;">
+<h2>4. Qué hace bien, qué falla y qué riesgos tiene</h2>
+<div style="overflow-x:auto;margin:1.25rem 0;"><table style="width:100%;border-collapse:collapse;"><thead><tr><th style="text-align:left;padding:0.6rem;border-bottom:2px solid #D4AF37;">Aspecto</th><th style="text-align:left;padding:0.6rem;border-bottom:2px solid #D4AF37;">Qué hace bien</th><th style="text-align:left;padding:0.6rem;border-bottom:2px solid #D4AF37;">Qué falla o qué riesgos tiene</th></tr></thead><tbody><tr><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);"><strong>Aprendizaje de patrones</strong></td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Descubre reglas ocultas en imágenes, audio o texto sin que nadie las programe a mano.</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Funciona como una &quot;caja negra&quot;: es difícil explicar con certeza por qué tomó una decisión concreta.</td></tr><tr><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);"><strong>Rendimiento con escala</strong></td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Mejora de forma constante cuando se le dan más datos limpios y más cómputo.</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Entrenar modelos grandes consume enormes cantidades de electricidad, agua para refrigeración y chips costosos.</td></tr><tr><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);"><strong>Generalización</strong></td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Tolera ruido cotidiano como mala iluminación, acentos variados o faltas de ortografía.</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Puede fallar ante ejemplos manipulados (<em>ataques adversarios</em>) o situaciones distintas a las vistas al entrenar.</td></tr><tr><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);"><strong>Dependencia de datos</strong></td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Aprovecha millones de ejemplos reales sin requerir etiquetas en modelos auto-supervisados.</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Si los datos históricos contienen sesgos o errores, la red los aprende y los amplifica a gran escala.</td></tr></tbody></table></div>
+<p>Un fallo frecuente en la práctica es el <strong>aprendizaje por atajos</strong> (<em>shortcut learning</em>): si todas las fotos de lobos en un conjunto de entrenamiento tienen nieve en el fondo y las de perros tienen césped, una red profunda puede volverse experta en detectar nieve en lugar de reconocer al animal. Auditar con datos variados y pruebas independientes sigue siendo obligatorio antes de usar cualquier modelo en decisiones sensibles.</p>
+<hr style="border:none;border-top:1px solid rgba(212,175,55,0.25);margin:2rem 0;">
+<h2>5. Temas relacionados</h2>
+<ul>
+<li><strong><a href="redes-neuronales.html">Redes Neuronales Artificiales</a>:</strong> Cómo funciona una neurona artificial individual, las funciones de activación y el entrenamiento básico.</li>
+<li><strong><a href="machine-learning.html">Machine Learning</a>:</strong> El marco general del aprendizaje automático, desde modelos estadísticos clásicos hasta la evaluación de errores.</li>
+<li><strong><a href="transformers-atencion.html">Arquitectura Transformer y Atención</a>:</strong> El diseño de capas profundas que revolucionó el procesamiento de texto, audio e imagen.</li>
+<li><strong><a href="hardware-gpu-inferencia.html">Hardware, GPU e Inferencia</a>:</strong> Por qué las tarjetas gráficas y la cuantización permiten entrenar y ejecutar estos modelos.</li>
+</ul>
+    </article>
+    <section style="margin-top:2.5rem;padding-top:1.5rem;border-top:1px solid rgba(212,175,55,0.25);"><h2>Seguir explorando en la Enciclopedia IA</h2><ul><li><a href="redes-neuronales.html">🧠 Redes Neuronales y Backpropagation</a> — Cómo funcionan las neuronas artificiales, por qué se apilan en capas y cómo el algoritmo de retropropagación corrige sus errores paso a paso.</li>
+<li><a href="transformers-atencion.html">⚡ Arquitectura Transformer y Auto-Atención</a> — El invento de 2017 que revolucionó la IA: cómo la auto-atención conecta palabras lejanas al instante y por qué reemplazó a las redes lentas anteriores.</li>
+<li><a href="hardware-gpu-inferencia.html">🖥️ Hardware de IA, GPUs y Cuantización</a> — Por qué la IA necesita GPUs y TPUs, qué es la cuantización (FP8, INT4, GGUF) y cómo KV-Cache y PagedAttention aceleran las respuestas.</li></ul></section>
+    <p style="margin-top:2rem;">
+      <a href="../#enciclopedia-ia" class="btn-hero-primary" style="display:inline-block;padding:0.85rem 1.5rem;text-decoration:none;">📚 Abrir en el Lector Interactivo de Ruichis Lab →</a>
+    </p>
+  </main>
+</body>
+</html>

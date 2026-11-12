@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Machine Learning: Cómo Aprenden las Máquinas — Enciclopedia IA | Ruichis Lab</title>
+  <meta name="description" content="Aprendizaje con ejemplos (supervisado), sin etiquetas (no supervisado) y auto-supervisado; cómo evitar que un modelo memorice en lugar de aprender.">
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+  <link rel="canonical" href="https://ruichislab.com/enciclopedia/machine-learning.html">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Ruichis Lab">
+  <meta property="og:title" content="Machine Learning: Cómo Aprenden las Máquinas — Enciclopedia IA | Ruichis Lab">
+  <meta property="og:description" content="Aprendizaje con ejemplos (supervisado), sin etiquetas (no supervisado) y auto-supervisado; cómo evitar que un modelo memorice en lugar de aprender.">
+  <meta property="og:url" content="https://ruichislab.com/enciclopedia/machine-learning.html">
+  <meta property="og:image" content="https://ruichislab.com/src/assets/covers/productividad-asimetrica-es.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Machine Learning: Cómo Aprenden las Máquinas | Ruichis Lab">
+  <meta name="twitter:description" content="Aprendizaje con ejemplos (supervisado), sin etiquetas (no supervisado) y auto-supervisado; cómo evitar que un modelo memorice en lugar de aprender.">
+  <link rel="stylesheet" href="../src/estilos/editorial.css">
+  <script type="application/ld+json">
+  {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "TechArticle",
+      "headline": "Machine Learning: Cómo Aprenden las Máquinas",
+      "description": "Aprendizaje con ejemplos (supervisado), sin etiquetas (no supervisado) y auto-supervisado; cómo evitar que un modelo memorice en lugar de aprender.",
+      "inLanguage": "es",
+      "dateModified": "2026-11-12",
+      "author": {
+        "@type": "Organization",
+        "name": "Ruichis Lab",
+        "url": "https://ruichislab.com/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Ruichis Lab",
+        "url": "https://ruichislab.com/"
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://ruichislab.com/enciclopedia/machine-learning.html"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Inicio",
+          "item": "https://ruichislab.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Enciclopedia IA",
+          "item": "https://ruichislab.com/pages/enciclopedia.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Machine Learning: Cómo Aprenden las Máquinas",
+          "item": "https://ruichislab.com/enciclopedia/machine-learning.html"
+        }
+      ]
+    }
+  ]
+}
+  </script>
+</head>
+<body>
+  <header style="border-bottom:1px solid rgba(212,175,55,0.25);padding:1rem 1.5rem;">
+    <div style="max-width:860px;margin:0 auto;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:0.75rem;">
+      <a href="../" style="font-weight:800;letter-spacing:0.08em;text-decoration:none;color:#D4AF37;">RUICHIS LAB</a>
+      <nav style="display:flex;gap:1rem;font-size:0.9rem;">
+        <a href="../pages/enciclopedia.html">Índice Enciclopedia (30)</a>
+        <a href="../#enciclopedia-ia">Lector Interactivo</a>
+        <a href="../#gimnasio-mental">Sudoku y Sopas Gratis</a>
+      </nav>
+    </div>
+  </header>
+  <main class="container" style="max-width:860px;margin:2.5rem auto;padding:0 1.5rem 3rem;line-height:1.75;">
+    <p style="font-size:0.8rem;letter-spacing:0.12em;text-transform:uppercase;color:#D4AF37;font-weight:700;">
+      🧠 undefined • NIVEL: ESENCIAL • LECTURA: undefined
+    </p>
+    <article>
+      <h1>Machine Learning: Cómo Aprenden las Máquinas a Partir de Ejemplos</h1>
+<p>Durante décadas, programar una computadora equivalía a redactar un recetario: un especialista escribía instrucciones minuciosas paso a paso. La limitación surge ante tareas complejas de la vida diaria, como leer una radiografía o detectar transacciones bancarias fraudulentas: no existen reglas fijas que anticipen cada escenario posible.</p>
+<p>El aprendizaje automático o <em>Machine Learning</em> invierte esa lógica. En lugar de redactar reglas a mano, alimentamos al sistema con abundantes datos previos. Mediante optimización matemática y cálculo estadístico, el algoritmo identifica los patrones subyacentes y genera un modelo capaz de resolver con acierto situaciones nunca antes vistas.</p>
+<blockquote style="border-left:3px solid #D4AF37;padding:0.75rem 1rem;margin:1.25rem 0;background:rgba(212,175,55,0.08);border-radius:0 8px 8px 0;"><strong>En pocas palabras:</strong> El Machine Learning es la rama de la inteligencia artificial donde las computadoras analizan ejemplos pasados para descubrir patrones por su cuenta y tomar decisiones acertadas sobre datos nuevos.</blockquote>
+<hr style="border:none;border-top:1px solid rgba(212,175,55,0.25);margin:2rem 0;">
+<h2>1. De dónde viene y cómo se entiende fácil</h2>
+<p>Pensemos en cómo aprende una persona a reconocer un perro. Nadie le entrega un manual con medidas de hocicos u orejas. Durante la infancia observó perros en parques y fotografías, y cuando confundió un gato la corrigieron. Tras acumular ejemplos, su cerebro consolidó un patrón visual. Al ver una raza desconocida, sabe al instante que es un perro. El Machine Learning opera igual: sustituye la intuición biológica por cálculos matemáticos con matrices, probabilidades y funciones de error.</p>
+<p>El término nació en 1959 con el informático Arthur Samuel en IBM. Samuel programó un sistema para jugar a las damas en una computadora IBM 704. En vez de codificar cada jugada, permitió que la máquina disputara miles de partidas contra sí misma, aprendiendo qué posiciones aumentaban las probabilidades de ganar hasta batir a jugadores experimentados.</p>
+<p>En 1997, Tom Mitchell formalizó la definición estándar del campo: un programa aprende de la experiencia (E) respecto a una tarea (T) evaluada por una medida de rendimiento (P), si su rendimiento en T mejora con la experiencia E. En un filtro de correo no deseado (<em>spam</em>), la tarea es clasificar mensajes entrantes, el rendimiento es el porcentaje de aciertos, y la experiencia son los correos analizados previamente.</p>
+<h3>Aprender frente a memorizar</h3>
+<p>El fin del aprendizaje automático no es memorizar los datos de entrenamiento, sino generalizar ante casos desconocidos:</p>
+<ul>
+<li><strong>Subajuste (alto sesgo):</strong> El modelo es excesivamente simple y no capta la estructura real de los datos. Si estimamos el precio de una vivienda solo por el color de la puerta, fallará en cualquier prueba.</li>
+<li><strong>Sobreajuste (alta varianza):</strong> El modelo memoriza el ruido y particularidades accidentales de los datos conocidos. Equivale al estudiante que memoriza de carrerilla las preguntas de un simulacro: obtiene nota perfecta en el ensayo, pero suspende el examen real en cuanto cambian los ejercicios.</li>
+</ul>
+<hr style="border:none;border-top:1px solid rgba(212,175,55,0.25);margin:2rem 0;">
+<h2>2. Cómo funciona por dentro</h2>
+<p>El aprendizaje automático se organiza en tres familias principales:</p>
+<h3>Aprendizaje supervisado</h3>
+<p>Es el método más habitual en producción. Cada dato de entrada cuenta con una etiqueta conocida:</p>
+<ol>
+<li><strong>Regresión:</strong> La respuesta es continua, como estimar la temperatura de mañana o el precio de un inmueble.</li>
+<li><strong>Clasificación:</strong> La respuesta es una categoría discreta, como distinguir transacciones bancarias legítimas de fraudulentas.</li>
+</ol>
+<p>En una relación lineal, el modelo calcula una suma ponderada de las variables de entrada multiplicadas por pesos numéricos más un término de ajuste:</p>
+<pre style="padding:1rem;border-radius:8px;overflow-x:auto;background:#111827;color:#E5E7EB;"><code class="language-text">predicción = (peso₁ × dato₁) + (peso₂ × dato₂) + ajuste_base</code></pre>
+<p>Para clasificar entre dos opciones (regresión logística), esa combinación lineal pasa por una función sigmoide que comprime el resultado en una probabilidad entre 0 y 1:</p>
+<pre style="padding:1rem;border-radius:8px;overflow-x:auto;background:#111827;color:#E5E7EB;"><code class="language-text">probabilidad = 1 ÷ (1 + e^(-z))</code></pre>
+<p>En datos tabulares (bases de datos y hojas de cálculo), dominan los ensambles de árboles de decisión. Modelos como XGBoost, creado por Tianqi Chen y Carlos Guestrin en 2016, combinan árboles en secuencia donde cada nuevo árbol corrige los errores residuales del anterior.</p>
+<h3>Aprendizaje no supervisado</h3>
+<p>Trabaja sobre datos sin etiquetar para descubrir patrones ocultos:</p>
+<ul>
+<li>*<em>Agrupamiento (</em>clustering<em>):</em>* Métodos como K-Means segmentan perfiles de clientes calculando distancias matemáticas entre sus atributos.</li>
+<li><strong>Reducción de dimensionalidad:</strong> Algoritmos como PCA (Análisis de Componentes Principales, formulado por Karl Pearson en 1901) reducen cientos de variables correlacionadas a pocos ejes sin perder información clave.</li>
+</ul>
+<h3>Aprendizaje auto-supervisado</h3>
+<p>Hace posible los grandes modelos de lenguaje modernos. El sistema toma datos sin clasificar, oculta fragmentos y aprende intentando predecir las partes faltantes a partir del contexto, prescindiendo del costoso etiquetado manual.</p>
+<h3>Validación cruzada y evaluación</h3>
+<p>Para comprobar que el modelo generaliza bien, separamos rigurosamente los datos entre entrenamiento y prueba:</p>
+<pre style="padding:1rem;border-radius:8px;overflow-x:auto;background:#111827;color:#E5E7EB;"><code class="language-python">from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score
+
+# 80% para entrenar y 20% para examinar sin contaminación
+X_entrena, X_prueba, y_entrena, y_prueba = train_test_split(
+    datos_x, etiquetas_y, test_size=0.20, random_state=42
+)
+
+modelo = RandomForestClassifier(n_estimators=100, random_state=42)
+modelo.fit(X_entrena, y_entrena)
+
+predicciones = modelo.predict(X_prueba)
+print(f&quot;Precisión: {accuracy_score(y_prueba, predicciones) * 100:.1f}%&quot;)</code></pre>
+<hr style="border:none;border-top:1px solid rgba(212,175,55,0.25);margin:2rem 0;">
+<h2>3. Dónde se usa hoy en la vida real</h2>
+<ul>
+<li><strong>Detección de fraude financiero:</strong> Pasarelas de pago evalúan cada compra en menos de 50 milisegundos. Algoritmos basados en árboles analizan importes, geolocalización y hábitos del usuario para bloquear operaciones sospechosas en tiempo real.</li>
+<li><strong>Motores de recomendación:</strong> Plataformas digitales analizan patrones de consumo para sugerir productos o contenidos según afinidades compartidas entre millones de usuarios.</li>
+<li><strong>Medicina y diagnóstico asistido:</strong> Algoritmos entrenados con tomografías asisten a especialistas detectando anomalías tempranas, mientras modelos moleculares predicen qué compuestos químicos tienen mayor potencial farmacológico.</li>
+<li><strong>Mantenimiento predictivo:</strong> Sensores en turbinas y plantas industriales vigilan vibraciones y temperaturas para anticipar averías mecánicas antes de que detengan la producción.</li>
+</ul>
+<hr style="border:none;border-top:1px solid rgba(212,175,55,0.25);margin:2rem 0;">
+<h2>4. Qué hace bien, qué falla y qué riesgos tiene</h2>
+<div style="overflow-x:auto;margin:1.25rem 0;"><table style="width:100%;border-collapse:collapse;"><thead><tr><th style="text-align:left;padding:0.6rem;border-bottom:2px solid #D4AF37;">Enfoque</th><th style="text-align:left;padding:0.6rem;border-bottom:2px solid #D4AF37;">Mayor fortaleza</th><th style="text-align:left;padding:0.6rem;border-bottom:2px solid #D4AF37;">Principal limitación</th><th style="text-align:left;padding:0.6rem;border-bottom:2px solid #D4AF37;">Riesgo crítico</th></tr></thead><tbody><tr><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);"><strong>Supervisado</strong></td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Alta precisión con datos bien clasificados</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Dependencia de costoso etiquetado humano</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Reproduce sesgos históricos de los datos</td></tr><tr><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);"><strong>No supervisado</strong></td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Descubre patrones sin guía humana</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Validación subjetiva de los grupos</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Encuentra agrupaciones ficticias por ruido</td></tr><tr><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);"><strong>Auto-supervisado</strong></td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Escala sobre corpus masivos de datos crudos</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Consumo computacional y energético extremo</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Opacidad interna y dificultad de auditoría</td></tr></tbody></table></div>
+<h3>Riesgos operativos y éticos</h3>
+<ul>
+<li>*<em>Deriva de datos (</em>concept drift<em>):</em>* La realidad cambia constantemente. Un modelo de demanda comercial entrenado antes de 2020 perdió validez con la pandemia. Todo sistema en producción exige monitoreo continuo y reentrenamiento para no degradarse.</li>
+<li><strong>Sesgo algorítmico:</strong> Los algoritmos no son neutros por naturaleza; reflejan los sesgos de sus datos de origen. Si un sistema de contratación aprende de decisiones pasadas discriminatorias, amplificará esa inequidad bajo una apariencia de objetividad técnica.</li>
+<li><strong>Opacidad de caja negra:</strong> En modelos complejos es difícil rastrear el motivo exacto de una decisión individual. Normativas como la Ley de Inteligencia Artificial de la Unión Europea (aprobada en 2024) exigen explicabilidad, gobernanza de datos y supervisión humana en aplicaciones críticas.</li>
+</ul>
+<hr style="border:none;border-top:1px solid rgba(212,175,55,0.25);margin:2rem 0;">
+<h2>5. Temas relacionados</h2>
+<ul>
+<li><strong>Deep Learning (Aprendizaje Profundo):</strong> Subcampo del Machine Learning basado en redes neuronales profundas para visión artificial y procesamiento de lenguaje.</li>
+<li><strong>Aprendizaje por Refuerzo:</strong> Paradigma interactivo donde un agente aprende a tomar decisiones maximizando recompensas mediante ensayo y error en un entorno dinámico.</li>
+<li><strong>Descenso de Gradiente:</strong> Algoritmo de optimización que actualiza iterativamente los pesos del modelo para minimizar su error.</li>
+<li><strong>Ingeniería de Características:</strong> Proceso de seleccionar y transformar variables brutas para facilitar la extracción de patrones por parte del algoritmo.</li>
+</ul>
+    </article>
+    <section style="margin-top:2.5rem;padding-top:1.5rem;border-top:1px solid rgba(212,175,55,0.25);"><h2>Seguir explorando en la Enciclopedia IA</h2><ul><li><a href="que-es-ia.html">🤖 Fundamentos de la Inteligencia Artificial</a> — Qué es realmente la IA, cómo pasó de reglas escritas a mano a sistemas que aprenden de ejemplos y la diferencia entre IA actual y ciencia ficción.</li>
+<li><a href="redes-neuronales.html">🧠 Redes Neuronales y Backpropagation</a> — Cómo funcionan las neuronas artificiales, por qué se apilan en capas y cómo el algoritmo de retropropagación corrige sus errores paso a paso.</li>
+<li><a href="datos-entrenamiento-calidad.html">🗄️ Datos de Entrenamiento y Datos Sintéticos</a> — Por qué la calidad de los datos importa más que la cantidad: limpieza, eliminación de duplicados, datos sintéticos y el riesgo de colapso de modelo.</li></ul></section>
+    <p style="margin-top:2rem;">
+      <a href="../#enciclopedia-ia" class="btn-hero-primary" style="display:inline-block;padding:0.85rem 1.5rem;text-decoration:none;">📚 Abrir en el Lector Interactivo de Ruichis Lab →</a>
+    </p>
+  </main>
+</body>
+</html>

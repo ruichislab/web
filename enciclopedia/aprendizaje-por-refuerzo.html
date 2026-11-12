@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aprendizaje por Refuerzo, RLHF y DPO — Enciclopedia IA | Ruichis Lab</title>
+  <meta name="description" content="Aprender por prueba, error y recompensa: desde videojuegos hasta cómo el feedback humano (RLHF y DPO) vuelve útiles y seguros a los asistentes.">
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+  <link rel="canonical" href="https://ruichislab.com/enciclopedia/aprendizaje-por-refuerzo.html">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Ruichis Lab">
+  <meta property="og:title" content="Aprendizaje por Refuerzo, RLHF y DPO — Enciclopedia IA | Ruichis Lab">
+  <meta property="og:description" content="Aprender por prueba, error y recompensa: desde videojuegos hasta cómo el feedback humano (RLHF y DPO) vuelve útiles y seguros a los asistentes.">
+  <meta property="og:url" content="https://ruichislab.com/enciclopedia/aprendizaje-por-refuerzo.html">
+  <meta property="og:image" content="https://ruichislab.com/src/assets/covers/productividad-asimetrica-es.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Aprendizaje por Refuerzo, RLHF y DPO | Ruichis Lab">
+  <meta name="twitter:description" content="Aprender por prueba, error y recompensa: desde videojuegos hasta cómo el feedback humano (RLHF y DPO) vuelve útiles y seguros a los asistentes.">
+  <link rel="stylesheet" href="../src/estilos/editorial.css">
+  <script type="application/ld+json">
+  {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "TechArticle",
+      "headline": "Aprendizaje por Refuerzo, RLHF y DPO",
+      "description": "Aprender por prueba, error y recompensa: desde videojuegos hasta cómo el feedback humano (RLHF y DPO) vuelve útiles y seguros a los asistentes.",
+      "inLanguage": "es",
+      "dateModified": "2026-11-12",
+      "author": {
+        "@type": "Organization",
+        "name": "Ruichis Lab",
+        "url": "https://ruichislab.com/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Ruichis Lab",
+        "url": "https://ruichislab.com/"
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://ruichislab.com/enciclopedia/aprendizaje-por-refuerzo.html"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Inicio",
+          "item": "https://ruichislab.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Enciclopedia IA",
+          "item": "https://ruichislab.com/pages/enciclopedia.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Aprendizaje por Refuerzo, RLHF y DPO",
+          "item": "https://ruichislab.com/enciclopedia/aprendizaje-por-refuerzo.html"
+        }
+      ]
+    }
+  ]
+}
+  </script>
+</head>
+<body>
+  <header style="border-bottom:1px solid rgba(212,175,55,0.25);padding:1rem 1.5rem;">
+    <div style="max-width:860px;margin:0 auto;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:0.75rem;">
+      <a href="../" style="font-weight:800;letter-spacing:0.08em;text-decoration:none;color:#D4AF37;">RUICHIS LAB</a>
+      <nav style="display:flex;gap:1rem;font-size:0.9rem;">
+        <a href="../pages/enciclopedia.html">Índice Enciclopedia (30)</a>
+        <a href="../#enciclopedia-ia">Lector Interactivo</a>
+        <a href="../#gimnasio-mental">Sudoku y Sopas Gratis</a>
+      </nav>
+    </div>
+  </header>
+  <main class="container" style="max-width:860px;margin:2.5rem auto;padding:0 1.5rem 3rem;line-height:1.75;">
+    <p style="font-size:0.8rem;letter-spacing:0.12em;text-transform:uppercase;color:#D4AF37;font-weight:700;">
+      🧠 undefined • NIVEL: AVANZADO • LECTURA: undefined
+    </p>
+    <article>
+      <h1>Aprendizaje por Refuerzo</h1>
+<p>El aprendizaje por refuerzo es la rama de la inteligencia artificial donde una máquina aprende a tomar decisiones interactuando directamente con su entorno. A diferencia del aprendizaje supervisado, donde una persona entrega miles de ejemplos resueltos, aquí el programa aprende mediante ensayo y error: ejecuta acciones, recibe recompensas cuando acierta o penalizaciones cuando falla, y ajusta su conducta para acumular el mayor beneficio a lo largo del tiempo.</p>
+<blockquote style="border-left:3px solid #D4AF37;padding:0.75rem 1rem;margin:1.25rem 0;background:rgba(212,175,55,0.08);border-radius:0 8px 8px 0;"><strong>En pocas palabras:</strong> Enseña a un sistema informático a decidir bien premiando sus aciertos y castigando sus errores, igual que se educa a un cachorro con caricias y galletas.</blockquote>
+<hr style="border:none;border-top:1px solid rgba(212,175,55,0.25);margin:2rem 0;">
+<h2>1. De dónde viene y cómo se entiende fácil</h2>
+<p>Imagina a un niño aprendiendo a montar en bicicleta. Nadie adquiere esa destreza memorizando un manual sobre el centro de masas. El niño sube, se balancea, apoya el pie para no caerse (señal negativa), corrige el manillar, pedalea con más fuerza y avanza diez metros seguidos (señal positiva). Tras muchos intentos, su cerebro consolida los movimientos correctos de forma automática.</p>
+<p>El aprendizaje por refuerzo (<em>Reinforcement Learning</em> o RL) nace del cruce de dos corrientes:</p>
+<ul>
+<li><strong>La psicología animal:</strong> A finales del siglo XIX, Edward Thorndike enunció la Ley del Efecto al comprobar que las conductas placenteras tienden a repetirse y las molestas se extinguen. En los años 30, B. F. Skinner formalizó este fenómeno como condicionamiento operante.</li>
+<li><strong>El control matemático:</strong> En los años 50, Richard Bellman desarrolló en RAND la programación dinámica, fijando cómo optimizar decisiones escalonadas en el tiempo.</li>
+</ul>
+<p>En los años 80, Richard Sutton y Andrew Barto unieron ambas disciplinas en la Universidad de Massachusetts Amherst con los métodos de diferencias temporales, que permiten a una máquina calcular el valor de sus acciones sobre la marcha sin esperar al final.</p>
+<h3>El dilema entre explorar y explotar</h3>
+<p>Cualquier sistema de refuerzo afronta una disyuntiva constante:</p>
+<ul>
+<li><strong>Explotación:</strong> Elegir la mejor alternativa conocida para asegurar un buen resultado inmediato.</li>
+<li><strong>Exploración:</strong> Probar opciones nuevas para descubrir si esconden un premio mayor, asumiendo el riesgo de fallar.</li>
+</ul>
+<p>Es como decidir dónde cenar: puedes volver a tu restaurante favorito de siempre (explotación) o probar un local nuevo (exploración). La técnica habitual es épsilon-voraz (<em>epsilon-greedy</em>): el algoritmo elige lo mejor que conoce el 90 % de las veces y se reserva un 10 % aleatorio para explorar.</p>
+<hr style="border:none;border-top:1px solid rgba(212,175,55,0.25);margin:2rem 0;">
+<h2>2. Cómo funciona por dentro</h2>
+<p>La mecánica opera como un diálogo constante entre el <strong>agente</strong> (el programa que decide) y el <strong>entorno</strong> (el mundo donde actúa):</p>
+<ol>
+<li>El agente observa el <strong>estado</strong> actual del entorno.</li>
+<li>Consulta su <strong>política</strong> (su guía interna de decisión) y ejecuta una <strong>acción</strong>.</li>
+<li>El entorno responde con un nuevo estado y una <strong>recompensa</strong> numérica.</li>
+</ol>
+<p>Para evitar que el agente busque solo ganancias inmediatas, se aplica un factor de descuento temporal (la letra griega gamma, γ, entre 0 y 1). Un valor cercano a 1 premia la visión a largo plazo; un valor cercano a 0 prioriza el beneficio inmediato.</p>
+<p>Este proceso se modela como un <strong>Proceso de Decisión de Markov</strong> (MDP). Su premisa es la propiedad de Markov: para elegir la mejor jugada basta con la foto del estado presente; la historia previa no altera las opciones futuras.</p>
+<h3>La regla de Bellman</h3>
+<p>El cálculo central se resume de forma limpia:</p>
+<pre style="padding:1rem;border-radius:8px;overflow-x:auto;background:#111827;color:#E5E7EB;"><code class="language-text">Q(estado, acción) = Recompensa + γ × Valor_máximo(nuevo_estado)</code></pre>
+<p>En palabras sencillas: el valor de una acción equivale a la recompensa inmediata obtenida más el mejor valor futuro que se podrá conseguir desde la nueva situación alcanzada.</p>
+<h3>De tablas a redes neuronales (DQN)</h3>
+<p>En 1989, Chris Watkins propuso <strong>Q-Learning</strong>, que guardaba estos valores en tablas. Servía en problemas pequeños, pero colapsaba ante tareas complejas.</p>
+<p>En 2013 y 2015, DeepMind resolvió este límite con <strong>DQN</strong> (<em>Deep Q-Network</em>), sustituyendo la tabla por una red neuronal profunda. El sistema aprendió a jugar a videojuegos de Atari 2600 analizando directamente los píxeles de la pantalla, superando el nivel humano sin conocer de antemano las reglas.</p>
+<h3>Modelos de lenguaje: RLHF y DPO</h3>
+<p>En un modelo conversacional, el texto escrito es el estado y cada palabra generada es una acción:</p>
+<ul>
+<li><strong>RLHF</strong> (<em>Reinforcement Learning from Human Feedback</em>): Popularizado en 2022 con ChatGPT. Evaluadores humanos califican respuestas; con esos datos se entrena un modelo de recompensa automático. Luego, el algoritmo PPO (<em>Proximal Policy Optimization</em>, OpenAI, 2017) ajusta el modelo con pasos prudentes para que sea útil, seguro y coherente.</li>
+<li><strong>DPO</strong> (<em>Direct Preference Optimization</em>): Presentado en 2023 por la Universidad de Stanford, demostró que el modelo puede optimizarse directamente con preferencias humanas, prescindiendo del modelo de recompensa intermedio y de PPO.</li>
+</ul>
+<hr style="border:none;border-top:1px solid rgba(212,175,55,0.25);margin:2rem 0;">
+<h2>3. Dónde se usa hoy en la vida real</h2>
+<ul>
+<li><strong>Alineamiento de modelos de lenguaje:</strong> ChatGPT, Claude y Llama usan RLHF y DPO para seguir instrucciones, mitigar errores y rechazar peticiones dañinas.</li>
+<li><strong>Juegos estratégicos:</strong> AlphaGo (DeepMind, 2016) derrotó al campeón mundial de Go Lee Sedol. AlphaZero (2017) dominó el ajedrez compitiendo contra sí mismo. En videojuegos, OpenAI Five (2019) venció en Dota 2 y AlphaStar (2019) en StarCraft II.</li>
+<li><strong>Robótica:</strong> Robots bípedos y cuadrúpedos entrenan su marcha en simuladores virtuales. El control aprendido se transfiere con éxito a motores reales (<em>Sim-to-Real</em>).</li>
+<li><strong>Eficiencia energética:</strong> En 2016, DeepMind aplicó este método al enfriamiento de centros de datos de Google, reduciendo un 40 % la energía en climatización.</li>
+</ul>
+<hr style="border:none;border-top:1px solid rgba(212,175,55,0.25);margin:2rem 0;">
+<h2>4. Qué hace bien, qué falla y qué riesgos tiene</h2>
+<div style="overflow-x:auto;margin:1.25rem 0;"><table style="width:100%;border-collapse:collapse;"><thead><tr><th style="text-align:left;padding:0.6rem;border-bottom:2px solid #D4AF37;">Enfoque</th><th style="text-align:left;padding:0.6rem;border-bottom:2px solid #D4AF37;">Mecanismo</th><th style="text-align:left;padding:0.6rem;border-bottom:2px solid #D4AF37;">Fortaleza principal</th><th style="text-align:left;padding:0.6rem;border-bottom:2px solid #D4AF37;">Principal debilidad</th><th style="text-align:left;padding:0.6rem;border-bottom:2px solid #D4AF37;">Riesgo clave</th></tr></thead><tbody><tr><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);"><strong>Q-Learning / DQN</strong></td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Estima el valor de cada acción con diferencias temporales.</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Reutiliza experiencias pasadas guardadas en memoria.</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Solo opera con pocas acciones discretas.</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Inestabilidad si la red sobreestima el valor de jugadas.</td></tr><tr><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);"><strong>PPO</strong></td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Ajusta la estrategia con pasos prudentes y recortados.</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Muy estable en robótica y control continuo.</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Exige millones de intentos y desecha datos previos.</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Puede estancarse en una estrategia mediocre.</td></tr><tr><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);"><strong>RLHF (con PPO)</strong></td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Guía el modelo con un evaluador automático de premios.</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Modela matices humanos de estilo y veracidad.</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Muy costoso: exige varias redes en memoria GPU.</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Trampa de recompensa: respuestas largas y aduladoras pero vacías.</td></tr><tr><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);"><strong>DPO</strong></td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Entrena directamente sobre pares de textos preferidos.</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Prescinde del evaluador intermedio; ahorra cómputo.</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Sensible a datos con preferencias inconsistentes.</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Puede empobrecer el vocabulario si se sobreajusta.</td></tr></tbody></table></div>
+<h3>Limitaciones prácticas y riesgos</h3>
+<ul>
+<li>*<em>Demanda de ensayos (</em>Sample Inefficiency<em>):</em>* Un vehículo autónomo no puede aprender en la calle real solo por refuerzo porque chocaría al inicio. Requiere millones de kilómetros en simuladores.</li>
+<li>*<em>Trampa de recompensa (</em>Reward Hacking<em>):</em>* Al perseguir una puntuación, el sistema puede hallar atajos absurdos. Si se premia a una aspiradora por recoger polvo, puede aprender a vaciar su depósito en la alfombra para volver a aspirar. Cumple la Ley de Goodhart: cuando un indicador se vuelve el objetivo, deja de ser un buen indicador.</li>
+<li>*<em>Impuesto de alineamiento (</em>Alignment Tax<em>):</em>* Limitar en exceso a un modelo para evitar fallos puede reducir su chispa creativa o su soltura en razonamiento abstracto.</li>
+</ul>
+<hr style="border:none;border-top:1px solid rgba(212,175,55,0.25);margin:2rem 0;">
+<h2>5. Temas relacionados</h2>
+<ul>
+<li><strong>Aprendizaje supervisado:</strong> Enfoque donde el modelo aprende a partir de datos resueltos y etiquetados por personas.</li>
+<li><strong>Modelos de lenguaje de gran escala (LLMs):</strong> Redes entrenadas con texto masivo que se afinan mediante refuerzo para dialogar con seguridad.</li>
+<li><strong>Aprendizaje por imitación:</strong> Técnica donde el agente copia demostraciones de expertos antes de explorar por su cuenta.</li>
+<li><strong>Alineamiento y seguridad en IA:</strong> Disciplina dedicada a que los sistemas inteligentes respeten los valores y la seguridad humana.</li>
+</ul>
+    </article>
+    <section style="margin-top:2.5rem;padding-top:1.5rem;border-top:1px solid rgba(212,175,55,0.25);"><h2>Seguir explorando en la Enciclopedia IA</h2><ul><li><a href="llms-modelos-lenguaje.html">💬 Grandes Modelos de Lenguaje (LLMs)</a> — Cómo leen y escriben los modelos de lenguaje dividiendo texto en tokens, prediciendo la siguiente palabra y ajustando creatividad con temperatura.</li>
+<li><a href="alineamiento-seguridad.html">🛡️ Seguridad, Alineamiento e Interpretabilidad</a> — Cómo abrir la «caja negra» de los modelos con Sparse Autoencoders, hacer pruebas de ataque (Red Teaming) y frenar inyecciones de prompt.</li>
+<li><a href="robotica-ia-fisica.html">🦾 Robótica Inteligente e IA Física</a> — Cuando el algoritmo tiene cuerpo: sensores, entrenamiento en simuladores virtuales (sim-to-real), almacenes autónomos y robots humanoides.</li></ul></section>
+    <p style="margin-top:2rem;">
+      <a href="../#enciclopedia-ia" class="btn-hero-primary" style="display:inline-block;padding:0.85rem 1.5rem;text-decoration:none;">📚 Abrir en el Lector Interactivo de Ruichis Lab →</a>
+    </p>
+  </main>
+</body>
+</html>

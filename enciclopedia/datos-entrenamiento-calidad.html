@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Datos de Entrenamiento y Datos Sintéticos — Enciclopedia IA | Ruichis Lab</title>
+  <meta name="description" content="Por qué la calidad de los datos importa más que la cantidad: limpieza, eliminación de duplicados, datos sintéticos y el riesgo de colapso de modelo.">
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+  <link rel="canonical" href="https://ruichislab.com/enciclopedia/datos-entrenamiento-calidad.html">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Ruichis Lab">
+  <meta property="og:title" content="Datos de Entrenamiento y Datos Sintéticos — Enciclopedia IA | Ruichis Lab">
+  <meta property="og:description" content="Por qué la calidad de los datos importa más que la cantidad: limpieza, eliminación de duplicados, datos sintéticos y el riesgo de colapso de modelo.">
+  <meta property="og:url" content="https://ruichislab.com/enciclopedia/datos-entrenamiento-calidad.html">
+  <meta property="og:image" content="https://ruichislab.com/src/assets/covers/productividad-asimetrica-es.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Datos de Entrenamiento y Datos Sintéticos | Ruichis Lab">
+  <meta name="twitter:description" content="Por qué la calidad de los datos importa más que la cantidad: limpieza, eliminación de duplicados, datos sintéticos y el riesgo de colapso de modelo.">
+  <link rel="stylesheet" href="../src/estilos/editorial.css">
+  <script type="application/ld+json">
+  {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "TechArticle",
+      "headline": "Datos de Entrenamiento y Datos Sintéticos",
+      "description": "Por qué la calidad de los datos importa más que la cantidad: limpieza, eliminación de duplicados, datos sintéticos y el riesgo de colapso de modelo.",
+      "inLanguage": "es",
+      "dateModified": "2026-11-12",
+      "author": {
+        "@type": "Organization",
+        "name": "Ruichis Lab",
+        "url": "https://ruichislab.com/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Ruichis Lab",
+        "url": "https://ruichislab.com/"
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://ruichislab.com/enciclopedia/datos-entrenamiento-calidad.html"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Inicio",
+          "item": "https://ruichislab.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Enciclopedia IA",
+          "item": "https://ruichislab.com/pages/enciclopedia.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Datos de Entrenamiento y Datos Sintéticos",
+          "item": "https://ruichislab.com/enciclopedia/datos-entrenamiento-calidad.html"
+        }
+      ]
+    }
+  ]
+}
+  </script>
+</head>
+<body>
+  <header style="border-bottom:1px solid rgba(212,175,55,0.25);padding:1rem 1.5rem;">
+    <div style="max-width:860px;margin:0 auto;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:0.75rem;">
+      <a href="../" style="font-weight:800;letter-spacing:0.08em;text-decoration:none;color:#D4AF37;">RUICHIS LAB</a>
+      <nav style="display:flex;gap:1rem;font-size:0.9rem;">
+        <a href="../pages/enciclopedia.html">Índice Enciclopedia (30)</a>
+        <a href="../#enciclopedia-ia">Lector Interactivo</a>
+        <a href="../#gimnasio-mental">Sudoku y Sopas Gratis</a>
+      </nav>
+    </div>
+  </header>
+  <main class="container" style="max-width:860px;margin:2.5rem auto;padding:0 1.5rem 3rem;line-height:1.75;">
+    <p style="font-size:0.8rem;letter-spacing:0.12em;text-transform:uppercase;color:#D4AF37;font-weight:700;">
+      🧠 undefined • NIVEL: INTERMEDIO • LECTURA: undefined
+    </p>
+    <article>
+      <h1>Datos de Entrenamiento: Curación, Limpieza y Calidad en Inteligencia Artificial</h1>
+<p>Un automóvil de carreras con el motor más sofisticado del mundo se averiará a los pocos minutos si su depósito se llena con combustible mezclado con lodo y agua. En el aprendizaje automático sucede exactamente lo mismo: una red neuronal de miles de millones de parámetros entrenada con textos incoherentes, copias redundantes o datos con errores solo producirá respuestas absurdas, sesgadas y poco fiables.</p>
+<p>La informática acuñó hace décadas el principio <em>garbage in, garbage out</em> (si entra basura, sale basura), anticipado ya en 1864 por Charles Babbage al advertir que ninguna máquina analítica puede arrojar respuestas acertadas a partir de premisas erróneas. Hoy, la curación, el filtrado y la procedencia de los datos marcan la diferencia entre un modelo torpe y un sistema preciso.</p>
+<blockquote style="border-left:3px solid #D4AF37;padding:0.75rem 1rem;margin:1.25rem 0;background:rgba(212,175,55,0.08);border-radius:0 8px 8px 0;"><strong>En pocas palabras:</strong> Los datos de entrenamiento son el material del que aprende un modelo; si contienen errores, textos basura o repeticiones masivas, la inteligencia artificial reproducirá esos mismos fallos sin importar la potencia de sus algoritmos.</blockquote>
+<hr style="border:none;border-top:1px solid rgba(212,175,55,0.25);margin:2rem 0;">
+<h2>1. De dónde viene y cómo se entiende fácil</h2>
+<p>Pensemos en cómo aprende a leer un niño. Si en su casa solo encuentra folletos publicitarios rotos, carteles con erratas y cientos de copias del mismo volante comercial, su vocabulario será pobre y repetitivo. Para que desarrolle un lenguaje rico, sus educadores seleccionan libros bien redactados, cuentos variados y enciclopedias contrastadas.</p>
+<p>En los inicios del aprendizaje automático moderno, los conjuntos de datos eran pequeños y se elaboraban a mano. En 1998, Yann LeCun y su equipo presentaron MNIST, una colección de 70.000 dígitos manuscritos procedentes de formularios censales y códigos postales. En 2009, Fei-Fei Li presentó ImageNet en la Universidad de Stanford: catorce millones de imágenes etiquetadas manualmente mediante microtareas de personas en todo el mundo. Ambos hitos demostraron que los saltos en inteligencia artificial dependían del orden y la calidad de los ejemplos disponibles.</p>
+<p>Con la explosión del aprendizaje profundo a partir de 2017, la necesidad de datos creció exponencialmente. Los laboratorios recurrieron a volcados masivos de la web pública, como Common Crawl (fundado en 2007). Sin embargo, internet contiene toneladas de páginas automatizadas para publicidad, foros con lenguaje de odio y copias idénticas del mismo texto. Esta realidad impulsó el movimiento de <em>Data-Centric AI</em> (IA centrada en los datos), promovido por Andrew Ng hacia 2021: resulta más eficaz depurar a fondo los datos de entrenamiento que intentar compensar sus defectos modificando una y otra vez la arquitectura del modelo.</p>
+<hr style="border:none;border-top:1px solid rgba(212,175,55,0.25);margin:2rem 0;">
+<h2>2. Cómo funciona por dentro</h2>
+<p>Transformar terabytes de páginas web en un conjunto de entrenamiento útil requiere varias etapas de depuración:</p>
+<h3>Extracción y filtrado de calidad</h3>
+<p>El texto se extrae de páginas HTML o documentos PDF eliminando menús, avisos de cookies y pies de página (<em>boilerplate</em>). Luego se normalizan las codificaciones a UTF-8 para evitar caracteres corruptos (<em>mojibake</em>). A continuación, se aplican dos tipos de filtros:</p>
+<ol>
+<li><strong>Reglas heurísticas:</strong> Se descartan documentos con menos de 50 palabras, páginas con alta proporción de símbolos respecto a palabras reales o listas repetitivas pensadas para engañar a buscadores.</li>
+<li><strong>Clasificadores estadísticos:</strong> Modelos ligeros de texto como FastText (creado por Meta en 2016) se entrenan con fuentes de alta calidad (Wikipedia, libros editados) para calcular si un texto web arbitrario tiene un nivel de redacción similar.</li>
+</ol>
+<h3>Deduplicación masiva</h3>
+<p>Internet contiene miles de copias del mismo aviso legal, boletín de prensa o plantilla comercial. Si una red lee el mismo texto miles de veces, memoriza esas oraciones palabra por palabra en lugar de generalizar conceptos, lo que eleva el sobreajuste y el coste de cómputo.</p>
+<p>Para detectar duplicados a gran escala se utiliza el algoritmo MinHash junto con LSH (<em>Locality-Sensitive Hashing</em>), ideado por Andrei Broder en 1997. Cada documento se descompone en secuencias cortas y se calcula la similitud de Jaccard:</p>
+<pre style="padding:1rem;border-radius:8px;overflow-x:auto;background:#111827;color:#E5E7EB;"><code class="language-text">Similitud Jaccard(A, B) = |A ∩ B| ÷ |A ∪ B|</code></pre>
+<p>Donde <code>|A ∩ B|</code> representa las secuencias comunes entre ambos textos y <code>|A ∪ B|</code> el total de secuencias únicas sumadas. Si la coincidencia supera un umbral fijado (por ejemplo, 0,80), el documento redundante se elimina. En 2021, Katherine Lee demostró que deduplicar los datos de preentrenamiento reduce notablemente la memorización accidental sin perjudicar el rendimiento del sistema.</p>
+<h3>Anonimización de privacidad</h3>
+<p>Para proteger la privacidad de los usuarios, se detectan y reemplazan números de teléfono, direcciones particulares, identificadores fiscales y correos electrónicos:</p>
+<pre style="padding:1rem;border-radius:8px;overflow-x:auto;background:#111827;color:#E5E7EB;"><code class="language-python">import re
+import hashlib
+
+def filtrar_documento(texto: str, min_palabras: int = 50) -&gt; dict | None:
+    # 1. Normalizar espacios
+    texto_limpio = re.sub(r&quot;\s+&quot;, &quot; &quot;, texto).strip()
+    palabras = texto_limpio.split()
+    if len(palabras) &lt; min_palabras:
+        return None
+    
+    # 2. Anonimizar correos electrónicos
+    texto_anonimo = re.sub(r&quot;[\w\.-]+@[\w\.-]+\.\w+&quot;, &quot;[CORREO]&quot;, texto_limpio)
+    
+    # 3. Huella SHA-256 para detectar duplicados idénticos
+    huella = hashlib.sha256(texto_anonimo.lower().encode(&quot;utf-8&quot;)).hexdigest()
+    return {&quot;texto&quot;: texto_anonimo, &quot;huella&quot;: huella, &quot;conteo&quot;: len(palabras)}</code></pre>
+<h3>Datos sintéticos y colapso de modelos</h3>
+<p>Como el texto humano público de alta calidad es finito, los investigadores generan datos sintéticos: explicaciones paso a paso de problemas matemáticos o código generadas por modelos avanzados. En 2023, Microsoft demostró con su trabajo <em>Phi-1</em> que entrenar un modelo pequeño con ejercicios sintéticos de estilo libro de texto superaba a modelos mayores alimentados con datos web genéricos.</p>
+<p>Sin embargo, los datos sintéticos conllevan un riesgo demostrado: el <strong>colapso del modelo</strong> (<em>Model Collapse</em>). En 2024, un estudio publicado en <em>Nature</em> por Ilia Shumailov y su equipo demostró que cuando varias generaciones de modelos se entrenan con textos producidos por modelos previos, las colas de la distribución estadística desaparecen. El sistema olvida los hechos infrecuentes y el lenguaje generado se vuelve repetitivo, uniforme y sin sentido.</p>
+<hr style="border:none;border-top:1px solid rgba(212,175,55,0.25);margin:2rem 0;">
+<h2>3. Dónde se usa hoy en la vida real</h2>
+<ul>
+<li><strong>Modelos abiertos de referencia:</strong> Iniciativas como FineWeb (creado por Hugging Face en 2024 con 15 billones de tokens) procesan petabytes de la web para proporcionar a investigadores conjuntos de datos limpios, libres de textos duplicados y de baja calidad.</li>
+<li><strong>Conducción autónoma:</strong> Empresas de vehículos autónomos filtran miles de horas de grabaciones en autopistas despejadas y seleccionan solo eventos infrecuentes (lluvia densa, cruce repentino de animales) para evitar que la red aprenda solo la rutina sencilla.</li>
+<li><strong>Medicina y salud:</strong> Los registros hospitalarios se someten a estrictas limpiezas bajo el RGPD europeo y la ley HIPAA estadounidense, eliminando nombres de pacientes pero preservando patrones clínicos clave para el diagnóstico temprano.</li>
+<li><strong>Sistemas contra el fraude bancario:</strong> Como el fraude representa menos del 0,1% de los movimientos, los bancos balancean sus datos mediante curación rigurosa para evitar que los algoritmos ignoren los casos raros.</li>
+</ul>
+<hr style="border:none;border-top:1px solid rgba(212,175,55,0.25);margin:2rem 0;">
+<h2>4. Qué hace bien, qué falla y qué riesgos tiene</h2>
+<div style="overflow-x:auto;margin:1.25rem 0;"><table style="width:100%;border-collapse:collapse;"><thead><tr><th style="text-align:left;padding:0.6rem;border-bottom:2px solid #D4AF37;">Dimensión de curación</th><th style="text-align:left;padding:0.6rem;border-bottom:2px solid #D4AF37;">Ventaja comprobada</th><th style="text-align:left;padding:0.6rem;border-bottom:2px solid #D4AF37;">Límite práctico</th><th style="text-align:left;padding:0.6rem;border-bottom:2px solid #D4AF37;">Riesgo principal</th></tr></thead><tbody><tr><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);"><strong>Filtrado heurístico</strong></td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Descarta rápido grandes volúmenes de texto basura</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Reglas fijas que pueden eliminar lenguaje informal útil</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Exclusión involuntaria de dialectos minoritarios</td></tr><tr><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);"><strong>Deduplicación MinHash</strong></td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Reduce la memorización forzada y ahorra cómputo</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Requiere grandes estructuras de índices en memoria</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Eliminación accidental de textos breves legítimos</td></tr><tr><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);"><strong>Datos sintéticos</strong></td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Genera ejemplos en tareas donde faltan datos reales</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Carece de la variedad y matices del lenguaje vivo</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Colapso del modelo por retroalimentación recursiva</td></tr><tr><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);"><strong>Anonimización</strong></td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Cumple con leyes de privacidad y evita filtraciones</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Difícil de aplicar en menciones indirectas de personas</td><td style="padding:0.6rem;border-bottom:1px solid rgba(255,255,255,0.12);">Fuga involuntaria de información personal memorizada</td></tr></tbody></table></div>
+<h3>Riesgos operativos y legales</h3>
+<ul>
+<li><strong>Agotamiento del contenido humano:</strong> Estudios de Epoch AI sugieren que el inventario accesible de texto escrito por personas podría agotarse antes del final de esta década, haciendo indispensable una curación mucho más eficiente.</li>
+<li><strong>Propiedad intelectual y derechos de autor:</strong> El uso sin autorización de obras protegidas para preentrenamiento enfrenta demandas judiciales internacionales, lo que obliga a las empresas a negociar licencias y respetar mecanismos de exclusión (<em>opt-out</em>).</li>
+<li><strong>Regulación estricta:</strong> El Reglamento Europeo de Inteligencia Artificial (aprobado en 2024) impone obligaciones de trazabilidad y gobernanza de datos para modelos de uso general y sistemas de alto riesgo.</li>
+</ul>
+<hr style="border:none;border-top:1px solid rgba(212,175,55,0.25);margin:2rem 0;">
+<h2>5. Temas relacionados</h2>
+<ul>
+<li><strong>Alineamiento y Seguridad en IA:</strong> Métodos como RLHF para orientar las respuestas del modelo hacia criterios de utilidad y veracidad tras el preentrenamiento.</li>
+<li><strong>Fine-Tuning y LoRA:</strong> Ajuste de modelos generales a tareas específicas mediante lotes reducidos de datos de alta especialización.</li>
+<li><strong>Evaluación y Benchmarks:</strong> Mediciones objetivas para cuantificar si la limpieza de datos se traduce en un rendimiento superior en pruebas de razonamiento.</li>
+<li><strong>Ética, Privacidad y Regulación:</strong> Normativas globales sobre derechos de autor, protección de datos personales y transparencia algorítmica.</li>
+</ul>
+    </article>
+    <section style="margin-top:2.5rem;padding-top:1.5rem;border-top:1px solid rgba(212,175,55,0.25);"><h2>Seguir explorando en la Enciclopedia IA</h2><ul><li><a href="machine-learning.html">📈 Machine Learning: Cómo Aprenden las Máquinas</a> — Aprendizaje con ejemplos (supervisado), sin etiquetas (no supervisado) y auto-supervisado; cómo evitar que un modelo memorice en lugar de aprender.</li>
+<li><a href="evaluacion-benchmarks.html">📊 Cómo Se Evalúa la IA y Qué Miden los Tests</a> — Qué significan MMLU, HumanEval o SWE-bench, cómo se detecta si un modelo hizo trampa memorizando el examen y el uso de jueces automáticos.</li>
+<li><a href="etica-privacidad-regulacion.html">⚖️ Ética, Privacidad y Leyes de IA (EU AI Act)</a> — Sesgos en algoritmos reales, cómo entrenar sin exponer datos personales (privacidad diferencial y aprendizaje federado) y qué exige el EU AI Act.</li></ul></section>
+    <p style="margin-top:2rem;">
+      <a href="../#enciclopedia-ia" class="btn-hero-primary" style="display:inline-block;padding:0.85rem 1.5rem;text-decoration:none;">📚 Abrir en el Lector Interactivo de Ruichis Lab →</a>
+    </p>
+  </main>
+</body>
+</html>
