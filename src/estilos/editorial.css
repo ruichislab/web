@@ -3723,10 +3723,6 @@ body.theme-paper .daily-day-dot {
   overscroll-behavior: none;
 }
 
-.sopa-cell {
-  font-size: clamp(0.68rem, 2.25vw, 1.02rem);
-}
-
 @keyframes sopaCellPop {
   0% { transform: scale(1); }
   45% { transform: scale(1.18); filter: brightness(1.25); }

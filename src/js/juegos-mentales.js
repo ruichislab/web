@@ -806,8 +806,9 @@
       }
 
       if (gridBoard) {
-        gridBoard.style.gridTemplateColumns = `repeat(${this.sopaSize}, 1fr)`;
-        gridBoard.style.gridTemplateRows = `repeat(${this.sopaSize}, 1fr)`;
+        gridBoard.setAttribute("data-size", String(this.sopaSize));
+        gridBoard.style.gridTemplateColumns = `repeat(${this.sopaSize}, minmax(0, 1fr))`;
+        gridBoard.style.gridTemplateRows = `repeat(${this.sopaSize}, minmax(0, 1fr))`;
 
         let cellsHtml = "";
         for (let r = 0; r < this.sopaSize; r++) {
