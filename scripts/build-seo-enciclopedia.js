@@ -224,7 +224,14 @@ for (const art of articulos) {
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="${escHtml(art.titulo)} | Ruichis Lab">
   <meta name="twitter:description" content="${escHtml(art.resumen)}">
+  <link rel="stylesheet" href="../src/estilos/variables.css">
+  <link rel="stylesheet" href="../src/estilos/components.css">
+  <link rel="stylesheet" href="../src/estilos/modules.css">
+  <link rel="stylesheet" href="../src/estilos/main.css">
   <link rel="stylesheet" href="../src/estilos/editorial.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <script type="application/ld+json">
   ${JSON.stringify(jsonLd, null, 2)}
   </script>
@@ -278,7 +285,14 @@ const encIndexHtml = `<!DOCTYPE html>
   <meta property="og:title" content="Enciclopedia Universal de IA — 30 Monografías Verificadas | Ruichis Lab">
   <meta property="og:description" content="Aprende Inteligencia Artificial con explicaciones humanas, claras y 100% verificadas: desde Machine Learning hasta Transformers, LLMs, Modelos Locales y Ética.">
   <meta property="og:url" content="https://ruichislab.com/pages/enciclopedia.html">
+  <link rel="stylesheet" href="../src/estilos/variables.css">
+  <link rel="stylesheet" href="../src/estilos/components.css">
+  <link rel="stylesheet" href="../src/estilos/modules.css">
+  <link rel="stylesheet" href="../src/estilos/main.css">
   <link rel="stylesheet" href="../src/estilos/editorial.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",

@@ -99,7 +99,14 @@ for (const libro of libros) {
   <meta name="twitter:title" content="${esc(libro.titulo)} | Ruichis Lab">
   <meta name="twitter:description" content="${esc(libro.descripcionCorta)}">
   <meta name="twitter:image" content="${imgUrl}">
+  <link rel="stylesheet" href="../src/estilos/variables.css">
+  <link rel="stylesheet" href="../src/estilos/components.css">
+  <link rel="stylesheet" href="../src/estilos/modules.css">
+  <link rel="stylesheet" href="../src/estilos/main.css">
   <link rel="stylesheet" href="../src/estilos/editorial.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <script type="application/ld+json">
   ${JSON.stringify(jsonLd, null, 2)}
   </script>
@@ -167,7 +174,14 @@ const librosIndexHtml = `<!DOCTYPE html>
   <meta name="description" content="Catálogo oficial de libros de Ruichis Lab en Amazon: Productividad Asimétrica (ES/EN) y Colección Letras y Retos (100 Grandes Sopas de Letras de Cultura General y Biología).">
   <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
   <link rel="canonical" href="https://ruichislab.com/libros/index.html">
+  <link rel="stylesheet" href="../src/estilos/variables.css">
+  <link rel="stylesheet" href="../src/estilos/components.css">
+  <link rel="stylesheet" href="../src/estilos/modules.css">
+  <link rel="stylesheet" href="../src/estilos/main.css">
   <link rel="stylesheet" href="../src/estilos/editorial.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
   <main class="container" style="max-width:860px;margin:3rem auto;padding:2rem;line-height:1.7;">
@@ -264,7 +278,14 @@ for (const j of juegosPages) {
   <meta property="og:title" content="${esc(j.title)}">
   <meta property="og:description" content="${esc(j.desc)}">
   <meta property="og:url" content="${url}">
+  <link rel="stylesheet" href="../src/estilos/variables.css">
+  <link rel="stylesheet" href="../src/estilos/components.css">
+  <link rel="stylesheet" href="../src/estilos/modules.css">
+  <link rel="stylesheet" href="../src/estilos/main.css">
   <link rel="stylesheet" href="../src/estilos/editorial.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <script type="application/ld+json">
   ${JSON.stringify(jsonLd, null, 2)}
   </script>
