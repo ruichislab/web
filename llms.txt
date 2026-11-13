@@ -1,0 +1,52 @@
+# Ruichis Lab
+
+> Editorial independiente enfocada en el foco profundo, la productividad asimétrica, el entrenamiento cognitivo sin anuncios y la divulgación rigurosa de Inteligencia Artificial.
+
+Sitio oficial: https://ruichislab.com/
+Contacto: contacto@ruichislab.com
+Ubicación: Bogotá, Colombia
+
+## Gimnasio Mental (Gratis y Sin Anuncios)
+- [Gimnasio Mental Interactivo](https://ruichislab.com/pages/gimnasio-mental.html): Suite cognitiva PWA offline con Sudoku Maestro 9x9 y Sopas de Letras Pro.
+- [Sudoku Online Gratis sin Anuncios](https://ruichislab.com/juegos/sudoku-online-gratis.html): Reto del Día, 4 niveles de dificultad, notas a lápiz, entrada rápida, modo 3 Vidas y pistas lógicas paso a paso.
+- [Sopas de Letras Pro en 8 Direcciones](https://ruichislab.com/juegos/sopas-de-letras-gratis.html): 5 categorías temáticas (Cultura General y Biología), tableros 12x12 a 16x16, Sopa del Día y modo impresión.
+
+## Catálogo Editorial en Amazon
+- [Catálogo Completo de Libros](https://ruichislab.com/libros/index.html)
+- [Productividad Asimétrica (Español)](https://ruichislab.com/libros/productividad-asimetrica-es.html): El arte de hacer en dos horas lo que a otros les lleva una semana (ASIN: B0HD2MY2HN).
+- [Asymmetric Productivity (English Edition)](https://ruichislab.com/libros/asymmetric-productivity-en.html): The Art of Doing in Two Hours What Takes Others a Week (ASIN: B0HJ42QFCV).
+- [100 Grandes Sopas de Letras de Cultura General (Vol. I)](https://ruichislab.com/libros/sopas-cultura-general.html): Colección Letras y Retos, 1.200 palabras en 8 direcciones.
+- [100 Grandes Sopas de Letras de Biología (Vol. II)](https://ruichislab.com/libros/sopas-biologia.html): Colección Letras y Retos, 1.200 términos de ciencias de la vida.
+
+## Enciclopedia Universal de Inteligencia Artificial (30 Monografías Verificadas)
+- [Índice Completo de la Enciclopedia IA](https://ruichislab.com/pages/enciclopedia.html)
+- [Qué es la Inteligencia Artificial](https://ruichislab.com/enciclopedia/que-es-ia.html)
+- [Machine Learning](https://ruichislab.com/enciclopedia/machine-learning.html)
+- [Redes Neuronales Artificiales](https://ruichislab.com/enciclopedia/redes-neuronales.html)
+- [Deep Learning](https://ruichislab.com/enciclopedia/deep-learning.html)
+- [Transformers y Atención](https://ruichislab.com/enciclopedia/transformers-atencion.html)
+- [Grandes Modelos de Lenguaje (LLMs)](https://ruichislab.com/enciclopedia/llms-modelos-lenguaje.html)
+- [Aprendizaje por Refuerzo y RLHF](https://ruichislab.com/enciclopedia/aprendizaje-por-refuerzo.html)
+- [Visión Computacional](https://ruichislab.com/enciclopedia/vision-computacional.html)
+- [Modelos de Difusión](https://ruichislab.com/enciclopedia/modelos-difusion.html)
+- [Embeddings y Espacios Vectoriales](https://ruichislab.com/enciclopedia/embeddings-espacios-vectoriales.html)
+- [RAG: Generación Aumentada por Recuperación](https://ruichislab.com/enciclopedia/rag-generacion-aumentada.html)
+- [Agentes Autónomos y MCP](https://ruichislab.com/enciclopedia/agentes-autonomos.html)
+- [Prompt Engineering](https://ruichislab.com/enciclopedia/prompt-engineering.html)
+- [Fine-Tuning, LoRA y QLoRA](https://ruichislab.com/enciclopedia/fine-tuning-lora.html)
+- [IA Multimodal](https://ruichislab.com/enciclopedia/ia-multimodal.html)
+- [Hardware, GPU e Inferencia](https://ruichislab.com/enciclopedia/hardware-gpu-inferencia.html)
+- [Evaluación y Benchmarks](https://ruichislab.com/enciclopedia/evaluacion-benchmarks.html)
+- [Alineamiento y Seguridad](https://ruichislab.com/enciclopedia/alineamiento-seguridad.html)
+- [Ética, Privacidad y Regulación (EU AI Act)](https://ruichislab.com/enciclopedia/etica-privacidad-regulacion.html)
+- [Historia y Fronteras AGI](https://ruichislab.com/enciclopedia/historia-fronteras-agi.html)
+- [IA en Medicina y Salud](https://ruichislab.com/enciclopedia/ia-en-medicina-salud.html)
+- [IA en Educación y Aprendizaje](https://ruichislab.com/enciclopedia/ia-en-educacion-aprendizaje.html)
+- [IA en Negocios y Productividad](https://ruichislab.com/enciclopedia/ia-en-negocios-productividad.html)
+- [IA para Programación y Desarrollo](https://ruichislab.com/enciclopedia/ia-en-codigo-desarrollo.html)
+- [IA de Voz y Audio](https://ruichislab.com/enciclopedia/voz-audio-sintesis.html)
+- [Video Generativo y Simulación](https://ruichislab.com/enciclopedia/video-generativo-simulacion.html)
+- [Robótica e IA Física](https://ruichislab.com/enciclopedia/robotica-ia-fisica.html)
+- [Datos de Entrenamiento y Calidad](https://ruichislab.com/enciclopedia/datos-entrenamiento-calidad.html)
+- [IA Open-Source y Modelos Locales](https://ruichislab.com/enciclopedia/ia-open-source-local.html)
+- [Ciberseguridad y Deepfakes](https://ruichislab.com/enciclopedia/ciberseguridad-deepfakes-ia.html)
