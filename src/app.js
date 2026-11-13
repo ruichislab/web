@@ -737,18 +737,34 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Cargar módulo inicial (soporte directo para #gimnasio-mental, #sudoku, #sopa)
-  const initialHash = window.location.hash;
-  if (initialHash === '#gimnasio-mental') {
-    agente.navegarA('Gimnasio Mental');
+  function navigateByHash(rawHash) {
+    const h = (rawHash || '').split('/')[0];
+    let targetModulo = 'Inicio';
+    if (h === '#gimnasio-mental') targetModulo = 'Gimnasio Mental';
+    else if (h === '#enciclopedia-ia') targetModulo = 'Enciclopedia IA';
+    else if (h === '#herramientas-web') targetModulo = 'Herramientas Web';
+    else if (h === '#filosofia') targetModulo = 'Filosofia';
+    else if (h === '#contacto') targetModulo = 'Contacto';
+    else if (h === '#ruichis-lock') targetModulo = 'Ruichis Lock';
+
+    if (h === '#sudoku' || h === '#sopa') {
+      openGimnasioMental(h.slice(1));
+      return;
+    }
+
+    agente.navegarA(targetModulo);
     document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
-    const gymNavLink = document.querySelector('.nav-link[data-modulo="Gimnasio Mental"]');
-    if (gymNavLink) gymNavLink.classList.add('active');
-  } else if (initialHash === '#sudoku' || initialHash === '#sopa') {
-    openGimnasioMental(initialHash.slice(1));
-  } else {
-    agente.navegarA('Inicio');
+    const navMatch = document.querySelector(`.nav-link[data-modulo="${targetModulo}"]`);
+    if (navMatch) navMatch.classList.add('active');
   }
+
+  navigateByHash(window.location.hash);
+
+  window.addEventListener('hashchange', () => {
+    isHandlingHashChange = true;
+    navigateByHash(window.location.hash);
+    setTimeout(() => { isHandlingHashChange = false; }, 100);
+  });
 
   // Si la URL incluye #privacy o ?privacy, abrir política de privacidad de Book Ranker
   if (window.location.hash === '#privacy' || window.location.search.includes('privacy')) {
