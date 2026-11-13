@@ -1,5 +1,5 @@
 // sw.js — Service Worker ligero de Ruichis Lab (Offline-Ready para Gimnasio Mental y Catálogo)
-const CACHE_NAME = 'ruichis-lab-v6';
+const CACHE_NAME = 'ruichis-lab-v7';
 
 const CORE_ASSETS = [
   './',
@@ -48,9 +48,9 @@ self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url);
   if (url.origin !== self.location.origin) return;
 
-  // Network-first con fallback a caché para mantener siempre la última versión online y funcionar offline
+  // Network-first sin caché HTTP intermedia para reflejar cambios al instante y funcionar offline
   event.respondWith(
-    fetch(event.request)
+    fetch(event.request, { cache: 'no-cache' })
       .then((response) => {
         if (response && response.status === 200) {
           const copy = response.clone();
